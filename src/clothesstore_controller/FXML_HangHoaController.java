@@ -10,6 +10,7 @@ import clothesstore_model.nhomhang_model;
 import clothesstore_model.sanpham_model;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXTreeTableColumn;
 import com.jfoenix.controls.JFXTreeTableView;
@@ -42,15 +43,10 @@ import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
-import javafx.scene.control.TreeTableRow;
 import javafx.scene.control.TreeTableView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.shape.Shape;
 import javafx.stage.FileChooser;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-import javafx.stage.Window;
 import javafx.stage.WindowEvent;
 import javafx.util.Callback;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -90,7 +86,7 @@ public class FXML_HangHoaController implements Initializable {
     @FXML
     private JFXTextField txt_fi_masanpham;
     @FXML
-    private JFXTextField txt_fi_ghichu;
+    private JFXTextArea txt_area_ghichu;
     @FXML
     private JFXTreeTableView<sanpham_model> tree_table_vi;
 
@@ -106,10 +102,10 @@ public class FXML_HangHoaController implements Initializable {
         JFXButton btn = (JFXButton) event.getSource();
         if (btn == btn_add_nhasanxuat) {
             ShowFXML_NhaSanXuat();
-
+            tree_table_vi.getSelectionModel().clearSelection();
         } else if (btn == btn_add_nhomhang) {
-
             ShowFXML_NhomHang();
+            tree_table_vi.getSelectionModel().clearSelection();
         } else if (btn == btnThem) {
             flag = 1;
             btnXoa.setDisable(true);
@@ -156,8 +152,8 @@ public class FXML_HangHoaController implements Initializable {
     }
 
     @FXML
-    private void OnMouseClick_txtfield(MouseEvent evt) {
-         tree_table_vi.getSelectionModel().clearSelection();
+    private void OnMouseClick_clearSelectTable(MouseEvent evt) {
+        tree_table_vi.getSelectionModel().clearSelection();
     }
 
     private void btnDongy_process() {
@@ -257,7 +253,7 @@ public class FXML_HangHoaController implements Initializable {
         StringProperty tensp = new SimpleStringProperty(txt_fi_tensanpham.getText());
         StringProperty tennsx = new SimpleStringProperty(cmb_nhasanxuat.getValue());
         StringProperty tennhomhang = new SimpleStringProperty(cmb_nhomhang.getValue());
-        StringProperty ghichu = new SimpleStringProperty(txt_fi_ghichu.getText());
+        StringProperty ghichu = new SimpleStringProperty(txt_area_ghichu.getText());
 
         sanpham_model sanpham = new sanpham_model(masp, tensp, tennsx, tennhomhang, ghichu);
         if (sanpham.insert()) {
@@ -302,7 +298,7 @@ public class FXML_HangHoaController implements Initializable {
         StringProperty tensp = new SimpleStringProperty(txt_fi_tensanpham.getText());
         StringProperty tennsx = new SimpleStringProperty(cmb_nhasanxuat.getValue());
         StringProperty tennhomhang = new SimpleStringProperty(cmb_nhomhang.getValue());
-        StringProperty ghichu = new SimpleStringProperty(txt_fi_ghichu.getText());
+        StringProperty ghichu = new SimpleStringProperty(txt_area_ghichu.getText());
         sanpham_model sanpham = new sanpham_model(masp, tensp, tennsx, tennhomhang, ghichu);
         if (sanpham.update()) {
             viewListTable();
@@ -348,15 +344,8 @@ public class FXML_HangHoaController implements Initializable {
 
             }
         });
-        MenuItem item2 = new MenuItem("Menu Item 2");
-        item2.setOnAction(new EventHandler<ActionEvent>() {
 
-            @Override
-            public void handle(ActionEvent event) {
-                System.out.println("Menu 2");
-            }
-        });
-        context.getItems().addAll(item1, item2);
+        context.getItems().addAll(item1);
         tree_table_vi.setContextMenu(context);
     }
 
@@ -403,7 +392,7 @@ public class FXML_HangHoaController implements Initializable {
                     TreeItem<sanpham_model> sanphamItem = tree_table_vi.getSelectionModel().getSelectedItem();
                     txt_fi_masanpham.setText("" + sanphamItem.getValue().getMasanpham().get());
                     txt_fi_tensanpham.setText("" + sanphamItem.getValue().getTensanpham().get());
-                    txt_fi_ghichu.setText("" + sanphamItem.getValue().getGhichu().get());
+                    txt_area_ghichu.setText("" + sanphamItem.getValue().getGhichu().get());
                     cmb_nhasanxuat.getSelectionModel().select(sanphamItem.getValue().getTennhasanxuat().get());
                     cmb_nhomhang.getSelectionModel().select(sanphamItem.getValue().getTennhomhang().get());
 
