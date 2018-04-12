@@ -10,6 +10,7 @@ import clothesstore_model.TaiKhoan;
 import static clothesstore_view.ClothesStore._rootDangNhap;
 import static clothesstore_view.ClothesStore.stageDangNhap;
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import java.io.IOException;
@@ -20,6 +21,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.prefs.Preferences;
 import javafx.animation.FadeTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -36,6 +38,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
+
 /**
  * FXML Controller class
  *
@@ -46,62 +49,71 @@ public class FXML_DangNhapController implements Initializable {
     /**
      * Initializes the controller class.
      */
-       
+    @FXML
+    JFXCheckBox checkbox_remember;
     @FXML
     private JFXTextField txtUser;
- 
+
     @FXML
     private JFXPasswordField txtPass;
 
     @FXML
     private Label lbError;
-    
+
+    private Preferences preference;
+
     public static Stage stageMain;
     public static Stage stageSplash;
     public static String UserID;
-    
-    @FXML
-    private void Login(ActionEvent event) throws IOException{
-        String user = txtUser.getText();
-        String password = txtPass.getText().toString();
 
-        TaiKhoan tk = new TaiKhoan(user, password);  
-        if(tk.CheckLogin()){
+    @FXML
+    private void Login(ActionEvent event) throws IOException {
+        String user = txtUser.getText().trim();
+        String password = txtPass.getText().trim();
+
+        TaiKhoan tk = new TaiKhoan(user, password);
+        if (tk.CheckLogin()) {
+            if (checkbox_remember.isSelected()) {
+                preference.put("userID", user);
+                preference.put("password", password);
+            }
             UserID = user;
             txtUser.clear();
             txtPass.clear();
             stageDangNhap.close();
             loadSplashScreen();
             try {
-                    Parent root = FXMLLoader.load(getClass().getResource("/clothesstore_view/FXML_ClothesStore.fxml"));
-                    Scene scene = new Scene(root);
-                    stageMain = new Stage();
-                    stageMain.setScene(scene);
-                } catch (IOException ex) {
-                    Logger.getLogger(FXML_DangNhapController.class.getName()).log(Level.SEVERE, null, ex);
+                Parent root = FXMLLoader.load(getClass().getResource("/clothesstore_view/FXML_ClothesStore.fxml"));
+                Scene scene = new Scene(root);
+                stageMain = new Stage();
+                stageMain.setScene(scene);
+            } catch (IOException ex) {
+                Logger.getLogger(FXML_DangNhapController.class.getName()).log(Level.SEVERE, null, ex);
             }
-        
+
             int quyen = tk.GetQuyenFromID(user);
-            if(quyen == 1){
-                
+            if (quyen == 1) {
+
             } else if (quyen == 0) {
                 List<Object> listnode = new ArrayList<Object>();
-                for(Node node: _vbox.getChildren()){
-                    if(node instanceof JFXButton){
-                        if(node.getId().equals("btnTonKho") || node.getId().equals("btnLoiNhuan")
+                for (Node node : _vbox.getChildren()) {
+                    if (node instanceof JFXButton) {
+                        if (node.getId().equals("btnTonKho") || node.getId().equals("btnLoiNhuan")
                                 || node.getId().equals("btnBieuDo")
-                                || node.getId().equals("btnQuanLyTK"))
-                            listnode.add(node);    
+                                || node.getId().equals("btnQuanLyTK")) {
+                            listnode.add(node);
+                        }
                     }
                 }
-                for(Object node: listnode){
+                for (Object node : listnode) {
                     _vbox.getChildren().remove(node);
                 }
             }
-        } else
-            lbError.setText("Tên tài khoản hoặc mật khẩu không chính xác!");    
+        } else {
+            lbError.setText("Tên tài khoản hoặc mật khẩu không chính xác!");
+        }
     }
-    
+
     private void loadSplashScreen() {
         try {
             Parent pane = FXMLLoader.load(getClass().getResource("/clothesstore_view/SplashFXML.fxml"));
@@ -110,8 +122,8 @@ public class FXML_DangNhapController implements Initializable {
             stageSplash = new Stage();
             stageSplash.initStyle(StageStyle.TRANSPARENT);
             stageSplash.setScene(scene);
-            stageSplash.show();     
-        
+            stageSplash.show();
+
             FadeTransition fadeIn = new FadeTransition(Duration.seconds(2.5), pane);
             fadeIn.setFromValue(0);
             fadeIn.setToValue(1);
@@ -129,7 +141,7 @@ public class FXML_DangNhapController implements Initializable {
             });
 
             fadeOut.setOnFinished((e) -> {
-                stageMain.show();  
+                stageMain.show();
                 stageSplash.close();
             });
 
@@ -137,7 +149,7 @@ public class FXML_DangNhapController implements Initializable {
             Logger.getLogger(FXML_DangNhapController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     @FXML
     private void exit(ActionEvent event) {
         ButtonType yes = new ButtonType("Thoát", ButtonBar.ButtonData.OK_DONE);
@@ -153,12 +165,21 @@ public class FXML_DangNhapController implements Initializable {
 
         if (result.isPresent() && result.get() == yes) {
             System.exit(0);
-        }            
+        }
     }
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    }    
-    
+
+        preference = Preferences.userNodeForPackage(FXML_DangNhapController.class);
+        if (preference != null) {
+            if (preference.get("userID", null) !=null && !preference.get("userID", null).isEmpty()) {
+                txtUser.setText(preference.get("userID", null));
+                txtPass.setText(preference.get("password", null));
+                checkbox_remember.setSelected(true);
+            }
+        }
+    }
+
 }

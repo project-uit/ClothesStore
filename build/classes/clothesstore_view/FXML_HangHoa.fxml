@@ -17,7 +17,7 @@
          </font>
       </Label>
       <JFXTreeTableView fx:id="tree_table_vi" layoutY="387.0" prefHeight="313.0" prefWidth="847.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="387.0" />
-      <AnchorPane layoutX="523.0" layoutY="40.0" prefHeight="332.0" prefWidth="314.0" style="-fx-border-radius: 5; -fx-border-width: 1; -fx-border-color: #4681f5;">
+      <AnchorPane layoutX="523.0" layoutY="40.0" onMouseClicked="#OnMouseClick_clearSelectTable" prefHeight="332.0" prefWidth="314.0" style="-fx-border-radius: 5; -fx-border-width: 1; -fx-border-color: #4681f5;">
          <children>
             <JFXButton fx:id="btnThem" layoutX="55.0" layoutY="41.0" onAction="#ClickEvent" prefHeight="39.0" prefWidth="80.0" style="-fx-background-color: #4681f5;" text="Thêm" textFill="WHITE">
                <font>
@@ -84,7 +84,7 @@
                   <Font size="14.0" />
                </font>
             </Label>
-            <JFXTextArea fx:id="txt_area_ghichu" layoutX="10.0" layoutY="213.0" prefHeight="104.0" prefWidth="264.0" />
+            <JFXTextArea fx:id="txt_area_ghichu" layoutX="10.0" layoutY="213.0" onMouseClicked="#OnMouseClick_clearSelectTable" prefHeight="104.0" prefWidth="264.0" />
          </children>
       </AnchorPane>
    </children>

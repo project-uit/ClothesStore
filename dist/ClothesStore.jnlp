@@ -8,7 +8,7 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="ClothesStore.jar" size="366965" download="eager" />
+    <jar href="ClothesStore.jar" size="365790" download="eager" />
     <jar href="lib\commons-collections4-4.1.jar" size="751238" download="eager" />
     <jar href="lib\jfoenix-8.0.1.jar" size="2405715" download="eager" />
     <jar href="lib\mysql-connector-java-5.1.6-bin.jar" size="703265" download="eager" />
