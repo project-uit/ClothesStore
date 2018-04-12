@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<FlowPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="524.0" prefWidth="656.0" style="-fx-background-color: #f2f1da;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clothesstore_controller.FXML_DangKyController">
+   <children>
+      <AnchorPane prefHeight="518.0" prefWidth="653.0" style="-fx-background-color: WHITE; -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.15), 6.0, 0.7, 0.0,1.5); -fx-background-radius: 4; -fx-border-radius: 4; -fx-padding: 8;">
+         <children>
+            <ImageView fitHeight="80.0" fitWidth="80.0" layoutX="269.0" layoutY="62.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@img/DangKy.png" />
+               </image>
+            </ImageView>
+            <JFXTextField fx:id="txtUser" labelFloat="true" layoutX="169.0" layoutY="167.0" maxWidth="316.0" minWidth="233.0" prefHeight="31.0" prefWidth="316.0" promptText="Nhập tên tài khoản">
+               <font>
+                  <Font name="Roboto Medium" size="14.0" />
+               </font>
+            </JFXTextField>
+            <JFXPasswordField fx:id="txtPass" labelFloat="true" layoutX="169.0" layoutY="228.0" maxWidth="316.0" minWidth="235.0" prefHeight="31.0" prefWidth="316.0" promptText="Nhập mật khẩu">
+               <font>
+                  <Font name="Roboto Medium" size="14.0" />
+               </font>
+            </JFXPasswordField>
+            <JFXButton fx:id="btnDangKy" layoutX="385.0" layoutY="375.0" onAction="#DangKy" prefHeight="32.0" prefWidth="100.0" style="-fx-background-color: #2196f3;" text="Đăng ký" textFill="WHITE">
+               <font>
+                  <Font name="Roboto Bold" size="14.0" />
+               </font>
+            </JFXButton>
+            <Label layoutX="262.0" layoutY="20.0" text="Đăng Ký">
+               <font>
+                  <Font size="25.0" />
+               </font>
+            </Label>
+            <Label fx:id="lbError" layoutX="262.0" layoutY="419.0" prefHeight="17.0" prefWidth="210.0" textAlignment="CENTER" textFill="#e80505">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <JFXPasswordField fx:id="txtPass1" labelFloat="true" layoutX="169.0" layoutY="289.0" maxWidth="316.0" minWidth="235.0" prefHeight="31.0" prefWidth="316.0" promptText="Nhập lại mật khẩu">
+               <font>
+                  <Font name="Roboto Medium" size="14.0" />
+               </font>
+            </JFXPasswordField>
+            <Hyperlink fx:id="linkback" layoutX="298.0" layoutY="428.0" onAction="#BackDangNhap" text="Bấm vào đây để trở lại đăng nhập" />
+         </children>
+      </AnchorPane>
+   </children>
+</FlowPane>

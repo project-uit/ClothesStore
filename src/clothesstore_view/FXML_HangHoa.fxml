@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import com.jfoenix.controls.JFXTreeTableView?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" prefHeight="700.0" prefWidth="845.0" style="-fx-background-color: #deeeef;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clothesstore_controller.FXML_HangHoaController">
+   <children>
+      <Label layoutX="14.0" opacity="0.4" prefHeight="25.0" prefWidth="137.0" text="Hàng hóa" textFill="#021bf5" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="0.0">
+         <font>
+            <Font name="System Bold" size="28.0" />
+         </font>
+      </Label>
+      <JFXTreeTableView fx:id="tree_table_vi" layoutY="387.0" prefHeight="313.0" prefWidth="847.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="387.0" />
+      <AnchorPane layoutX="523.0" layoutY="40.0" prefHeight="332.0" prefWidth="314.0" style="-fx-border-radius: 5; -fx-border-width: 1; -fx-border-color: #4681f5;">
+         <children>
+            <JFXButton fx:id="btnThem" layoutX="55.0" layoutY="41.0" onAction="#ClickEvent" prefHeight="39.0" prefWidth="80.0" style="-fx-background-color: #4681f5;" text="Thêm" textFill="WHITE">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </JFXButton>
+            <JFXButton fx:id="btnXoa" disable="true" layoutX="55.0" layoutY="97.0" onAction="#ClickEvent" prefHeight="39.0" prefWidth="80.0" style="-fx-background-color: #4681f5;" text="Xóa" textFill="WHITE">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </JFXButton>
+            <JFXButton fx:id="btnSua" disable="true" layoutX="55.0" layoutY="159.0" onAction="#ClickEvent" prefHeight="39.0" prefWidth="80.0" style="-fx-background-color: #4681f5;" text="Sửa" textFill="WHITE">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </JFXButton>
+            <JFXButton fx:id="btnDongy" layoutX="55.0" layoutY="263.0" onAction="#Dongy_huy_clickvent" prefHeight="39.0" prefWidth="80.0" style="-fx-background-color: #4681f5;" text="Đồng ý" textFill="WHITE" />
+            <JFXButton fx:id="btnHuy" layoutX="203.0" layoutY="263.0" onAction="#Dongy_huy_clickvent" prefHeight="39.0" prefWidth="80.0" style="-fx-background-color: #4681f5;" text="Hủy" textFill="WHITE" />
+         </children>
+      </AnchorPane>
+      <JFXButton fx:id="btnExportExcel" layoutX="722.0" layoutY="5.0" onAction="#ClickEvent" prefHeight="11.0" prefWidth="117.0" style="-fx-background-color: #4681f5;" text="Xuất file Excel" textFill="WHITE">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </JFXButton>
+      <AnchorPane layoutX="7.0" layoutY="40.0" prefHeight="332.0" prefWidth="504.0" style="-fx-border-radius: 5; -fx-border-width: 1; -fx-border-color: #4681f5;">
+         <children>
+            <JFXTextField fx:id="txt_fi_masanpham" focusColor="#0040ff" layoutX="9.0" layoutY="37.0" onMouseClicked="#OnMouseClick_txtfield" prefHeight="25.0" prefWidth="204.0" promptText="Nhập tối đa 8 kí tự">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </JFXTextField>
+            <JFXTextField fx:id="txt_fi_tensanpham" layoutX="9.0" layoutY="125.0" onMouseClicked="#OnMouseClick_txtfield" prefHeight="25.0" prefWidth="204.0" promptText="Nhập tối đa 30 kí tự">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </JFXTextField>
+            <JFXTextField fx:id="txt_fi_ghichu" layoutX="10.0" layoutY="215.0" onMouseClicked="#OnMouseClick_txtfield" prefHeight="103.0" prefWidth="258.0" promptText="Nhập tối đa 50 kí tự" unFocusColor="#f54545">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </JFXTextField>
+            <Label layoutX="10.0" layoutY="10.0" text="Mã sản phẩm">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="9.0" layoutY="88.0" text="Tên sản phẩm">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <JFXComboBox fx:id="cmb_nhasanxuat" layoutX="273.0" layoutY="128.0" onMouseClicked="#OnMouseClick_txtfield" prefHeight="25.0" prefWidth="180.0" />
+            <JFXComboBox fx:id="cmb_nhomhang" layoutX="273.0" layoutY="40.0" onMouseClicked="#OnMouseClick_txtfield" prefHeight="25.0" prefWidth="180.0" />
+            <Label layoutX="10.0" layoutY="183.0" text="Ghi chú">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <JFXButton fx:id="btn_add_nhasanxuat" layoutX="454.0" layoutY="125.0" onAction="#ClickEvent" prefHeight="30.0" prefWidth="34.0" style="-fx-background-color: #4681f5;" text="+" textFill="WHITE" />
+            <JFXButton fx:id="btn_add_nhomhang" layoutX="454.0" layoutY="37.0" onAction="#ClickEvent" prefHeight="30.0" prefWidth="34.0" style="-fx-background-color: #4681f5;" text="+" textFill="WHITE" />
+            <Label layoutX="283.0" layoutY="88.0" text="Nhà sản xuất">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="275.0" layoutY="10.0" text="Tên nhóm hàng">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>
