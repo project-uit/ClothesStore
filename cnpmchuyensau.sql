@@ -56,8 +56,7 @@ luong int
 
 create table nhomhang
 (
-manhomhang  INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-tennhomhang nvarchar(30) not null
+tennhomhang nvarchar(30) PRIMARY KEY
 );
 create table nhasanxuat
 (
@@ -68,9 +67,7 @@ create table sanpham
 masanpham char(8) primary key,
 tensanpham nvarchar(30) not null,
 tennhasanxuat nvarchar(50),
-manhomhang  INT(6) UNSIGNED,
-FOREIGN KEY (manhomhang)
-REFERENCES nhomhang(manhomhang),
+tennhomhang nvarchar(30),
 ghichu nvarchar(50)
 );
 create table phieunhap
@@ -98,7 +95,7 @@ FOREIGN KEY (maphieunhap)
 REFERENCES phieunhap(maphieunhap)
 );
 
-create table nhapkho
+create table khosanpham
 (
 manhapkho   INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 masanpham char(8),

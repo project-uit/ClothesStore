@@ -28,7 +28,7 @@
             <Font name="Roboto Medium" size="14.0" />
          </font>
       </JFXPasswordField>
-      <JFXCheckBox checkedColor="#ff1744" layoutX="177.0" layoutY="201.0" prefHeight="31.0" prefWidth="171.0" text="Nhớ tài khoản">
+      <JFXCheckBox fx:id="checkbox_remember" checkedColor="#ff1744" layoutX="177.0" layoutY="201.0" prefHeight="31.0" prefWidth="171.0" text="Nhớ tài khoản">
          <font>
             <Font name="Roboto Regular" size="14.0" />
          </font>

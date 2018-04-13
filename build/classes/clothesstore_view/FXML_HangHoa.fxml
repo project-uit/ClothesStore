@@ -2,6 +2,7 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXTextArea?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import com.jfoenix.controls.JFXTreeTableView?>
 <?import javafx.scene.control.Label?>
@@ -16,7 +17,7 @@
          </font>
       </Label>
       <JFXTreeTableView fx:id="tree_table_vi" layoutY="387.0" prefHeight="313.0" prefWidth="847.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="387.0" />
-      <AnchorPane layoutX="523.0" layoutY="40.0" prefHeight="332.0" prefWidth="314.0" style="-fx-border-radius: 5; -fx-border-width: 1; -fx-border-color: #4681f5;">
+      <AnchorPane layoutX="523.0" layoutY="40.0" onMouseClicked="#OnMouseClick_clearSelectTable" prefHeight="332.0" prefWidth="314.0" style="-fx-border-radius: 5; -fx-border-width: 1; -fx-border-color: #4681f5;">
          <children>
             <JFXButton fx:id="btnThem" layoutX="55.0" layoutY="41.0" onAction="#ClickEvent" prefHeight="39.0" prefWidth="80.0" style="-fx-background-color: #4681f5;" text="Thêm" textFill="WHITE">
                <font>
@@ -42,19 +43,14 @@
             <Font size="14.0" />
          </font>
       </JFXButton>
-      <AnchorPane layoutX="7.0" layoutY="40.0" prefHeight="332.0" prefWidth="504.0" style="-fx-border-radius: 5; -fx-border-width: 1; -fx-border-color: #4681f5;">
+      <AnchorPane layoutX="7.0" layoutY="40.0" onMouseClicked="#OnMouseClick_clearSelectTable" prefHeight="332.0" prefWidth="504.0" style="-fx-border-radius: 5; -fx-border-width: 1; -fx-border-color: #4681f5;">
          <children>
-            <JFXTextField fx:id="txt_fi_masanpham" focusColor="#0040ff" layoutX="9.0" layoutY="37.0" onMouseClicked="#OnMouseClick_txtfield" prefHeight="25.0" prefWidth="204.0" promptText="Nhập tối đa 8 kí tự">
+            <JFXTextField fx:id="txt_fi_masanpham" focusColor="#0040ff" layoutX="9.0" layoutY="37.0" onMouseClicked="#OnMouseClick_clearSelectTable" prefHeight="25.0" prefWidth="204.0" promptText="Nhập tối đa 8 kí tự">
                <font>
                   <Font size="14.0" />
                </font>
             </JFXTextField>
-            <JFXTextField fx:id="txt_fi_tensanpham" layoutX="9.0" layoutY="125.0" onMouseClicked="#OnMouseClick_txtfield" prefHeight="25.0" prefWidth="204.0" promptText="Nhập tối đa 30 kí tự">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </JFXTextField>
-            <JFXTextField fx:id="txt_fi_ghichu" layoutX="10.0" layoutY="215.0" onMouseClicked="#OnMouseClick_txtfield" prefHeight="103.0" prefWidth="258.0" promptText="Nhập tối đa 50 kí tự" unFocusColor="#f54545">
+            <JFXTextField fx:id="txt_fi_tensanpham" layoutX="9.0" layoutY="125.0" onMouseClicked="#OnMouseClick_clearSelectTable" prefHeight="25.0" prefWidth="204.0" promptText="Nhập tối đa 30 kí tự">
                <font>
                   <Font size="14.0" />
                </font>
@@ -69,8 +65,8 @@
                   <Font size="14.0" />
                </font>
             </Label>
-            <JFXComboBox fx:id="cmb_nhasanxuat" layoutX="273.0" layoutY="128.0" onMouseClicked="#OnMouseClick_txtfield" prefHeight="25.0" prefWidth="180.0" />
-            <JFXComboBox fx:id="cmb_nhomhang" layoutX="273.0" layoutY="40.0" onMouseClicked="#OnMouseClick_txtfield" prefHeight="25.0" prefWidth="180.0" />
+            <JFXComboBox fx:id="cmb_nhasanxuat" layoutX="273.0" layoutY="128.0" onMouseClicked="#OnMouseClick_clearSelectTable" prefHeight="25.0" prefWidth="180.0" />
+            <JFXComboBox fx:id="cmb_nhomhang" layoutX="273.0" layoutY="40.0" onMouseClicked="#OnMouseClick_clearSelectTable" prefHeight="25.0" prefWidth="180.0" />
             <Label layoutX="10.0" layoutY="183.0" text="Ghi chú">
                <font>
                   <Font size="14.0" />
@@ -88,6 +84,7 @@
                   <Font size="14.0" />
                </font>
             </Label>
+            <JFXTextArea fx:id="txt_area_ghichu" layoutX="10.0" layoutY="213.0" onMouseClicked="#OnMouseClick_clearSelectTable" prefHeight="104.0" prefWidth="264.0" />
          </children>
       </AnchorPane>
    </children>
