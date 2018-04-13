@@ -319,19 +319,14 @@ public class FXML_QuanLyTaiKhoanController implements Initializable {
         Optional<ButtonType> result = alert.showAndWait();
 
         if (result.isPresent() && result.get() == yes) {
-            TaiKhoan tk = new TaiKhoan();
-            if(tk.XoaTaiKhoan(nhanvien.getTaiKhoan().getTentaikhoan())){
-                if(nhanvien.XoaNhanVien()){
-                    InitTableView();
-                    System.out.println("Xoa Thanh Cong");
-                } else {
-                    System.out.println("Xoa TK thanh cong, xoa nhan vien that bai");
-                }
-                    
-            } else 
-                System.out.println("Xoa That Bai");
-            
-        }            
+            if(nhanvien.XoaNhanVien()){
+                InitTableView();
+                System.out.println("Xoa Thanh Cong");
+            } else {
+                System.out.println("Xoa TK thanh cong, xoa nhan vien that bai");
+            }        
+        } else 
+            System.out.println("Xoa That Bai");          
     }
     
     @FXML
