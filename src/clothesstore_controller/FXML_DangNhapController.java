@@ -7,12 +7,14 @@ package clothesstore_controller;
 
 import static clothesstore_controller.SidePanelContentController._vbox;
 import clothesstore_model.TaiKhoan;
-import static clothesstore_view.ClothesStore._rootDangNhap;
 import static clothesstore_view.ClothesStore.stageDangNhap;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.validation.RequiredFieldValidator;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -23,6 +25,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.prefs.Preferences;
 import javafx.animation.FadeTransition;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -70,50 +73,74 @@ public class FXML_DangNhapController implements Initializable {
     private void Login(ActionEvent event) throws IOException {
         String user = txtUser.getText().trim();
         String password = txtPass.getText().trim();
+        
+        if (!user.equals("") && !password.equals("")){
+            TaiKhoan tk = new TaiKhoan(user, password);
+            if (tk.CheckLogin()) {
+                if (checkbox_remember.isSelected()) {
+                    preference.put("userID", user);
+                    preference.put("password", password);
+                }
+                UserID = user;
+                txtUser.clear();
+                txtPass.clear();
+                stageDangNhap.close();
+                loadSplashScreen();
+                try {
+                    Parent root = FXMLLoader.load(getClass().getResource("/clothesstore_view/FXML_ClothesStore.fxml"));
+                    Scene scene = new Scene(root);
+                    stageMain = new Stage();
+                    stageMain.setScene(scene);
+                } catch (IOException ex) {
+                    Logger.getLogger(FXML_DangNhapController.class.getName()).log(Level.SEVERE, null, ex);
+                }
 
-        TaiKhoan tk = new TaiKhoan(user, password);
-        if (tk.CheckLogin()) {
-            if (checkbox_remember.isSelected()) {
-                preference.put("userID", user);
-                preference.put("password", password);
-            }
-            UserID = user;
-            txtUser.clear();
-            txtPass.clear();
-            stageDangNhap.close();
-            loadSplashScreen();
-            try {
-                Parent root = FXMLLoader.load(getClass().getResource("/clothesstore_view/FXML_ClothesStore.fxml"));
-                Scene scene = new Scene(root);
-                stageMain = new Stage();
-                stageMain.setScene(scene);
-            } catch (IOException ex) {
-                Logger.getLogger(FXML_DangNhapController.class.getName()).log(Level.SEVERE, null, ex);
-            }
+                int quyen = tk.GetQuyenFromID(user);
+                if (quyen == 1) {
 
-            int quyen = tk.GetQuyenFromID(user);
-            if (quyen == 1) {
-
-            } else if (quyen == 0) {
-                List<Object> listnode = new ArrayList<Object>();
-                for (Node node : _vbox.getChildren()) {
-                    if (node instanceof JFXButton) {
-                        if (node.getId().equals("btnTonKho") || node.getId().equals("btnLoiNhuan")
-                                || node.getId().equals("btnBieuDo")
-                                || node.getId().equals("btnQuanLyTK")) {
-                            listnode.add(node);
+                } else if (quyen == 0) {
+                    List<Object> listnode = new ArrayList<Object>();
+                    for (Node node : _vbox.getChildren()) {
+                        if (node instanceof JFXButton) {
+                            if (node.getId().equals("btnTonKho") || node.getId().equals("btnLoiNhuan")
+                                    || node.getId().equals("btnBieuDo")
+                                    || node.getId().equals("btnQuanLyTK")) {
+                                listnode.add(node);
+                            }
                         }
                     }
+                    for (Object node : listnode) {
+                        _vbox.getChildren().remove(node);
+                    }
                 }
-                for (Object node : listnode) {
-                    _vbox.getChildren().remove(node);
-                }
+            } else {
+                lbError.setText("Tên tài khoản hoặc mật khẩu không chính xác!");
             }
-        } else {
-            lbError.setText("Tên tài khoản hoặc mật khẩu không chính xác!");
         }
     }
+    
+    private void handleValidation() {
+        RequiredFieldValidator fieldValidator = new RequiredFieldValidator();
+        fieldValidator.setMessage("Tài khoản không thể trống");
+        fieldValidator.setIcon(new FontAwesomeIconView(FontAwesomeIcon.TIMES));
+        txtUser.getValidators().add(fieldValidator);
+        txtPass.focusedProperty().addListener((ObservableValue<? extends Boolean> o, Boolean oldVal, Boolean newVal) -> {
+            if (newVal) {
+                txtUser.validate();
+            }
+          
+        });
+        RequiredFieldValidator fieldValidator2 = new RequiredFieldValidator();
+        fieldValidator2.setMessage("Mật khẩu không thể trống");
+        fieldValidator2.setIcon(new FontAwesomeIconView(FontAwesomeIcon.TIMES));
+        txtPass.getValidators().add(fieldValidator2);
+        txtPass.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+            if (!newValue) {
+                txtPass.validate();
+            }
+        });
 
+    }
     private void loadSplashScreen() {
         try {
             Parent pane = FXMLLoader.load(getClass().getResource("/clothesstore_view/SplashFXML.fxml"));
@@ -171,7 +198,7 @@ public class FXML_DangNhapController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-
+        handleValidation();
         preference = Preferences.userNodeForPackage(FXML_DangNhapController.class);
         if (preference != null) {
             if (preference.get("userID", null) !=null && !preference.get("userID", null).isEmpty()) {
