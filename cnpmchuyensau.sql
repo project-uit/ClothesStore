@@ -9,11 +9,6 @@ create database ClothesShop
 drop database ClothesShop
 use ClothesShop
 
-select *
-from khachhang
-where tenkhachhang = 'chú'
-Collate utf8_unicode_ci;
-
 create table khachhang
 (
 makhachhang int(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -41,8 +36,7 @@ cmnd varchar(13),
 trangthai int,
 luong int 
 );
-insert into nhanvien(tennhanvien,diachi,gioitinh,ngaysinh,cmnd,trangthai,luong)
-values('ccc', 'le hong phong',1,'1995-01-19','123456',1,50000);
+
 create table nhomhang
 (
 tennhomhang nvarchar(30) PRIMARY KEY
@@ -131,9 +125,6 @@ FOREIGN KEY (manhanvien)
 REFERENCES nhanvien(manhanvien)
 );
 
-insert into dangnhap(tentaikhoan, matkhau,phanquyen,manhanvien)
-values ('admin','123',1,1);
-
 DROP TRIGGER IF EXISTS before_nhanvien_delete;
 
 create trigger before_nhanvien_delete
@@ -171,5 +162,20 @@ for each row
 	where maphieunhap=new.maphieunhap;
 
 
+insert into nhanvien(tennhanvien,diachi,gioitinh,ngaysinh,cmnd,trangthai,luong)
+values('ccc', 'le hong phong',1,'1995-01-19','123456',1,50000);
 
+insert into dangnhap(tentaikhoan, matkhau,phanquyen,manhanvien)
+values ('admin','123',1,1);
+
+insert into sanpham(masanpham,tensanpham,tennhasanxuat,tennhomhang,ghichu) values ("12344","aokhoacda","nike","ao","");
+insert into sanpham(masanpham,tensanpham,tennhasanxuat,tennhomhang,ghichu) values ("12346","aokhoacbong","adidas","ao","");
+insert into sanpham(masanpham,tensanpham,tennhasanxuat,tennhomhang,ghichu) values ("12347","quandai","apple","quan","");
+insert into sanpham(masanpham,tensanpham,tennhasanxuat,tennhomhang,ghichu) values ("12348","quanngan","nike","quan","");
+insert into sanpham(masanpham,tensanpham,tennhasanxuat,tennhomhang,ghichu) values ("12349","aonguc","victoriasecret","aovu","");
+
+select *
+from khachhang
+where tenkhachhang = 'chú'
+Collate utf8_unicode_ci;
 
