@@ -131,6 +131,9 @@ FOREIGN KEY (manhanvien)
 REFERENCES nhanvien(manhanvien)
 );
 
+insert into dangnhap(tentaikhoan, matkhau,phanquyen,manhanvien)
+values ('admin','123',1,1);
+
 DROP TRIGGER IF EXISTS before_nhanvien_delete;
 
 create trigger before_nhanvien_delete
@@ -139,10 +142,33 @@ for each row
 	delete from dangnhap 
     	where dangnhap.manhanvien = old.manhanvien;
 
-insert into dangnhap(tentaikhoan, matkhau,phanquyen,manhanvien)
-values ('admin','123',1,1);
+drop trigger if exists after_chitietphieunhap_update;
 
-
+create trigger after_chitietphieunhap_insert
+after insert ON chitietphieunhap
+for each row
+	update phieunhap set tongtien=(select SUM(thanhtien)
+									from chitietphieunhap
+									where chitietphieunhap.maphieunhap=new.maphieunhap)
+	where maphieunhap=new.maphieunhap;
+    
+drop trigger if exists after_chitietphieunhap_delete;
+    
+create trigger after_chitietphieunhap_delete
+after delete ON chitietphieunhap
+for each row
+	update phieunhap set tongtien=(select SUM(thanhtien)
+									from chitietphieunhap
+									where chitietphieunhap.maphieunhap=maphieunhap)
+	where maphieunhap=old.maphieunhap;
+    
+create trigger after_chitietphieunhap_update
+after update ON chitietphieunhap
+for each row
+	update phieunhap set tongtien=(select SUM(thanhtien)
+									from chitietphieunhap
+									where chitietphieunhap.maphieunhap=new.maphieunhap)
+	where maphieunhap=new.maphieunhap;
 
 
 

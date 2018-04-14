@@ -3,7 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/E:/project/ClothesStore/ClothesStore/src/clothesstore_controller/FXML_HangHoaController.java</file>
+            <file>file:/D:/Documents/GitHub/ClothesStore/src/clothesstore_controller/FXML_ChiTietPhieuNhapController.java</file>
+            <file>file:/D:/Documents/GitHub/ClothesStore/src/clothesstore_controller/SidePanelContentController.java</file>
+            <file>file:/D:/Documents/GitHub/ClothesStore/src/clothesstore_controller/FXML_NhaCungCapController.java</file>
+            <file>file:/D:/Documents/GitHub/ClothesStore/src/clothesstore_controller/FXML_PhieuNhapController.java</file>
+            <file>file:/D:/Documents/GitHub/ClothesStore/src/clothesstore_controller/FXML_SearchSanPhamController.java</file>
+            <file>file:/D:/Documents/GitHub/ClothesStore/src/clothesstore_model/SearchSanPham.java</file>
         </group>
     </open-files>
 </project-private>
