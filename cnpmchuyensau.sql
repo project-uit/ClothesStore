@@ -9,11 +9,6 @@ create database ClothesShop
 drop database ClothesShop
 use ClothesShop
 
-select *
-from khachhang
-where tenkhachhang = 'chú'
-Collate utf8_unicode_ci;
-
 create table khachhang
 (
 makhachhang int(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -41,8 +36,7 @@ cmnd varchar(13),
 trangthai int,
 luong int 
 );
-insert into nhanvien(tennhanvien,diachi,gioitinh,ngaysinh,cmnd,trangthai,luong)
-values('ccc', 'le hong phong',1,'1995-01-19','123456',1,50000);
+
 create table nhomhang
 (
 tennhomhang nvarchar(30) PRIMARY KEY
@@ -139,11 +133,49 @@ for each row
 	delete from dangnhap 
     	where dangnhap.manhanvien = old.manhanvien;
 
+drop trigger if exists after_chitietphieunhap_update;
+
+create trigger after_chitietphieunhap_insert
+after insert ON chitietphieunhap
+for each row
+	update phieunhap set tongtien=(select SUM(thanhtien)
+									from chitietphieunhap
+									where chitietphieunhap.maphieunhap=new.maphieunhap)
+	where maphieunhap=new.maphieunhap;
+    
+drop trigger if exists after_chitietphieunhap_delete;
+    
+create trigger after_chitietphieunhap_delete
+after delete ON chitietphieunhap
+for each row
+	update phieunhap set tongtien=(select SUM(thanhtien)
+									from chitietphieunhap
+									where chitietphieunhap.maphieunhap=maphieunhap)
+	where maphieunhap=old.maphieunhap;
+    
+create trigger after_chitietphieunhap_update
+after update ON chitietphieunhap
+for each row
+	update phieunhap set tongtien=(select SUM(thanhtien)
+									from chitietphieunhap
+									where chitietphieunhap.maphieunhap=new.maphieunhap)
+	where maphieunhap=new.maphieunhap;
+
+
+insert into nhanvien(tennhanvien,diachi,gioitinh,ngaysinh,cmnd,trangthai,luong)
+values('ccc', 'le hong phong',1,'1995-01-19','123456',1,50000);
+
 insert into dangnhap(tentaikhoan, matkhau,phanquyen,manhanvien)
 values ('admin','123',1,1);
 
+insert into sanpham(masanpham,tensanpham,tennhasanxuat,tennhomhang,ghichu) values ("12344","aokhoacda","nike","ao","");
+insert into sanpham(masanpham,tensanpham,tennhasanxuat,tennhomhang,ghichu) values ("12346","aokhoacbong","adidas","ao","");
+insert into sanpham(masanpham,tensanpham,tennhasanxuat,tennhomhang,ghichu) values ("12347","quandai","apple","quan","");
+insert into sanpham(masanpham,tensanpham,tennhasanxuat,tennhomhang,ghichu) values ("12348","quanngan","nike","quan","");
+insert into sanpham(masanpham,tensanpham,tennhasanxuat,tennhomhang,ghichu) values ("12349","aonguc","victoriasecret","aovu","");
 
-
-
-
+select *
+from khachhang
+where tenkhachhang = 'chú'
+Collate utf8_unicode_ci;
 
