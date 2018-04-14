@@ -73,14 +73,18 @@ public class FXML_DangNhapController implements Initializable {
     private void Login(ActionEvent event) throws IOException {
         String user = txtUser.getText().trim();
         String password = txtPass.getText().trim();
-        
-        if (!user.equals("") && !password.equals("")){
+
+        if (!user.equals("") && !password.equals("")) {
             TaiKhoan tk = new TaiKhoan(user, password);
             if (tk.CheckLogin()) {
                 if (checkbox_remember.isSelected()) {
                     preference.put("userID", user);
                     preference.put("password", password);
+                } else {
+                    preference.put("userID", "");
+                    preference.put("password", "");
                 }
+
                 UserID = user;
                 txtUser.clear();
                 txtPass.clear();
@@ -116,9 +120,12 @@ public class FXML_DangNhapController implements Initializable {
             } else {
                 lbError.setText("Tên tài khoản hoặc mật khẩu không chính xác!");
             }
+        } else {
+            preference.put("userID", "");
+            preference.put("password", "");
         }
     }
-    
+
     private void handleValidation() {
         RequiredFieldValidator fieldValidator = new RequiredFieldValidator();
         fieldValidator.setMessage("Tài khoản không thể trống");
@@ -128,7 +135,7 @@ public class FXML_DangNhapController implements Initializable {
             if (newVal) {
                 txtUser.validate();
             }
-          
+
         });
         RequiredFieldValidator fieldValidator2 = new RequiredFieldValidator();
         fieldValidator2.setMessage("Mật khẩu không thể trống");
@@ -141,6 +148,7 @@ public class FXML_DangNhapController implements Initializable {
         });
 
     }
+
     private void loadSplashScreen() {
         try {
             Parent pane = FXMLLoader.load(getClass().getResource("/clothesstore_view/SplashFXML.fxml"));
@@ -189,10 +197,25 @@ public class FXML_DangNhapController implements Initializable {
         alert.setTitle("Nhắc nhở");
         alert.setHeaderText(null);
         Optional<ButtonType> result = alert.showAndWait();
-
+        String user = txtUser.getText().trim();
+        String password = txtPass.getText().trim();
         if (result.isPresent() && result.get() == yes) {
+
+            if (!user.equals("") && !password.equals("")) {
+                TaiKhoan tk = new TaiKhoan(user, password);
+                if (tk.CheckLogin()) {
+                    if (checkbox_remember.isSelected()) {
+                        preference.put("userID", user);
+                        preference.put("password", password);
+                    } else {
+                        preference.put("userID", "");
+                        preference.put("password", "");
+                    }
+                }
+            }
             System.exit(0);
         }
+
     }
 
     @Override
@@ -201,11 +224,12 @@ public class FXML_DangNhapController implements Initializable {
         handleValidation();
         preference = Preferences.userNodeForPackage(FXML_DangNhapController.class);
         if (preference != null) {
-            if (preference.get("userID", null) !=null && !preference.get("userID", null).isEmpty()) {
+            if (preference.get("userID", null) != null && !preference.get("userID", null).isEmpty()) {
                 txtUser.setText(preference.get("userID", null));
                 txtPass.setText(preference.get("password", null));
                 checkbox_remember.setSelected(true);
             }
+
         }
     }
 
