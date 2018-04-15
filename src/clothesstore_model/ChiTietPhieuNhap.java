@@ -42,6 +42,14 @@ public class ChiTietPhieuNhap {
         this.giavon =new SimpleIntegerProperty (giavon);
         this.thanhtien =new SimpleIntegerProperty (thanhtien);
     }
+    
+    public ChiTietPhieuNhap( String masanpham, String maphieunhap, int soluong, int giavon, int thanhtien) {
+        this.masanpham =new SimpleStringProperty (masanpham);
+        this.maphieunhap =new SimpleStringProperty (maphieunhap);
+        this.soluong =new SimpleIntegerProperty (soluong);
+        this.giavon =new SimpleIntegerProperty (giavon);
+        this.thanhtien =new SimpleIntegerProperty (thanhtien);
+    }
 
     public int getMachitietphieunhap() {
         return machitietphieunhap.getValue();
@@ -137,21 +145,20 @@ public class ChiTietPhieuNhap {
     }
     
     
-    public boolean CapNhatChiTietPhieuNhap(int machitietphieunhap, String maphieunhap){
+    public boolean CapNhatChiTietPhieuNhap(){
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
-        String sql = "update chitietphieunhap set machitietphieunhap = ?, masanpham = ?,maphieunhap = ?,soluong = ?, giavon = ?,thanhtien=?  WHERE machitietphieunhap = ? AND maphieunhap=?;";
+        String sql = "update chitietphieunhap set  masanpham = ?,maphieunhap = ?,soluong = ?, giavon = ?,thanhtien=?  WHERE machitietphieunhap = ?;";
         if(con!=null){
             try{
                 PreparedStatement ptm = con.prepareStatement(sql);
-                ptm.setInt(1, this.machitietphieunhap.getValue());
-                ptm.setString(2, this.masanpham.getValue());
-                ptm.setString(3,this.maphieunhap.getValue());
-                ptm.setInt(4, this.soluong.getValue());
-                ptm.setInt(5, this.giavon.getValue());
-                ptm.setInt(6, this.thanhtien.getValue());         
-                ptm.setInt(7, machitietphieunhap);
-                ptm.setString(8, maphieunhap);
+                
+                ptm.setString(1, masanpham.getValue());
+                ptm.setString(2,maphieunhap.getValue());
+                ptm.setInt(3, soluong.getValue());
+                ptm.setInt(4, giavon.getValue());
+                ptm.setInt(5, thanhtien.getValue());         
+                ptm.setInt(6, machitietphieunhap.getValue());
                 ptm.execute();  
             }
             catch(Exception e){
@@ -170,16 +177,16 @@ public class ChiTietPhieuNhap {
     public boolean ThemChiTietPhieuNhap(){
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
-        String sql = "insert into chitietphieunhap(machitietphieunhap, masanpham,maphieunhap,soluong,giavon,thanhtien)  values (?, ?, ?, ?, ?, ?);";
+        String sql = "insert into chitietphieunhap( masanpham,maphieunhap,soluong,giavon,thanhtien)  values ( ?, ?, ?, ?, ?);";
         if(con!=null){
             try{
                 PreparedStatement ptm = con.prepareStatement(sql);
-                ptm.setInt(1, this.machitietphieunhap.getValue());
-                ptm.setString(2, this.masanpham.getValue());
-                ptm.setString(3,this.maphieunhap.getValue());
-                ptm.setInt(4, this.soluong.getValue());
-                ptm.setInt(5, this.giavon.getValue());
-                ptm.setInt(6, this.thanhtien.getValue());
+                
+                ptm.setString(1, this.masanpham.getValue());
+                ptm.setString(2,this.maphieunhap.getValue());
+                ptm.setInt(3, this.soluong.getValue());
+                ptm.setInt(4, this.giavon.getValue());
+                ptm.setInt(5, this.thanhtien.getValue());
                 ptm.execute();  
             }
             catch(Exception e){
@@ -260,11 +267,10 @@ public class ChiTietPhieuNhap {
         if (con != null) {
             try {
                 Statement stmnt = con.createStatement();
-                ResultSet rs = stmnt.executeQuery("SELECT DISTINCT sanpham.masanpham,sanpham.tensanpham\n" +
-                "FROM sanpham\n" +
-                "LEFT JOIN chitietphieunhap ON sanpham.masanpham = chitietphieunhap.masanpham\n" +
-                "WHERE soluong>0\n" +
-                "ORDER BY sanpham.masanpham,sanpham.tensanpham;");
+                ResultSet rs = stmnt.executeQuery("SELECT DISTINCT sanpham.masanpham, sanpham.tensanpham, chitietphieunhap.soluong\n" +
+"FROM sanpham\n" +
+"LEFT JOIN chitietphieunhap ON sanpham.masanpham = chitietphieunhap.masanpham\n" +
+"where soluong is not null;");
 
                 for (int i = 0; i < rs.getMetaData().getColumnCount()-1; i++) {
                     final int j = i;

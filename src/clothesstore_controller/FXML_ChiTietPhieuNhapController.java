@@ -17,11 +17,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.KeyEvent;
+
 import javafx.scene.layout.AnchorPane;
 import clothesstore_model.ChiTietPhieuNhap;
 import clothesstore_model.PhieuNhap;
-
 import static clothesstore_controller.FXML_PhieuNhapController.mapn;
 
 import java.io.IOException;
@@ -34,7 +33,9 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.scene.control.ButtonBar;
 
 /**
  * FXML Controller class
@@ -57,7 +58,6 @@ public class FXML_ChiTietPhieuNhapController implements Initializable {
     private TableColumn thanhtien;
     @FXML
     private AnchorPane paneINFO1;
-    @FXML
     private JFXTextField txtfimachitiet;
     @FXML
     private JFXTextField txtfisanpham;
@@ -74,8 +74,11 @@ public class FXML_ChiTietPhieuNhapController implements Initializable {
     private JFXButton btnluu;
     @FXML
     private JFXButton btnthemsanpham;
+    private ChiTietPhieuNhap chitietpn;
     
     public static Stage stageQuanLySearchSanPham;
+    @FXML
+    private JFXButton btnhuy;
 
     /**
      * Initializes the controller class.
@@ -84,6 +87,52 @@ public class FXML_ChiTietPhieuNhapController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
         InitTableView();
+        
+        txtfigiavon.textProperty().addListener(new ChangeListener<String>() {
+        
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                if (!newValue.matches("\\d*")) {
+                    txtfigiavon.setText(newValue.replaceAll("[^\\d]", ""));
+
+                }
+                if (txtfisoluong.getText().isEmpty() || newValue.isEmpty()) {
+                    txtfithanhtien.setText("0");
+                    return;
+                }
+                try {
+                    Integer value1 = Integer.valueOf(newValue);
+                    Integer value2 = Integer.valueOf(txtfisoluong.getText());
+                    Integer r = value1 * value2;
+                    txtfithanhtien.setText("" + r);
+                } catch (NumberFormatException ex) {
+
+                }
+            }
+        });
+        txtfisoluong.textProperty().addListener(new ChangeListener<String>() {
+
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                if (!newValue.matches("\\d*")) {
+                    txtfisoluong.setText(newValue.replaceAll("[^\\d]", ""));
+
+                }
+                if (txtfigiavon.getText().isEmpty() || newValue.isEmpty()) {
+                    txtfithanhtien.setText("0");
+                    return;
+                }
+                try {
+                    Integer value1 = Integer.valueOf(newValue);
+                    Integer value2 = Integer.valueOf(txtfigiavon.getText());
+                    Integer r = value1 * value2;
+                    txtfithanhtien.setText("" + r);
+                } catch (NumberFormatException ex) {
+
+                }
+
+            }
+        });
         
     }
 
@@ -97,38 +146,46 @@ public class FXML_ChiTietPhieuNhapController implements Initializable {
         thanhtien.setCellValueFactory(new PropertyValueFactory("thanhtien"));
         tablechitietsanpham.setItems(list);
     }
-
-    @FXML
-    private void key_soluong(KeyEvent event) {
-        if (!txtfigiavon.getText().equals("") && !txtfisoluong.getText().equals("")) {
-            int a = Integer.parseInt((txtfigiavon.getText()));
-            int b = Integer.parseInt((txtfisoluong.getText()));
-            int c = a * b;
-            txtfithanhtien.setText("" + c);
-        }
-    }
-
-    @FXML
-    private void key_giavon(KeyEvent event) {
-        if (!txtfigiavon.getText().equals("") && !txtfisoluong.getText().equals("")) {
-            int a = Integer.parseInt((txtfigiavon.getText()));
-            int b = Integer.parseInt((txtfisoluong.getText()));
-            int c = a * b;
-            txtfithanhtien.setText("" + c);
-        }
-    }
-
     @FXML
     private void Handler_Btnthem(ActionEvent event) {
-        int machitiet = Integer.parseInt(txtfimachitiet.getText().toString());
         String masp = txtfisanpham.getText();
         String maphieunhap = Integer.toString(mapn);
-        int soluong = Integer.parseInt(txtfisoluong.getText().toString());
-        int giavon = Integer.parseInt(txtfigiavon.getText().toString());
-        int thanhtien = Integer.parseInt(txtfithanhtien.getText().toString());
-        ChiTietPhieuNhap ctpn = new ChiTietPhieuNhap(machitiet, masp, maphieunhap, soluong, giavon, thanhtien);
+        tablechitietsanpham.getSelectionModel().focus(-1);
+        
+        int soluong=0;
+        try{
+         soluong = Integer.parseInt(txtfisoluong.getText().toString());
+        }catch(Exception ex){
+            System.out.println(ex);
+        }
+        int giavon=0;
+        try{
+         giavon = Integer.parseInt(txtfigiavon.getText().toString());
+        }catch(Exception ex){
+            System.out.println(ex);
+        }
+        int thanhtien=0;
+        try{
+         thanhtien = Integer.parseInt(txtfithanhtien.getText().toString());
+        }catch(Exception ex){
+            System.out.println(ex);
+        }
+        if(masp.equals("") || soluong==0 || giavon==0){
+            
+            ButtonType cancel = new ButtonType("OK", ButtonBar.ButtonData.CANCEL_CLOSE);
+            Alert alert = new Alert(Alert.AlertType.WARNING,
+                    "Vui lòng điền đầy đủ thông tin",
+                    cancel);
+
+            alert.setTitle("Nhắc nhở");
+            alert.setHeaderText(null);
+            Optional<ButtonType> result = alert.showAndWait(); 
+        }
+        else{
+        ChiTietPhieuNhap ctpn = new ChiTietPhieuNhap( masp, maphieunhap, soluong, giavon, thanhtien);
         ctpn.ThemChiTietPhieuNhap();
         InitTableView();
+    }
     }
 
     private void handler_thoat(ActionEvent event) {
@@ -141,30 +198,76 @@ public class FXML_ChiTietPhieuNhapController implements Initializable {
 
     @FXML
     private void handler_luu(ActionEvent event) {
-        int machitiet = Integer.parseInt(txtfimachitiet.getText().toString());
+        
         String masp = txtfisanpham.getText();
         String maphieunhap = Integer.toString(mapn);
-        int soluong = Integer.parseInt(txtfisoluong.getText().toString());
-        int giavon = Integer.parseInt(txtfigiavon.getText().toString());
-        int thanhtien = Integer.parseInt(txtfithanhtien.getText().toString());
-        ChiTietPhieuNhap ctpn = new ChiTietPhieuNhap(machitiet, masp, maphieunhap, soluong, giavon, thanhtien);
-        ctpn.CapNhatChiTietPhieuNhap(machitiet, maphieunhap);
+        int soluong=0;
+        try{
+         soluong = Integer.parseInt(txtfisoluong.getText().toString());
+        }catch(Exception ex){
+            System.out.println(ex);
+        }
+        int giavon=0;
+        try{
+         giavon = Integer.parseInt(txtfigiavon.getText().toString());
+        }catch(Exception ex){
+            System.out.println(ex);
+        }
+        int thanhtien=0;
+        try{
+         thanhtien = Integer.parseInt(txtfithanhtien.getText().toString());
+        }catch(Exception ex){
+            System.out.println(ex);
+        }
+        if(masp.equals("") || soluong==0 || giavon==0){
+            
+            ButtonType cancel = new ButtonType("OK", ButtonBar.ButtonData.CANCEL_CLOSE);
+            Alert alert = new Alert(Alert.AlertType.WARNING,
+                    "Vui lòng điền đầy đủ thông tin",
+                    cancel);
+
+            alert.setTitle("Nhắc nhở");
+            alert.setHeaderText(null);
+            Optional<ButtonType> result = alert.showAndWait(); 
+        }
+        else{
+        ChiTietPhieuNhap ctpn=new ChiTietPhieuNhap(chitietpn.getMachitietphieunhap(),masp,maphieunhap,soluong,giavon,thanhtien);
+        ctpn.CapNhatChiTietPhieuNhap();
         InitTableView();
         btnluu.setDisable(true);
         btnthem.setDisable(false);
+        btnhuy.setDisable(true);
+        }
 
     }
 
     @FXML
     private void handler_suachitietphieunhap(ActionEvent event) {
         ChiTietPhieuNhap getSelectedRow = (ChiTietPhieuNhap) tablechitietsanpham.getSelectionModel().getSelectedItem();
-        txtfimachitiet.setText(Integer.toString(getSelectedRow.getMachitietphieunhap()));
+        chitietpn = (ChiTietPhieuNhap) tablechitietsanpham.getSelectionModel().getSelectedItem();
+        if(getSelectedRow==null)
+        {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
+                "Mời chọn chi tiết phiếu nhập");
+            alert.setTitle("Nhắc nhở");
+            alert.setHeaderText(null);
+            return;
+        }
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Nhắc nhở");
+        alert.setHeaderText(null);
+        alert.setContentText("Bạn có muốn sửa chi tiết phiếu nhập mã "+ getSelectedRow.getMachitietphieunhap()+" ?");
+        Optional<ButtonType> result = alert.showAndWait();
+        if(result.get()==ButtonType.OK)
+        {
         txtfisanpham.setText(getSelectedRow.getMasanpham());
         txtfisoluong.setText(Integer.toString(getSelectedRow.getSoluong()));
         txtfigiavon.setText(Integer.toString(getSelectedRow.getGiavon()));
         txtfithanhtien.setText(Integer.toString(getSelectedRow.getThanhtien()));
         btnluu.setDisable(false);
         btnthem.setDisable(true);
+        btnhuy.setDisable(false);
+        }
 
     }
 
@@ -199,7 +302,7 @@ public class FXML_ChiTietPhieuNhapController implements Initializable {
         try { 
         
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("/clothesstore_view/FXML_SearchSanPham.fxml"));
+        loader.setLocation(getClass().getResource("/view/FXML_SearchSanPham.fxml"));
         loader.load();
         Parent p = loader.getRoot();
         Stage stage = new Stage();
@@ -214,6 +317,13 @@ public class FXML_ChiTietPhieuNhapController implements Initializable {
         } catch(Exception e) {
            e.printStackTrace();
           }
+    }
+
+    @FXML
+    private void handler_huy(ActionEvent event) {
+        btnluu.setDisable(true);
+        btnthem.setDisable(false);
+        btnhuy.setDisable(true);
     }
 
 }

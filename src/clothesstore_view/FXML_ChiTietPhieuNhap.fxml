@@ -8,56 +8,64 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="700.0" prefWidth="845.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clothesstore_controller.FXML_ChiTietPhieuNhapController">
+<FlowPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="845.0" style="-fx-background-color: #deeeef;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FXML_ChiTietPhieuNhapController">
    <children>
-      <TableView fx:id="tablechitietsanpham" layoutX="24.0" layoutY="68.0" prefHeight="363.0" prefWidth="807.0" style="-fx-border-radius: 5; -fx-border-width: 1; -fx-border-color: #4681f5;">
-         <columns>
-            <TableColumn fx:id="machitietphieunhap" prefWidth="145.0" text="Mã Chi Tiết" />
-            <TableColumn fx:id="sanpham" prefWidth="282.0" text="Sản Phẩm" />
-            <TableColumn fx:id="soluong" prefWidth="117.0" text="Số lượng" />
-            <TableColumn fx:id="giavon" prefWidth="130.0" text="Giá vốn" />
-            <TableColumn fx:id="thanhtien" prefWidth="131.0" text="Thành tiền" />
-         </columns>
-         <contextMenu>
-            <ContextMenu>
-               <items>
-                  <MenuItem mnemonicParsing="false" onAction="#handler_suachitietphieunhap" text="Sửa" />
-                  <MenuItem mnemonicParsing="false" onAction="#handler_xoachitietphieunhap" text="Xóa" />
-               </items>
-            </ContextMenu>
-         </contextMenu>
-      </TableView>
-      <AnchorPane fx:id="paneINFO1" layoutX="24.0" layoutY="443.0" prefHeight="243.0" prefWidth="807.0" style="-fx-border-radius: 5; -fx-border-width: 1; -fx-border-color: #4681f5;">
+      <AnchorPane prefHeight="700.0" prefWidth="845.0">
          <children>
-            <Label layoutX="14.0" layoutY="34.0" prefHeight="17.0" prefWidth="91.0" text="Mã chi tiết" />
-            <JFXTextField fx:id="txtfimachitiet" layoutX="171.0" layoutY="18.0" />
-            <Label layoutX="388.0" layoutY="26.0" prefHeight="17.0" prefWidth="74.0" text="Sản Phẩm" />
-            <JFXTextField fx:id="txtfisanpham" layoutX="514.0" layoutY="18.0" />
-            <Label layoutX="14.0" layoutY="94.0" prefHeight="17.0" prefWidth="58.0" text="Số lượng" />
-            <JFXTextField fx:id="txtfisoluong" layoutX="171.0" layoutY="82.0" onKeyTyped="#key_soluong" />
-            <Label layoutX="388.0" layoutY="94.0" prefHeight="17.0" prefWidth="58.0" text="Giá vốn" />
-            <JFXTextField fx:id="txtfigiavon" layoutX="514.0" layoutY="82.0" onKeyTyped="#key_giavon" />
-            <Label layoutX="14.0" layoutY="163.0" prefHeight="17.0" prefWidth="58.0" text="Thành tiền" />
-            <JFXTextField fx:id="txtfithanhtien" disable="true" layoutX="171.0" layoutY="151.0" />
-            <JFXButton fx:id="btnthem" layoutX="485.0" layoutY="165.0" onAction="#Handler_Btnthem" style="-fx-background-color: #2196F3;" text="Thêm">
+            <TableView fx:id="tablechitietsanpham" layoutX="24.0" layoutY="68.0" prefHeight="363.0" prefWidth="807.0" style="-fx-border-radius: 5; -fx-border-width: 1; -fx-border-color: #4681f5;">
+               <columns>
+                  <TableColumn fx:id="machitietphieunhap" prefWidth="145.0" text="Mã Chi Tiết" />
+                  <TableColumn fx:id="sanpham" prefWidth="282.0" text="Sản Phẩm" />
+                  <TableColumn fx:id="soluong" prefWidth="117.0" text="Số lượng" />
+                  <TableColumn fx:id="giavon" prefWidth="130.0" text="Giá vốn" />
+                  <TableColumn fx:id="thanhtien" prefWidth="131.0" text="Thành tiền" />
+               </columns>
+               <contextMenu>
+                  <ContextMenu>
+                    <items>
+                      <MenuItem mnemonicParsing="false" onAction="#handler_suachitietphieunhap" text="Sửa" />
+                        <MenuItem mnemonicParsing="false" onAction="#handler_xoachitietphieunhap" text="Xóa" />
+                    </items>
+                  </ContextMenu>
+               </contextMenu>
+            </TableView>
+            <AnchorPane fx:id="paneINFO1" layoutX="24.0" layoutY="443.0" prefHeight="243.0" prefWidth="807.0" style="-fx-border-radius: 5; -fx-border-width: 1; -fx-border-color: #4681f5;">
+               <children>
+                  <Label layoutX="14.0" layoutY="26.0" prefHeight="17.0" prefWidth="74.0" text="Sản Phẩm" />
+                  <JFXTextField fx:id="txtfisanpham" layoutX="171.0" layoutY="14.0" />
+                  <Label layoutX="14.0" layoutY="94.0" prefHeight="17.0" prefWidth="58.0" text="Số lượng" />
+                  <JFXTextField fx:id="txtfisoluong" layoutX="171.0" layoutY="82.0" />
+                  <Label layoutX="389.0" layoutY="26.0" prefHeight="17.0" prefWidth="58.0" text="Giá vốn" />
+                  <JFXTextField fx:id="txtfigiavon" layoutX="499.0" layoutY="14.0" />
+                  <Label layoutX="375.0" layoutY="94.0" prefHeight="17.0" prefWidth="58.0" text="Thành tiền" />
+                  <JFXTextField fx:id="txtfithanhtien" disable="true" layoutX="499.0" layoutY="82.0" />
+                  <JFXButton fx:id="btnthem" layoutX="485.0" layoutY="165.0" onAction="#Handler_Btnthem" style="-fx-background-color: #2196F3;" text="Thêm">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </JFXButton>
+                  <JFXButton fx:id="btnluu" disable="true" layoutX="566.0" layoutY="165.0" onAction="#handler_luu" prefHeight="31.0" prefWidth="58.0" style="-fx-background-color: #2196F3;" text="Lưu">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </JFXButton>
+                  <JFXButton fx:id="btnthemsanpham" layoutX="321.0" layoutY="22.0" onAction="#handler_themsanpham" text="..." />
+                  <JFXButton fx:id="btnhuy" disable="true" layoutX="648.0" layoutY="165.0" onAction="#handler_huy" prefHeight="31.0" prefWidth="58.0" style="-fx-background-color: #2196F3;" text="Hủy">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </JFXButton>
+               </children>
+            </AnchorPane>
+            <Label layoutX="34.0" layoutY="25.0" text="Chi Tiết Phiếu Nhập" textFill="#1fc1da">
                <font>
-                  <Font size="15.0" />
+                  <Font size="29.0" />
                </font>
-            </JFXButton>
-            <JFXButton fx:id="btnluu" disable="true" layoutX="566.0" layoutY="165.0" onAction="#handler_luu" prefHeight="31.0" prefWidth="58.0" style="-fx-background-color: #2196F3;" text="Lưu">
-               <font>
-                  <Font size="15.0" />
-               </font>
-            </JFXButton>
-            <JFXButton fx:id="btnthemsanpham" layoutX="672.0" layoutY="22.0" onAction="#handler_themsanpham" text="..." />
+            </Label>
          </children>
       </AnchorPane>
-      <Label layoutX="34.0" layoutY="25.0" text="Chi Tiết Phiếu Nhập" textFill="#1fc1da">
-         <font>
-            <Font size="29.0" />
-         </font>
-      </Label>
    </children>
-</AnchorPane>
+</FlowPane>

@@ -96,19 +96,19 @@ public class NhaCungCap {
         return list;
     }
     
-    public boolean CapNhatNhaCungCap(String tencungcap){
+    public boolean CapNhatNhaCungCap(){
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
-        String sql = "update nhomhang set manhacungcap = ?, tencungcap = ?,diachi = ?,email = ?, ghichu = ? WHERE tencungcap = ?;";
+        String sql = "update nhacungcap set manhacungcap = ?, tencungcap = ?,diachi = ?,email = ?, ghichu = ? WHERE manhacungcap = ?;";
         if(con!=null){
             try{
                 PreparedStatement ptm = con.prepareStatement(sql);
-                ptm.setInt(1, this.manhacungcap.getValue());
-                ptm.setString(2, this.tencungcap.getValue());
-                ptm.setString(3, this.diachi.getValue());
-                ptm.setString(4, this.email.getValue());
-                ptm.setString(5, this.ghichu.getValue());         
-                ptm.setString(6, tencungcap);
+                ptm.setInt(1, manhacungcap.getValue());
+                ptm.setString(2, tencungcap.getValue());
+                ptm.setString(3, diachi.getValue());
+                ptm.setString(4, email.getValue());
+                ptm.setString(5, ghichu.getValue());         
+                ptm.setInt(6, manhacungcap.getValue());
                 ptm.execute();  
             }
             catch(Exception e){

@@ -35,16 +35,22 @@ public class PhieuNhap {
         this.ngaynhap = ngaynhap;
     }
 
-    public PhieuNhap() {
+    public PhieuNhap( String tennhanvien, int manhacungcap, Date ngaynhap,int tongtien) {
+        
+        this.tongtien =new SimpleIntegerProperty (tongtien);
+        this.tennhanvien =new SimpleStringProperty ( tennhanvien);
+        this.manhacungcap =new SimpleIntegerProperty (manhacungcap);
+        this.ngaynhap = ngaynhap;
     }
-    
     
     public PhieuNhap(int maphieunhap, String tennhanvien, int manhacungcap, Date ngaynhap) {
         this.maphieunhap =new SimpleIntegerProperty (maphieunhap);
-        this.tennhanvien = new SimpleStringProperty (tennhanvien);
+        this.tennhanvien =new SimpleStringProperty ( tennhanvien);
         this.manhacungcap =new SimpleIntegerProperty (manhacungcap);
         this.ngaynhap = ngaynhap;
-        
+    }
+
+    public PhieuNhap() {
     }
 
     public int getMaphieunhap() {
@@ -118,15 +124,14 @@ public class PhieuNhap {
     public boolean ThemPhieuNhap(){
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
-        String sql = "INSERT INTO phieunhap(maphieunhap, tennhanvien, manhacungcap, ngaynhap,tongtien) VALUES(?, ?, ?, ?,?);";
+        String sql = "INSERT INTO phieunhap( tennhanvien, manhacungcap, ngaynhap,tongtien) VALUES( ?, ?, ?,?);";
         if(con!=null){
             try{
                 PreparedStatement ptm = con.prepareStatement(sql);
-                ptm.setInt(1, maphieunhap.getValue());
-                ptm.setString(2, tennhanvien.getValue());
-                ptm.setInt(3, manhacungcap.getValue());
-                ptm.setDate(4, ngaynhap); 
-                ptm.setInt(5, tongtien.getValue());
+                ptm.setString(1, tennhanvien.getValue());
+                ptm.setInt(2, manhacungcap.getValue());
+                ptm.setDate(3, ngaynhap); 
+                ptm.setInt(4, tongtien.getValue());
                 ptm.execute();  
             }
             catch(Exception e){
@@ -137,7 +142,7 @@ public class PhieuNhap {
         return true; 
     }
     
-    public boolean CapNhatPhieuNhap(int maphieunhap){
+    public boolean CapNhatPhieuNhap(){
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
         String sql = "update phieunhap set  manhacungcap = ?,tennhanvien = ?,ngaynhap = ?  WHERE maphieunhap = ?;";
@@ -147,7 +152,7 @@ public class PhieuNhap {
                 ptm.setInt(1, this.manhacungcap.getValue());
                 ptm.setString(2,this.tennhanvien.getValue());
                 ptm.setDate(3, this.ngaynhap);         
-                ptm.setInt(4, maphieunhap);
+                ptm.setInt(4, maphieunhap.getValue());
                 ptm.execute();  
             }
             catch(Exception e){
