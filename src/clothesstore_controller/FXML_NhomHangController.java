@@ -6,8 +6,6 @@
 package clothesstore_controller;
 
 import clothesstore_model.nhomhang_model;
-import clothesstore_model.nhomhang_model;
-import clothesstore_model.nhomhang_model;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXTreeTableColumn;

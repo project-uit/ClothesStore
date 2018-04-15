@@ -55,8 +55,6 @@ public class FXML_NhaCungCapController implements Initializable {
     @FXML
     private JFXButton btnthem;
     private NhaCungCap ncctemp;
-    @FXML
-    private JFXButton btnexit;
 
     /**
      * Initializes the controller class.
@@ -156,14 +154,6 @@ public class FXML_NhaCungCapController implements Initializable {
             }
         });
     }  
-
-    @FXML
-    private void Handler_btnexit(ActionEvent event) {
-        
-        stageQuanLyNCC.close();
-        
-        
-    }
 
     @FXML
     private void handler_sua(ActionEvent event) {

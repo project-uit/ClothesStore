@@ -26,7 +26,6 @@
                   
                   
                   <JFXButton fx:id="btnthem" layoutX="24.0" layoutY="303.0" onAction="#Handler_btnThem" style="-fx-background-color: #4681f5;" text="Thêm" textFill="WHITE" />
-                  <JFXButton fx:id="btnexit" layoutX="597.0" layoutY="303.0" onAction="#Handler_btnexit" style="-fx-background-color: #4681f5;" text="Thoát" textFill="WHITE" />
                   <JFXButton layoutX="109.0" layoutY="303.0" onAction="#handler_sua" style="-fx-background-color: #4681f5;" text="Sửa" textFill="#fcf9f9" />
                   <JFXButton layoutX="185.0" layoutY="303.0" onAction="#handler_xoa" style="-fx-background-color: #4681f5;" text="Xóa" textFill="WHITE" />
                </children>

@@ -30,7 +30,6 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -76,6 +75,8 @@ public class FXML_PhieuNhapController implements Initializable {
     public static Stage stageQuanLyNCC;
     public static Stage stageQuanLyCTPN;
     public static int mapn;
+    private ChangeListener<NhaCungCap> listenerNCC;
+        
     private PhieuNhap phieunhap;
     @FXML
     private TableView<PhieuNhap> tableviewphieunhap;
@@ -91,29 +92,54 @@ public class FXML_PhieuNhapController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
         InitTableViewPhieuNhap();
-        InitCmb();
+        InitCmbNCC();
         LocalDate _ngaynhap = null;
         java.sql.Date ngaynhap = null;
     }    
 
     @FXML
     private void Handler_btnnhacungcap(ActionEvent event) {
+        cbnhacungcap.getSelectionModel().selectedItemProperty().removeListener(listenerNCC);
         try { 
-            Parent root = FXMLLoader.load(getClass().getResource("/view/FXML_NhaCungCap.fxml"));            
-            Stage stage = new Stage();
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.initStyle(StageStyle.UNDECORATED);
-            stage.setScene(new Scene(root));  
-            stage.show();
-            stageQuanLyNCC = stage;
-            
+            Parent root = FXMLLoader.load(getClass().getResource("/clothesstore_view/FXML_NhaCungCap.fxml"));            
+            stageQuanLyNCC = new Stage();
+            stageQuanLyNCC.initModality(Modality.APPLICATION_MODAL);
+            //stageQuanLyNCC.initStyle(StageStyle.UNDECORATED);
+            stageQuanLyNCC.setScene(new Scene(root));  
+            stageQuanLyNCC.setOnCloseRequest((WindowEvent event1) -> {
+                NhaCungCap ncc = new NhaCungCap();
+                ObservableList <NhaCungCap> list = ncc.getTableNhaCungCap();
+                cbnhacungcap.getItems().clear();
+                cbnhacungcap.setItems(list);      
+                cbnhacungcap.setConverter(new StringConverter<NhaCungCap>() {
+                    @Override
+                    public String toString(NhaCungCap object) {
+                        return object.getTencungcap();
+                    }
+                    @Override
+                    public NhaCungCap fromString(String string) {
+                        return null;
+                    }
+                });
+                
+                cbnhacungcap.getSelectionModel().selectedItemProperty().addListener(listenerNCC = new ChangeListener<NhaCungCap>() {
+                    @Override
+                    public void changed(ObservableValue<? extends NhaCungCap> observable, NhaCungCap oldValue, NhaCungCap newValue) {
+                        System.out.println(newValue.getManhacungcap());
+                        manhacungcap = newValue.getManhacungcap();
+                    }
+                });
+                        
+                cbnhacungcap.getSelectionModel().selectFirst();
+            });
+            stageQuanLyNCC.show();
         } catch(Exception e) {
            e.printStackTrace();
           }
     }
     public int getmaphieunhap;
     private int manhacungcap;
-    private void InitCmb(){
+    private void InitCmbNCC(){
         NhaCungCap ncc = new NhaCungCap();
         ObservableList <NhaCungCap> list = ncc.getTableNhaCungCap();
         cbnhacungcap.setItems(list);      
@@ -127,17 +153,15 @@ public class FXML_PhieuNhapController implements Initializable {
                 return null;
             }
         });  
-        cbnhacungcap.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<NhaCungCap>() {
+        cbnhacungcap.getSelectionModel().selectedItemProperty().addListener(listenerNCC = new ChangeListener<NhaCungCap>() {
             @Override
             public void changed(ObservableValue<? extends NhaCungCap> observable, NhaCungCap oldValue, NhaCungCap newValue) {
-                manhacungcap=newValue.getManhacungcap();
+                System.out.println(newValue.getManhacungcap());
+                manhacungcap = newValue.getManhacungcap();
             }
-
-            
         });
-       
     }
-    
+
     @FXML
     private void handler_Themphieunhap(ActionEvent event) {
         NhaCungCap ncc = new NhaCungCap();
@@ -172,7 +196,6 @@ public class FXML_PhieuNhapController implements Initializable {
         InitTableViewPhieuNhap();
         Reset();
         }
-        
     }
     
     public void InitTableViewPhieuNhap(){
@@ -184,13 +207,6 @@ public class FXML_PhieuNhapController implements Initializable {
         clnhacungcap.setCellValueFactory(new PropertyValueFactory("manhacungcap"));
         cltongtien.setCellValueFactory(new PropertyValueFactory("tongtien"));
         tableviewphieunhap.setItems(list);
-        
-         
-    }
-
-    @FXML
-    private void handler_load(MouseEvent event) {
-        InitCmb();
     }
 
     @FXML
@@ -219,7 +235,6 @@ public class FXML_PhieuNhapController implements Initializable {
                 System.out.println("Xoa That Bai");
         
     }
-
     @FXML
     private void handler_themchitietphieunhap(ActionEvent event) throws IOException {
         PhieuNhap selectedForDeletion = tableviewphieunhap.getSelectionModel().getSelectedItem();
@@ -240,7 +255,7 @@ public class FXML_PhieuNhapController implements Initializable {
         {
             PhieuNhap getSelectedRow = tableviewphieunhap.getSelectionModel().getSelectedItem();
             mapn=getSelectedRow.getMaphieunhap();
-            Parent root = FXMLLoader.load(getClass().getResource("/view/FXML_ChiTietPhieuNhap.fxml"));            
+            Parent root = FXMLLoader.load(getClass().getResource("/clothesstore_view/FXML_ChiTietPhieuNhap.fxml"));            
             Stage stage = new Stage();
             
             stage.setScene(new Scene(root));  
@@ -321,7 +336,6 @@ public class FXML_PhieuNhapController implements Initializable {
         txtfinguoinhap.clear();
         
     }
-
     @FXML
     private void handler_huyphieunhap(ActionEvent event) {
         btnluuphieunhap.setDisable(true);

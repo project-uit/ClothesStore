@@ -302,7 +302,7 @@ public class FXML_ChiTietPhieuNhapController implements Initializable {
         try { 
         
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("/view/FXML_SearchSanPham.fxml"));
+        loader.setLocation(getClass().getResource("/clothesstore_view/FXML_SearchSanPham.fxml"));
         loader.load();
         Parent p = loader.getRoot();
         Stage stage = new Stage();
