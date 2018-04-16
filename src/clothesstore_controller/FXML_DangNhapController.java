@@ -69,7 +69,7 @@ public class FXML_DangNhapController implements Initializable {
     public static Stage stageMain;
     public static Stage stageSplash;
     public static String UserID;
-    public static int MaNhanVien;
+    public static int MaNhanVien; //
     public static String TenNhanVien;
 
     @FXML
