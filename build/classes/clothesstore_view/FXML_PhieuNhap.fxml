@@ -19,7 +19,7 @@
             <Label layoutX="14.0" layoutY="101.0" text="Ngày nhập" />
             <Label layoutX="14.0" layoutY="45.0" text="Người nhập" />
             <Label layoutX="386.0" layoutY="40.0" text="Nhà cung cấp" />
-            <JFXTextField fx:id="txtfinguoinhap" layoutX="151.0" layoutY="28.0" prefHeight="0.0" prefWidth="135.0" />
+            <JFXTextField fx:id="txtfinguoinhap" editable="false" layoutX="151.0" layoutY="28.0" prefHeight="0.0" prefWidth="135.0" />
             <JFXDatePicker fx:id="datengaynhap" layoutX="151.0" layoutY="89.0" />
             <JFXButton fx:id="btnnhacungcap" layoutX="641.0" layoutY="36.0" onAction="#Handler_btnnhacungcap" prefHeight="25.0" prefWidth="20.0" text="..." />
             <JFXButton fx:id="btnthemphieu" layoutX="353.0" layoutY="150.0" onAction="#handler_Themphieunhap" style="-fx-background-color: #2196F3;" text="Thêm">

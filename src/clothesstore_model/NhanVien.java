@@ -247,6 +247,27 @@ public class NhanVien {
         return id;
     }
     
+    public String getNhanVienfromUser(String user){   
+        String tennv = "";
+        DBConnection db = new DBConnection();
+        Connection con = db.getConnecttion();
+        String sql = "SELECT tennhanvien FROM nhanvien, dangnhap WHERE nhanvien.manhanvien = dangnhap.manhanvien and tentaikhoan = ?;";
+        if(con!=null){
+            try{
+                PreparedStatement ptm = con.prepareStatement(sql);
+                ptm.setString(1, user);
+                ResultSet rs = ptm.executeQuery();
+                while (rs.next()) {
+                    tennv = rs.getString("tennhanvien");
+                }
+            }
+            catch(Exception e){
+                e.printStackTrace();
+            }  
+        }
+        return tennv;
+    }
+    
     public TaiKhoan getTaiKhoan() {
         return taikhoan;
     }

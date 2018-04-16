@@ -5,6 +5,7 @@
  */
 package clothesstore_controller;
 
+import static clothesstore_controller.FXML_DangNhapController.TenNhanVien;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
@@ -94,6 +95,7 @@ public class FXML_PhieuNhapController implements Initializable {
         InitCmbNCC();
         LocalDate _ngaynhap = null;
         java.sql.Date ngaynhap = null;
+        txtfinguoinhap.setText(TenNhanVien);
     }    
 
     @FXML
@@ -332,8 +334,7 @@ public class FXML_PhieuNhapController implements Initializable {
         }
     }
     private void Reset(){
-        txtfinguoinhap.clear();
-        
+       
     }
     @FXML
     private void handler_huyphieunhap(ActionEvent event) {
