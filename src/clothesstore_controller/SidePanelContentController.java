@@ -71,7 +71,7 @@ public class SidePanelContentController implements Initializable {
                 rootP.setBottomAnchor(hanghoa, 0.0);
                 break;
             case "btnNhapKho":
-                AnchorPane nhapkho = FXMLLoader.load(getClass().getResource("/clothesstore_view/FXML_NhapKho.fxml"));
+                AnchorPane nhapkho = FXMLLoader.load(getClass().getResource("/clothesstore_view/FXML_PhieuNhap.fxml"));
                 FXML_ClothesStoreController.rootP.getChildren().setAll(nhapkho);
                 rootP.setLeftAnchor(nhapkho, 0.0);
                 rootP.setRightAnchor(nhapkho, 0.0);
