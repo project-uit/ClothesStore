@@ -33,6 +33,10 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+<<<<<<< HEAD
+=======
+import javafx.stage.StageStyle;
+>>>>>>> 5b8ffcabdfb37b3971d34b06e2bcadb502747bda
 import javafx.stage.WindowEvent;
 import javafx.util.StringConverter;
 import clothesstore_model.NhaCungCap;
