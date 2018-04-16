@@ -79,13 +79,8 @@ public class PhieuNhap {
         this.tongtien = tongtien;
     }
 
-<<<<<<< HEAD
-    public void setManhanvien(IntegerProperty manhanvien) {
-        this.manhanvien = manhanvien;
-=======
     public void setMaNhanVien(IntegerProperty tennhanvien) {
         this.manhanvien = tennhanvien;
->>>>>>> e8b7159407d43985f1cd0557119079fe9b3de31c
     }
 
     public void setManhacungcap(IntegerProperty manhacungcap) {
