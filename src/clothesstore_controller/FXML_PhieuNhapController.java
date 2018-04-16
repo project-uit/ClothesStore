@@ -165,7 +165,7 @@ public class FXML_PhieuNhapController implements Initializable {
     private void handler_Themphieunhap(ActionEvent event) {
         NhaCungCap ncc = new NhaCungCap();
         ObservableList <NhaCungCap> list = ncc.getTableNhaCungCap();
-        String nguoinhap = txtfinguoinhap.getText();
+        int manhanvien = txtfinguoinhap.getText();
         int nhacc = manhacungcap;
         LocalDate _ngaynhap = null;
         java.sql.Date ngaynhap = null;
