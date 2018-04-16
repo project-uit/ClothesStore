@@ -8,6 +8,7 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
+<<<<<<< HEAD
     <jar href="ClothesStore.jar" size="411211" download="eager" />
     <jar href="lib\commons-collections4-4.1.jar" size="751238" download="eager" />
     <jar href="lib\fontawesomefx-8.9.jar" size="571068" download="eager" />
@@ -17,6 +18,17 @@
     <jar href="lib\poi-ooxml-3.17.jar" size="1479023" download="eager" />
     <jar href="lib\poi-ooxml-schemas-3.17.jar" size="5924600" download="eager" />
     <jar href="lib\xmlbeans-2.6.0.jar" size="2730866" download="eager" />
+=======
+    <jar href="ClothesStore.jar" size="411399" download="eager" />
+    <jar href="lib/commons-collections4-4.1.jar" size="751238" download="eager" />
+    <jar href="lib/fontawesomefx-8.9.jar" size="571068" download="eager" />
+    <jar href="lib/jfoenix-8.0.1.jar" size="2405715" download="eager" />
+    <jar href="lib/mysql-connector-java-5.1.6-bin.jar" size="703265" download="eager" />
+    <jar href="lib/poi-3.17.jar" size="2701171" download="eager" />
+    <jar href="lib/poi-ooxml-3.17.jar" size="1479023" download="eager" />
+    <jar href="lib/poi-ooxml-schemas-3.17.jar" size="5924600" download="eager" />
+    <jar href="lib/xmlbeans-2.6.0.jar" size="2730866" download="eager" />
+>>>>>>> e8b7159407d43985f1cd0557119079fe9b3de31c
   </resources>
   <applet-desc  width="800" height="600" main-class="com.javafx.main.NoJavaFXFallback"  name="ClothesStore" >
     <param name="requiredFXVersion" value="8.0+"/>

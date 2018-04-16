@@ -11,8 +11,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -81,8 +79,13 @@ public class PhieuNhap {
         this.tongtien = tongtien;
     }
 
+<<<<<<< HEAD
     public void setManhanvien(IntegerProperty manhanvien) {
         this.manhanvien = manhanvien;
+=======
+    public void setMaNhanVien(IntegerProperty tennhanvien) {
+        this.manhanvien = tennhanvien;
+>>>>>>> e8b7159407d43985f1cd0557119079fe9b3de31c
     }
 
     public void setManhacungcap(IntegerProperty manhacungcap) {
@@ -105,13 +108,13 @@ public class PhieuNhap {
                 while (rs.next()) {
                     
                     
-                    PhieuNhap nhanvien = new PhieuNhap(rs.getInt("maphieunhap")
+                    PhieuNhap phieunhap = new PhieuNhap(rs.getInt("maphieunhap")
                             , rs.getInt("tongtien")
                             , rs.getInt("manhanvien")
                             , rs.getInt("manhacungcap")
                             , rs.getDate("ngaynhap"));
                          
-                    list.add(nhanvien);
+                    list.add(phieunhap);
                 }
             }
             catch(Exception e){

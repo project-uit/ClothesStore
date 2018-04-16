@@ -57,7 +57,9 @@ create table phieunhap
 (
 maphieunhap  INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 ngaynhap datetime,
-tennhanvien nvarchar(40),
+manhanvien INT(40) UNSIGNED,
+FOREIGN KEY (manhanvien)
+REFERENCES nhanvien(manhanvien),
 manhacungcap INT(6) UNSIGNED,
 FOREIGN KEY (manhacungcap)
 REFERENCES nhacungcap(manhacungcap),
