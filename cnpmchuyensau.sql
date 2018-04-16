@@ -9,6 +9,12 @@ create database ClothesShop
 drop database ClothesShop
 use ClothesShop
 
+
+select *
+from khachhang
+where tenkhachhang = 'chú'
+Collate utf8_unicode_ci;
+
 create table khachhang
 (
 makhachhang int(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -36,7 +42,8 @@ cmnd varchar(13),
 trangthai int,
 luong int 
 );
-
+insert into nhanvien(tennhanvien,diachi,gioitinh,ngaysinh,cmnd,trangthai,luong)
+values('ccc', 'le hong phong',1,'1995-01-19','123456',1,50000);
 create table nhomhang
 (
 tennhomhang nvarchar(30) PRIMARY KEY
@@ -57,13 +64,13 @@ create table phieunhap
 (
 maphieunhap  INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 ngaynhap datetime,
-manhanvien INT(40) UNSIGNED,
-FOREIGN KEY (manhanvien)
-REFERENCES nhanvien(manhanvien),
+manhanvien INT(6) UNSIGNED,
 manhacungcap INT(6) UNSIGNED,
 FOREIGN KEY (manhacungcap)
 REFERENCES nhacungcap(manhacungcap),
-tongtien int not null
+FOREIGN KEY (manhanvien)
+REFERENCES nhanvien(manhanvien),
+tongtien int
 );
 
 create table chitietphieunhap
@@ -86,10 +93,10 @@ makhosanpham   INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 masanpham char(8),
 FOREIGN KEY (masanpham)
 REFERENCES chitietphieunhap(masanpham),
-size char(5) not null,
+size char(5),
 mausac nvarchar(15),
 gioitinh int,
-giaban INT not null,
+giaban INT,
 soluong int
 );
 
@@ -103,7 +110,7 @@ makhachhang INT(6) UNSIGNED,
 FOREIGN KEY (makhachhang)
 REFERENCES khachhang(makhachhang),
 ngayban datetime,
-tongtien int not null
+tongtien int 
 );
 
 create table chitiethoadon
@@ -115,7 +122,7 @@ REFERENCES hoadon(mahoadon),
 makhosanpham   INT(6) UNSIGNED,
 FOREIGN KEY (makhosanpham)
 REFERENCES khosanpham(makhosanpham),
-soluong int not null
+soluong int 
 );
 
 CREATE TABLE dangnhap(
@@ -134,8 +141,8 @@ before delete ON nhanvien
 for each row
 	delete from dangnhap 
     	where dangnhap.manhanvien = old.manhanvien;
-
-drop trigger if exists after_chitietphieunhap_update;
+        
+drop trigger if exists after_chitietphieunhap_insert;
 
 create trigger after_chitietphieunhap_insert
 after insert ON chitietphieunhap
@@ -152,9 +159,10 @@ after delete ON chitietphieunhap
 for each row
 	update phieunhap set tongtien=(select SUM(thanhtien)
 									from chitietphieunhap
-									where chitietphieunhap.maphieunhap=maphieunhap)
+									where maphieunhap=old.maphieunhap)
 	where maphieunhap=old.maphieunhap;
-    
+
+drop trigger if exists after_chitietphieunhap_update;
 create trigger after_chitietphieunhap_update
 after update ON chitietphieunhap
 for each row
@@ -162,22 +170,22 @@ for each row
 									from chitietphieunhap
 									where chitietphieunhap.maphieunhap=new.maphieunhap)
 	where maphieunhap=new.maphieunhap;
-
-
-insert into nhanvien(tennhanvien,diachi,gioitinh,ngaysinh,cmnd,trangthai,luong)
-values('ccc', 'le hong phong',1,'1995-01-19','123456',1,50000);
-
 insert into dangnhap(tentaikhoan, matkhau,phanquyen,manhanvien)
 values ('admin','123',1,1);
 
-insert into sanpham(masanpham,tensanpham,tennhasanxuat,tennhomhang,ghichu) values ("12344","aokhoacda","nike","ao","");
-insert into sanpham(masanpham,tensanpham,tennhasanxuat,tennhomhang,ghichu) values ("12346","aokhoacbong","adidas","ao","");
-insert into sanpham(masanpham,tensanpham,tennhasanxuat,tennhomhang,ghichu) values ("12347","quandai","apple","quan","");
-insert into sanpham(masanpham,tensanpham,tennhasanxuat,tennhomhang,ghichu) values ("12348","quanngan","nike","quan","");
-insert into sanpham(masanpham,tensanpham,tennhasanxuat,tennhomhang,ghichu) values ("12349","aonguc","victoriasecret","aovu","");
+DROP TRIGGER IF EXISTS before_phieunhap_delete;
 
-select *
-from khachhang
-where tenkhachhang = 'chú'
-Collate utf8_unicode_ci;
+
+create trigger before_phieunhap_delete 
+before delete ON phieunhap
+for each row
+	delete from chitietphieunhap 
+    where chitietphieunhap.maphieunhap=old.maphieunhap;
+    
+
+
+
+
+
+
 
