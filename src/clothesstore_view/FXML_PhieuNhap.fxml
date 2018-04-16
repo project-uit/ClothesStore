@@ -48,7 +48,7 @@
       <TableView fx:id="tableviewphieunhap" layoutX="18.0" layoutY="90.0" prefHeight="359.0" prefWidth="810.0" style="-fx-border-radius: 5; -fx-border-width: 1; -fx-border-color: #4681f5;">
          <columns>
             <TableColumn fx:id="clmaphieunhap" prefWidth="163.0" text="Mã Phiếu Nhập" />
-            <TableColumn fx:id="cltennhanvien" prefWidth="178.0" text="Tên Nhân Viên" />
+            <TableColumn fx:id="clmanhanvien" prefWidth="178.0" text="Mã Nhân Viên" />
             <TableColumn fx:id="clnhacungcap" prefWidth="143.0" text="Nhà Cung Cấp" />
             <TableColumn fx:id="clngaynhap" prefWidth="165.0" text="Ngày Nhập" />
             <TableColumn fx:id="cltongtien" prefWidth="159.0" text="Tổng tiền" />

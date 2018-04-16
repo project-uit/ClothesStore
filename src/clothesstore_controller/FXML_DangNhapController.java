@@ -69,6 +69,7 @@ public class FXML_DangNhapController implements Initializable {
     public static Stage stageMain;
     public static Stage stageSplash;
     public static String UserID;
+    public static int MaNhanVien;
     public static String TenNhanVien;
 
     @FXML
@@ -81,7 +82,9 @@ public class FXML_DangNhapController implements Initializable {
             if (tk.CheckLogin()) {
                 if (checkbox_remember.isSelected()) {
                     NhanVien nv = new NhanVien();
-                    TenNhanVien = nv.getNhanVienfromUser(user);
+                    nv = nv.getNhanVienfromUser(user);
+                    TenNhanVien = nv.getTennhanvien();
+                    MaNhanVien = nv.getManhanvien();
                     preference.put("userID", user);
                     preference.put("password", password);
                 } else {

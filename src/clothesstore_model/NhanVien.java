@@ -247,25 +247,32 @@ public class NhanVien {
         return id;
     }
     
-    public String getNhanVienfromUser(String user){   
-        String tennv = "";
+    public NhanVien getNhanVienfromUser(String user){   
+        NhanVien nv = new NhanVien();
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
-        String sql = "SELECT tennhanvien FROM nhanvien, dangnhap WHERE nhanvien.manhanvien = dangnhap.manhanvien and tentaikhoan = ?;";
+        String sql = "SELECT * FROM nhanvien, dangnhap WHERE nhanvien.manhanvien = dangnhap.manhanvien and tentaikhoan = ?;";
         if(con!=null){
             try{
                 PreparedStatement ptm = con.prepareStatement(sql);
                 ptm.setString(1, user);
                 ResultSet rs = ptm.executeQuery();
                 while (rs.next()) {
-                    tennv = rs.getString("tennhanvien");
+                    nv = new NhanVien(rs.getInt("manhanvien")
+                            , rs.getString("tennhanvien")
+                            , rs.getString("diachi")
+                            , rs.getInt("gioitinh")
+                            , rs.getDate("ngaysinh")
+                            , rs.getString("cmnd")
+                            , rs.getInt("trangthai")
+                            , rs.getInt("luong"));
                 }
             }
             catch(Exception e){
                 e.printStackTrace();
             }  
         }
-        return tennv;
+        return nv;
     }
     
     public TaiKhoan getTaiKhoan() {
