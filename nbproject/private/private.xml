@@ -3,21 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-<<<<<<< HEAD
-            <file>file:/C:/Users/15520/OneDrive/Documents/GitHub/ClothesStore/src/clothesstore_model/ChiTietPhieuNhap.java</file>
-            <file>file:/C:/Users/15520/OneDrive/Documents/GitHub/ClothesStore/src/clothesstore_controller/FXML_ClothesStoreController.java</file>
-            <file>file:/C:/Users/15520/OneDrive/Documents/GitHub/ClothesStore/src/clothesstore_model/PhieuNhap.java</file>
-            <file>file:/C:/Users/15520/OneDrive/Documents/GitHub/ClothesStore/src/clothesstore_controller/FXML_DangNhapController.java</file>
-            <file>file:/C:/Users/15520/OneDrive/Documents/GitHub/ClothesStore/src/clothesstore_controller/FXML_SearchSanPhamController.java</file>
-            <file>file:/C:/Users/15520/OneDrive/Documents/GitHub/ClothesStore/src/clothesstore_view/ClothesStore.java</file>
-            <file>file:/C:/Users/15520/OneDrive/Documents/GitHub/ClothesStore/src/clothesstore_controller/FXML_PhieuNhapController.java</file>
-            <file>file:/C:/Users/15520/OneDrive/Documents/GitHub/ClothesStore/src/clothesstore_model/DBConnection.java</file>
-=======
-            <file>file:/Users/dieunguyen/Documents/GitHub/project-uit/ClothesStore/src/clothesstore_controller/FXML_DangNhapController.java</file>
-            <file>file:/Users/dieunguyen/Documents/GitHub/project-uit/ClothesStore/src/clothesstore_model/PhieuNhap.java</file>
-            <file>file:/Users/dieunguyen/Documents/GitHub/project-uit/ClothesStore/src/clothesstore_controller/FXML_PhieuNhapController.java</file>
-            <file>file:/Users/dieunguyen/Documents/GitHub/project-uit/ClothesStore/src/clothesstore_model/NhanVien.java</file>
->>>>>>> e8b7159407d43985f1cd0557119079fe9b3de31c
+            <file>file:/D:/Documents/GitHub/ClothesStore/src/clothesstore_model/DBConnection.java</file>
+            <file>file:/D:/Documents/GitHub/ClothesStore/src/clothesstore_controller/FXML_NhaCungCapController.java</file>
+            <file>file:/D:/Documents/GitHub/ClothesStore/src/clothesstore_controller/FXML_PhieuNhapController.java</file>
+            <file>file:/D:/Documents/GitHub/ClothesStore/src/clothesstore_controller/FXML_QuanLyTaiKhoanController.java</file>
         </group>
     </open-files>
 </project-private>

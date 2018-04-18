@@ -1,18 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.text.*?>
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #45667c;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clothesstore_controller.FXML_NhapKhoController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="745.0" prefWidth="800.0" style="-fx-background-color: #deeeef;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label layoutX="14.0" layoutY="14.0" text="Nhap Kho" textFill="WHITE" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
+      <Label layoutX="23.0" layoutY="14.0" text="Nhập kho" textFill="#021bf5">
          <font>
-            <Font name="System Bold" size="20.0" />
+            <Font size="28.0" />
          </font>
       </Label>
+      <TextField focusTraversable="false" layoutX="16.0" layoutY="116.0" prefHeight="26.0" prefWidth="390.0" promptText="Nhập sản phẩm" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="394.0" />
+      <TableView layoutX="16.0" layoutY="190.0" prefHeight="288.0" prefWidth="768.0" style="-fx-border-color: #4681f5; -fx-selection-bar: red;" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0">
+        <columns>
+          <TableColumn prefWidth="75.0" text="Mã sản phẩm" />
+          <TableColumn prefWidth="75.0" text="Tên sản phẩm" />
+            <TableColumn prefWidth="75.0" text="Tên nhà sản xuất" />
+            <TableColumn prefWidth="75.0" text="Tên nhóm hàng" />
+            <TableColumn prefWidth="75.0" text="Ghi chú" />
+        </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
+      </TableView>
+      <Label alignment="TOP_CENTER" contentDisplay="TOP" layoutX="280.0" layoutY="62.0" text="Mã phiếu nhập" AnchorPane.leftAnchor="280.0" AnchorPane.rightAnchor="280.0">
+         <font>
+            <Font size="21.0" />
+         </font>
+      </Label>
+      <JFXButton fx:id="btnBack" layoutX="18.0" layoutY="699.0" onAction="#Handler_btnBack" ripplerFill="BLACK" style="-fx-background-color: #4681f5;" text="Quay lại phiếu nhập" textFill="WHITE" wrapText="true" AnchorPane.bottomAnchor="16.0" AnchorPane.leftAnchor="16.0" />
+      <JFXButton fx:id="btnLuu" layoutX="730.0" layoutY="697.0" onAction="#Handler_btnLuu" ripplerFill="BLACK" style="-fx-background-color: #4681f5;" text="Lưu" textFill="WHITE" wrapText="true" AnchorPane.bottomAnchor="16.0" AnchorPane.rightAnchor="16.0" />
+      <JFXButton fx:id="btnHuy" layoutX="664.0" layoutY="697.0" onAction="#Handler_btnHuy" ripplerFill="BLACK" style="-fx-background-color: #4681f5;" text="Hủy" textFill="WHITE" wrapText="true" />
    </children>
 </AnchorPane>
