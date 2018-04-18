@@ -12,14 +12,13 @@ use ClothesShop
 
 select *
 from khachhang
-where tenkhachhang = 'chú'
+where tenkhachhang = 'chú'
 Collate utf8_unicode_ci;
 
 create table khachhang
 (
-makhachhang int(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-tenkhachhang nvarchar(50) not null,
-sodienthoai char(13)
+sodienthoai char(15) PRIMARY KEY,
+tenkhachhang nvarchar(50)
 );
 
 create table nhacungcap
@@ -28,7 +27,8 @@ manhacungcap INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 tencungcap nvarchar(30) NOT NULL,
 diachi nvarchar(35) NOT NULL,
 email nvarchar(20),
-ghichu nvarchar(50)
+ghichu nvarchar(50),
+trangthai int
 );
 
 create table nhanvien
@@ -52,52 +52,63 @@ create table nhasanxuat
 (
 tennhasanxuat nvarchar(50)  PRIMARY KEY
 );
+-- tạo sản phẩm và chi tiết sản phẩm trước khi lập phiếu nhập, ko nhập giaban, ko nhập số lượng
 create table sanpham
 (
 masanpham char(8) primary key,
 tensanpham nvarchar(30) not null,
 tennhasanxuat nvarchar(50),
 tennhomhang nvarchar(30),
-ghichu nvarchar(50)
+ghichu nvarchar(50),
+giaban INT
 );
+
+create table chitietsanpham
+(
+machitietsanpham varchar(30)  PRIMARY KEY,
+masanpham char(8) ,
+FOREIGN KEY (masanpham)
+REFERENCES sanpham(masanpham),
+size char(5),
+mausac nvarchar(15),
+gioitinh int,
+soluong int
+);
+-- phiếu nhập đc lập bởi quản lý(admin) 
 create table phieunhap
 (
 maphieunhap  INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 ngaynhap datetime,
-manhanvien INT(6) UNSIGNED,
 manhacungcap INT(6) UNSIGNED,
 FOREIGN KEY (manhacungcap)
 REFERENCES nhacungcap(manhacungcap),
-FOREIGN KEY (manhanvien)
-REFERENCES nhanvien(manhanvien),
 tongtien int
 );
-
+-- khi nhập chitietphieunhap, đồng thời nhập giá bán nhưng lưu lại ở trên bảng chitietsanpham
 create table chitietphieunhap
 (
 machitietphieunhap  INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 masanpham char(8),
 FOREIGN KEY (masanpham)
 REFERENCES sanpham(masanpham),
-soluong int not null,
-giavon int not null,
-thanhtien int not null,
+soluongnhapsanpham int,
+giavon int,
+thanhtien int,
 maphieunhap  INT(6) UNSIGNED,
 FOREIGN KEY (maphieunhap)
 REFERENCES phieunhap(maphieunhap)
 );
-
+-- kho đc nhập bởi nhân viên, mỗi nhân viên click vào phiếu nhập đc lập vào ngày hiện tại để nhập kho
+-- Khi nhập số lượng mới chỉ việc cộng dồn lại trên bảng chitietsanpham
 create table khosanpham 
 (
-makhosanpham   INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-masanpham char(8),
-FOREIGN KEY (masanpham)
-REFERENCES chitietphieunhap(masanpham),
-size char(5),
-mausac nvarchar(15),
-gioitinh int,
-giaban INT,
-soluong int
+makhosanpham   int(6) unsigned auto_increment  PRIMARY KEY,
+manhanvien int(6) unsigned,
+maphieunhap  INT(6) UNSIGNED,
+FOREIGN KEY (maphieunhap)
+REFERENCES phieunhap(maphieunhap),
+FOREIGN KEY (manhanvien)
+REFERENCES nhanvien(manhanvien)
 );
 
 create table hoadon
@@ -112,17 +123,17 @@ REFERENCES khachhang(makhachhang),
 ngayban datetime,
 tongtien int 
 );
-
+-- thanh toán hóa đơn bằng cách nhập machitietsanpham đc định nghĩa do user
 create table chitiethoadon
 (
 machitiethoadon  INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 mahoadon   INT(6) UNSIGNED,
 FOREIGN KEY (mahoadon)
 REFERENCES hoadon(mahoadon),
-makhosanpham   INT(6) UNSIGNED,
-FOREIGN KEY (makhosanpham)
-REFERENCES khosanpham(makhosanpham),
-soluong int 
+machitietsanpham varchar(30),
+FOREIGN KEY (machitietsanpham)
+REFERENCES chitietsanpham(machitietsanpham),
+soluongmua int 
 );
 
 CREATE TABLE dangnhap(
@@ -133,7 +144,7 @@ manhanvien INT(6) UNSIGNED,
 FOREIGN KEY (manhanvien)
 REFERENCES nhanvien(manhanvien)
 );
-
+--  thống kê theo masanpham theo 1 tháng 
 DROP TRIGGER IF EXISTS before_nhanvien_delete;
 
 create trigger before_nhanvien_delete
@@ -161,6 +172,12 @@ for each row
 									from chitietphieunhap
 									where maphieunhap=old.maphieunhap)
 	where maphieunhap=old.maphieunhap;
+    
+    
+    khosanphamupdate phieunhap set tongtien=(select SUM(thanhtien)
+									from chitietphieunhap
+									where maphieunhap=2)
+	where maphieunhap=2;
 
 drop trigger if exists after_chitietphieunhap_update;
 create trigger after_chitietphieunhap_update
@@ -182,7 +199,7 @@ for each row
 	delete from chitietphieunhap 
     where chitietphieunhap.maphieunhap=old.maphieunhap;
     
-
+delete from phieunhap where maphieunhap=2;
 
 
 
