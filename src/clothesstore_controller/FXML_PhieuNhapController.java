@@ -5,8 +5,6 @@
  */
 package clothesstore_controller;
 
-import static clothesstore_controller.FXML_DangNhapController.MaNhanVien;
-import static clothesstore_controller.FXML_DangNhapController.TenNhanVien;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
