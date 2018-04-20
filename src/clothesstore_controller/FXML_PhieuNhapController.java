@@ -39,6 +39,8 @@ import javafx.stage.WindowEvent;
 import javafx.util.StringConverter;
 import clothesstore_model.NhaCungCap;
 import clothesstore_model.PhieuNhap;
+import javafx.scene.control.DatePicker;
+import static jdk.nashorn.tools.ShellFunctions.input;
 
 /**
  * FXML Controller class
@@ -49,23 +51,15 @@ public class FXML_PhieuNhapController implements Initializable {
 
     @FXML
     private AnchorPane QLPNpane;
-    @FXML
-    private AnchorPane paneINFO;
     private JFXTextField txtfimaphieunhap;
-    @FXML
-    private JFXTextField txtfinguoinhap;
     @FXML
     private JFXDatePicker datengaynhap;
     @FXML
     private JFXComboBox cbnhacungcap;
     @FXML
-    private JFXButton btnnhacungcap;
-    @FXML
     private JFXButton btnthemphieu;
     @FXML
     private TableColumn clmaphieunhap;
-    @FXML
-    private TableColumn clmanhanvien;
     @FXML
     private TableColumn clnhacungcap;
     @FXML
@@ -85,6 +79,10 @@ public class FXML_PhieuNhapController implements Initializable {
     private JFXButton btnluuphieunhap;
     @FXML
     private JFXButton btnhuyphieunhap;
+    @FXML
+    private AnchorPane paneINFO;
+    @FXML
+    private JFXButton btnnhacungcap;
 
     /**
      * Initializes the controller class.
@@ -94,9 +92,8 @@ public class FXML_PhieuNhapController implements Initializable {
         // TODO
         InitTableViewPhieuNhap();
         InitCmbNCC();
-        LocalDate _ngaynhap = null;
-        java.sql.Date ngaynhap = null;
-        txtfinguoinhap.setText(TenNhanVien);
+        datengaynhap.setValue(LocalDate.now());
+        
     }    
 
     @FXML
@@ -141,6 +138,7 @@ public class FXML_PhieuNhapController implements Initializable {
     }
     public int getmaphieunhap;
     private int manhacungcap;
+    private String tennhacungcap;
     private void InitCmbNCC(){
         NhaCungCap ncc = new NhaCungCap();
         ObservableList <NhaCungCap> list = ncc.getTableNhaCungCap();
@@ -160,6 +158,7 @@ public class FXML_PhieuNhapController implements Initializable {
             public void changed(ObservableValue<? extends NhaCungCap> observable, NhaCungCap oldValue, NhaCungCap newValue) {
                 System.out.println(newValue.getManhacungcap());
                 manhacungcap = newValue.getManhacungcap();
+                tennhacungcap = newValue.getTencungcap();
             }
         });
     }
@@ -168,7 +167,6 @@ public class FXML_PhieuNhapController implements Initializable {
     private void handler_Themphieunhap(ActionEvent event) {
         NhaCungCap ncc = new NhaCungCap();
         ObservableList <NhaCungCap> list = ncc.getTableNhaCungCap();
-        String nguoinhap = txtfinguoinhap.getText();
         int nhacc = manhacungcap;
         LocalDate _ngaynhap = null;
         java.sql.Date ngaynhap = null;
@@ -181,7 +179,7 @@ public class FXML_PhieuNhapController implements Initializable {
         }
         int tongtien=0;
         System.out.println(""+ _ngaynhap);
-        if(nguoinhap.equals("") || nhacc==0|| _ngaynhap==null){
+        if( nhacc==0|| _ngaynhap==null){
             
             ButtonType cancel = new ButtonType("OK", ButtonBar.ButtonData.CANCEL_CLOSE);
             Alert alert = new Alert(Alert.AlertType.WARNING,
@@ -193,7 +191,7 @@ public class FXML_PhieuNhapController implements Initializable {
             Optional<ButtonType> result = alert.showAndWait(); 
         }
         else{
-        PhieuNhap pn = new PhieuNhap( MaNhanVien, nhacc, ngaynhap,tongtien);
+        PhieuNhap pn = new PhieuNhap( nhacc, ngaynhap,tongtien);
         pn.ThemPhieuNhap();
         InitTableViewPhieuNhap();
         Reset();
@@ -204,7 +202,6 @@ public class FXML_PhieuNhapController implements Initializable {
         PhieuNhap pn = new PhieuNhap();
         ObservableList <PhieuNhap> list = pn.getListPhieuNhap();
         clmaphieunhap.setCellValueFactory(new PropertyValueFactory("maphieunhap"));   
-        clmanhanvien.setCellValueFactory(new PropertyValueFactory("manhanvien"));
         clngaynhap.setCellValueFactory(new PropertyValueFactory("ngaynhap"));
         clnhacungcap.setCellValueFactory(new PropertyValueFactory("manhacungcap"));
         cltongtien.setCellValueFactory(new PropertyValueFactory("tongtien"));
@@ -248,13 +245,7 @@ public class FXML_PhieuNhapController implements Initializable {
             alert.setHeaderText(null);
             return;
         }
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Nhắc nhở");
-        alert.setHeaderText(null);
-        alert.setContentText("Bạn có muốn thêm chi tiết phiếu nhập mã "+ selectedForDeletion.getMaphieunhap()+" ?");
-        Optional<ButtonType> result = alert.showAndWait();
-        if(result.get()==ButtonType.OK)
-        {
+        
             PhieuNhap getSelectedRow = tableviewphieunhap.getSelectionModel().getSelectedItem();
             mapn=getSelectedRow.getMaphieunhap();
             Parent root = FXMLLoader.load(getClass().getResource("/clothesstore_view/FXML_ChiTietPhieuNhap.fxml"));            
@@ -270,12 +261,13 @@ public class FXML_PhieuNhapController implements Initializable {
                 InitTableViewPhieuNhap();
                 }
             });
-        }
+        
     }
     @FXML
     private void handler_suaphieunhap(ActionEvent event) {
         PhieuNhap selectedForDeletion = tableviewphieunhap.getSelectionModel().getSelectedItem();
         phieunhap=(PhieuNhap) tableviewphieunhap.getSelectionModel().getSelectedItem();
+        datengaynhap.setValue(selectedForDeletion.getNgaynhap().toLocalDate());
         if(selectedForDeletion==null)
         {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
@@ -284,24 +276,16 @@ public class FXML_PhieuNhapController implements Initializable {
             alert.setHeaderText(null);
             return;
         }
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Nhắc nhở");
-        alert.setHeaderText(null);
-        alert.setContentText("Bạn có muốn sửa phiếu nhập mã "+ selectedForDeletion.getMaphieunhap()+" ?");
-        Optional<ButtonType> result = alert.showAndWait();
-        if(result.get()==ButtonType.OK)
-        {
+        
         //txtfinguoinhap.setText(selectedForDeletion.getMaNhanVien());
                 
         btnluuphieunhap.setDisable(false);
         btnthemphieu.setDisable(true);
         btnhuyphieunhap.setDisable(false);
-        }
     }
     @FXML
     private void handler_luuphieunhap(ActionEvent event) {
         
-        int nguoinhap = MaNhanVien;
         int nhacc = manhacungcap;
         LocalDate _ngaynhap = null;
         java.sql.Date ngaynhap = null;
@@ -325,7 +309,7 @@ public class FXML_PhieuNhapController implements Initializable {
             Optional<ButtonType> result = alert.showAndWait(); 
         }
         else{
-        PhieuNhap pn = new PhieuNhap(phieunhap.getMaphieunhap(),MaNhanVien, nhacc, ngaynhap);
+        PhieuNhap pn = new PhieuNhap(phieunhap.getMaphieunhap(), nhacc, ngaynhap);
         pn.CapNhatPhieuNhap();
         InitTableViewPhieuNhap();
         btnluuphieunhap.setDisable(true);

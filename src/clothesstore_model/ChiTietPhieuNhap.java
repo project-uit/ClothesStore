@@ -30,23 +30,23 @@ public class ChiTietPhieuNhap {
     private IntegerProperty machitietphieunhap;
     private StringProperty masanpham;
     private StringProperty maphieunhap;
-    private IntegerProperty soluong;
+    private IntegerProperty soluongsanphamnhap;
     private IntegerProperty giavon;
     private IntegerProperty thanhtien;
 
-    public ChiTietPhieuNhap(int machitietphieunhap, String masanpham, String maphieunhap, int soluong, int giavon, int thanhtien) {
+    public ChiTietPhieuNhap(int machitietphieunhap, String masanpham, String maphieunhap, int soluongsanphamnhap, int giavon, int thanhtien) {
         this.machitietphieunhap =new SimpleIntegerProperty (machitietphieunhap);
         this.masanpham =new SimpleStringProperty (masanpham);
         this.maphieunhap =new SimpleStringProperty (maphieunhap);
-        this.soluong =new SimpleIntegerProperty (soluong);
+        this.soluongsanphamnhap =new SimpleIntegerProperty (soluongsanphamnhap);
         this.giavon =new SimpleIntegerProperty (giavon);
         this.thanhtien =new SimpleIntegerProperty (thanhtien);
     }
     
-    public ChiTietPhieuNhap( String masanpham, String maphieunhap, int soluong, int giavon, int thanhtien) {
+    public ChiTietPhieuNhap( String masanpham, String maphieunhap, int soluongsanphamnhap, int giavon, int thanhtien) {
         this.masanpham =new SimpleStringProperty (masanpham);
         this.maphieunhap =new SimpleStringProperty (maphieunhap);
-        this.soluong =new SimpleIntegerProperty (soluong);
+        this.soluongsanphamnhap =new SimpleIntegerProperty (soluongsanphamnhap);
         this.giavon =new SimpleIntegerProperty (giavon);
         this.thanhtien =new SimpleIntegerProperty (thanhtien);
     }
@@ -63,8 +63,8 @@ public class ChiTietPhieuNhap {
         return maphieunhap.getValue();
     }
 
-    public int getSoluong() {
-        return soluong.getValue();
+    public int getSoluongsanphamnhap() {
+        return soluongsanphamnhap.getValue();
     }
 
     public int getGiavon() {
@@ -87,8 +87,8 @@ public class ChiTietPhieuNhap {
         this.maphieunhap = maphieunhap;
     }
 
-    public void setSoluong(IntegerProperty soluong) {
-        this.soluong = soluong;
+    public void setSoluongsanphamnhap(IntegerProperty soluongsanphamnhap) {
+        this.soluongsanphamnhap = soluongsanphamnhap;
     }
 
     public void setGiavon(IntegerProperty giavon) {
@@ -114,7 +114,7 @@ public class ChiTietPhieuNhap {
                 while (rs.next()) {
                     ChiTietPhieuNhap ctpn;
                     ctpn = new ChiTietPhieuNhap(rs.getInt("machitietphieunhap")
-                            , rs.getString("masanpham"),rs.getString("maphieunhap"),rs.getInt("soluong"),rs.getInt("giavon"),rs.getInt("thanhtien"));
+                            , rs.getString("masanpham"),rs.getString("maphieunhap"),rs.getInt("soluongsanphamnhap"),rs.getInt("giavon"),rs.getInt("thanhtien"));
                     list.add(ctpn);
                 }
             }
@@ -125,37 +125,19 @@ public class ChiTietPhieuNhap {
         return list;
     }
     
-    public int getTongTien(int maphieunhap){
-        DBConnection db = new DBConnection();
-        Connection con = db.getConnecttion();
-        int Tong=0;
-        String sql = "select SUM(thanhtien) from chitietphieunhap where maphieunhap=?";
-        if(con!=null){
-            try{
-                PreparedStatement ptm = con.prepareStatement(sql);
-                ptm.setInt(1, maphieunhap);
-                ResultSet rs = ptm.executeQuery();
-                Tong=Integer.parseInt(rs.getString("SUM(thanhtien)"));
-            }
-            catch(Exception e){
-                e.printStackTrace();
-            }  
-        }
-        return Tong;
-    }
     
     
     public boolean CapNhatChiTietPhieuNhap(){
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
-        String sql = "update chitietphieunhap set  masanpham = ?,maphieunhap = ?,soluong = ?, giavon = ?,thanhtien=?  WHERE machitietphieunhap = ?;";
+        String sql = "update chitietphieunhap set  masanpham = ?,maphieunhap = ?,soluongsanphamnhap = ?, giavon = ?,thanhtien=?  WHERE machitietphieunhap = ?;";
         if(con!=null){
             try{
                 PreparedStatement ptm = con.prepareStatement(sql);
                 
                 ptm.setString(1, masanpham.getValue());
                 ptm.setString(2,maphieunhap.getValue());
-                ptm.setInt(3, soluong.getValue());
+                ptm.setInt(3, soluongsanphamnhap.getValue());
                 ptm.setInt(4, giavon.getValue());
                 ptm.setInt(5, thanhtien.getValue());         
                 ptm.setInt(6, machitietphieunhap.getValue());
@@ -173,18 +155,18 @@ public class ChiTietPhieuNhap {
     }
 
     
-    
+    //insert,delete,update,LoadTable
     public boolean ThemChiTietPhieuNhap(){
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
-        String sql = "insert into chitietphieunhap( masanpham,maphieunhap,soluong,giavon,thanhtien)  values ( ?, ?, ?, ?, ?);";
+        String sql = "insert into chitietphieunhap( masanpham,maphieunhap,soluongsanphamnhap,giavon,thanhtien)  values ( ?, ?, ?, ?, ?);";
         if(con!=null){
             try{
                 PreparedStatement ptm = con.prepareStatement(sql);
                 
                 ptm.setString(1, this.masanpham.getValue());
                 ptm.setString(2,this.maphieunhap.getValue());
-                ptm.setInt(3, this.soluong.getValue());
+                ptm.setInt(3, this.soluongsanphamnhap.getValue());
                 ptm.setInt(4, this.giavon.getValue());
                 ptm.setInt(5, this.thanhtien.getValue());
                 ptm.execute();  
@@ -215,49 +197,6 @@ public class ChiTietPhieuNhap {
         }
         return true; 
     }  
-    
-        public void LoadSearchSanPhamTableView(TableView table) {
-        DBConnection db = new DBConnection();
-        Connection con = db.getConnecttion();
-        ObservableList<ObservableList> data = FXCollections.observableArrayList();
-
-        if (con != null) {
-            try {
-                Statement stmnt = con.createStatement();
-                ResultSet rs = stmnt.executeQuery("SELECT sanpham.masanpham, sanpham.tensanpham, chitietphieunhap.soluong\n" +
-                "FROM sanpham\n" +
-                "LEFT JOIN chitietphieunhap ON sanpham.masanpham = chitietphieunhap.masanpham\n" +
-                "where soluong is null;");
-
-                for (int i = 0; i < rs.getMetaData().getColumnCount()-1; i++) {
-                    final int j = i;
-                    TableColumn col = new TableColumn(""+i);
-                    
-                    col.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
-                        public ObservableValue<String> call(TableColumn.CellDataFeatures<ObservableList, String> param) {
-                            return new ReadOnlyObjectWrapper(param.getValue().get(j));
-                        }
-                    });
-
-                    table.getColumns().addAll(col);
-                }
-
-                while (rs.next()) {
-                    ObservableList<String> row = FXCollections.observableArrayList();
-                    int columnCount = rs.getMetaData().getColumnCount();
-                    for (int i = 1; i <= columnCount; i++) {
-                        row.add(rs.getString(i));
-                        
-                    }
-                    data.add(row);
-                }
-                table.setItems(data);
-            } catch (SQLException ex) {
-
-            }
-
-        }
-    }
         
         public void LoadSearchSanPhamDaNhapTableView(TableView table) {
         DBConnection db = new DBConnection();
@@ -267,10 +206,10 @@ public class ChiTietPhieuNhap {
         if (con != null) {
             try {
                 Statement stmnt = con.createStatement();
-                ResultSet rs = stmnt.executeQuery("SELECT DISTINCT sanpham.masanpham, sanpham.tensanpham, chitietphieunhap.soluong\n" +
-"FROM sanpham\n" +
-"LEFT JOIN chitietphieunhap ON sanpham.masanpham = chitietphieunhap.masanpham\n" +
-"where soluong is not null;");
+                ResultSet rs = stmnt.executeQuery("SELECT DISTINCT sanpham.masanpham, sanpham.tensanpham, chitietphieunhap.soluongsanphamnhap\n" +
+                "FROM sanpham\n" +
+                "LEFT JOIN chitietphieunhap ON sanpham.masanpham = chitietphieunhap.masanpham\n" +
+                "where soluongsanphamnhap is not null;");
 
                 for (int i = 0; i < rs.getMetaData().getColumnCount()-1; i++) {
                     final int j = i;
@@ -310,10 +249,10 @@ public class ChiTietPhieuNhap {
         if (con != null) {
             try {
                 Statement stmnt = con.createStatement();
-                ResultSet rs = stmnt.executeQuery("SELECT sanpham.masanpham, sanpham.tensanpham, chitietphieunhap.soluong\n" +
+                ResultSet rs = stmnt.executeQuery("SELECT  sanpham.masanpham, sanpham.tensanpham,soluongsanphamnhap\n" +
                 "FROM sanpham\n" +
-                "LEFT JOIN chitietphieunhap ON sanpham.masanpham = chitietphieunhap.masanpham\n" +
-                "where soluong is null;");
+                "LEFT JOIN chitietphieunhap ON sanpham.masanpham = chitietphieunhap.masanpham \n" +
+                "where soluongsanphamnhap is null;");
 
                 for (int i = 0; i < rs.getMetaData().getColumnCount()-1; i++) {
                     final int j = i;
@@ -344,5 +283,48 @@ public class ChiTietPhieuNhap {
 
         }
     }
+    
+        public boolean CapNhatTongTienPhieuNhap(String maphieunhap){
+        DBConnection db = new DBConnection();
+        Connection con = db.getConnecttion();
+        String sql = "update phieunhap set tongtien=(select SUM(thanhtien) " +
+"                       from chitietphieunhap " +
+"			where maphieunhap= ?)"
+                + "where maphieunhap= ?;";
+        if(con!=null){
+            try{
+                PreparedStatement ptm = con.prepareStatement(sql);
+                
+                ptm.setString(1, maphieunhap);
+                ptm.setString(2, maphieunhap);
+                
+                ptm.execute();  
+            }
+            catch(Exception e){
+                e.printStackTrace();
+                return false; 
+            } 
+        }
+        return true; 
+    }
+        public boolean CapNhatGiaBanSanPham(String masanpham,int giaban){
+        DBConnection db = new DBConnection();
+        Connection con = db.getConnecttion();
+        String sql = "update sanpham set giaban= ? where masanpham= ?;";
+        if(con!=null){
+            try{
+                PreparedStatement ptm = con.prepareStatement(sql);
+                ptm.setInt(1, giaban);
+                ptm.setString(2, masanpham);
+                ptm.execute();  
+            }
+            catch(Exception e){
+                e.printStackTrace();
+                return false; 
+            } 
+        }
+        return true; 
+    }
+    
     
 }

@@ -21,29 +21,25 @@ import javafx.collections.ObservableList;
 public class PhieuNhap {
     private IntegerProperty maphieunhap;
     private IntegerProperty tongtien; 
-    private IntegerProperty manhanvien;
     private IntegerProperty manhacungcap;
     private Date ngaynhap;
 
-    public PhieuNhap(int maphieunhap, int tongtien, int manhanvien, int manhacungcap, Date ngaynhap) {
+    public PhieuNhap(int maphieunhap, int tongtien, int manhacungcap, Date ngaynhap) {
         this.maphieunhap =new SimpleIntegerProperty (maphieunhap);
         this.tongtien = new SimpleIntegerProperty(tongtien);
-        this.manhanvien = new SimpleIntegerProperty (manhanvien);
         this.manhacungcap =new SimpleIntegerProperty (manhacungcap);
         this.ngaynhap = ngaynhap;
     }
 
-    public PhieuNhap( int manhanvien, int manhacungcap, Date ngaynhap,int tongtien) {
+    public PhieuNhap( int manhacungcap, Date ngaynhap,int tongtien) {
         
         this.tongtien =new SimpleIntegerProperty (tongtien);
-        this.manhanvien =new SimpleIntegerProperty ( manhanvien);
         this.manhacungcap =new SimpleIntegerProperty (manhacungcap);
         this.ngaynhap = ngaynhap;
     }
     
-    public PhieuNhap(int maphieunhap, int manhanvien, int manhacungcap, Date ngaynhap) {
+    public PhieuNhap(int maphieunhap,  int manhacungcap, Date ngaynhap) {
         this.maphieunhap =new SimpleIntegerProperty (maphieunhap);
-        this.manhanvien =new SimpleIntegerProperty ( manhanvien);
         this.manhacungcap =new SimpleIntegerProperty (manhacungcap);
         this.ngaynhap = ngaynhap;
     }
@@ -59,9 +55,7 @@ public class PhieuNhap {
         return tongtien.getValue();
     }
 
-    public Integer getManhanvien() {
-        return manhanvien.getValue();
-    }
+
 
     public int getManhacungcap() {
         return manhacungcap.getValue();
@@ -79,9 +73,7 @@ public class PhieuNhap {
         this.tongtien = tongtien;
     }
 
-    public void setMaNhanVien(IntegerProperty tennhanvien) {
-        this.manhanvien = tennhanvien;
-    }
+
 
     public void setManhacungcap(IntegerProperty manhacungcap) {
         this.manhacungcap = manhacungcap;
@@ -105,7 +97,6 @@ public class PhieuNhap {
                     
                     PhieuNhap phieunhap = new PhieuNhap(rs.getInt("maphieunhap")
                             , rs.getInt("tongtien")
-                            , rs.getInt("manhanvien")
                             , rs.getInt("manhacungcap")
                             , rs.getDate("ngaynhap"));
                          
@@ -122,14 +113,13 @@ public class PhieuNhap {
     public boolean ThemPhieuNhap(){
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
-        String sql = "INSERT INTO phieunhap( manhanvien, manhacungcap, ngaynhap,tongtien) VALUES( ?, ?, ?,?);";
+        String sql = "INSERT INTO phieunhap(  manhacungcap, ngaynhap,tongtien) VALUES( ?, ?,?);";
         if(con!=null){
             try{
                 PreparedStatement ptm = con.prepareStatement(sql);
-                ptm.setInt(1, manhanvien.getValue());
-                ptm.setInt(2, manhacungcap.getValue());
-                ptm.setDate(3, ngaynhap); 
-                ptm.setInt(4, tongtien.getValue());
+                ptm.setInt(1, manhacungcap.getValue());
+                ptm.setDate(2, ngaynhap); 
+                ptm.setInt(3, tongtien.getValue());
                 ptm.execute();  
             }
             catch(Exception e){
@@ -143,14 +133,13 @@ public class PhieuNhap {
     public boolean CapNhatPhieuNhap(){
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
-        String sql = "update phieunhap set  manhacungcap = ?,manhanvien = ?,ngaynhap = ?  WHERE maphieunhap = ?;";
+        String sql = "update phieunhap set  manhacungcap = ?,ngaynhap = ?  WHERE maphieunhap = ?;";
         if(con!=null){
             try{
                 PreparedStatement ptm = con.prepareStatement(sql);
                 ptm.setInt(1, this.manhacungcap.getValue());
-                ptm.setInt(2,this.manhanvien.getValue());
-                ptm.setDate(3, this.ngaynhap);         
-                ptm.setInt(4, maphieunhap.getValue());
+                ptm.setDate(2, this.ngaynhap);         
+                ptm.setInt(3, maphieunhap.getValue());
                 ptm.execute();  
             }
             catch(Exception e){
