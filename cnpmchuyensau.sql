@@ -12,7 +12,7 @@ use ClothesShop
 
 select *
 from khachhang
-where tenkhachhang = 'chú'
+where tenkhachhang = 'chú'
 Collate utf8_unicode_ci;
 
 create table khachhang
@@ -63,6 +63,12 @@ ghichu nvarchar(50),
 giaban INT
 );
 
+insert into sanpham(masanpham,tensanpham,tennhasanxuat,tennhomhang,ghichu) values ("12344","aokhoacda","nike","ao","");
+insert into sanpham(masanpham,tensanpham,tennhasanxuat,tennhomhang,ghichu) values ("12346","aokhoacbong","adidas","ao","");
+insert into sanpham(masanpham,tensanpham,tennhasanxuat,tennhomhang,ghichu) values ("12347","quandai","apple","quan","");
+insert into sanpham(masanpham,tensanpham,tennhasanxuat,tennhomhang,ghichu) values ("12348","quanngan","nike","quan","");
+insert into sanpham(masanpham,tensanpham,tennhasanxuat,tennhomhang,ghichu) values ("12349","aonguc","victoriasecret","aovu","");
+
 create table chitietsanpham
 (
 machitietsanpham varchar(30)  PRIMARY KEY,
@@ -91,7 +97,7 @@ machitietphieunhap  INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 masanpham char(8),
 FOREIGN KEY (masanpham)
 REFERENCES sanpham(masanpham),
-soluongnhapsanpham int,
+soluongsanphamnhap int,
 giavon int,
 thanhtien int,
 maphieunhap  INT(6) UNSIGNED,
@@ -114,12 +120,12 @@ REFERENCES nhanvien(manhanvien)
 create table hoadon
 (
 mahoadon   INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+sodienthoai char(15),
+FOREIGN KEY (sodienthoai)
+REFERENCES khachhang(sodienthoai),
 manhanvien INT(6) UNSIGNED,
 FOREIGN KEY (manhanvien)
 REFERENCES nhanvien(manhanvien),
-makhachhang INT(6) UNSIGNED,
-FOREIGN KEY (makhachhang)
-REFERENCES khachhang(makhachhang),
 ngayban datetime,
 tongtien int 
 );
@@ -153,40 +159,7 @@ for each row
 	delete from dangnhap 
     	where dangnhap.manhanvien = old.manhanvien;
         
-drop trigger if exists after_chitietphieunhap_insert;
 
-create trigger after_chitietphieunhap_insert
-after insert ON chitietphieunhap
-for each row
-	update phieunhap set tongtien=(select SUM(thanhtien)
-									from chitietphieunhap
-									where chitietphieunhap.maphieunhap=new.maphieunhap)
-	where maphieunhap=new.maphieunhap;
-    
-drop trigger if exists after_chitietphieunhap_delete;
-    
-create trigger after_chitietphieunhap_delete
-after delete ON chitietphieunhap
-for each row
-	update phieunhap set tongtien=(select SUM(thanhtien)
-									from chitietphieunhap
-									where maphieunhap=old.maphieunhap)
-	where maphieunhap=old.maphieunhap;
-    
-    
-    khosanphamupdate phieunhap set tongtien=(select SUM(thanhtien)
-									from chitietphieunhap
-									where maphieunhap=2)
-	where maphieunhap=2;
-
-drop trigger if exists after_chitietphieunhap_update;
-create trigger after_chitietphieunhap_update
-after update ON chitietphieunhap
-for each row
-	update phieunhap set tongtien=(select SUM(thanhtien)
-									from chitietphieunhap
-									where chitietphieunhap.maphieunhap=new.maphieunhap)
-	where maphieunhap=new.maphieunhap;
 insert into dangnhap(tentaikhoan, matkhau,phanquyen,manhanvien)
 values ('admin','123',1,1);
 
@@ -198,11 +171,4 @@ before delete ON phieunhap
 for each row
 	delete from chitietphieunhap 
     where chitietphieunhap.maphieunhap=old.maphieunhap;
-    
-delete from phieunhap where maphieunhap=2;
-
-
-
-
-
-
+ 
