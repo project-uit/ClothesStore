@@ -5,7 +5,6 @@
  */
 package clothesstore_controller;
 
-import static clothesstore_controller.FXML_PhieuNhapController.mapn;
 import clothesstore_model.ChiTietPhieuNhap;
 import clothesstore_model.PhieuNhap;
 import com.jfoenix.controls.JFXButton;
@@ -71,8 +70,7 @@ public class FXML_NhapKhoController implements Initializable {
         }
         });
             return row ;
-        });
-        
+        });  
     }    
     
     public void InitTableViewPhieuNhap(){
@@ -96,6 +94,7 @@ public class FXML_NhapKhoController implements Initializable {
     }
     @FXML
     private void handler_themchitietphieunhap(ActionEvent event) {
+        
     }
     
 }

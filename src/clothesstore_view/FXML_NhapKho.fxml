@@ -13,7 +13,7 @@
             <Font size="33.0" />
          </font>
       </Label>
-      <TableView fx:id="tableviewphieunhap" layoutX="18.0" layoutY="90.0" prefHeight="280.0" prefWidth="810.0" style="-fx-border-radius: 5; -fx-border-width: 1; -fx-border-color: #4681f5;">
+      <TableView fx:id="tableviewphieunhap" layoutX="18.0" layoutY="90.0" prefHeight="220.0" prefWidth="810.0" style="-fx-border-radius: 5; -fx-border-width: 1; -fx-border-color: #4681f5;">
          <columns>
             <TableColumn fx:id="clmaphieunhap" prefWidth="163.0" text="Mã Phiếu Nhập" />
             <TableColumn fx:id="clnhacungcap" prefWidth="255.0" text="Nhà Cung Cấp" />
@@ -22,9 +22,9 @@
          </columns>
 
       </TableView>
-      <TableView fx:id="tableviewchitietphieunhap" layoutX="18.0" layoutY="393.0" prefHeight="280.0" prefWidth="810.0" style="-fx-border-radius: 5; -fx-border-width: 1; -fx-border-color: #4681f5;">
+      <TableView fx:id="tableviewchitietphieunhap" layoutX="18.0" layoutY="329.0" prefHeight="280.0" prefWidth="810.0" style="-fx-border-radius: 5; -fx-border-width: 1; -fx-border-color: #4681f5;">
          <columns>
-            <TableColumn fx:id="clmachitiet" prefWidth="163.0" text="Mã Chi Tiết Phiếu Nhập" />
+            <TableColumn fx:id="clmachitiet" prefWidth="163.0" text="Mã Chi Tiết Phiếu Nhập" visible="false" />
             <TableColumn fx:id="clsanpham" prefWidth="255.0" text="Sản Phẩm" />
             <TableColumn fx:id="clsoluong" prefWidth="131.0" text="Số Lượng" />
             <TableColumn fx:id="clgiavon" minWidth="0.0" prefWidth="98.0" text="Giá Vốn" />
