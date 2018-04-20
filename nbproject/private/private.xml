@@ -3,8 +3,15 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+<<<<<<< HEAD
             <file>file:/C:/Users/15520/OneDrive/Documents/GitHub/ClothesStore/src/clothesstore_controller/FXML_ChiTietPhieuNhapController.java</file>
             <file>file:/C:/Users/15520/OneDrive/Documents/GitHub/ClothesStore/src/clothesstore_controller/FXML_PhieuNhapController.java</file>
+=======
+            <file>file:/D:/Documents/GitHub/ClothesStore/src/clothesstore_model/DBConnection.java</file>
+            <file>file:/D:/Documents/GitHub/ClothesStore/src/clothesstore_controller/FXML_NhaCungCapController.java</file>
+            <file>file:/D:/Documents/GitHub/ClothesStore/src/clothesstore_controller/FXML_PhieuNhapController.java</file>
+            <file>file:/D:/Documents/GitHub/ClothesStore/src/clothesstore_controller/FXML_QuanLyTaiKhoanController.java</file>
+>>>>>>> 48c5330583f97d7651cd44baed6fd516b706b5f4
         </group>
     </open-files>
 </project-private>

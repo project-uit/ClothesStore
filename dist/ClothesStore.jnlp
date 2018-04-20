@@ -8,7 +8,11 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
+<<<<<<< HEAD
     <jar href="ClothesStore.jar" size="414815" download="eager" />
+=======
+    <jar href="ClothesStore.jar" size="426812" download="eager" />
+>>>>>>> 48c5330583f97d7651cd44baed6fd516b706b5f4
     <jar href="lib\commons-collections4-4.1.jar" size="751238" download="eager" />
     <jar href="lib\fontawesomefx-8.9.jar" size="571068" download="eager" />
     <jar href="lib\jfoenix-8.0.1.jar" size="2405715" download="eager" />
