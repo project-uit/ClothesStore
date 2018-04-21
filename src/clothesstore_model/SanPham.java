@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
@@ -25,87 +26,138 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  *
  * @author quochung
  */
-public class sanpham_model extends RecursiveTreeObject<sanpham_model> {
-
+public class SanPham extends RecursiveTreeObject<SanPham> {
+    
     private StringProperty masanpham;
     private StringProperty tensanpham;
     private StringProperty tennhasanxuat;
     private StringProperty tennhomhang;
     private StringProperty ghichu;
-
-    public sanpham_model(StringProperty masanpham) {
+    private IntegerProperty giaban;
+    
+    public SanPham(StringProperty masanpham) {
         this.masanpham = masanpham;
     }
-
-    public sanpham_model() {
+    
+    public SanPham(StringProperty masanpham, IntegerProperty giaban) {
+        this.masanpham = masanpham;
+        this.giaban = giaban;
     }
-
-    public sanpham_model(StringProperty tensanpham, StringProperty tennhasanxuat, StringProperty tennhomhang, StringProperty ghichu) {
+    
+    public SanPham() {
+    }
+    
+   
+    public boolean isEmpty() {
+        return (tensanpham.get().isEmpty()
+                || tennhasanxuat.get().isEmpty() || tennhomhang.get().isEmpty());
+    }
+    
+    public SanPham(StringProperty masanpham, StringProperty tensanpham, StringProperty tennhasanxuat, StringProperty tennhomhang, StringProperty ghichu, IntegerProperty giaban) {
+        this.masanpham = masanpham;
+        this.tensanpham = tensanpham;
+        this.tennhasanxuat = tennhasanxuat;
+        this.tennhomhang = tennhomhang;
+        this.ghichu = ghichu;
+        this.giaban = giaban;
+    }
+    
+    public SanPham(StringProperty tensanpham, StringProperty tennhasanxuat, StringProperty tennhomhang, StringProperty ghichu) {
         this.tensanpham = tensanpham;
         this.tennhasanxuat = tennhasanxuat;
         this.tennhomhang = tennhomhang;
         this.ghichu = ghichu;
     }
-
-    public sanpham_model(StringProperty masanpham, StringProperty tensanpham, StringProperty tennhasanxuat, StringProperty tennhomhang, StringProperty ghichu) {
+    
+    public SanPham(StringProperty masanpham, StringProperty tensanpham, StringProperty tennhasanxuat, StringProperty tennhomhang, StringProperty ghichu) {
         this.masanpham = masanpham;
         this.tensanpham = tensanpham;
         this.tennhasanxuat = tennhasanxuat;
         this.tennhomhang = tennhomhang;
         this.ghichu = ghichu;
     }
-
+    
     public void setMasanpham(StringProperty masanpham) {
         this.masanpham = masanpham;
     }
-
+    
     public void setTensanpham(StringProperty tensanpham) {
         this.tensanpham = tensanpham;
     }
-
+    
     public void setTennhasanxuat(StringProperty tennhasanxuat) {
         this.tennhasanxuat = tennhasanxuat;
     }
-
+    
     public void setTennhomhang(StringProperty tennhomhang) {
         this.tennhomhang = tennhomhang;
     }
-
+    
     public void setGhichu(StringProperty ghichu) {
         this.ghichu = ghichu;
     }
-
+    
+    public void setGiaban(IntegerProperty giaban) {
+        this.giaban = giaban;
+    }
+    
     public StringProperty getMasanpham() {
         return masanpham;
     }
-
+    
     public StringProperty getTensanpham() {
         return tensanpham;
     }
-
+    
     public StringProperty getTennhasanxuat() {
         return tennhasanxuat;
     }
-
+    
     public StringProperty getTennhomhang() {
         return tennhomhang;
     }
-
+    
     public StringProperty getGhichu() {
         return ghichu;
     }
-
+    
+    public IntegerProperty getGiaban() {
+        return giaban;
+    }
+    
+    private String keyValueMasp() {
+        DBConnection db = new DBConnection();
+        Connection con = db.getConnecttion();
+        String value = "";
+        if (con != null) {
+            try {
+                
+                Statement stmt = con.createStatement();
+                ResultSet rs = stmt.executeQuery("select GenerateLicensePlate() as masanpham;");
+                while (rs.next()) {
+                    value = rs.getString("masanpham");
+                }
+                
+            } catch (SQLException ex) {
+                Logger.getLogger(SanPham.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return value;
+    }
+    
+   
     public boolean insert() {
-
+        
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
         if (con != null) {
-
-            String query = "insert into sanpham values(?,?,?,?,?)";
-
+            masanpham.set(keyValueMasp());
             try {
+                
+                String query = "insert into sanpham(masanpham,tensanpham,tennhasanxuat,tennhomhang,ghichu)"
+                        + " values(?,?,?,?,?)";
                 PreparedStatement ptm = con.prepareStatement(query);
-
+                
                 ptm.setString(1, masanpham.get());
                 ptm.setString(2, tensanpham.get());
                 ptm.setString(3, tennhasanxuat.get());
@@ -117,46 +169,47 @@ public class sanpham_model extends RecursiveTreeObject<sanpham_model> {
                     con.close();
                     return true;
                 }
-
+                
             } catch (SQLException ex) {
-
+                
             }
         }
         return false;
     }
-
+    
+    
     public boolean delete() {
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
         if (con != null) {
-
+            
             String query = "delete from sanpham where masanpham = ?";
-
+            
             try {
                 PreparedStatement ptm = con.prepareStatement(query);
-
+                
                 ptm.setString(1, masanpham.get());
-
+                
                 int check = ptm.executeUpdate();
                 if (check != 0) {
-
+                    
                     ptm.close();
                     con.close();
                     return true;
                 }
-
+                
             } catch (SQLException ex) {
-
+                
             }
         }
         return false;
     }
-
-    public ObservableList<sanpham_model> getSPList() {
+    
+    public ObservableList<SanPham> getSPList() {
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
-        ObservableList<sanpham_model> spList = FXCollections.observableArrayList();
-
+        ObservableList<SanPham> spList = FXCollections.observableArrayList();
+        
         if (con != null) {
             try (
                     Statement stmnt = con.createStatement();
@@ -164,35 +217,60 @@ public class sanpham_model extends RecursiveTreeObject<sanpham_model> {
                 while (rs.next()) {
                     StringProperty masp = new SimpleStringProperty(rs.getString("masanpham"));
                     StringProperty tensp = new SimpleStringProperty(rs.getString("tensanpham"));
-
+                    
                     StringProperty nhasanxuat = new SimpleStringProperty(rs.getString("tennhasanxuat"));
                     StringProperty nhomhang = new SimpleStringProperty(rs.getString("tennhomhang"));
                     StringProperty gchu = new SimpleStringProperty(rs.getString("ghichu"));
-
-                    sanpham_model cus = new sanpham_model(masp, tensp, nhasanxuat, nhomhang, gchu);
+                    
+                    SanPham cus = new SanPham(masp, tensp, nhasanxuat, nhomhang, gchu);
                     spList.add(cus);
-
+                    
                 }
-
+                
             } catch (SQLException ex) {
-
+                
             }
-
+            
         }
         return spList;
-
+        
     }
-
+    
+    public boolean updateGiaban() {
+        DBConnection db = new DBConnection();
+        Connection con = db.getConnecttion();
+        if (con != null) {
+            String query;
+            query = "update sanpham set giaban= ? where masanpham = ?";
+            try {
+                PreparedStatement ptm = con.prepareStatement(query);
+                
+                ptm.setInt(1, giaban.get());
+                ptm.setString(2, masanpham.get());
+                int check = ptm.executeUpdate();
+                if (check != 0) {
+                    ptm.close();
+                    con.close();
+                    return true;
+                }
+                
+            } catch (SQLException ex) {
+                
+            }
+        }
+        return false;
+    }
+    
+    
     public boolean update() {
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
         if (con != null) {
             String query;
             query = "update sanpham set tensanpham=?, tennhasanxuat=?,tennhomhang=?,ghichu=? where masanpham = ?";
-
             try {
                 PreparedStatement ptm = con.prepareStatement(query);
-
+                
                 ptm.setString(1, tensanpham.get());
                 ptm.setString(2, tennhasanxuat.get());
                 ptm.setString(3, tennhomhang.get());
@@ -200,21 +278,21 @@ public class sanpham_model extends RecursiveTreeObject<sanpham_model> {
                 ptm.setString(5, masanpham.get());
                 int check = ptm.executeUpdate();
                 if (check != 0) {
-
+                    
                     ptm.close();
                     con.close();
                     return true;
                 }
-
+                
             } catch (SQLException ex) {
-
+                
             }
         }
         return false;
     }
-
+    
     public XSSFWorkbook exportExcel() {
-
+        
         XSSFWorkbook wb = new XSSFWorkbook();
         XSSFSheet sheet = wb.createSheet("Danh sách sản phẩm");
         XSSFRow header = sheet.createRow(0);
@@ -229,7 +307,7 @@ public class sanpham_model extends RecursiveTreeObject<sanpham_model> {
         sheet.autoSizeColumn(1);
         sheet.autoSizeColumn(2);
         sheet.autoSizeColumn(3);
-        sheet.setColumnWidth(4,256*25);
+        sheet.setColumnWidth(4, 256 * 25);
         sheet.setZoom(120);
         
         DBConnection db = new DBConnection();
@@ -248,14 +326,15 @@ public class sanpham_model extends RecursiveTreeObject<sanpham_model> {
                     row.createCell(4).setCellValue(rs.getString("ghichu"));
                     index++;
                 }
-              
-
+                
                 stmnt.close();
                 con.close();
             } catch (SQLException ex) {
-                Logger.getLogger(sanpham_model.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(SanPham.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return wb;
     }
+
+
 }

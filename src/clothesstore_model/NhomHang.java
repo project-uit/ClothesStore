@@ -16,18 +16,20 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.TableView;
 
 /**
  *
  * @author quochung
  */
-public class nhomhang_model extends RecursiveTreeObject<nhomhang_model>{
+public class NhomHang extends RecursiveTreeObject<NhomHang> {
+
     private StringProperty tennhomhang;
 
-    public nhomhang_model() {
+    public NhomHang() {
     }
 
-    public nhomhang_model(StringProperty tennhomhang) {
+    public NhomHang(StringProperty tennhomhang) {
         this.tennhomhang = tennhomhang;
     }
 
@@ -38,19 +40,24 @@ public class nhomhang_model extends RecursiveTreeObject<nhomhang_model>{
     public void setTennhomhang(StringProperty tennhomhang) {
         this.tennhomhang = tennhomhang;
     }
+
     
-        
+    public boolean isEmpty() {
+        return tennhomhang.get().isEmpty();
+    }
+
+    
     public boolean insert() {
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
         if (con != null) {
 
             String query = "insert into nhomhang values(?)";
-                    
+
             try {
                 PreparedStatement ptm = con.prepareStatement(query);
 
-                ptm.setString(1,tennhomhang.get());
+                ptm.setString(1, tennhomhang.get());
                 int check = ptm.executeUpdate();
                 if (check != 0) {
                     ptm.close();
@@ -64,7 +71,7 @@ public class nhomhang_model extends RecursiveTreeObject<nhomhang_model>{
         }
         return false;
     }
-
+    
     public boolean delete() {
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
@@ -75,7 +82,7 @@ public class nhomhang_model extends RecursiveTreeObject<nhomhang_model>{
             try {
                 PreparedStatement ptm = con.prepareStatement(query);
 
-                ptm.setString(1,tennhomhang.get());
+                ptm.setString(1, tennhomhang.get());
 
                 int check = ptm.executeUpdate();
                 if (check != 0) {
@@ -92,53 +99,52 @@ public class nhomhang_model extends RecursiveTreeObject<nhomhang_model>{
         return false;
     }
 
-     public ObservableList<nhomhang_model> getNHList()  {
+    public ObservableList<NhomHang> getNHList() {
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
-        ObservableList<nhomhang_model> nhList = FXCollections.observableArrayList();
-        
-        if(con!=null){
+        ObservableList<NhomHang> nhList = FXCollections.observableArrayList();
+
+        if (con != null) {
             try (
-                Statement stmnt = con.createStatement();
-                ResultSet rs = stmnt.executeQuery("select * from nhomhang");)
-              
-            {
+                    Statement stmnt = con.createStatement();
+                    ResultSet rs = stmnt.executeQuery("select * from nhomhang");) {
                 while (rs.next()) {
-                    StringProperty tennh;                    
-                    String ten_nhomhang = rs.getString("tennhomhang"); 
+                    StringProperty tennh;
+                    String ten_nhomhang = rs.getString("tennhomhang");
                     tennh = new SimpleStringProperty(ten_nhomhang);
-                    
-                    nhomhang_model nhomhang = new nhomhang_model(tennh);
+
+                    NhomHang nhomhang = new NhomHang(tennh);
                     nhList.add(nhomhang);
-                  
+
                 }
-               
+
             } catch (SQLException ex) {
-                
+
             }
-           
+
         }
         return nhList;
-        
+
     }
-      public void getNHList(JFXComboBox cmb)  {
+
+    public void getNHList(JFXComboBox cmb) {
         DBConnection db = new DBConnection();
-        Connection con = db.getConnecttion();      
-        if(con!=null){
+        Connection con = db.getConnecttion();
+        if (con != null) {
             try (
-                Statement stmnt = con.createStatement();
-                ResultSet rs = stmnt.executeQuery("select * from nhomhang");)
-              
-            {
-                while (rs.next()) {                                   
-                    String ten_nhomhang = rs.getString("tennhomhang");                    
-                    cmb.getItems().add(ten_nhomhang);             
+                    Statement stmnt = con.createStatement();
+                    ResultSet rs = stmnt.executeQuery("select * from nhomhang");) {
+                while (rs.next()) {
+                    String ten_nhomhang = rs.getString("tennhomhang");
+                    cmb.getItems().add(ten_nhomhang);
                 }
-               
+
             } catch (SQLException ex) {
-                
+
             }
-           
-        }     
+
+        }
     }
+
+  
 }

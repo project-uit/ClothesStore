@@ -12,28 +12,25 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.TableView;
 
 /**
  *
  * @author quochung
  */
-public class nhasanxuat_model extends RecursiveTreeObject<nhasanxuat_model>{
+public class NhaSanXuat extends RecursiveTreeObject<NhaSanXuat>{
 
     private StringProperty ten_nhasanxuat;
 
-    public nhasanxuat_model(StringProperty ten_nhasanxuat) {
+    public NhaSanXuat(StringProperty ten_nhasanxuat) {
         this.ten_nhasanxuat = ten_nhasanxuat;
     }
    
-    public nhasanxuat_model() {
+    public NhaSanXuat() {
     }
 
     public StringProperty getTen_nhasanxuat() {
@@ -43,18 +40,12 @@ public class nhasanxuat_model extends RecursiveTreeObject<nhasanxuat_model>{
     public void setTen_nhasanxuat(StringProperty ten_nhasanxuat) {
         this.ten_nhasanxuat = ten_nhasanxuat;
     }
-
-    
-
-  
-
+   
     public boolean isEmpty() {
-        if (ten_nhasanxuat.get().isEmpty()) {
-            return false;
-        }
-        return true;
+        return ten_nhasanxuat.get().isEmpty();
     }
     
+   
     public boolean insert() {
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
@@ -80,6 +71,7 @@ public class nhasanxuat_model extends RecursiveTreeObject<nhasanxuat_model>{
         return false;
     }
 
+    
     public boolean delete() {
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
@@ -107,10 +99,10 @@ public class nhasanxuat_model extends RecursiveTreeObject<nhasanxuat_model>{
         return false;
     }
 
-     public ObservableList<nhasanxuat_model> getNSXList()  {
+     public ObservableList<NhaSanXuat> getNSXList()  {
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
-        ObservableList<nhasanxuat_model> nsxList = FXCollections.observableArrayList();
+        ObservableList<NhaSanXuat> nsxList = FXCollections.observableArrayList();
         
         if(con!=null){
             try (
@@ -123,7 +115,7 @@ public class nhasanxuat_model extends RecursiveTreeObject<nhasanxuat_model>{
                     String ten_nsx = rs.getString("tennhasanxuat"); 
                     tennsx = new SimpleStringProperty(ten_nsx);
                     
-                    nhasanxuat_model cus = new nhasanxuat_model(tennsx);
+                    NhaSanXuat cus = new NhaSanXuat(tennsx);
                     nsxList.add(cus);
                   
                 }
@@ -156,4 +148,8 @@ public class nhasanxuat_model extends RecursiveTreeObject<nhasanxuat_model>{
            
         }     
     }
+
+   
+
+   
 }

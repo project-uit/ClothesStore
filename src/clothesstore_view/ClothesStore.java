@@ -17,17 +17,20 @@ import javafx.stage.StageStyle;
  * @author dieunguyen
  */
 public class ClothesStore extends Application {
+
     public static Stage stageDangNhap;
     public static AnchorPane _rootDangNhap;
+
     @Override
     public void start(Stage stage) throws Exception {
-        
+
         AnchorPane root = FXMLLoader.load(getClass().getResource("/clothesstore_view/FXML_DangNhap.fxml"));
         Scene scene = new Scene(root);
         //stage.initModality(Modality.APPLICATION_MODAL);
         stage.initStyle(StageStyle.UNDECORATED);
         stage.setResizable(false);
         stage.setScene(scene);
+        
         stage.show();
         stageDangNhap = stage;
         _rootDangNhap = root;
@@ -39,5 +42,5 @@ public class ClothesStore extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-    
+
 }

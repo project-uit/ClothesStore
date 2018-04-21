@@ -5,9 +5,10 @@
  */
 package clothesstore_controller;
 
-import clothesstore_model.nhasanxuat_model;
-import clothesstore_model.nhomhang_model;
-import clothesstore_model.sanpham_model;
+
+import clothesstore_model.NhaSanXuat;
+import clothesstore_model.NhomHang;
+import clothesstore_model.SanPham;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextArea;
@@ -21,6 +22,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -44,7 +47,12 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -70,9 +78,9 @@ public class FXML_HangHoaController implements Initializable {
     @FXML
     private JFXButton btnSua;
     @FXML
-    JFXButton btnHuy;
+    private JFXButton btnHuy;
     @FXML
-    JFXButton btnDongy;
+    private JFXButton btnDongy;
     @FXML
     private JFXButton btn_add_nhomhang;
     @FXML
@@ -80,7 +88,7 @@ public class FXML_HangHoaController implements Initializable {
     @FXML
     private JFXComboBox<String> cmb_nhomhang;
     @FXML
-    JFXButton btnExportExcel;
+    private JFXButton btnExportExcel;
     @FXML
     private JFXTextField txt_fi_tensanpham;
     @FXML
@@ -88,14 +96,15 @@ public class FXML_HangHoaController implements Initializable {
     @FXML
     private JFXTextArea txt_area_ghichu;
     @FXML
-    private JFXTreeTableView<sanpham_model> tree_table_vi;
+    private JFXTreeTableView<SanPham> tree_table_vi;
 
-    private JFXTreeTableColumn<sanpham_model, String> col_masanpham = new JFXTreeTableColumn<>("Mã sản phẩm");
-    private JFXTreeTableColumn<sanpham_model, String> col_tensanpham = new JFXTreeTableColumn<>("Tên sản phẩm");
-    private JFXTreeTableColumn<sanpham_model, String> col_nhasanxuat = new JFXTreeTableColumn<>("Tên nhà sản xuất");
-    private JFXTreeTableColumn<sanpham_model, String> col_nhomhang = new JFXTreeTableColumn<>("Tên nhóm hàng");
-    private JFXTreeTableColumn<sanpham_model, String> col_ghichu = new JFXTreeTableColumn<>("Ghi chú");
+    private JFXTreeTableColumn<SanPham, String> col_masanpham = new JFXTreeTableColumn<>("Mã sản phẩm");
+    private JFXTreeTableColumn<SanPham, String> col_tensanpham = new JFXTreeTableColumn<>("Tên sản phẩm");
+    private JFXTreeTableColumn<SanPham, String> col_nhasanxuat = new JFXTreeTableColumn<>("Tên nhà sản xuất");
+    private JFXTreeTableColumn<SanPham, String> col_nhomhang = new JFXTreeTableColumn<>("Tên nhóm hàng");
+    private JFXTreeTableColumn<SanPham, String> col_ghichu = new JFXTreeTableColumn<>("Ghi chú");
     private int flag = 0;
+    static List<SanPham> listspvuanhap = new ArrayList<>();
 
     @FXML
     private void ClickEvent(ActionEvent event) throws IOException {
@@ -108,6 +117,9 @@ public class FXML_HangHoaController implements Initializable {
             tree_table_vi.getSelectionModel().clearSelection();
         } else if (btn == btnThem) {
             flag = 1;
+            txt_fi_masanpham.setText("");
+            txt_fi_tensanpham.setText("");
+            txt_area_ghichu.setText("");
             btnXoa.setDisable(true);
             btnThem.setDisable(true);
             btnSua.setDisable(true);
@@ -115,12 +127,9 @@ public class FXML_HangHoaController implements Initializable {
             btnDongy.setVisible(true);
             tree_table_vi.setDisable(true);
         } else if (btn == btnXoa) {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Thông báo");
-            alert.setHeaderText(null);
-            alert.setContentText("Bạn có chắc muốn xóa không?");
-
-            Optional<ButtonType> action = alert.showAndWait();
+            Optional<ButtonType> action = ShowMessage
+                    .showMessageBox(Alert.AlertType.CONFIRMATION, "Thông báo", null, "Bạn có chắc muốn xóa không?")
+                    .showAndWait();
             if (action.get() == ButtonType.OK) {
                 DeleteSanPham();
             }
@@ -153,12 +162,13 @@ public class FXML_HangHoaController implements Initializable {
 
     @FXML
     private void OnMouseClick_clearSelectTable(MouseEvent evt) {
-        tree_table_vi.getSelectionModel().clearSelection();
+        // tree_table_vi.getSelectionModel().clearSelection();
     }
 
     private void btnDongy_process() {
         if (flag == 1) {
             insertSanpham();
+
         } else if (flag == 2) {
             UpdateSanPham();
         }
@@ -187,7 +197,7 @@ public class FXML_HangHoaController implements Initializable {
         if (file != null) {
 
             try {
-                sanpham_model sp = new sanpham_model();
+                SanPham sp = new SanPham();
                 XSSFWorkbook wb = sp.exportExcel();
                 String path_name_File = file.getPath();
                 FileOutputStream output = new FileOutputStream(path_name_File
@@ -216,8 +226,10 @@ public class FXML_HangHoaController implements Initializable {
             stage.setResizable(false);
             stage.setOnCloseRequest((WindowEvent event1) -> {
                 cmb_nhasanxuat.getItems().clear();
-                nhasanxuat_model tennsx = new nhasanxuat_model();
+                NhaSanXuat tennsx = new NhaSanXuat();
                 tennsx.getNSXList(cmb_nhasanxuat);
+                cmb_nhasanxuat.getSelectionModel().selectFirst();
+
             });
             stage.showAndWait();
 
@@ -238,11 +250,39 @@ public class FXML_HangHoaController implements Initializable {
             stage.setScene(new Scene(root1));
             stage.setOnCloseRequest((WindowEvent event1) -> {
                 cmb_nhomhang.getItems().clear();
-                nhomhang_model tennsx = new nhomhang_model();
+                NhomHang tennsx = new NhomHang();
                 tennsx.getNHList(cmb_nhomhang);
 
+                cmb_nhomhang.getSelectionModel().selectFirst();
             });
             stage.show();
+        } catch (IOException ex) {
+            Logger.getLogger(FXML_HangHoaController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void ShowFXML_ChiTietSanPham(String masp) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/clothesstore_view/FXML_ChiTietSanPham.fxml"));
+            AnchorPane chitietsanpham = fxmlLoader.load();
+            FXML_ClothesStoreController.rootP.getChildren().setAll(chitietsanpham);
+            FXML_ChiTietSanPhamController ctsp = fxmlLoader.getController();           
+            ctsp.setLbMasanpham_LoadTableView(masp);
+
+            KeyCombination Alt_leftArrow = new KeyCodeCombination(KeyCode.LEFT, KeyCodeCombination.ALT_DOWN);
+            chitietsanpham.setOnKeyPressed(new EventHandler<KeyEvent>() {
+                @Override
+                public void handle(KeyEvent event) {
+                    if (Alt_leftArrow.match(event)) {
+                        ctsp.BacktoSanPham();
+                    }
+                }
+            });
+            chitietsanpham.requestFocus();
+            FXML_ClothesStoreController.rootP.setLeftAnchor(chitietsanpham, 0.0);
+            FXML_ClothesStoreController.rootP.setRightAnchor(chitietsanpham, 0.0);
+            FXML_ClothesStoreController.rootP.setTopAnchor(chitietsanpham, 0.0);
+            FXML_ClothesStoreController.rootP.setBottomAnchor(chitietsanpham, 0.0);
         } catch (IOException ex) {
             Logger.getLogger(FXML_HangHoaController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -255,41 +295,39 @@ public class FXML_HangHoaController implements Initializable {
         StringProperty tennhomhang = new SimpleStringProperty(cmb_nhomhang.getValue());
         StringProperty ghichu = new SimpleStringProperty(txt_area_ghichu.getText());
 
-        sanpham_model sanpham = new sanpham_model(masp, tensp, tennsx, tennhomhang, ghichu);
-        if (sanpham.insert()) {
-            viewListTable();
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Thông báo");
-            alert.setHeaderText(null);
-            alert.setContentText("Thêm dữ liệu thành công");
-            alert.showAndWait();
+        SanPham sanpham = new SanPham(masp, tensp, tennsx, tennhomhang, ghichu);
 
+        if (sanpham.isEmpty()) {
+            ShowMessage
+                    .showMessageBox(Alert.AlertType.WARNING, "Thông báo", null, "Bạn phải điền đẩy đủ thông tin bắt buộc")
+                    .showAndWait();
+            return;
+        }
+        if (sanpham.insert()) {
+            ShowFXML_ChiTietSanPham(sanpham.getMasanpham().get());
+            ShowMessage
+                    .showMessageBox(Alert.AlertType.INFORMATION, "Thông báo", null, "Thêm dữ liệu thành công")
+                    .showAndWait();
         } else {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Thông báo");
-            alert.setHeaderText(null);
-            alert.setContentText("Thêm dữ liệu thất bại");
-            alert.showAndWait();
+            ShowMessage
+                    .showMessageBox(Alert.AlertType.ERROR, "Thông báo", null, "Thêm dữ liệu thất bại")
+                    .showAndWait();
         }
     }
 
     private void DeleteSanPham() {
         StringProperty masp = new SimpleStringProperty(txt_fi_masanpham.getText());
-        sanpham_model sanpham = new sanpham_model(masp);
+        SanPham sanpham = new SanPham(masp);
         if (sanpham.delete()) {
             viewListTable();
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Thông báo");
-            alert.setHeaderText(null);
-            alert.setContentText("Xóa dữ liệu thành công");
-            alert.showAndWait();
+            ShowMessage
+                    .showMessageBox(Alert.AlertType.INFORMATION, "Thông báo", null, "Xóa dữ liệu thành công")
+                    .showAndWait();
 
         } else {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Thông báo");
-            alert.setHeaderText(null);
-            alert.setContentText("Xóa dữ liệu thất bại");
-            alert.showAndWait();
+            ShowMessage
+                    .showMessageBox(Alert.AlertType.ERROR, "Thông báo", null, "Xóa dữ liệu thất bại")
+                    .showAndWait();
         }
     }
 
@@ -299,84 +337,91 @@ public class FXML_HangHoaController implements Initializable {
         StringProperty tennsx = new SimpleStringProperty(cmb_nhasanxuat.getValue());
         StringProperty tennhomhang = new SimpleStringProperty(cmb_nhomhang.getValue());
         StringProperty ghichu = new SimpleStringProperty(txt_area_ghichu.getText());
-        sanpham_model sanpham = new sanpham_model(masp, tensp, tennsx, tennhomhang, ghichu);
+        SanPham sanpham = new SanPham(masp, tensp, tennsx, tennhomhang, ghichu);
+
         if (sanpham.update()) {
             viewListTable();
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Thông báo");
-            alert.setHeaderText(null);
-            alert.setContentText("Cập nhật dữ liệu thành công");
-            alert.showAndWait();
+            ShowMessage
+                    .showMessageBox(Alert.AlertType.INFORMATION, "Thông báo", null, "Cập nhật dữ liệu thành công")
+                    .showAndWait();
 
         } else {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Thông báo");
-            alert.setHeaderText(null);
-            alert.setContentText("Cập nhật dữ liệu thất bại");
-            alert.showAndWait();
+            ShowMessage
+                    .showMessageBox(Alert.AlertType.ERROR, "Thông báo", null, "Cập nhật dữ liệu thất bại")
+                    .showAndWait();
         }
     }
 
     private void viewListTable() {
-        sanpham_model sp = new sanpham_model();
-        ObservableList<sanpham_model> splist = sp.getSPList();
+        SanPham sp = new SanPham();
+        ObservableList<SanPham> splist = sp.getSPList();
         if (splist.isEmpty()) {
             return;
         }
-        TreeItem<sanpham_model> root = new RecursiveTreeItem<>(splist, RecursiveTreeObject::getChildren);
+        TreeItem<SanPham> root = new RecursiveTreeItem<>(splist, RecursiveTreeObject::getChildren);
         tree_table_vi.setRoot(root);
         tree_table_vi.setShowRoot(false);
+
+    }
+
+    private void ContextMenuTable() {
         ContextMenu context = new ContextMenu();
-        MenuItem item1 = new MenuItem("Xóa");
-        item1.setOnAction(new EventHandler<ActionEvent>() {
+
+        MenuItem itemXoa = new MenuItem("Xóa");
+        itemXoa.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
             public void handle(ActionEvent event) {
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setTitle("Thông báo");
-                alert.setHeaderText(null);
-                alert.setContentText("Bạn có chắc muốn xóa không?");
 
-                Optional<ButtonType> action = alert.showAndWait();
+                Optional<ButtonType> action = ShowMessage
+                        .showMessageBox(Alert.AlertType.CONFIRMATION, "Thông báo", null, "Bạn có chắc muốn xóa không?")
+                        .showAndWait();
                 if (action.get() == ButtonType.OK) {
                     DeleteSanPham();
                 }
 
             }
         });
+        MenuItem itemThemchitietsp = new MenuItem("Thêm chi tiết sản phẩm");
+        itemThemchitietsp.setOnAction(new EventHandler<ActionEvent>() {
 
-        context.getItems().addAll(item1);
+            @Override
+            public void handle(ActionEvent event) {
+                ShowFXML_ChiTietSanPham(txt_fi_masanpham.getText());
+            }
+        });
+        context.getItems().addAll(itemXoa, itemThemchitietsp);
         tree_table_vi.setContextMenu(context);
     }
 
     private void loadingColfromDB() {
-        col_masanpham.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<sanpham_model, String>, ObservableValue<String>>() {
+        col_masanpham.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<SanPham, String>, ObservableValue<String>>() {
             @Override
-            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<sanpham_model, String> param) {
+            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<SanPham, String> param) {
                 return param.getValue().getValue().getMasanpham();
             }
         });
-        col_tensanpham.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<sanpham_model, String>, ObservableValue<String>>() {
+        col_tensanpham.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<SanPham, String>, ObservableValue<String>>() {
             @Override
-            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<sanpham_model, String> param) {
+            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<SanPham, String> param) {
                 return param.getValue().getValue().getTensanpham();
             }
         });
-        col_nhasanxuat.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<sanpham_model, String>, ObservableValue<String>>() {
+        col_nhasanxuat.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<SanPham, String>, ObservableValue<String>>() {
             @Override
-            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<sanpham_model, String> param) {
+            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<SanPham, String> param) {
                 return param.getValue().getValue().getTennhasanxuat();
             }
         });
-        col_nhomhang.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<sanpham_model, String>, ObservableValue<String>>() {
+        col_nhomhang.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<SanPham, String>, ObservableValue<String>>() {
             @Override
-            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<sanpham_model, String> param) {
+            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<SanPham, String> param) {
                 return param.getValue().getValue().getTennhomhang();
             }
         });
-        col_ghichu.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<sanpham_model, String>, ObservableValue<String>>() {
+        col_ghichu.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<SanPham, String>, ObservableValue<String>>() {
             @Override
-            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<sanpham_model, String> param) {
+            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<SanPham, String> param) {
                 return param.getValue().getValue().getGhichu();
             }
         });
@@ -389,7 +434,8 @@ public class FXML_HangHoaController implements Initializable {
                 if (tree_table_vi.getSelectionModel().getSelectedItem() != null) {
                     btnXoa.setDisable(false);
                     btnSua.setDisable(false);
-                    TreeItem<sanpham_model> sanphamItem = tree_table_vi.getSelectionModel().getSelectedItem();
+
+                    TreeItem<SanPham> sanphamItem = tree_table_vi.getSelectionModel().getSelectedItem();
                     txt_fi_masanpham.setText("" + sanphamItem.getValue().getMasanpham().get());
                     txt_fi_tensanpham.setText("" + sanphamItem.getValue().getTensanpham().get());
                     txt_area_ghichu.setText("" + sanphamItem.getValue().getGhichu().get());
@@ -405,15 +451,17 @@ public class FXML_HangHoaController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
 
         // TODO
-        nhasanxuat_model tennsx = new nhasanxuat_model();
+        NhaSanXuat tennsx = new NhaSanXuat();
         tennsx.getNSXList(cmb_nhasanxuat);
-        nhomhang_model nhomhhang = new nhomhang_model();
+        NhomHang nhomhhang = new NhomHang();
         nhomhhang.getNHList(cmb_nhomhang);
         loadingColfromDB();
         viewListTable();
+        ContextMenuTable();
         btnHuy.setVisible(false);
         btnDongy.setVisible(false);
-
+        cmb_nhasanxuat.getSelectionModel().selectFirst();
+        cmb_nhomhang.getSelectionModel().selectFirst();
     }
 
 }

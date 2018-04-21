@@ -25,6 +25,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.prefs.Preferences;
 import javafx.animation.FadeTransition;
+import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -40,6 +41,7 @@ import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.stage.WindowEvent;
 import javafx.util.Duration;
 
 /**
@@ -95,6 +97,10 @@ public class FXML_DangNhapController implements Initializable {
                     Scene scene = new Scene(root);
                     stageMain = new Stage();
                     stageMain.setScene(scene);
+                    stageMain.setOnCloseRequest((WindowEvent evt) -> {
+                        System.exit(0);
+                    });
+
                 } catch (IOException ex) {
                     Logger.getLogger(FXML_DangNhapController.class.getName()).log(Level.SEVERE, null, ex);
                 }

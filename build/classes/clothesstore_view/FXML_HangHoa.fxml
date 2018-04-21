@@ -11,7 +11,7 @@
 
 <AnchorPane id="AnchorPane" prefHeight="700.0" prefWidth="845.0" style="-fx-background-color: #deeeef;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clothesstore_controller.FXML_HangHoaController">
    <children>
-      <Label layoutX="14.0" opacity="0.4" prefHeight="25.0" prefWidth="137.0" text="Hàng hóa" textFill="#021bf5" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="0.0">
+      <Label layoutX="14.0" opacity="0.4" prefHeight="25.0" prefWidth="137.0" text="Sản phẩm" textFill="#021bf5" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="0.0">
          <font>
             <Font name="System Bold" size="28.0" />
          </font>
@@ -45,7 +45,7 @@
       </JFXButton>
       <AnchorPane layoutX="7.0" layoutY="40.0" onMouseClicked="#OnMouseClick_clearSelectTable" prefHeight="332.0" prefWidth="504.0" style="-fx-border-radius: 5; -fx-border-width: 1; -fx-border-color: #4681f5;">
          <children>
-            <JFXTextField fx:id="txt_fi_masanpham" focusColor="#0040ff" layoutX="9.0" layoutY="37.0" onMouseClicked="#OnMouseClick_clearSelectTable" prefHeight="25.0" prefWidth="204.0" promptText="Nhập tối đa 8 kí tự">
+            <JFXTextField fx:id="txt_fi_masanpham" editable="false" focusColor="#0040ff" layoutX="9.0" layoutY="37.0" onMouseClicked="#OnMouseClick_clearSelectTable" prefHeight="25.0" prefWidth="204.0">
                <font>
                   <Font size="14.0" />
                </font>

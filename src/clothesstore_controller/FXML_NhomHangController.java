@@ -5,7 +5,7 @@
  */
 package clothesstore_controller;
 
-import clothesstore_model.nhomhang_model;
+import clothesstore_model.NhomHang;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXTreeTableColumn;
@@ -49,17 +49,17 @@ public class FXML_NhomHangController implements Initializable {
     @FXML
     private JFXTextField txt_fi_tennhomhang;
     @FXML
-    private JFXTreeTableView<nhomhang_model> tree_table_vi;
+    private JFXTreeTableView<NhomHang> tree_table_vi;
 
-    private JFXTreeTableColumn<nhomhang_model, String> ten_nhomhang = new JFXTreeTableColumn<>("Tên nhóm hàng");
+    private JFXTreeTableColumn<NhomHang, String> ten_nhomhang = new JFXTreeTableColumn<>("Tên nhóm hàng");
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
 
-        ten_nhomhang.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<nhomhang_model, String>, ObservableValue<String>>() {
+        ten_nhomhang.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<NhomHang, String>, ObservableValue<String>>() {
             @Override
-            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<nhomhang_model, String> param) {
+            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<NhomHang, String> param) {
                 return param.getValue().getValue().getTennhomhang();
             }
         });
@@ -72,13 +72,13 @@ public class FXML_NhomHangController implements Initializable {
             public void changed(ObservableValue observableValue, Object oldValue, Object newValue) {
 
                 if (tree_table_vi.getSelectionModel().getSelectedItem() != null) {
-                    TreeItem<nhomhang_model> nhomhhangItem = tree_table_vi.getSelectionModel().getSelectedItem();
+                    TreeItem<NhomHang> nhomhhangItem = tree_table_vi.getSelectionModel().getSelectedItem();
                     txt_fi_tennhomhang.setText("" + nhomhhangItem.getValue().getTennhomhang().get());
                 }
             }
         });
         viewListTable();
-           txt_fi_tennhomhang.setOnMousePressed(new EventHandler<MouseEvent>() {
+        txt_fi_tennhomhang.setOnMousePressed(new EventHandler<MouseEvent>() {
 
             @Override
             public void handle(MouseEvent event) {
@@ -89,12 +89,9 @@ public class FXML_NhomHangController implements Initializable {
     }
 
     public void viewListTable() {
-        nhomhang_model tennh = new nhomhang_model();
-        ObservableList<nhomhang_model> tennhlist = tennh.getNHList();
-        if (tennhlist.isEmpty()) {
-            return;
-        }
-        TreeItem<nhomhang_model> root = new RecursiveTreeItem<>(tennhlist, RecursiveTreeObject::getChildren);
+        NhomHang tennh = new NhomHang();
+        ObservableList<NhomHang> tennhlist = tennh.getNHList();
+        TreeItem<NhomHang> root = new RecursiveTreeItem<>(tennhlist, RecursiveTreeObject::getChildren);
         tree_table_vi.setRoot(root);
         tree_table_vi.setShowRoot(false);
     }
@@ -112,43 +109,39 @@ public class FXML_NhomHangController implements Initializable {
 
     public void insertNhomHang() {
         StringProperty tennh = new SimpleStringProperty(txt_fi_tennhomhang.getText());
-        nhomhang_model nhomhang = new nhomhang_model(tennh);
-
+        NhomHang nhomhang = new NhomHang(tennh);
+        if (nhomhang.isEmpty()) {
+            ShowMessage
+                    .showMessageBox(Alert.AlertType.WARNING, "Thông báo", null, "Bạn không được để tên nhóm hàng trống")
+                    .showAndWait();
+            return;
+        }
         if (nhomhang.insert()) {
             viewListTable();
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Thông báo");
-            alert.setHeaderText(null);
-            alert.setContentText("Thêm dữ liệu thành công");
-            alert.showAndWait();
+            ShowMessage
+                    .showMessageBox(Alert.AlertType.INFORMATION, "Thông báo", null, "Thêm dữ liệu thành công")
+                    .showAndWait();
 
         } else {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Thông báo");
-            alert.setHeaderText(null);
-            alert.setContentText("Thêm dữ liệu thất bại");
-            alert.showAndWait();
+            ShowMessage
+                    .showMessageBox(Alert.AlertType.ERROR, "Thông báo", null, "Thêm dữ liệu thất bại")
+                    .showAndWait();
         }
 
     }
 
     public void deleteNhomhang() {
         StringProperty tennh = new SimpleStringProperty(txt_fi_tennhomhang.getText());
-        nhomhang_model nhomhang = new nhomhang_model(tennh);
+        NhomHang nhomhang = new NhomHang(tennh);
         if (nhomhang.delete()) {
             viewListTable();
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Thông báo");
-            alert.setHeaderText(null);
-            alert.setContentText("Xóa dữ liệu thành công");
-            alert.showAndWait();
-
+            ShowMessage
+                    .showMessageBox(Alert.AlertType.INFORMATION, "Thông báo", null, "Xóa dữ liệu thành công")
+                    .showAndWait();
         } else {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Thông báo");
-            alert.setHeaderText(null);
-            alert.setContentText("Xóa dữ liệu thất bại");
-            alert.showAndWait();
+            ShowMessage
+                    .showMessageBox(Alert.AlertType.ERROR, "Thông báo", null, "Xóa dữ liệu thất bại")
+                    .showAndWait();
         }
     }
 

@@ -5,7 +5,7 @@
  */
 package clothesstore_controller;
 
-import clothesstore_model.nhasanxuat_model;
+import clothesstore_model.NhaSanXuat;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXTreeTableColumn;
@@ -47,9 +47,9 @@ public class FXML_NhasanxuatController implements Initializable {
     @FXML
     private JFXTextField txt_fi_tennhasanxuat;
     @FXML
-    private JFXTreeTableView<nhasanxuat_model> tree_table_vi;
+    private JFXTreeTableView<NhaSanXuat> tree_table_vi;
 
-    private JFXTreeTableColumn<nhasanxuat_model, String> ten_nhasanxuat = new JFXTreeTableColumn<>("Tên nhà sản xuất");
+    private JFXTreeTableColumn<NhaSanXuat, String> ten_nhasanxuat = new JFXTreeTableColumn<>("Tên nhà sản xuất");
 
     @FXML
     private void ClickEvent(ActionEvent event) throws IOException {
@@ -59,61 +59,51 @@ public class FXML_NhasanxuatController implements Initializable {
         } else if (btn == btnXoa) {
             deleteNhaSanXuat();
         }
-//        } else if (btn == btnThoat) {
-//            Node source = (Node) event.getSource();
-//            Stage stage = (Stage) source.getScene().getWindow();
-//            stage.close();
-//        }
 
     }
 
     public void insertNhaSanXuat() {
         StringProperty tennsx = new SimpleStringProperty(txt_fi_tennhasanxuat.getText());
-        nhasanxuat_model nsx = new nhasanxuat_model(tennsx);
+        NhaSanXuat nsx = new NhaSanXuat(tennsx);
+        if (nsx.isEmpty()) {
+            ShowMessage
+                    .showMessageBox(Alert.AlertType.WARNING, "Thông báo", null, "Bạn không được để tên nhà sản xuất trống")
+                    .showAndWait();
+            return;
+        }
 
         if (nsx.insert()) {
             viewListTable();
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Thông báo");
-            alert.setHeaderText(null);
-            alert.setContentText("Thêm dữ liệu thành công");
-            alert.showAndWait();
+            ShowMessage
+                    .showMessageBox(Alert.AlertType.INFORMATION, "Thông báo", null, "Thêm dữ liệu thành công")
+                    .showAndWait();
         } else {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Thông báo");
-            alert.setHeaderText(null);
-            alert.setContentText("Thêm dữ liệu thất bại");
-            alert.showAndWait();
+            ShowMessage
+                    .showMessageBox(Alert.AlertType.ERROR, "Thông báo", null, "Thêm dữ liệu thất bại")
+                    .showAndWait();
         }
     }
 
     public void viewListTable() {
-        nhasanxuat_model tennsx = new nhasanxuat_model();
-        ObservableList<nhasanxuat_model> tennsxList = tennsx.getNSXList();
-        if (tennsxList.isEmpty()) {
-            return;
-        }
-        TreeItem<nhasanxuat_model> root = new RecursiveTreeItem<>(tennsxList, RecursiveTreeObject::getChildren);
+        NhaSanXuat tennsx = new NhaSanXuat();
+        ObservableList<NhaSanXuat> tennsxList = tennsx.getNSXList();
+        TreeItem<NhaSanXuat> root = new RecursiveTreeItem<>(tennsxList, RecursiveTreeObject::getChildren);
         tree_table_vi.setRoot(root);
         tree_table_vi.setShowRoot(false);
     }
 
     public void deleteNhaSanXuat() {
         StringProperty tennsx = new SimpleStringProperty(txt_fi_tennhasanxuat.getText());
-        nhasanxuat_model nsx = new nhasanxuat_model(tennsx);
+        NhaSanXuat nsx = new NhaSanXuat(tennsx);
         if (nsx.delete()) {
             viewListTable();
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Thông báo");
-            alert.setHeaderText(null);
-            alert.setContentText("Xóa dữ liệu thành công");
-            alert.showAndWait();
+            ShowMessage
+                    .showMessageBox(Alert.AlertType.INFORMATION, "Thông báo", null, "Xóa dữ liệu thành công")
+                    .showAndWait();
         } else {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Thông báo");
-            alert.setHeaderText(null);
-            alert.setContentText("Xóa dữ liệu thất bại");
-            alert.showAndWait();
+            ShowMessage
+                    .showMessageBox(Alert.AlertType.ERROR, "Thông báo", null, "Xóa dữ liệu thất bại")
+                    .showAndWait();
         }
     }
 
@@ -121,9 +111,9 @@ public class FXML_NhasanxuatController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
 
-        ten_nhasanxuat.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<nhasanxuat_model, String>, ObservableValue<String>>() {
+        ten_nhasanxuat.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<NhaSanXuat, String>, ObservableValue<String>>() {
             @Override
-            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<nhasanxuat_model, String> param) {
+            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<NhaSanXuat, String> param) {
                 return param.getValue().getValue().getTen_nhasanxuat();
             }
         });
@@ -136,7 +126,7 @@ public class FXML_NhasanxuatController implements Initializable {
             public void changed(ObservableValue observableValue, Object oldValue, Object newValue) {
 
                 if (tree_table_vi.getSelectionModel().getSelectedItem() != null) {
-                    TreeItem<nhasanxuat_model> nhasanxuatItem = tree_table_vi.getSelectionModel().getSelectedItem();
+                    TreeItem<NhaSanXuat> nhasanxuatItem = tree_table_vi.getSelectionModel().getSelectedItem();
                     txt_fi_tennhasanxuat.setText("" + nhasanxuatItem.getValue().getTen_nhasanxuat().get());
                 }
             }

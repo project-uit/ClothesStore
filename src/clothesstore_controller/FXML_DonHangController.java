@@ -5,7 +5,9 @@
  */
 package clothesstore_controller;
 
+import clothesstore_model.SanPham;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.fxml.Initializable;
 
@@ -22,6 +24,7 @@ public class FXML_DonHangController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
+       
     }    
     
 }
