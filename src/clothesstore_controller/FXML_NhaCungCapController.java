@@ -28,11 +28,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import clothesstore_model.NhaCungCap;
 import static clothesstore_controller.FXML_PhieuNhapController.stageQuanLyNCC;
-import clothesstore_model.NhanVien;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.control.Alert;
-import javafx.scene.control.ComboBox;
-import javafx.util.Callback;
 
 
 /**
@@ -59,8 +55,6 @@ public class FXML_NhaCungCapController implements Initializable {
     @FXML
     private JFXButton btnthem;
     private NhaCungCap ncctemp;
-    @FXML
-    private TableColumn trangthai;
 
     /**
      * Initializes the controller class.
@@ -69,7 +63,6 @@ public class FXML_NhaCungCapController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
         InitTableView();
-        
     }    
     public void InitTableView(){
         NhaCungCap ncc = new NhaCungCap();
@@ -79,18 +72,6 @@ public class FXML_NhaCungCapController implements Initializable {
         diachi.setCellValueFactory(new PropertyValueFactory<NhaCungCap, String>("diachi"));
         email.setCellValueFactory(new PropertyValueFactory<NhaCungCap, String>("email"));
         ghichu.setCellValueFactory(new PropertyValueFactory<NhaCungCap, String>("ghichu"));
-        
-        trangthai.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<NhaCungCap, String>, ObservableValue<String>>() {
-        @Override
-        public ObservableValue<String> call(TableColumn.CellDataFeatures<NhaCungCap, String> p) {
-            String trangthai="";
-            if(p.getValue().getTrangthai()== 1)
-                trangthai = "Hoạt động" ;
-            else    
-                trangthai = "Không hoạt động";
-            return new SimpleStringProperty(trangthai);
-        }
-        });
             
         tblQLyNhaCungCap.setItems(list);
         
@@ -136,8 +117,6 @@ public class FXML_NhaCungCapController implements Initializable {
         
         TextField txtghichu = new TextField();
         txtghichu.setPromptText("Ghi chú");
-        
-        ComboBox cmbtrangthai = new ComboBox();
 
         gridPane.add(new Label("Mã nhà cung cấp"), 0, 0);
         gridPane.add(txtmanhacungcap, 0, 1);
@@ -149,41 +128,17 @@ public class FXML_NhaCungCapController implements Initializable {
         gridPane.add(txtemail, 0, 7);
         gridPane.add(new Label("Ghi chú"), 0, 8);
         gridPane.add(txtghichu, 0, 9);
+
         dialog.getDialogPane().setContent(gridPane);
 
         // Request focus on the username field by default.
         Platform.runLater(() -> txttennhacungcap.requestFocus());
-        
+
         // Convert the result to a username-password-pair when the login button is clicked.
         dialog.setResultConverter(dialogButton -> {
             if (dialogButton == btnSave) {
-                int manhacungcap=0;
-                try{
-                    manhacungcap = Integer.parseInt(txtmanhacungcap.getText().toString());
-                }catch(Exception ex){
-                    System.out.println(ex);
-                }
-                String tennhacungcap=null;
-                try{
-                    tennhacungcap = txttennhacungcap.getText();
-                }catch(Exception ex){
-                    System.out.println(ex);
-                }
-                
-                if(tennhacungcap.equals("") || manhacungcap==0){
-                
-            ButtonType cancel = new ButtonType("OK", ButtonBar.ButtonData.CANCEL_CLOSE);
-            Alert alert = new Alert(Alert.AlertType.WARNING,
-                    "Vui lòng điền đầy đủ thông tin",
-                    cancel);
-
-            alert.setTitle("Nhắc nhở");
-            alert.setHeaderText(null);
-            Optional<ButtonType> result = alert.showAndWait(); 
+                return new NhaCungCap(Integer.parseInt(txtmanhacungcap.getText().toString()), txttennhacungcap.getText(),txtdiachi.getText(),txtemail.getText(),txtghichu.getText());
             }
-            else{
-                return new NhaCungCap(manhacungcap, tennhacungcap,txtdiachi.getText(),txtemail.getText(),txtghichu.getText());
-            }}
             return null;
         });
 
@@ -234,12 +189,6 @@ public class FXML_NhaCungCapController implements Initializable {
         TextField txtghichu = new TextField();
         txtghichu.setPromptText("Ghi chú");
         txtghichu.setText(ncctemp.getGhichu());
-        
-        ComboBox cmbtrangthai = new ComboBox();
-        cmbtrangthai.getItems().addAll("Hoạt động", "Không hoạt động");
-        cmbtrangthai.getSelectionModel().selectFirst();
-        
-        
 
         gridPane.add(new Label("Mã nhà cung cấp"), 0, 0);
         gridPane.add(txtmanhacungcap, 0, 1);
@@ -251,10 +200,6 @@ public class FXML_NhaCungCapController implements Initializable {
         gridPane.add(txtemail, 0, 7);
         gridPane.add(new Label("Ghi chú"), 0, 8);
         gridPane.add(txtghichu, 0, 9);
-        gridPane.add(new Label("Trạng thái"), 0, 10);
-        gridPane.add(cmbtrangthai, 0, 11);
-        
-        
 
         dialog.getDialogPane().setContent(gridPane);
 
@@ -264,38 +209,8 @@ public class FXML_NhaCungCapController implements Initializable {
         // Convert the result to a username-password-pair when the login button is clicked.
         dialog.setResultConverter(dialogButton -> {
             if (dialogButton == btnSave) {
-                int trangthai = 0;
-                if ( cmbtrangthai.getValue().equals("Hoạt động")){
-                     trangthai = 1;}
-                else {
-                    trangthai = 0;}
-                int manhacungcap=0;
-                try{
-                    manhacungcap = Integer.parseInt(txtmanhacungcap.getText().toString());
-                }catch(Exception ex){
-                    System.out.println(ex);
-                }
-                String tennhacungcap=null;
-                try{
-                    tennhacungcap = txttennhacungcap.getText();
-                }catch(Exception ex){
-                    System.out.println(ex);
-                }
-                
-                if(tennhacungcap.equals("") || manhacungcap==0){
-                
-            ButtonType cancel = new ButtonType("OK", ButtonBar.ButtonData.CANCEL_CLOSE);
-            Alert alert = new Alert(Alert.AlertType.WARNING,
-                    "Vui lòng điền đầy đủ thông tin",
-                    cancel);
-
-            alert.setTitle("Nhắc nhở");
-            alert.setHeaderText(null);
-            Optional<ButtonType> result = alert.showAndWait(); 
+                return new NhaCungCap(Integer.parseInt(txtmanhacungcap.getText().toString()), txttennhacungcap.getText(),txtdiachi.getText(),txtemail.getText(),txtghichu.getText());
             }
-            else{
-                return new NhaCungCap(Integer.parseInt(txtmanhacungcap.getText().toString()), txttennhacungcap.getText(),txtdiachi.getText(),txtemail.getText(),txtghichu.getText(),trangthai);
-            }}
             return null;
         });
 

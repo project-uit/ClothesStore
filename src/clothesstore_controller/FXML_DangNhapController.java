@@ -6,7 +6,6 @@
 package clothesstore_controller;
 
 import static clothesstore_controller.SidePanelContentController._vbox;
-import clothesstore_model.NhanVien;
 import clothesstore_model.TaiKhoan;
 import static clothesstore_view.ClothesStore.stageDangNhap;
 import com.jfoenix.controls.JFXButton;
@@ -71,8 +70,6 @@ public class FXML_DangNhapController implements Initializable {
     public static Stage stageMain;
     public static Stage stageSplash;
     public static String UserID;
-    public static int MaNhanVien; //
-    public static String TenNhanVien;
 
     @FXML
     private void Login(ActionEvent event) throws IOException {
@@ -83,10 +80,6 @@ public class FXML_DangNhapController implements Initializable {
             TaiKhoan tk = new TaiKhoan(user, password);
             if (tk.CheckLogin()) {
                 if (checkbox_remember.isSelected()) {
-                    NhanVien nv = new NhanVien();
-                    nv = nv.getNhanVienfromUser(user);
-                    TenNhanVien = nv.getTennhanvien();
-                    MaNhanVien = nv.getManhanvien();
                     preference.put("userID", user);
                     preference.put("password", password);
                 } else {

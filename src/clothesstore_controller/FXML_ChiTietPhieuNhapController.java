@@ -51,7 +51,7 @@ public class FXML_ChiTietPhieuNhapController implements Initializable {
     @FXML
     private TableColumn sanpham;
     @FXML
-    private TableColumn soluongsanphamnhap;
+    private TableColumn soluong;
     @FXML
     private TableColumn giavon;
     @FXML
@@ -79,10 +79,6 @@ public class FXML_ChiTietPhieuNhapController implements Initializable {
     public static Stage stageQuanLySearchSanPham;
     @FXML
     private JFXButton btnhuy;
-    @FXML
-    private JFXTextField txtmaphieunhap;
-    @FXML
-    private JFXTextField txtgiaban;
 
     /**
      * Initializes the controller class.
@@ -91,7 +87,7 @@ public class FXML_ChiTietPhieuNhapController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
         InitTableView();
-        txtmaphieunhap.setText(Integer.toString(mapn));
+        
         txtfigiavon.textProperty().addListener(new ChangeListener<String>() {
         
             @Override
@@ -145,7 +141,7 @@ public class FXML_ChiTietPhieuNhapController implements Initializable {
         ObservableList<ChiTietPhieuNhap> list = ctpn.getTableChiTietPhieuNhap(mapn);
         machitietphieunhap.setCellValueFactory(new PropertyValueFactory("machitietphieunhap"));
         sanpham.setCellValueFactory(new PropertyValueFactory("masanpham"));
-        soluongsanphamnhap.setCellValueFactory(new PropertyValueFactory("soluongsanphamnhap"));
+        soluong.setCellValueFactory(new PropertyValueFactory("soluong"));
         giavon.setCellValueFactory(new PropertyValueFactory("giavon"));
         thanhtien.setCellValueFactory(new PropertyValueFactory("thanhtien"));
         tablechitietsanpham.setItems(list);
@@ -155,12 +151,7 @@ public class FXML_ChiTietPhieuNhapController implements Initializable {
         String masp = txtfisanpham.getText();
         String maphieunhap = Integer.toString(mapn);
         tablechitietsanpham.getSelectionModel().focus(-1);
-        int giaban=0;
-        try{
-         giaban = Integer.parseInt(txtgiaban.getText());
-        }catch(Exception ex){
-            System.out.println(ex);
-        }
+        
         int soluong=0;
         try{
          soluong = Integer.parseInt(txtfisoluong.getText().toString());
@@ -179,7 +170,7 @@ public class FXML_ChiTietPhieuNhapController implements Initializable {
         }catch(Exception ex){
             System.out.println(ex);
         }
-        if(masp.equals("") || soluong==0 || giavon==0 || giaban==0){
+        if(masp.equals("") || soluong==0 || giavon==0){
             
             ButtonType cancel = new ButtonType("OK", ButtonBar.ButtonData.CANCEL_CLOSE);
             Alert alert = new Alert(Alert.AlertType.WARNING,
@@ -193,17 +184,15 @@ public class FXML_ChiTietPhieuNhapController implements Initializable {
         else{
         ChiTietPhieuNhap ctpn = new ChiTietPhieuNhap( masp, maphieunhap, soluong, giavon, thanhtien);
         ctpn.ThemChiTietPhieuNhap();
-        ctpn.CapNhatTongTienPhieuNhap(maphieunhap);
-        ctpn.CapNhatGiaBanSanPham(masp, giaban);
         InitTableView();
     }
     }
 
     private void handler_thoat(ActionEvent event) {
+
         Node source = (Node) event.getSource();
         Stage stage = (Stage) source.getScene().getWindow();
         stage.close();
-        
       
     }
 
@@ -212,12 +201,6 @@ public class FXML_ChiTietPhieuNhapController implements Initializable {
         
         String masp = txtfisanpham.getText();
         String maphieunhap = Integer.toString(mapn);
-        int giaban=0;
-        try{
-         giaban = Integer.parseInt(txtgiaban.getText());
-        }catch(Exception ex){
-            System.out.println(ex);
-        }
         int soluong=0;
         try{
          soluong = Integer.parseInt(txtfisoluong.getText().toString());
@@ -236,7 +219,7 @@ public class FXML_ChiTietPhieuNhapController implements Initializable {
         }catch(Exception ex){
             System.out.println(ex);
         }
-        if(masp.equals("") || soluong==0 || giavon==0 || giaban==0){
+        if(masp.equals("") || soluong==0 || giavon==0){
             
             ButtonType cancel = new ButtonType("OK", ButtonBar.ButtonData.CANCEL_CLOSE);
             Alert alert = new Alert(Alert.AlertType.WARNING,
@@ -250,8 +233,6 @@ public class FXML_ChiTietPhieuNhapController implements Initializable {
         else{
         ChiTietPhieuNhap ctpn=new ChiTietPhieuNhap(chitietpn.getMachitietphieunhap(),masp,maphieunhap,soluong,giavon,thanhtien);
         ctpn.CapNhatChiTietPhieuNhap();
-        ctpn.CapNhatTongTienPhieuNhap(maphieunhap);
-        ctpn.CapNhatGiaBanSanPham(masp, giaban);
         InitTableView();
         btnluu.setDisable(true);
         btnthem.setDisable(false);
@@ -266,19 +247,28 @@ public class FXML_ChiTietPhieuNhapController implements Initializable {
         chitietpn = (ChiTietPhieuNhap) tablechitietsanpham.getSelectionModel().getSelectedItem();
         if(getSelectedRow==null)
         {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
+                "Mời chọn chi tiết phiếu nhập");
             alert.setTitle("Nhắc nhở");
             alert.setHeaderText(null);
-            alert.setContentText("Mời chọn chi tiết phiếu nhập mã ");
             return;
         }
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Nhắc nhở");
+        alert.setHeaderText(null);
+        alert.setContentText("Bạn có muốn sửa chi tiết phiếu nhập mã "+ getSelectedRow.getMachitietphieunhap()+" ?");
+        Optional<ButtonType> result = alert.showAndWait();
+        if(result.get()==ButtonType.OK)
+        {
         txtfisanpham.setText(getSelectedRow.getMasanpham());
-        txtfisoluong.setText(Integer.toString(getSelectedRow.getSoluongsanphamnhap()));
+        txtfisoluong.setText(Integer.toString(getSelectedRow.getSoluong()));
         txtfigiavon.setText(Integer.toString(getSelectedRow.getGiavon()));
         txtfithanhtien.setText(Integer.toString(getSelectedRow.getThanhtien()));
         btnluu.setDisable(false);
         btnthem.setDisable(true);
         btnhuy.setDisable(false);
+        }
+
     }
 
     @FXML
@@ -300,8 +290,6 @@ public class FXML_ChiTietPhieuNhapController implements Initializable {
             ChiTietPhieuNhap ctpn = new ChiTietPhieuNhap();
             String maphieunhap = Integer.toString(mapn);
             ctpn.XoaChiTietPhieuNhap(selectedForDeletion.getMachitietphieunhap(), maphieunhap);
-            
-            ctpn.CapNhatTongTienPhieuNhap(maphieunhap);
             InitTableView();
             System.out.println("Xoa Thanh Cong");
         } else {

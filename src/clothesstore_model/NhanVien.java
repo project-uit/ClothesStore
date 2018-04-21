@@ -247,34 +247,6 @@ public class NhanVien {
         return id;
     }
     
-    public NhanVien getNhanVienfromUser(String user){   
-        NhanVien nv = new NhanVien();
-        DBConnection db = new DBConnection();
-        Connection con = db.getConnecttion();
-        String sql = "SELECT * FROM nhanvien, dangnhap WHERE nhanvien.manhanvien = dangnhap.manhanvien and tentaikhoan = ?;";
-        if(con!=null){
-            try{
-                PreparedStatement ptm = con.prepareStatement(sql);
-                ptm.setString(1, user);
-                ResultSet rs = ptm.executeQuery();
-                while (rs.next()) {
-                    nv = new NhanVien(rs.getInt("manhanvien")
-                            , rs.getString("tennhanvien")
-                            , rs.getString("diachi")
-                            , rs.getInt("gioitinh")
-                            , rs.getDate("ngaysinh")
-                            , rs.getString("cmnd")
-                            , rs.getInt("trangthai")
-                            , rs.getInt("luong"));
-                }
-            }
-            catch(Exception e){
-                e.printStackTrace();
-            }  
-        }
-        return nv;
-    }
-    
     public TaiKhoan getTaiKhoan() {
         return taikhoan;
     }

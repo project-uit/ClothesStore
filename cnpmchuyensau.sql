@@ -63,11 +63,34 @@ ghichu nvarchar(50),
 giaban INT
 );
 
-insert into sanpham(masanpham,tensanpham,tennhasanxuat,tennhomhang,ghichu) values ("12344","aokhoacda","nike","ao","");
-insert into sanpham(masanpham,tensanpham,tennhasanxuat,tennhomhang,ghichu) values ("12346","aokhoacbong","adidas","ao","");
-insert into sanpham(masanpham,tensanpham,tennhasanxuat,tennhomhang,ghichu) values ("12347","quandai","apple","quan","");
-insert into sanpham(masanpham,tensanpham,tennhasanxuat,tennhomhang,ghichu) values ("12348","quanngan","nike","quan","");
-insert into sanpham(masanpham,tensanpham,tennhasanxuat,tennhomhang,ghichu) values ("12349","aonguc","victoriasecret","aovu","");
+DELIMITER $$
+CREATE FUNCTION GenerateLicensePlate()
+    RETURNS CHAR(8)
+ 
+    BEGIN
+    DECLARE plate CHAR(8) DEFAULT "" ;
+    WHILE LENGTH(plate) = 0 DO
+        SELECT concat('S',
+                'P',
+                substring('ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', rand()*36+1, 1),
+                substring('ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', rand()*36+1, 1),
+                substring('ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', rand()*36+1, 1),
+                substring('ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', rand()*36+1, 1),
+                substring('ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', rand()*36+1, 1),
+                substring('ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', rand()*36+1, 1)
+                ) into @newplate;
+    
+        SET @rcount = -1;
+        SELECT COUNT(*) INTO @rcount FROM `sanpham` WHERE `masanpham` = @newplate ;
+    
+        IF @rcount = 0 THEN
+            SET plate = @newplate ;
+        END IF ;
+    END WHILE ;
+ 
+    RETURN plate ;
+    END$$
+DELIMITER ;
 
 create table chitietsanpham
 (

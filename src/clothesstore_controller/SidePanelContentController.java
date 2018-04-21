@@ -31,28 +31,6 @@ public class SidePanelContentController implements Initializable {
     
     @FXML
     private Label lbUser;
-    @FXML
-    private AnchorPane paneDrawer;
-    @FXML
-    private JFXButton btnTongQuan;
-    @FXML
-    private JFXButton btnDonHang;
-    @FXML
-    private JFXButton btnHangHoa;
-    @FXML
-    private JFXButton btnPhieuNhap;
-    @FXML
-    private JFXButton btnLoiNhuan;
-    @FXML
-    private JFXButton btnBieuDo;
-    @FXML
-    private JFXButton btnQuanLyTK;
-    @FXML
-    private JFXButton btnDangXuat;
-    @FXML
-    private JFXButton btnThoat;
-    @FXML
-    private JFXButton btnNhapKho;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -92,16 +70,8 @@ public class SidePanelContentController implements Initializable {
                 rootP.setTopAnchor(hanghoa, 0.0);
                 rootP.setBottomAnchor(hanghoa, 0.0);
                 break;
-            case "btnPhieuNhap":
-                AnchorPane phieunhap = FXMLLoader.load(getClass().getResource("/clothesstore_view/FXML_PhieuNhap.fxml"));
-                FXML_ClothesStoreController.rootP.getChildren().setAll(phieunhap);
-                rootP.setLeftAnchor(phieunhap, 0.0);
-                rootP.setRightAnchor(phieunhap, 0.0);
-                rootP.setTopAnchor(phieunhap, 0.0);
-                rootP.setBottomAnchor(phieunhap, 0.0);
-                break;
             case "btnNhapKho":
-                AnchorPane nhapkho = FXMLLoader.load(getClass().getResource("/clothesstore_view/FXML_NhapKho.fxml"));
+                AnchorPane nhapkho = FXMLLoader.load(getClass().getResource("/clothesstore_view/FXML_PhieuNhap.fxml"));
                 FXML_ClothesStoreController.rootP.getChildren().setAll(nhapkho);
                 rootP.setLeftAnchor(nhapkho, 0.0);
                 rootP.setRightAnchor(nhapkho, 0.0);
