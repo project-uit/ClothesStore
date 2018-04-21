@@ -171,4 +171,33 @@ before delete ON phieunhap
 for each row
 	delete from chitietphieunhap 
     where chitietphieunhap.maphieunhap=old.maphieunhap;
+    
+DELIMITER $$
+CREATE FUNCTION GenerateLicensePlate()
+    RETURNS CHAR(8)
+ 
+    BEGIN
+    DECLARE plate CHAR(8) DEFAULT "" ;
+    WHILE LENGTH(plate) = 0 DO
+        SELECT concat('S',
+                'P',
+                substring('ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', rand()*36+1, 1),
+                substring('ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', rand()*36+1, 1),
+                substring('ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', rand()*36+1, 1),
+                substring('ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', rand()*36+1, 1),
+                substring('ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', rand()*36+1, 1),
+                substring('ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', rand()*36+1, 1)
+                ) into @newplate;
+    
+        SET @rcount = -1;
+        SELECT COUNT(*) INTO @rcount FROM `sanpham` WHERE `masanpham` = @newplate ;
+    
+        IF @rcount = 0 THEN
+            SET plate = @newplate ;
+        END IF ;
+    END WHILE ;
+ 
+    RETURN plate ;
+    END$$
+DELIMITER ;
  
