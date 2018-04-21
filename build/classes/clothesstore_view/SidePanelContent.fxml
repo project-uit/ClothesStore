@@ -45,7 +45,20 @@
                   </ImageView>
                </graphic>
             </JFXButton>
+<<<<<<< HEAD
             <JFXButton fx:id="btnNhapKho" alignment="BASELINE_LEFT" graphicTextGap="60.0" onAction="#changeTab" prefHeight="43.0" prefWidth="235.0" ripplerFill="#1451d9" text="Phiếu nhập">
+=======
+            <JFXButton fx:id="btnPhieuNhap" alignment="BASELINE_LEFT" graphicTextGap="60.0" onAction="#changeTab" prefHeight="43.0" prefWidth="235.0" ripplerFill="#1451d9" text="Phiếu nhập">
+               <graphic>
+                  <ImageView fitHeight="30.0" fitWidth="41.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@img/phieunhap.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </JFXButton>
+            <JFXButton fx:id="btnNhapKho" alignment="BASELINE_LEFT" graphicTextGap="60.0" onAction="#changeTab" prefHeight="43.0" prefWidth="235.0" ripplerFill="#1451d9" text="Nhập kho">
+>>>>>>> bcc7e66b79e87af7db8a3cccfbc7e0d17d4baf4f
                <graphic>
                   <ImageView fitHeight="30.0" fitWidth="41.0" pickOnBounds="true" preserveRatio="true">
                      <image>
