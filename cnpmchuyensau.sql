@@ -92,13 +92,25 @@ CREATE FUNCTION GenerateLicensePlate()
     END$$
 DELIMITER ;
 
+create table mausac
+(
+mamau INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+tenmau nvarchar(30) NOT NULL,
+trangthai int
+);
+
+create table size
+(
+tensize nvarchar(30) PRIMARY KEY NOT NULL
+);
+
 create table chitietsanpham
 (
 machitietsanpham varchar(30)  PRIMARY KEY,
 masanpham char(8) ,
 FOREIGN KEY (masanpham)
 REFERENCES sanpham(masanpham),
-size char(5),
+tensize char(5),
 mausac nvarchar(15),
 gioitinh int,
 soluong int
@@ -195,32 +207,3 @@ for each row
 	delete from chitietphieunhap 
     where chitietphieunhap.maphieunhap=old.maphieunhap;
     
-DELIMITER $$
-CREATE FUNCTION GenerateLicensePlate()
-    RETURNS CHAR(8)
- 
-    BEGIN
-    DECLARE plate CHAR(8) DEFAULT "" ;
-    WHILE LENGTH(plate) = 0 DO
-        SELECT concat('S',
-                'P',
-                substring('ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', rand()*36+1, 1),
-                substring('ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', rand()*36+1, 1),
-                substring('ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', rand()*36+1, 1),
-                substring('ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', rand()*36+1, 1),
-                substring('ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', rand()*36+1, 1),
-                substring('ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', rand()*36+1, 1)
-                ) into @newplate;
-    
-        SET @rcount = -1;
-        SELECT COUNT(*) INTO @rcount FROM `sanpham` WHERE `masanpham` = @newplate ;
-    
-        IF @rcount = 0 THEN
-            SET plate = @newplate ;
-        END IF ;
-    END WHILE ;
- 
-    RETURN plate ;
-    END$$
-DELIMITER ;
- 
