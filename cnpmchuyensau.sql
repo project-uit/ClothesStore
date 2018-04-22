@@ -12,7 +12,7 @@ use ClothesShop
 
 select *
 from khachhang
-where tenkhachhang = 'chú'
+where tenkhachhang = 'chú'
 Collate utf8_unicode_ci;
 
 create table khachhang
@@ -141,6 +141,7 @@ maphieunhap  INT(6) UNSIGNED,
 FOREIGN KEY (maphieunhap)
 REFERENCES phieunhap(maphieunhap)
 );
+
 -- kho đc nhập bởi nhân viên, mỗi nhân viên click vào phiếu nhập đc lập vào ngày hiện tại để nhập kho
 -- Khi nhập số lượng mới chỉ việc cộng dồn lại trên bảng chitietsanpham
 create table khosanpham 
@@ -157,12 +158,12 @@ REFERENCES nhanvien(manhanvien)
 create table hoadon
 (
 mahoadon   INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-sodienthoai char(15),
-FOREIGN KEY (sodienthoai)
-REFERENCES khachhang(sodienthoai),
 manhanvien INT(6) UNSIGNED,
 FOREIGN KEY (manhanvien)
 REFERENCES nhanvien(manhanvien),
+sodienthoai char(15),
+FOREIGN KEY (sodienthoai)
+REFERENCES khachhang(sodienthoai),
 ngayban datetime,
 tongtien int 
 );
@@ -187,6 +188,8 @@ manhanvien INT(6) UNSIGNED,
 FOREIGN KEY (manhanvien)
 REFERENCES nhanvien(manhanvien)
 );
+insert into dangnhap(tentaikhoan, matkhau,phanquyen,manhanvien)
+values ('admin','123',1,1);
 --  thống kê theo masanpham theo 1 tháng 
 DROP TRIGGER IF EXISTS before_nhanvien_delete;
 
@@ -196,16 +199,20 @@ for each row
 	delete from dangnhap 
     	where dangnhap.manhanvien = old.manhanvien;
         
-
-insert into dangnhap(tentaikhoan, matkhau,phanquyen,manhanvien)
-values ('admin','123',1,1);
-
 DROP TRIGGER IF EXISTS before_phieunhap_delete;
-
 
 create trigger before_phieunhap_delete 
 before delete ON phieunhap
 for each row
 	delete from chitietphieunhap 
     where chitietphieunhap.maphieunhap=old.maphieunhap;
-    
+
+DROP TRIGGER IF EXISTS before_sanpham_delete;
+create trigger before_sanpham_delete 
+before delete ON sanpham
+for each row
+	delete from chitietsanpham 
+    where chitietsanpham.masanpham=old.masanpham and old.giaban is null;
+
+
+
