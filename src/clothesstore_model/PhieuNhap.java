@@ -19,28 +19,29 @@ import javafx.collections.ObservableList;
  * @author 15520
  */
 public class PhieuNhap {
+
     private IntegerProperty maphieunhap;
-    private IntegerProperty tongtien; 
+    private IntegerProperty tongtien;
     private IntegerProperty manhacungcap;
     private Date ngaynhap;
 
     public PhieuNhap(int maphieunhap, int tongtien, int manhacungcap, Date ngaynhap) {
-        this.maphieunhap =new SimpleIntegerProperty (maphieunhap);
+        this.maphieunhap = new SimpleIntegerProperty(maphieunhap);
         this.tongtien = new SimpleIntegerProperty(tongtien);
-        this.manhacungcap =new SimpleIntegerProperty (manhacungcap);
+        this.manhacungcap = new SimpleIntegerProperty(manhacungcap);
         this.ngaynhap = ngaynhap;
     }
 
-    public PhieuNhap( int manhacungcap, Date ngaynhap,int tongtien) {
-        
-        this.tongtien =new SimpleIntegerProperty (tongtien);
-        this.manhacungcap =new SimpleIntegerProperty (manhacungcap);
+    public PhieuNhap(int manhacungcap, Date ngaynhap, int tongtien) {
+
+        this.tongtien = new SimpleIntegerProperty(tongtien);
+        this.manhacungcap = new SimpleIntegerProperty(manhacungcap);
         this.ngaynhap = ngaynhap;
     }
-    
-    public PhieuNhap(int maphieunhap,  int manhacungcap, Date ngaynhap) {
-        this.maphieunhap =new SimpleIntegerProperty (maphieunhap);
-        this.manhacungcap =new SimpleIntegerProperty (manhacungcap);
+
+    public PhieuNhap(int maphieunhap, int manhacungcap, Date ngaynhap) {
+        this.maphieunhap = new SimpleIntegerProperty(maphieunhap);
+        this.manhacungcap = new SimpleIntegerProperty(manhacungcap);
         this.ngaynhap = ngaynhap;
     }
 
@@ -54,8 +55,6 @@ public class PhieuNhap {
     public Integer getTongtien() {
         return tongtien.getValue();
     }
-
-
 
     public int getManhacungcap() {
         return manhacungcap.getValue();
@@ -80,120 +79,166 @@ public class PhieuNhap {
     public void setNgaynhap(Date ngaynhap) {
         this.ngaynhap = ngaynhap;
     }
-    
-    public ObservableList<PhieuNhap> getListPhieuNhap(){      
-        ObservableList<PhieuNhap> list = FXCollections.observableArrayList(); 
+
+    public ObservableList<PhieuNhap> getListPhieuNhap() {
+        ObservableList<PhieuNhap> list = FXCollections.observableArrayList();
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
         String sql = "SELECT * FROM phieunhap";
-        if(con!=null){
-            try{
+        if (con != null) {
+            try {
                 PreparedStatement ptm = con.prepareStatement(sql);
                 ResultSet rs = ptm.executeQuery();
                 while (rs.next()) {
-                    
-                    
-                    PhieuNhap phieunhap = new PhieuNhap(rs.getInt("maphieunhap")
-                            , rs.getInt("tongtien")
-                            , rs.getInt("manhacungcap")
-                            , rs.getDate("ngaynhap"));
-                         
+
+                    PhieuNhap phieunhap = new PhieuNhap(rs.getInt("maphieunhap"),
+                             rs.getInt("tongtien"),
+                             rs.getInt("manhacungcap"),
+                             rs.getDate("ngaynhap"));
+
                     list.add(phieunhap);
                 }
-            }
-            catch(Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
-            }  
+            }
         }
         return list;
     }
-    
-    public ObservableList<PhieuNhap> getListPhieuNhapChuaNhapKho(){      
-        ObservableList<PhieuNhap> list = FXCollections.observableArrayList(); 
+
+    public ObservableList<PhieuNhap> getListPhieuNhapChuaNhapKho() {
+        ObservableList<PhieuNhap> list = FXCollections.observableArrayList();
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
         String sql = "SELECT pn.maphieunhap, pn.tongtien, pn.manhacungcap, pn.ngaynhap "
                 + "FROM phieunhap pn "
                 + "LEFT JOIN khosanpham ksp ON pn.maphieunhap = ksp.maphieunhap "
                 + "where ksp.makhosanpham is null";
-        if(con!=null){
-            try{
+        if (con != null) {
+            try {
                 PreparedStatement ptm = con.prepareStatement(sql);
                 ResultSet rs = ptm.executeQuery();
                 while (rs.next()) {
-                    
-                    
-                    PhieuNhap phieunhap = new PhieuNhap(rs.getInt("maphieunhap")
-                            , rs.getInt("tongtien")
-                            , rs.getInt("manhacungcap")
-                            , rs.getDate("ngaynhap"));
-                         
+
+                    PhieuNhap phieunhap = new PhieuNhap(rs.getInt("maphieunhap"),
+                             rs.getInt("tongtien"),
+                             rs.getInt("manhacungcap"),
+                             rs.getDate("ngaynhap"));
+
                     list.add(phieunhap);
                 }
-            }
-            catch(Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
-            }  
+            }
         }
         return list;
     }
-    
-    public boolean ThemPhieuNhap(){
+
+    public ObservableList<PhieuNhap> getListPhieuNhapChuaNhapKhoTheoNgay(Date date) {
+        ObservableList<PhieuNhap> list = FXCollections.observableArrayList();
+        DBConnection db = new DBConnection();
+        Connection con = db.getConnecttion();
+        String sql = "SELECT pn.maphieunhap, pn.tongtien, pn.manhacungcap, pn.ngaynhap "
+                + "FROM phieunhap pn "
+                + "LEFT JOIN khosanpham ksp ON pn.maphieunhap = ksp.maphieunhap "
+                + "where ksp.makhosanpham is null and pn.ngaynhap = '" + date + "' ";
+        if (con != null) {
+            try {
+                PreparedStatement ptm = con.prepareStatement(sql);
+                ResultSet rs = ptm.executeQuery();
+                while (rs.next()) {
+
+                    PhieuNhap phieunhap = new PhieuNhap(rs.getInt("maphieunhap"),
+                             rs.getInt("tongtien"),
+                             rs.getInt("manhacungcap"),
+                             rs.getDate("ngaynhap"));
+
+                    list.add(phieunhap);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return list;
+    }
+
+    public ObservableList<PhieuNhap> getListPhieuNhapTheoNgay(Date ngay) {
+        ObservableList<PhieuNhap> list = FXCollections.observableArrayList();
+        DBConnection db = new DBConnection();
+        Connection con = db.getConnecttion();
+        String sql = "SELECT * FROM phieunhap WHERE ngaynhap = '" + ngay + "'";
+        if (con != null) {
+            try {
+                PreparedStatement ptm = con.prepareStatement(sql);
+                ResultSet rs = ptm.executeQuery();
+                while (rs.next()) {
+
+                    PhieuNhap phieunhap = new PhieuNhap(rs.getInt("maphieunhap"),
+                             rs.getInt("tongtien"),
+                             rs.getInt("manhacungcap"),
+                             rs.getDate("ngaynhap"));
+
+                    list.add(phieunhap);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return list;
+    }
+
+    public boolean ThemPhieuNhap() {
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
         String sql = "INSERT INTO phieunhap(  manhacungcap, ngaynhap,tongtien) VALUES( ?, ?,?);";
-        if(con!=null){
-            try{
+        if (con != null) {
+            try {
                 PreparedStatement ptm = con.prepareStatement(sql);
                 ptm.setInt(1, manhacungcap.getValue());
-                ptm.setDate(2, ngaynhap); 
+                ptm.setDate(2, ngaynhap);
                 ptm.setInt(3, tongtien.getValue());
-                ptm.execute();  
-            }
-            catch(Exception e){
+                ptm.execute();
+            } catch (Exception e) {
                 e.printStackTrace();
-                return false; 
-            } 
+                return false;
+            }
         }
-        return true; 
+        return true;
     }
-    
-    public boolean CapNhatPhieuNhap(){
+
+    public boolean CapNhatPhieuNhap() {
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
         String sql = "update phieunhap set  manhacungcap = ?,ngaynhap = ?  WHERE maphieunhap = ?;";
-        if(con!=null){
-            try{
+        if (con != null) {
+            try {
                 PreparedStatement ptm = con.prepareStatement(sql);
                 ptm.setInt(1, this.manhacungcap.getValue());
-                ptm.setDate(2, this.ngaynhap);         
+                ptm.setDate(2, this.ngaynhap);
                 ptm.setInt(3, maphieunhap.getValue());
-                ptm.execute();  
-            }
-            catch(Exception e){
+                ptm.execute();
+            } catch (Exception e) {
                 e.printStackTrace();
-                return false; 
-            } 
+                return false;
+            }
         }
-        return true; 
+        return true;
     }
-    
-    public boolean XoaPhieuNhap(int maphieunhap){
+
+    public boolean XoaPhieuNhap(int maphieunhap) {
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
         String sql = " delete from phieunhap where maphieunhap =?;";
-        if(con!=null){
-            try{
+        if (con != null) {
+            try {
                 PreparedStatement ptm = con.prepareStatement(sql);
                 ptm.setInt(1, maphieunhap);
-                ptm.execute();  
-            }
-            catch(Exception e){
+                ptm.execute();
+            } catch (Exception e) {
                 e.printStackTrace();
-                return false; 
-            } 
+                return false;
+            }
         }
-        return true; 
-    }  
-  
+        return true;
+    }
+
 }

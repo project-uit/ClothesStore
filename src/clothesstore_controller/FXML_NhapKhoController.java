@@ -9,8 +9,11 @@ import clothesstore_model.ChiTietPhieuNhap;
 import clothesstore_model.KhoSanPham;
 import clothesstore_model.PhieuNhap;
 import com.jfoenix.controls.JFXCheckBox;
+import com.jfoenix.controls.JFXDatePicker;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -18,13 +21,17 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
@@ -44,11 +51,11 @@ public class FXML_NhapKhoController implements Initializable {
 
     @FXML
     private TableView tableviewphieunhap, tableviewchitietphieunhap;
-
     @FXML
     private TableColumn clmaphieunhap, _clmaphieunhap, clgiavon, clthanhtien,
             clsoluong, clsanpham, clmachitiet, cltongtien, clngaynhap, clnhacungcap;
-
+    @FXML
+    private JFXDatePicker dtpFilter;
     @FXML
     private JFXCheckBox checkboxFilter;
 
@@ -56,7 +63,8 @@ public class FXML_NhapKhoController implements Initializable {
     public static String MaSP;
     public static int SLSP;
     public static int MAPN;
-
+    private Date selectedDate = null;
+    private boolean flag = false;
     /**
      * Initializes the controller class.
      */
@@ -72,11 +80,21 @@ public class FXML_NhapKhoController implements Initializable {
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
                 if (newValue) {
                     PhieuNhap pn = new PhieuNhap();
-                    ObservableList<PhieuNhap> list = pn.getListPhieuNhapChuaNhapKho();
+                    ObservableList<PhieuNhap> list = FXCollections.observableArrayList();
+                    if (flag) {
+                        list = pn.getListPhieuNhapChuaNhapKhoTheoNgay(selectedDate);
+                    } else {
+                        list = pn.getListPhieuNhapChuaNhapKho();
+                    }
                     InitTableViewPhieuNhap(list);
                 } else {
                     PhieuNhap pn = new PhieuNhap();
-                    ObservableList<PhieuNhap> list = pn.getListPhieuNhap();
+                    ObservableList<PhieuNhap> list = FXCollections.observableArrayList();
+                    if (flag) {
+                        list = pn.getListPhieuNhapTheoNgay(selectedDate);
+                    } else {
+                        list = pn.getListPhieuNhap();
+                    }
                     InitTableViewPhieuNhap(list);
                 }
             }
@@ -84,7 +102,6 @@ public class FXML_NhapKhoController implements Initializable {
     }
 
     private void InitTableViewPhieuNhap(ObservableList<PhieuNhap> list) {
-        
         clmaphieunhap.setCellValueFactory(new PropertyValueFactory("maphieunhap"));
         clngaynhap.setCellValueFactory(new PropertyValueFactory("ngaynhap"));
         clnhacungcap.setCellValueFactory(new PropertyValueFactory("manhacungcap"));
@@ -114,7 +131,7 @@ public class FXML_NhapKhoController implements Initializable {
         clsanpham.setCellValueFactory(new PropertyValueFactory("masanpham"));
         clsoluong.setCellValueFactory(new PropertyValueFactory("soluongsanphamnhap"));
         clgiavon.setCellValueFactory(new PropertyValueFactory("giavon"));
-        clthanhtien.setCellValueFactory(new PropertyValueFactory("thanhtien"));  
+        clthanhtien.setCellValueFactory(new PropertyValueFactory("thanhtien"));
         tableviewchitietphieunhap.setItems(list);
 
         tableviewchitietphieunhap.setRowFactory(tv -> {
@@ -176,6 +193,39 @@ public class FXML_NhapKhoController implements Initializable {
             stageCTKSP.show();
         } catch (IOException ex) {
             Logger.getLogger(FXML_NhapKhoController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @FXML
+    private void Handler_linkBoChon(ActionEvent event) {
+        flag = false;
+        dtpFilter.setValue(null);
+        if (checkboxFilter.isSelected()) {
+            PhieuNhap pn = new PhieuNhap();
+            ObservableList<PhieuNhap> list = pn.getListPhieuNhapChuaNhapKho();
+            InitTableViewPhieuNhap(list);
+        } else {
+            PhieuNhap pn = new PhieuNhap();
+            ObservableList<PhieuNhap> list = pn.getListPhieuNhap();
+            InitTableViewPhieuNhap(list);
+        }
+    }
+
+    @FXML
+    private void currentdatepickeronhidden(Event event) {
+        flag = true;
+        try {
+            selectedDate = java.sql.Date.valueOf(dtpFilter.getValue());
+            PhieuNhap pn = new PhieuNhap();
+            ObservableList<PhieuNhap> list;
+            if (checkboxFilter.isSelected()) {
+                list = pn.getListPhieuNhapChuaNhapKhoTheoNgay(selectedDate);
+                InitTableViewPhieuNhap(list);
+            } else {
+                list = pn.getListPhieuNhapTheoNgay(selectedDate);
+                InitTableViewPhieuNhap(list);
+            }
+        } catch (Exception ex) {
         }
     }
 }

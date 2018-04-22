@@ -37,8 +37,6 @@ import javafx.stage.WindowEvent;
 import javafx.util.StringConverter;
 import clothesstore_model.NhaCungCap;
 import clothesstore_model.PhieuNhap;
-import javafx.scene.control.DatePicker;
-import static jdk.nashorn.tools.ShellFunctions.input;
 
 /**
  * FXML Controller class
