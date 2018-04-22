@@ -29,13 +29,11 @@ public class FXML_SearchSanPhamController implements Initializable {
 
     @FXML
     private TableView<String> tableviewsearchsanpham;
-    @FXML
-    private JFXButton btnthem;
-    private String data;
+
     @FXML
     private JFXComboBox cbbsearchsanpham;
-    @FXML
-    private JFXButton btnchon;
+
+    private String data;
     private int query;
 
     /**
@@ -43,6 +41,25 @@ public class FXML_SearchSanPhamController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        ChiTietPhieuNhap ctpn = new ChiTietPhieuNhap();
+        ctpn.LoadSearchSanPhamChuaNhapTableView(tableviewsearchsanpham);
+        tableviewsearchsanpham.getColumns().get(0).setText("Mã sản phẩm");
+        tableviewsearchsanpham.getColumns().get(1).setText("Tên sản phẩm");
+        tableviewsearchsanpham.getColumns().get(2).setText("Số lượng");
+        tableviewsearchsanpham.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+        tableviewsearchsanpham.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
+            @Override
+            public void changed(ObservableValue observableValue, Object oldValue, Object newValue) {
+
+                if (tableviewsearchsanpham.getSelectionModel().getSelectedItem() != null) {
+                    // newValue lấy hết giá trị trong 1 hàng
+                    String Finalvaluetablerow = newValue.toString().split(",")[0].substring(1); // lấy giá trị ở cột thứ i
+                    data = Finalvaluetablerow;
+                }
+            }
+        });
+
         SearchSanPham ob = SearchSanPham.newInstance().keysanpham("Sản phẩm chưa từng nhập").tensanpham(1);
         SearchSanPham ob1 = SearchSanPham.newInstance().keysanpham("Sản phẩm đã từng nhập").tensanpham(2);
         cbbsearchsanpham.getItems().addAll(ob, ob1);
@@ -64,17 +81,9 @@ public class FXML_SearchSanPhamController implements Initializable {
                 query = newValue.getTensanpham();
             }
         });
-        tableviewsearchsanpham.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
-            @Override
-            public void changed(ObservableValue observableValue, Object oldValue, Object newValue) {
 
-                if (tableviewsearchsanpham.getSelectionModel().getSelectedItem() != null) {
-                    // newValue lấy hết giá trị trong 1 hàng
-                    String Finalvaluetablerow = newValue.toString().split(",")[0].substring(1); // lấy giá trị ở cột thứ i
-                    data = Finalvaluetablerow;
-                }
-            }
-        });
+        cbbsearchsanpham.getSelectionModel().selectFirst();
+
     }
 
     @FXML
@@ -88,28 +97,18 @@ public class FXML_SearchSanPhamController implements Initializable {
 
     @FXML
     private void handler_chon(ActionEvent event) {
-
         tableviewsearchsanpham.getColumns().clear();
         if (query == 1) {
             ChiTietPhieuNhap ctpn = new ChiTietPhieuNhap();
-
             ctpn.LoadSearchSanPhamChuaNhapTableView(tableviewsearchsanpham);
-            tableviewsearchsanpham.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-
-            // Chỉnh header text cho column
-            tableviewsearchsanpham.getColumns().get(0).setText("Mã sản phẩm");
-            tableviewsearchsanpham.getColumns().get(1).setText("Tên sản phẩm");
-            tableviewsearchsanpham.getColumns().get(2).setText("Số lượng");
         } else if (query == 2) {
             ChiTietPhieuNhap ctpn = new ChiTietPhieuNhap();
-
             ctpn.LoadSearchSanPhamDaNhapTableView(tableviewsearchsanpham);
-            tableviewsearchsanpham.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-
-            // Chỉnh header text cho column
-            tableviewsearchsanpham.getColumns().get(0).setText("Mã sản phẩm");
-            tableviewsearchsanpham.getColumns().get(1).setText("Tên sản phẩm");
-            tableviewsearchsanpham.getColumns().get(2).setText("Số lượng");
         }
+        // Chỉnh header text cho column
+        tableviewsearchsanpham.getColumns().get(0).setText("Mã sản phẩm");
+        tableviewsearchsanpham.getColumns().get(1).setText("Tên sản phẩm");
+        tableviewsearchsanpham.getColumns().get(2).setText("Số lượng");
+        tableviewsearchsanpham.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     }
 }

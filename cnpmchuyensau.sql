@@ -1,4 +1,4 @@
-drop table khachhang;
+﻿drop table khachhang;
 drop table nhacungcap;
 drop table nhanvien;
 drop table nhasanxuat;
@@ -213,6 +213,3 @@ before delete ON sanpham
 for each row
 	delete from chitietsanpham 
     where chitietsanpham.masanpham=old.masanpham and old.giaban is null;
-
-
-

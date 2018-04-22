@@ -11,8 +11,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.control.TableView;
@@ -43,7 +41,8 @@ public class Size {
         Connection con = db.getConnecttion();
         if (con != null) {
             String query = "insert into size(tensize)"
-                    + " values(?)";
+                    + " values(?) ";
+                    
             try {
                 PreparedStatement ptm = con.prepareStatement(query);
                 ptm.setString(1, tensize.get());
@@ -65,8 +64,8 @@ public class Size {
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
         if (con != null) {
-            String query = "delete from size where tensize =? "
-                    + "Collate utf8_unicode_ci";
+            String query = "delete from size where tensize =? ";
+                    
             try {
                 PreparedStatement ptm = con.prepareStatement(query);
                 ptm.setString(1, tensize.get());

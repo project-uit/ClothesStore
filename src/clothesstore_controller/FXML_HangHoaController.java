@@ -318,17 +318,21 @@ public class FXML_HangHoaController implements Initializable {
     private void DeleteSanPham() {
         StringProperty masp = new SimpleStringProperty(txt_fi_masanpham.getText());
         SanPham sanpham = new SanPham(masp);
-        if (sanpham.delete()) {
+        if (sanpham.delete()==1) {
             viewListTable();
             ShowMessage
                     .showMessageBox(Alert.AlertType.INFORMATION, "Thông báo", null, "Xóa dữ liệu thành công")
                     .showAndWait();
 
-        } else {
+        } else if(sanpham.delete()==2){
             ShowMessage
-                    .showMessageBox(Alert.AlertType.ERROR, "Thông báo", null, "Xóa dữ liệu thất bại")
+                    .showMessageBox(Alert.AlertType.WARNING, "Thông báo", null, "Sản phẩm đã nhập vào kho.\n Bạn không thể xóa!")
                     .showAndWait();
         }
+        else 
+             ShowMessage
+                    .showMessageBox(Alert.AlertType.ERROR, "Thông báo", null, "Xóa dữ liệu thất bại")
+                    .showAndWait();
     }
 
     private void UpdateSanPham() {

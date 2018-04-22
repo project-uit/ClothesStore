@@ -55,7 +55,7 @@ public class FXML_ChiTietSanPhamController implements Initializable {
     private JFXButton btnThem;
     @FXML
     private JFXButton btnXoa;
-   
+
     @FXML
     private JFXButton btn_addsize;
     @FXML
@@ -91,7 +91,7 @@ public class FXML_ChiTietSanPhamController implements Initializable {
 
                 if (table_view.getSelectionModel().getSelectedItem() != null) {
                     btnXoa.setDisable(false);
-                    
+
                     String mactsp = newValue.toString().split(",")[0].substring(1).trim();
                     txt_fi_machitietsanpham.setText(mactsp);
                     StringProperty temp
@@ -124,17 +124,15 @@ public class FXML_ChiTietSanPhamController implements Initializable {
         StringProperty masp = new SimpleStringProperty(masanpham);
         ctsp.setMasanpham(masp);
         if (!table_view.getColumns().isEmpty()) {
-
             table_view.getColumns().clear();
         }
         ctsp.LoadTable(table_view);
-
-        table_view.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         table_view.getColumns().get(0).setText("Mã chi tiết sản phẩm");
         table_view.getColumns().get(1).setText("Tên size");
         table_view.getColumns().get(2).setText("Màu sắc");
         table_view.getColumns().get(3).setText("Giới tính");
         table_view.getColumns().get(4).setVisible(false);
+        table_view.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     }
 
     @FXML
@@ -150,7 +148,7 @@ public class FXML_ChiTietSanPhamController implements Initializable {
             table_view.getSelectionModel().clearSelection();
             btnXoa.setDisable(true);
             btnThem.setDisable(true);
-            
+
             btnHuy.setVisible(true);
             btnDongy.setVisible(true);
             table_view.setDisable(true);
@@ -162,7 +160,7 @@ public class FXML_ChiTietSanPhamController implements Initializable {
                 DeleteChiTietSanPham();
             }
 
-        } 
+        }
     }
 
     @FXML
@@ -178,21 +176,18 @@ public class FXML_ChiTietSanPhamController implements Initializable {
     private void btnDongy_process() {
         if (flag == 1) {
             insertChiTietSanpham();
-
-        } else if (flag == 2) {
-            UpdateChiTietSanPham();
         }
     }
 
     private void btnHuy_process() {
         flag = 0;
         btnXoa.setDisable(false);
-       
+
         btnThem.setDisable(false);
         btnHuy.setVisible(false);
         btnDongy.setVisible(false);
         btnXoa.setDisable(true);
-        
+
         table_view.getSelectionModel().clearSelection();
         table_view.setDisable(false);
     }
@@ -270,7 +265,6 @@ public class FXML_ChiTietSanPhamController implements Initializable {
         StringProperty mamau = new SimpleStringProperty(_mamau);
         String _gioitinh = cmb_gioitinh.getSelectionModel().getSelectedItem();
 
-       
         int x = Integer.parseInt(_gioitinh);
         IntegerProperty gioitinh = new SimpleIntegerProperty(x);
         ChiTietSanPham chitietsanpham
@@ -292,11 +286,11 @@ public class FXML_ChiTietSanPhamController implements Initializable {
             btnDongy.setVisible(false);
             table_view.setDisable(false);
             btnThem.setDisable(false);
-            int n  = table_view.getItems().size();
+            int n = table_view.getItems().size();
             for (int i = 0; i < n; i++) {
-                Object obj= table_view.getColumns().get(0).getCellObservableValue(i).getValue().toString();
+                Object obj = table_view.getColumns().get(0).getCellObservableValue(i).getValue().toString();
                 if (obj.equals(mactsp)) {
-                    table_view.getSelectionModel().select(i);                   
+                    table_view.getSelectionModel().select(i);
                     break;
                 }
             }
@@ -326,21 +320,6 @@ public class FXML_ChiTietSanPhamController implements Initializable {
         }
     }
 
-    private void UpdateChiTietSanPham() {
-        SanPham sanpham = new SanPham();
-
-        if (sanpham.update()) {
-            viewListTable();
-            ShowMessage
-                    .showMessageBox(Alert.AlertType.INFORMATION, "Thông báo", null, "Cập nhật dữ liệu thành công")
-                    .showAndWait();
-
-        } else {
-            ShowMessage
-                    .showMessageBox(Alert.AlertType.ERROR, "Thông báo", null, "Cập nhật dữ liệu thất bại")
-                    .showAndWait();
-        }
-    }
 
     private void ContextMenuTable() {
         ContextMenu context = new ContextMenu();

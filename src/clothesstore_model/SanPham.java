@@ -6,6 +6,7 @@
 package clothesstore_model;
 
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -178,7 +179,7 @@ public class SanPham extends RecursiveTreeObject<SanPham> {
     }
     
     
-    public boolean delete() {
+    public int delete() {
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
         if (con != null) {
@@ -195,14 +196,19 @@ public class SanPham extends RecursiveTreeObject<SanPham> {
                     
                     ptm.close();
                     con.close();
-                    return true;
+                    return 1;
                 }
                 
-            } catch (SQLException ex) {
-                
+            }
+            catch (MySQLIntegrityConstraintViolationException ex)
+            {
+                return 2;
+            }
+            catch (SQLException ex) {
+                System.out.println(""+ex);
             }
         }
-        return false;
+        return 0;
     }
     
     public ObservableList<SanPham> getSPList() {

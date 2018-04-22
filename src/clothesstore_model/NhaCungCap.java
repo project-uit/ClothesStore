@@ -25,7 +25,16 @@ public class NhaCungCap {
     private StringProperty diachi;
     private StringProperty email;
     private StringProperty ghichu;
+    private IntegerProperty trangthai;
 
+    public NhaCungCap(int manhacungcap, String tencungcap, String diachi, String email, String ghichu, int trangthai) {
+        this.manhacungcap =new SimpleIntegerProperty (manhacungcap);
+        this.tencungcap =new SimpleStringProperty ( tencungcap);
+        this.diachi =new SimpleStringProperty ( diachi);
+        this.email =new SimpleStringProperty ( email);
+        this.ghichu =new SimpleStringProperty ( ghichu);
+        this.trangthai =new SimpleIntegerProperty (trangthai);
+    }
     public NhaCungCap(int manhacungcap, String tencungcap, String diachi, String email, String ghichu) {
         this.manhacungcap =new SimpleIntegerProperty (manhacungcap);
         this.tencungcap =new SimpleStringProperty ( tencungcap);
@@ -53,7 +62,9 @@ public class NhaCungCap {
     public String getGhichu() {
         return ghichu.getValue();
     }
-
+    public int getTrangthai() {
+        return trangthai.getValue();
+    }
     public void setManhacungcap(IntegerProperty manhacungcap) {
         this.manhacungcap = manhacungcap;
     }
@@ -73,6 +84,9 @@ public class NhaCungCap {
     public void setGhichu(StringProperty ghichu) {
         this.ghichu = ghichu;
     }
+    public void setTrangthai(IntegerProperty trangthai) {
+        this.trangthai = trangthai;
+    }
     
     public ObservableList<NhaCungCap> getTableNhaCungCap(){      
         ObservableList<NhaCungCap> list = FXCollections.observableArrayList(); 
@@ -85,7 +99,11 @@ public class NhaCungCap {
                 ResultSet rs = ptm.executeQuery();
                 while (rs.next()) {
                     NhaCungCap cnn = new NhaCungCap(rs.getInt("manhacungcap")
-                        , rs.getString("tencungcap"),rs.getString("diachi"),rs.getString("email"),rs.getString("ghichu"));
+                        , rs.getString("tencungcap")
+                            ,rs.getString("diachi")
+                            ,rs.getString("email")
+                            ,rs.getString("ghichu")
+                            ,rs.getInt("trangthai"));
                     list.add(cnn);
                 }
             }
@@ -99,7 +117,7 @@ public class NhaCungCap {
     public boolean CapNhatNhaCungCap(){
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
-        String sql = "update nhacungcap set manhacungcap = ?, tencungcap = ?,diachi = ?,email = ?, ghichu = ? WHERE manhacungcap = ?;";
+        String sql = "update nhacungcap set manhacungcap = ?, tencungcap = ?,diachi = ?,email = ?, ghichu = ?,trangthai=? WHERE manhacungcap = ?;";
         if(con!=null){
             try{
                 PreparedStatement ptm = con.prepareStatement(sql);
@@ -107,8 +125,9 @@ public class NhaCungCap {
                 ptm.setString(2, tencungcap.getValue());
                 ptm.setString(3, diachi.getValue());
                 ptm.setString(4, email.getValue());
-                ptm.setString(5, ghichu.getValue());         
-                ptm.setInt(6, manhacungcap.getValue());
+                ptm.setString(5, ghichu.getValue());
+                ptm.setInt(6, trangthai.getValue());
+                ptm.setInt(7, manhacungcap.getValue());
                 ptm.execute();  
             }
             catch(Exception e){
@@ -125,7 +144,7 @@ public class NhaCungCap {
     public boolean ThemNhaCungCap(){
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
-        String sql = "insert into nhacungcap(manhacungcap, tencungcap,diachi,email,ghichu)  values (?, ?, ?, ?, ?);";
+        String sql = "insert into nhacungcap(manhacungcap, tencungcap,diachi,email,ghichu, trangthai)  values (?, ?, ?, ?, ?,1);";
         if(con!=null){
             try{
                 PreparedStatement ptm = con.prepareStatement(sql);
