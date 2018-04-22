@@ -111,7 +111,7 @@ masanpham char(8) ,
 FOREIGN KEY (masanpham)
 REFERENCES sanpham(masanpham),
 tensize char(5),
-mausac nvarchar(15),
+mamau nvarchar(15),
 gioitinh int,
 soluong int
 );
