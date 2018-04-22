@@ -94,27 +94,29 @@ DELIMITER ;
 
 create table mausac
 (
-mamau INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-tenmau nvarchar(30) NOT NULL,
+mamau int  UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+tenmau nvarchar(20),
 trangthai int
 );
-
 create table size
 (
-tensize nvarchar(30) PRIMARY KEY NOT NULL
+tensize char(5) primary key
 );
 
 create table chitietsanpham
 (
-machitietsanpham varchar(30)  PRIMARY KEY,
-masanpham char(8) ,
+machitietsanpham varchar(33)  PRIMARY KEY,
+masanpham char(8),
 FOREIGN KEY (masanpham)
 REFERENCES sanpham(masanpham),
 tensize char(5),
-mamau nvarchar(15),
+mamau int(6)  UNSIGNED,
+FOREIGN KEY (mamau)
+REFERENCES mausac(mamau),
 gioitinh int,
 soluong int
 );
+
 -- phiếu nhập đc lập bởi quản lý(admin) 
 create table phieunhap
 (
