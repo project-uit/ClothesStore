@@ -33,6 +33,7 @@
             <TableColumn fx:id="clmachitiet" prefWidth="163.0" text="Mã Chi Tiết Phiếu Nhập" visible="false" />
             <TableColumn fx:id="_clmaphieunhap" editable="false" prefWidth="75.0" text="Ma Phieu Nhap" visible="false" />
             <TableColumn fx:id="clsanpham" prefWidth="255.0" text="Sản Phẩm" />
+            <TableColumn fx:id="cltensanpham" prefWidth="75.0" text="Tên sản phẩm" />
             <TableColumn fx:id="clsoluong" prefWidth="200.0" text="Số Lượng" />
             <TableColumn fx:id="clgiavon" minWidth="0.0" prefWidth="198.0" text="Giá Vốn" />
             <TableColumn fx:id="clthanhtien" prefWidth="236.0" text="Thành Tiền" />

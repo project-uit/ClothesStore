@@ -9,10 +9,12 @@ import static clothesstore_controller.FXML_DangNhapController.MaNhanVien;
 import static clothesstore_controller.FXML_NhapKhoController.MAPN;
 import static clothesstore_controller.FXML_NhapKhoController.MaSP;
 import static clothesstore_controller.FXML_NhapKhoController.SLSP;
+import static clothesstore_controller.FXML_NhapKhoController.TenSP;
 import static clothesstore_controller.FXML_NhapKhoController.stageCTKSP;
 import clothesstore_model.ChiTietKhoSanPham;
 import clothesstore_model.ChiTietSanPham;
 import clothesstore_model.KhoSanPham;
+import clothesstore_model.MauSac;
 import com.jfoenix.controls.JFXButton;
 import java.net.URL;
 import java.util.ArrayList;
@@ -50,7 +52,7 @@ public class FXML_ChiTietKhoSPController implements Initializable {
     @FXML
     private TableColumn clmachitietsp, cltenchitietsanpham, clsoluong;
     @FXML
-    private Label lbTongSoLuong, lbSoLuongYC;
+    private Label lbTongSoLuong, lbSoLuongYC, lbTenSP;
     @FXML
     private JFXButton btnLuu;
 
@@ -60,6 +62,7 @@ public class FXML_ChiTietKhoSPController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
         InitTableCTSP();
+        lbTenSP.setText(TenSP);
         lbSoLuongYC.setText("Số lượng yêu cầu: " + SLSP);
     }
 
@@ -76,8 +79,9 @@ public class FXML_ChiTietKhoSPController implements Initializable {
             } else {
                 gioitinh = "Nữ";
             }
+            MauSac ms = new MauSac();
 
-            String ten = _ctsp.getSize().get() + "_" + _ctsp.getMausac().get() + "_" + gioitinh;
+            String ten = _ctsp.getSize().get() + "_" + ms.getTenMauFromMaMau(_ctsp.getMausac().get())  + "_" + gioitinh;
             String maCTSP = _ctsp.getMachitietsanpham().get();
             String soluong = "0";
             ChiTietKhoSanPham ctksp = new ChiTietKhoSanPham(maCTSP, ten, soluong);

@@ -268,8 +268,8 @@ public class ChiTietSanPham {
                 while (rs.next()) {
                     ChiTietSanPham ctsp = new ChiTietSanPham(rs.getString("machitietsanpham"),
                              rs.getString("masanpham"),
-                             rs.getString("tensize"),
                              rs.getString("mamau"),
+                             rs.getString("tensize"),
                              rs.getInt("gioitinh"),
                              rs.getInt("soluong"));
                     list.add(ctsp);

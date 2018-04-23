@@ -41,12 +41,10 @@ public class MauSac {
         this.trangthai = trangthai;
     }
 
-  
-
     public MauSac(StringProperty tenmau) {
         this.tenmau = tenmau;
         trangthai = new SimpleIntegerProperty(1);
-        
+
     }
 
     public StringProperty getMamau() {
@@ -132,10 +130,10 @@ public class MauSac {
                     StringProperty _tenmau = new SimpleStringProperty(rs.getString("tenmau"));
                     StringProperty _mamau = new SimpleStringProperty(rs.getString("mamau"));
                     IntegerProperty _trangthai = new SimpleIntegerProperty(rs.getInt("trangthai"));
-                    MauSac mausac = new MauSac(_mamau,_tenmau,_trangthai);
+                    MauSac mausac = new MauSac(_mamau, _tenmau, _trangthai);
                     cmb.getItems().add(mausac);
                 }
-                
+
             } catch (SQLException ex) {
 
             }
@@ -148,4 +146,22 @@ public class MauSac {
         tb.LoadTable(tbv);
     }
 
+    public String  getTenMauFromMaMau(String mamau) {
+        String tenmau ="";
+        DBConnection db = new DBConnection();
+        Connection con = db.getConnecttion();
+        String sql = "SELECT tenmau FROM mausac WHERE mamau ='"+mamau+"'";
+        if (con != null) {
+            try {
+                PreparedStatement ptm = con.prepareStatement(sql);
+                ResultSet rs = ptm.executeQuery();
+                while (rs.next()) {
+                    tenmau = rs.getString("tenmau");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return tenmau;
+    }
 }

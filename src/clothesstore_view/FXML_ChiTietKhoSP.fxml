@@ -5,10 +5,11 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="276.0" prefWidth="547.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clothesstore_controller.FXML_ChiTietKhoSPController">
+<AnchorPane id="AnchorPane" prefHeight="316.0" prefWidth="547.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clothesstore_controller.FXML_ChiTietKhoSPController">
    <children>
-      <TableView fx:id="tblchitietkhosp" editable="true" layoutY="14.0" prefHeight="211.0" prefWidth="547.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+      <TableView fx:id="tblchitietkhosp" editable="true" layoutX="10.0" layoutY="44.0" prefHeight="211.0" prefWidth="547.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="44.0">
         <columns>
             <TableColumn fx:id="clmachitietsp" editable="false" prefWidth="75.0" text="Ma Chi Tiet SP" />
           <TableColumn fx:id="cltenchitietsanpham" editable="false" prefWidth="75.0" text="Chi tiết sản phẩm" />
@@ -18,9 +19,14 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <Label fx:id="lbTongSoLuong" layoutX="16.0" layoutY="234.0" text="Tổng số lượng: 0" />
+      <Label fx:id="lbTongSoLuong" layoutX="11.0" layoutY="269.0" text="Tổng số lượng: 0" />
       <JFXButton fx:id="btnLuu" disable="true" layoutX="492.0" layoutY="229.0" onAction="#Handler_btnLuu" ripplerFill="BLACK" style="-fx-background-color: #4681f5;" text=" Lưu" textFill="WHITE" wrapText="true" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0" />
       <JFXButton fx:id="btnExit" layoutX="429.0" layoutY="229.0" onAction="#Handler_btnThoat" ripplerFill="BLACK" style="-fx-background-color: #4681f5;" text="Thoát" textFill="WHITE" wrapText="true" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="64.0" />
-      <Label fx:id="lbSoLuongYC" layoutX="17.0" layoutY="252.0" text="Số lượng yêu cầu: 0" />
+      <Label fx:id="lbSoLuongYC" layoutX="12.0" layoutY="290.0" text="Số lượng yêu cầu: 0" />
+      <Label fx:id="lbTenSP" alignment="CENTER" layoutX="206.0" layoutY="8.0" prefHeight="17.0" prefWidth="136.0" text="TÊN SP" textFill="#1424ff" AnchorPane.leftAnchor="206.0" AnchorPane.rightAnchor="205.0" AnchorPane.topAnchor="8.0">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

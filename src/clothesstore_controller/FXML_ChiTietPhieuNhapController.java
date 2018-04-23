@@ -17,12 +17,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-
-import javafx.scene.layout.AnchorPane;
 import clothesstore_model.ChiTietPhieuNhap;
 import clothesstore_model.PhieuNhap;
 import static clothesstore_controller.FXML_PhieuNhapController.mapn;
-
 import java.io.IOException;
 import java.util.Optional;
 import javafx.fxml.FXMLLoader;
@@ -57,9 +54,6 @@ public class FXML_ChiTietPhieuNhapController implements Initializable {
     @FXML
     private TableColumn thanhtien;
     @FXML
-    private AnchorPane paneINFO1;
-    private JFXTextField txtfimachitiet;
-    @FXML
     private JFXTextField txtfisanpham;
     @FXML
     private JFXTextField txtfisoluong;
@@ -69,11 +63,9 @@ public class FXML_ChiTietPhieuNhapController implements Initializable {
     private JFXTextField txtfithanhtien;
     @FXML
     private JFXButton btnthem;
-    private PhieuNhap phieunhap;
     @FXML
     private JFXButton btnluu;
-    @FXML
-    private JFXButton btnthemsanpham;
+
     private ChiTietPhieuNhap chitietpn;
 
     public static Stage stageQuanLySearchSanPham;
