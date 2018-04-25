@@ -10,12 +10,12 @@
 
 <AnchorPane id="AnchorPane" prefHeight="700.0" prefWidth="845.0" style="-fx-background-color: #deeeef;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clothesstore_controller.FXML_ChiTietSanPhamController">
    <children>
-      <Label layoutX="24.0" layoutY="10.0" opacity="0.4" prefHeight="40.0" prefWidth="255.0" text="Chi tiết sản phẩm" textFill="#021bf5">
+      <Label layoutX="107.0" layoutY="-2.0" opacity="0.4" prefHeight="40.0" prefWidth="255.0" text="Chi tiết sản phẩm" textFill="#021bf5">
          <font>
             <Font name="System Bold" size="28.0" />
          </font>
       </Label>
-      <Label fx:id="lb_masanpham" layoutX="365.0" layoutY="6.0" opacity="0.4" prefHeight="25.0" prefWidth="224.0" textFill="#021bf5">
+      <Label fx:id="lb_masanpham" layoutX="607.0" layoutY="6.0" opacity="0.4" prefHeight="25.0" prefWidth="224.0" textFill="#021bf5">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
@@ -70,8 +70,8 @@
             <JFXButton fx:id="btnHuy" layoutX="193.0" layoutY="117.0" onAction="#Dongy_huy_clickvent" prefHeight="39.0" prefWidth="80.0" style="-fx-background-color: #4681f5;" text="Hủy" textFill="WHITE" />
          </children>
       </AnchorPane>
-      <TableView fx:id="table_view" layoutY="279.0" prefHeight="421.0" prefWidth="845.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-      <JFXButton fx:id="btnBack" layoutX="751.0" layoutY="3.0" prefHeight="20.0" prefWidth="80.0" style="-fx-background-color: #4681f5;" text="Quay lại" textFill="WHITE">
+      <TableView fx:id="table_view" layoutX="13.0" layoutY="279.0" prefHeight="421.0" prefWidth="832.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="13.0" AnchorPane.rightAnchor="0.0" />
+      <JFXButton fx:id="btnBack" layoutX="14.0" layoutY="3.0" prefHeight="30.0" prefWidth="51.0" style="-fx-background-color: #4681f5;" text="Back" textFill="WHITE">
          <font>
             <Font size="14.0" />
          </font>

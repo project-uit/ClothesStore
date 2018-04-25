@@ -5,7 +5,7 @@
  */
 package clothesstore_controller;
 
-
+import static clothesstore_controller.FXML_ClothesStoreController.rootP;
 import clothesstore_model.NhaSanXuat;
 import clothesstore_model.NhomHang;
 import clothesstore_model.SanPham;
@@ -28,6 +28,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.animation.FadeTransition;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
@@ -57,6 +58,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.Callback;
+import javafx.util.Duration;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
@@ -105,7 +107,8 @@ public class FXML_HangHoaController implements Initializable {
     private JFXTreeTableColumn<SanPham, String> col_ghichu = new JFXTreeTableColumn<>("Ghi chú");
     private int flag = 0;
     static List<SanPham> listspvuanhap = new ArrayList<>();
-
+    private boolean StateNhomHang = true;
+    private boolean StateNhaSanXuat=true;
     @FXML
     private void ClickEvent(ActionEvent event) throws IOException {
         JFXButton btn = (JFXButton) event.getSource();
@@ -113,7 +116,9 @@ public class FXML_HangHoaController implements Initializable {
             ShowFXML_NhaSanXuat();
             tree_table_vi.getSelectionModel().clearSelection();
         } else if (btn == btn_add_nhomhang) {
+
             ShowFXML_NhomHang();
+
             tree_table_vi.getSelectionModel().clearSelection();
         } else if (btn == btnThem) {
             flag = 1;
@@ -214,24 +219,36 @@ public class FXML_HangHoaController implements Initializable {
     }
 
     private void ShowFXML_NhaSanXuat() {
+        
         try {
+            AnchorPane NhaSanXuatAnchor =  FXMLLoader.load((getClass()
+                    .getResource("/clothesstore_view/FXML_Nhasanxuat.fxml")));
+             if (StateNhaSanXuat) {
+                btn_add_nhomhang.setDisable(StateNhaSanXuat);
+                NhaSanXuatAnchor.setLayoutX(454 + 34);
+                NhaSanXuatAnchor.setLayoutY(125);
+                NhaSanXuatAnchor.setPrefWidth(246);
+                FadeTransition ft = new FadeTransition(Duration.millis(500), NhaSanXuatAnchor);
+                ft.setFromValue(0.0);
+                ft.setToValue(1.0);
+                ft.play();
+                FXML_ClothesStoreController.rootP.getChildren().add(NhaSanXuatAnchor);
+                StateNhaSanXuat = false;
 
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/clothesstore_view/FXML_Nhasanxuat.fxml"));
-            Parent root1 = (Parent) fxmlLoader.load();
-            Stage stage = new Stage();
-
-            stage.setResizable(false);
-            stage.setTitle("Nhà sản xuất");
-            stage.setScene(new Scene(root1));
-            stage.setResizable(false);
-            stage.setOnCloseRequest((WindowEvent event1) -> {
+            } else {
+                 btn_add_nhomhang.setDisable(StateNhaSanXuat);
+                FadeTransition ft = new FadeTransition(Duration.millis(500),
+                        FXML_ClothesStoreController.rootP.getChildren().get(1));
+                ft.setFromValue(1.0);
+                ft.setToValue(0.0);
+                ft.setOnFinished(e -> FXML_ClothesStoreController.rootP.getChildren().remove(1));
+                ft.play();
                 cmb_nhasanxuat.getItems().clear();
                 NhaSanXuat tennsx = new NhaSanXuat();
                 tennsx.getNSXList(cmb_nhasanxuat);
                 cmb_nhasanxuat.getSelectionModel().selectFirst();
-
-            });
-            stage.showAndWait();
+                StateNhaSanXuat = true;
+            }
 
         } catch (IOException ex) {
             Logger.getLogger(FXML_HangHoaController.class.getName()).log(Level.SEVERE, null, ex);
@@ -241,21 +258,34 @@ public class FXML_HangHoaController implements Initializable {
     private void ShowFXML_NhomHang() {
         try {
 
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/clothesstore_view/FXML_NhomHang.fxml"));
-            Parent root1 = (Parent) fxmlLoader.load();
-            Stage stage = new Stage();
+            AnchorPane nhomhangAnchor = FXMLLoader.load((getClass()
+                    .getResource("/clothesstore_view/FXML_NhomHang.fxml")));
+            if (StateNhomHang) {
+                btn_add_nhasanxuat.setDisable(StateNhomHang);
+                nhomhangAnchor.setLayoutX(454 + 34);
+                nhomhangAnchor.setLayoutY(37);
+                nhomhangAnchor.setPrefWidth(246);
+                FadeTransition ft = new FadeTransition(Duration.millis(500), nhomhangAnchor);
+                ft.setFromValue(0.0);
+                ft.setToValue(1.0);
+                ft.play();
+                FXML_ClothesStoreController.rootP.getChildren().add(nhomhangAnchor);
+                StateNhomHang = false;
 
-            stage.setResizable(false);
-            stage.setTitle("Nhóm hàng");
-            stage.setScene(new Scene(root1));
-            stage.setOnCloseRequest((WindowEvent event1) -> {
+            } else {
+                btn_add_nhasanxuat.setDisable(StateNhomHang);
+                FadeTransition ft = new FadeTransition(Duration.millis(500),
+                        FXML_ClothesStoreController.rootP.getChildren().get(1));
+                ft.setFromValue(1.0);
+                ft.setToValue(0.0);
+                ft.setOnFinished(e -> FXML_ClothesStoreController.rootP.getChildren().remove(1));
+                ft.play();
                 cmb_nhomhang.getItems().clear();
-                NhomHang tennsx = new NhomHang();
-                tennsx.getNHList(cmb_nhomhang);
-
+                NhomHang nhomhang = new NhomHang();
+                nhomhang.getNHList(cmb_nhomhang);
                 cmb_nhomhang.getSelectionModel().selectFirst();
-            });
-            stage.show();
+                StateNhomHang = true;
+            }
         } catch (IOException ex) {
             Logger.getLogger(FXML_HangHoaController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -265,10 +295,14 @@ public class FXML_HangHoaController implements Initializable {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/clothesstore_view/FXML_ChiTietSanPham.fxml"));
             AnchorPane chitietsanpham = fxmlLoader.load();
-            FXML_ClothesStoreController.rootP.getChildren().setAll(chitietsanpham);
-            FXML_ChiTietSanPhamController ctsp = fxmlLoader.getController();           
+            // FXML_ClothesStoreController.rootP.getChildren().setAll(chitietsanpham);
+            FXML_ChiTietSanPhamController ctsp = fxmlLoader.getController();
             ctsp.setLbMasanpham_LoadTableView(masp);
-
+            SildingWindowAnimation silde = new SildingWindowAnimation();
+            //AnchorPane hanghoa = FXMLLoader.load(getClass().getResource("/clothesstore_view/FXML_HangHoa.fxml"));
+            silde.SildeTo(FXML_ClothesStoreController.rootP,
+                    chitietsanpham,
+                    SildingWindowAnimation.Direction.SildeLeft);
             KeyCombination Alt_leftArrow = new KeyCodeCombination(KeyCode.LEFT, KeyCodeCombination.ALT_DOWN);
             chitietsanpham.setOnKeyPressed(new EventHandler<KeyEvent>() {
                 @Override
@@ -318,21 +352,21 @@ public class FXML_HangHoaController implements Initializable {
     private void DeleteSanPham() {
         StringProperty masp = new SimpleStringProperty(txt_fi_masanpham.getText());
         SanPham sanpham = new SanPham(masp);
-        if (sanpham.delete()==1) {
+        if (sanpham.delete() == 1) {
             viewListTable();
             ShowMessage
                     .showMessageBox(Alert.AlertType.INFORMATION, "Thông báo", null, "Xóa dữ liệu thành công")
                     .showAndWait();
 
-        } else if(sanpham.delete()==2){
+        } else if (sanpham.delete() == 2) {
             ShowMessage
                     .showMessageBox(Alert.AlertType.WARNING, "Thông báo", null, "Sản phẩm đã nhập vào kho.\n Bạn không thể xóa!")
                     .showAndWait();
-        }
-        else 
-             ShowMessage
+        } else {
+            ShowMessage
                     .showMessageBox(Alert.AlertType.ERROR, "Thông báo", null, "Xóa dữ liệu thất bại")
                     .showAndWait();
+        }
     }
 
     private void UpdateSanPham() {

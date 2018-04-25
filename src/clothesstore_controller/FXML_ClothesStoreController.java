@@ -45,9 +45,7 @@ public class FXML_ClothesStoreController implements Initializable {
     @FXML
     private AnchorPane root, rootm;
 
-    public static AnchorPane rootP, rootM;
-
-   
+    public static AnchorPane rootP, rootM;// Roottemp;
 
     @FXML
     private void changeTab(ActionEvent event) throws IOException {
@@ -75,8 +73,7 @@ public class FXML_ClothesStoreController implements Initializable {
                 break;
             case "btnHangHoa":
                 AnchorPane hanghoa = FXMLLoader.load(getClass().getResource("/clothesstore_view/FXML_HangHoa.fxml"));
-
-            
+                //Roottemp = hanghoa;
                 FXML_ClothesStoreController.rootP.getChildren().setAll(hanghoa);
 
                 root.setLeftAnchor(hanghoa, 0.0);
@@ -119,7 +116,7 @@ public class FXML_ClothesStoreController implements Initializable {
         rootM = rootm;
         box_minimized.setVisible(false);
         InitDrawer();
-
+        //Roottemp = new AnchorPane();
         try {
             AnchorPane tongquan = FXMLLoader.load(getClass().getResource("/clothesstore_view/FXML_TongQuan.fxml"));
             root.setLeftAnchor(tongquan, 0.0);

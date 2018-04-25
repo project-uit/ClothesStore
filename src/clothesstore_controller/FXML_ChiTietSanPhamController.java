@@ -31,6 +31,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -242,7 +243,11 @@ public class FXML_ChiTietSanPhamController implements Initializable {
     public void BacktoSanPham() {
         try {
             AnchorPane hanghoa = FXMLLoader.load(getClass().getResource("/clothesstore_view/FXML_HangHoa.fxml"));
-            FXML_ClothesStoreController.rootP.getChildren().setAll(hanghoa);
+            SildingWindowAnimation silde = new SildingWindowAnimation();   
+            int last =FXML_ClothesStoreController.rootP.getChildren().size()-1;
+            silde.SildeBack(FXML_ClothesStoreController.rootP,(AnchorPane)FXML_ClothesStoreController.rootP.getChildren().get(last),                 
+                     SildingWindowAnimation.Direction.SildeRight);
+           // FXML_ClothesStoreController.rootP.getChildren().setAll(hanghoa);
             FXML_ClothesStoreController.rootP.setLeftAnchor(hanghoa, 0.0);
             FXML_ClothesStoreController.rootP.setRightAnchor(hanghoa, 0.0);
             FXML_ClothesStoreController.rootP.setTopAnchor(hanghoa, 0.0);
@@ -319,7 +324,6 @@ public class FXML_ChiTietSanPhamController implements Initializable {
                     .showAndWait();
         }
     }
-
 
     private void ContextMenuTable() {
         ContextMenu context = new ContextMenu();
