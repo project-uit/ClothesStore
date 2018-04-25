@@ -53,7 +53,7 @@ public class FXML_NhapKhoController implements Initializable {
     private TableView tableviewphieunhap, tableviewchitietphieunhap;
     @FXML
     private TableColumn clmaphieunhap, _clmaphieunhap, clgiavon, clthanhtien,
-            clsoluong, clsanpham, clmachitiet, cltongtien, clngaynhap, clnhacungcap;
+            clsoluong, clsanpham, cltensanpham, clmachitiet, cltongtien, clngaynhap, clnhacungcap;
     @FXML
     private JFXDatePicker dtpFilter;
     @FXML
@@ -61,6 +61,7 @@ public class FXML_NhapKhoController implements Initializable {
 
     public static Stage stageCTKSP;
     public static String MaSP;
+    public static String TenSP;
     public static int SLSP;
     public static int MAPN;
     private Date selectedDate = null;
@@ -129,6 +130,7 @@ public class FXML_NhapKhoController implements Initializable {
         clmachitiet.setCellValueFactory(new PropertyValueFactory("machitietphieunhap"));
         _clmaphieunhap.setCellValueFactory(new PropertyValueFactory("maphieunhap"));
         clsanpham.setCellValueFactory(new PropertyValueFactory("masanpham"));
+        cltensanpham.setCellValueFactory(new PropertyValueFactory("tensanpham"));
         clsoluong.setCellValueFactory(new PropertyValueFactory("soluongsanphamnhap"));
         clgiavon.setCellValueFactory(new PropertyValueFactory("giavon"));
         clthanhtien.setCellValueFactory(new PropertyValueFactory("thanhtien"));
@@ -142,6 +144,7 @@ public class FXML_NhapKhoController implements Initializable {
                     if (checkPhieuNhap(selectedRow.getMaphieunhap()) == false) {
                         ChiTietPhieuNhap rowData = row.getItem();
                         MaSP = rowData.getMasanpham();
+                        TenSP = rowData.getTensanpham();
                         SLSP = rowData.getSoluongsanphamnhap();
                         DisplayChitiet();
                     } else {
