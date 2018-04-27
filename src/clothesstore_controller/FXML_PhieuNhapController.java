@@ -82,7 +82,6 @@ public class FXML_PhieuNhapController implements Initializable {
         InitTableViewPhieuNhap();
         InitCmbNCC();
         datengaynhap.setValue(LocalDate.now());
-
     }
 
     @FXML
@@ -121,7 +120,7 @@ public class FXML_PhieuNhapController implements Initializable {
 
                 cbnhacungcap.getSelectionModel().selectFirst();
             });
-            stageQuanLyNCC.show();
+            stageQuanLyNCC.showAndWait();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -239,9 +238,11 @@ public class FXML_PhieuNhapController implements Initializable {
         mapn = getSelectedRow.getMaphieunhap();
         rootCTPN = FXMLLoader.load(getClass().getResource("/clothesstore_view/FXML_SearchSanPham.fxml"));
         Stage stage = new Stage();
+        stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(new Scene(rootCTPN));
         stage.showAndWait();
-        stageQuanLyCTPN = stage;
+        
+        //stageQuanLyCTPN = stage;
 
         stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override

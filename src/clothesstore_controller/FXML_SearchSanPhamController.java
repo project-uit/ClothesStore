@@ -5,7 +5,6 @@
  */
 package clothesstore_controller;
 
-import static clothesstore_controller.FXML_ChiTietPhieuNhapController._listSP;
 import static clothesstore_controller.FXML_PhieuNhapController.mapn;
 import static clothesstore_controller.FXML_PhieuNhapController.rootCTPN;
 import java.net.URL;

@@ -31,18 +31,21 @@ public class ChiTietPhieuNhap {
     private IntegerProperty soluongsanphamnhap;
     private IntegerProperty giavon;
     private IntegerProperty thanhtien;
+    
+    /* */
     private StringProperty tensanpham;
     private BooleanProperty checked;
-    /* */
+    private StringProperty giaban;
     private StringProperty string_soluongsanphamnhap;
     private StringProperty string_giavon;
 
-    public ChiTietPhieuNhap(int mpn, String masanpham, String tensanpham) {
+    public ChiTietPhieuNhap(int mpn, String masanpham, String tensanpham, String giaban) {
         this.maphieunhap = new SimpleIntegerProperty(mpn);
         this.masanpham = new SimpleStringProperty(masanpham);
         this.tensanpham = new SimpleStringProperty(tensanpham);
         this.soluongsanphamnhap = new SimpleIntegerProperty(0);
         this.giavon = new SimpleIntegerProperty(0);
+        this.giaban = new SimpleStringProperty(giaban);
         this.thanhtien = new SimpleIntegerProperty(0);
         this.checked = new SimpleBooleanProperty(false);
     }
@@ -108,6 +111,14 @@ public class ChiTietPhieuNhap {
 
     public StringProperty getString_giavon() {
         return string_giavon;
+    }
+
+    public StringProperty getGiaban() {
+        return giaban;
+    }
+
+    public void setGiaban(StringProperty giaban) {
+        this.giaban = giaban;
     }
 
     public void setMachitietphieunhap(IntegerProperty machitietphieunhap) {
@@ -222,7 +233,7 @@ public class ChiTietPhieuNhap {
     public boolean ThemChiTietPhieuNhap() {
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
-        String sql = "insert into chitietphieunhap( masanpham,maphieunhap,soluongsanphamnhap,giavon,thanhtien)  values ( ?, ?, ?, ?, ?);";
+        String sql = "insert into chitietphieunhap(masanpham,maphieunhap,soluongsanphamnhap,giavon,thanhtien)  values ( ?, ?, ?, ?, ?);";
         if (con != null) {
             try {
                 PreparedStatement ptm = con.prepareStatement(sql);
@@ -267,14 +278,12 @@ public class ChiTietPhieuNhap {
         if (con != null) {
             try {
                 Statement stmnt = con.createStatement();
-                ResultSet rs = stmnt.executeQuery("SELECT DISTINCT sanpham.masanpham, sanpham.tensanpham, chitietphieunhap.soluongsanphamnhap\n"
-                        + "FROM sanpham\n"
-                        + "LEFT JOIN chitietphieunhap ON sanpham.masanpham = chitietphieunhap.masanpham\n"
-                        + "where soluongsanphamnhap is not null;");
+                ResultSet rs = stmnt.executeQuery("select * from sanpham where giaban is not null");
                 while (rs.next()) {
                     ChiTietPhieuNhap ctpn = new ChiTietPhieuNhap(mpn,
                             rs.getString("masanpham"),
-                            rs.getString("tensanpham"));
+                            rs.getString("tensanpham"),
+                            String.valueOf(rs.getInt("giaban")));
                     list.add(ctpn);
                 }
             } catch (SQLException ex) {
@@ -291,14 +300,12 @@ public class ChiTietPhieuNhap {
         if (con != null) {
             try {
                 Statement stmnt = con.createStatement();
-                ResultSet rs = stmnt.executeQuery("SELECT sanpham.masanpham, sanpham.tensanpham,soluongsanphamnhap "
-                        + "FROM sanpham "
-                        + "LEFT JOIN chitietphieunhap ON sanpham.masanpham = chitietphieunhap.masanpham "
-                        + "where soluongsanphamnhap is null");
+                ResultSet rs = stmnt.executeQuery("select * from sanpham where giaban is null");
                 while (rs.next()) {
                     ChiTietPhieuNhap ctpn = new ChiTietPhieuNhap(mpn,
                             rs.getString("masanpham"),
-                            rs.getString("tensanpham"));
+                            rs.getString("tensanpham"),
+                            String.valueOf(rs.getInt("giaban")));
                     list.add(ctpn);
                 }
             } catch (SQLException ex) {
