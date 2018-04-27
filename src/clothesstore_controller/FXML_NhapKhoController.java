@@ -13,12 +13,12 @@ import com.jfoenix.controls.JFXDatePicker;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -31,7 +31,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
@@ -41,6 +40,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
+import javafx.util.Callback;
 
 /**
  * FXML Controller class
@@ -66,6 +66,7 @@ public class FXML_NhapKhoController implements Initializable {
     public static int MAPN;
     private Date selectedDate = null;
     private boolean flag = false;
+
     /**
      * Initializes the controller class.
      */
@@ -127,6 +128,7 @@ public class FXML_NhapKhoController implements Initializable {
     private void InitTableViewChiTietPhieuNhap(int maphieunhap) {
         ChiTietPhieuNhap ctpn = new ChiTietPhieuNhap();
         ObservableList<ChiTietPhieuNhap> list = ctpn.getTableChiTietPhieuNhap(maphieunhap);
+
         clmachitiet.setCellValueFactory(new PropertyValueFactory("machitietphieunhap"));
         _clmaphieunhap.setCellValueFactory(new PropertyValueFactory("maphieunhap"));
         clsanpham.setCellValueFactory(new PropertyValueFactory("masanpham"));
@@ -135,7 +137,6 @@ public class FXML_NhapKhoController implements Initializable {
         clgiavon.setCellValueFactory(new PropertyValueFactory("giavon"));
         clthanhtien.setCellValueFactory(new PropertyValueFactory("thanhtien"));
         tableviewchitietphieunhap.setItems(list);
-
         tableviewchitietphieunhap.setRowFactory(tv -> {
             TableRow<ChiTietPhieuNhap> row = new TableRow<>();
             row.setOnMouseClicked(event -> {

@@ -26,10 +26,7 @@ public class SearchSanPham {
         this.keysanpham =new SimpleStringProperty(keysanpham);
         this.tensanpham = new SimpleIntegerProperty(tensanpham);
     }
-    
-  
-    
-    
+
     public SearchSanPham keysanpham(String keysanpham) {
             this.keysanpham =new SimpleStringProperty(keysanpham);
             return this;

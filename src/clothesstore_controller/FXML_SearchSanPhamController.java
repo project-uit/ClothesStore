@@ -5,20 +5,28 @@
  */
 package clothesstore_controller;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXComboBox;
+import static clothesstore_controller.FXML_ChiTietPhieuNhapController._listSP;
+import static clothesstore_controller.FXML_PhieuNhapController.mapn;
+import static clothesstore_controller.FXML_PhieuNhapController.rootCTPN;
 import java.net.URL;
 import java.util.ResourceBundle;
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableView;
 import clothesstore_model.ChiTietPhieuNhap;
-import static clothesstore_controller.FXML_ChiTietPhieuNhapController.stageQuanLySearchSanPham;
-import javafx.util.StringConverter;
-import clothesstore_model.SearchSanPham;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.cell.CheckBoxTableCell;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
+import javafx.util.Callback;
 
 /**
  * FXML Controller class
@@ -28,87 +36,96 @@ import clothesstore_model.SearchSanPham;
 public class FXML_SearchSanPhamController implements Initializable {
 
     @FXML
-    private TableView<String> tableviewsearchsanpham;
-
+    private TableView tblSanPhamDaNhap, tblSanPhamChuaNhap;
     @FXML
-    private JFXComboBox cbbsearchsanpham;
+    private TableColumn clMaSP0, clTenSP0, clCheck0,
+            clMaSP1, clTenSP1, clCheck1;
 
-    private String data;
-    private int query;
+    ObservableList<ChiTietPhieuNhap> dataTableSPDaNhap, dataTableSPChuaNhap;
+    public static ObservableList<ChiTietPhieuNhap> listSP;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        dataTableSPDaNhap = FXCollections.observableArrayList();
+        dataTableSPChuaNhap = FXCollections.observableArrayList();
+        listSP = FXCollections.observableArrayList();
+        InitTableSPDaNhap();
+        InitTableSPChuaNhap();
+
         ChiTietPhieuNhap ctpn = new ChiTietPhieuNhap();
-        ctpn.LoadSearchSanPhamChuaNhapTableView(tableviewsearchsanpham);
-        tableviewsearchsanpham.getColumns().get(0).setText("Mã sản phẩm");
-        tableviewsearchsanpham.getColumns().get(1).setText("Tên sản phẩm");
-        tableviewsearchsanpham.getColumns().get(2).setText("Số lượng");
-        tableviewsearchsanpham.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        dataTableSPDaNhap = ctpn.LoadSanPhamDaNhap(mapn);
+        dataTableSPChuaNhap = ctpn.LoadSanPhamChuaNhap(mapn);
 
-        tableviewsearchsanpham.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
-            @Override
-            public void changed(ObservableValue observableValue, Object oldValue, Object newValue) {
+        tblSanPhamDaNhap.setItems(dataTableSPDaNhap);
+        tblSanPhamChuaNhap.setItems(dataTableSPChuaNhap);
+    }
 
-                if (tableviewsearchsanpham.getSelectionModel().getSelectedItem() != null) {
-                    // newValue lấy hết giá trị trong 1 hàng
-                    String Finalvaluetablerow = newValue.toString().split(",")[0].substring(1); // lấy giá trị ở cột thứ i
-                    data = Finalvaluetablerow;
-                }
-            }
-        });
-
-        SearchSanPham ob = SearchSanPham.newInstance().keysanpham("Sản phẩm chưa từng nhập").tensanpham(1);
-        SearchSanPham ob1 = SearchSanPham.newInstance().keysanpham("Sản phẩm đã từng nhập").tensanpham(2);
-        cbbsearchsanpham.getItems().addAll(ob, ob1);
-        cbbsearchsanpham.setConverter(new StringConverter<SearchSanPham>() {
-            @Override
-            public String toString(SearchSanPham object) {
-                return object.getKeysanpham();
-            }
-
-            @Override
-            public SearchSanPham fromString(String string) {
-                return null;
-            }
-        });
-
-        cbbsearchsanpham.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<SearchSanPham>() {
-            @Override
-            public void changed(ObservableValue<? extends SearchSanPham> observable, SearchSanPham oldValue, SearchSanPham newValue) {
-                query = newValue.getTensanpham();
-            }
-        });
-
-        cbbsearchsanpham.getSelectionModel().selectFirst();
-
+    public void setListSP(ObservableList<ChiTietPhieuNhap> list) {
+        listSP = list;
+        System.out.println(listSP.size());
     }
 
     @FXML
-    private void handler_Thêm(ActionEvent event) {
-        stageQuanLySearchSanPham.close();
-    }
+    private void handler_btnNext(ActionEvent event) {
+        AnchorPane ctpn;
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/clothesstore_view/FXML_ChiTietPhieuNhap.fxml"));
+            ctpn = fxmlLoader.load();
+            SildingWindowAnimation silde = new SildingWindowAnimation();
+            silde.SildeTo(rootCTPN,
+                    ctpn,
+                    SildingWindowAnimation.Direction.SildeLeft);
+            ctpn.requestFocus();
 
-    String getData() {
-        return data;
-    }
+            rootCTPN.setLeftAnchor(ctpn, 0.0);
+            rootCTPN.setRightAnchor(ctpn, 0.0);
+            rootCTPN.setTopAnchor(ctpn, 0.0);
+            rootCTPN.setBottomAnchor(ctpn, 0.0);
 
-    @FXML
-    private void handler_chon(ActionEvent event) {
-        tableviewsearchsanpham.getColumns().clear();
-        if (query == 1) {
-            ChiTietPhieuNhap ctpn = new ChiTietPhieuNhap();
-            ctpn.LoadSearchSanPhamChuaNhapTableView(tableviewsearchsanpham);
-        } else if (query == 2) {
-            ChiTietPhieuNhap ctpn = new ChiTietPhieuNhap();
-            ctpn.LoadSearchSanPhamDaNhapTableView(tableviewsearchsanpham);
+            FXML_ChiTietPhieuNhapController controller = fxmlLoader.getController();
+            controller._setListSP(listSP);
+            controller.InitTableCTPN();
+        } catch (IOException ex) {
+            Logger.getLogger(FXML_SearchSanPhamController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        // Chỉnh header text cho column
-        tableviewsearchsanpham.getColumns().get(0).setText("Mã sản phẩm");
-        tableviewsearchsanpham.getColumns().get(1).setText("Tên sản phẩm");
-        tableviewsearchsanpham.getColumns().get(2).setText("Số lượng");
-        tableviewsearchsanpham.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+    }
+
+    private void InitTableSPDaNhap() {
+        clMaSP1.setCellValueFactory(new PropertyValueFactory("masanpham"));
+        clTenSP1.setCellValueFactory(new PropertyValueFactory("tensanpham"));
+        clCheck1.setCellValueFactory(new PropertyValueFactory("checked"));
+        clCheck1.setCellFactory(CheckBoxTableCell.forTableColumn(new Callback<Integer, ObservableValue<Boolean>>() {
+            @Override
+            public ObservableValue<Boolean> call(Integer param) {
+                if (dataTableSPDaNhap.get(param).checkedProperty().get()) {
+                    // do something here
+                    listSP.add(dataTableSPDaNhap.get(param));
+                } else {
+                    listSP.remove(dataTableSPDaNhap.get(param));
+                }
+                return dataTableSPDaNhap.get(param).checkedProperty();
+            }
+        }));
+    }
+
+    private void InitTableSPChuaNhap() {
+        clMaSP0.setCellValueFactory(new PropertyValueFactory("masanpham"));
+        clTenSP0.setCellValueFactory(new PropertyValueFactory("tensanpham"));
+        clCheck0.setCellValueFactory(new PropertyValueFactory("checked"));
+        clCheck0.setCellFactory(CheckBoxTableCell.forTableColumn(new Callback<Integer, ObservableValue<Boolean>>() {
+            @Override
+            public ObservableValue<Boolean> call(Integer param) {
+                if (dataTableSPChuaNhap.get(param).checkedProperty().get()) {
+                    // do something here
+                    listSP.add(dataTableSPChuaNhap.get(param));
+                } else {
+                    listSP.remove(dataTableSPChuaNhap.get(param));
+                }
+                return dataTableSPChuaNhap.get(param).checkedProperty();
+            }
+        }));
     }
 }

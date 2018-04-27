@@ -8,8 +8,6 @@ package clothesstore_controller;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
 
@@ -39,12 +37,12 @@ public class SildingWindowAnimation {
                         new KeyValue(view1.translateXProperty(), -width));
                 break;
             case SildeRight:
-                    start = new KeyFrame(Duration.ZERO,
-                            new KeyValue(view2.translateXProperty(), -width),
-                            new KeyValue(view1.translateXProperty(), 0));
-                    end = new KeyFrame(Duration.seconds(1),
-                            new KeyValue(view2.translateXProperty(), 0),
-                            new KeyValue(view1.translateXProperty(), width));
+                start = new KeyFrame(Duration.ZERO,
+                        new KeyValue(view2.translateXProperty(), -width),
+                        new KeyValue(view1.translateXProperty(), 0));
+                end = new KeyFrame(Duration.seconds(1),
+                        new KeyValue(view2.translateXProperty(), 0),
+                        new KeyValue(view1.translateXProperty(), width));
                 break;
             case SildeDown:
                 start = new KeyFrame(Duration.ZERO,
@@ -68,7 +66,7 @@ public class SildingWindowAnimation {
 
         if (start != null && end != null) {
             Timeline slide = new Timeline(start, end);
-             slide.setOnFinished(e -> root.getChildren().remove(0));// remove(view1)
+            slide.setOnFinished(e -> root.getChildren().remove(0));// remove(view1)
             slide.play();
         }
     }
@@ -89,9 +87,9 @@ public class SildingWindowAnimation {
                         new KeyValue(view.translateXProperty(), 0));
                 break;
             case SildeRight:
-                start = new KeyFrame(Duration.ZERO,                       
+                start = new KeyFrame(Duration.ZERO,
                         new KeyValue(view.translateXProperty(), 0));
-                end = new KeyFrame(Duration.seconds(1.7),                       
+                end = new KeyFrame(Duration.seconds(1.7),
                         new KeyValue(view.translateXProperty(), width));
                 break;
             case SildeDown:
@@ -115,14 +113,15 @@ public class SildingWindowAnimation {
         }
 
         if (start != null && end != null) {
-            Timeline slide = new Timeline(start, end);           
-            slide.setOnFinished(e -> root.getChildren().remove(root.getChildren().size()-1));// remove(view)
+            Timeline slide = new Timeline(start, end);
+            slide.setOnFinished(e -> root.getChildren().remove(root.getChildren().size() - 1));// remove(view)
             slide.play();
         }
     }
-      public void SildeTo(AnchorPane root, AnchorPane view, Direction dir) {
+    
+    public void SildeTo(AnchorPane root, AnchorPane view, Direction dir) {
 
-        root.getChildren().add(view);     
+        root.getChildren().add(view);
         double width = root.getWidth();
         KeyFrame start = null, end = null;
 
@@ -130,17 +129,17 @@ public class SildingWindowAnimation {
             case SildeLeft:
                 start = new KeyFrame(Duration.ZERO,
                         new KeyValue(view.translateXProperty(), width)
-                        );
-                end = new KeyFrame(Duration.seconds(1.7),                      
+                );
+                end = new KeyFrame(Duration.seconds(1.7),
                         new KeyValue(view.translateXProperty(), 0));
                 break;
             case SildeRight:
-                 start = new KeyFrame(Duration.ZERO,
+                start = new KeyFrame(Duration.ZERO,
                         new KeyValue(view.translateXProperty(), -width)
-                        );
-                end = new KeyFrame(Duration.seconds(1.7),                      
+                );
+                end = new KeyFrame(Duration.seconds(1.7),
                         new KeyValue(view.translateXProperty(), 0));
-                break;              
+                break;
             case SildeDown:
                 start = new KeyFrame(Duration.ZERO,
                         new KeyValue(view.translateYProperty(), width),

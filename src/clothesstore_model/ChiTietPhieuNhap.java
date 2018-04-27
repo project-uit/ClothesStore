@@ -10,17 +10,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.util.Callback;
 
 /**
  *
@@ -35,6 +32,20 @@ public class ChiTietPhieuNhap {
     private IntegerProperty giavon;
     private IntegerProperty thanhtien;
     private StringProperty tensanpham;
+    private BooleanProperty checked;
+    /* */
+    private StringProperty string_soluongsanphamnhap;
+    private StringProperty string_giavon;
+
+    public ChiTietPhieuNhap(int mpn, String masanpham, String tensanpham) {
+        this.maphieunhap = new SimpleIntegerProperty(mpn);
+        this.masanpham = new SimpleStringProperty(masanpham);
+        this.tensanpham = new SimpleStringProperty(tensanpham);
+        this.soluongsanphamnhap = new SimpleIntegerProperty(0);
+        this.giavon = new SimpleIntegerProperty(0);
+        this.thanhtien = new SimpleIntegerProperty(0);
+        this.checked = new SimpleBooleanProperty(false);
+    }
 
     public ChiTietPhieuNhap(int machitietphieunhap, String masanpham, int maphieunhap, int soluongsanphamnhap, int giavon, int thanhtien, String tensanpham) {
         this.machitietphieunhap = new SimpleIntegerProperty(machitietphieunhap);
@@ -91,6 +102,14 @@ public class ChiTietPhieuNhap {
         return tensanpham.getValue();
     }
 
+    public StringProperty getString_soluongsanphamnhap() {
+        return string_soluongsanphamnhap;
+    }
+
+    public StringProperty getString_giavon() {
+        return string_giavon;
+    }
+
     public void setMachitietphieunhap(IntegerProperty machitietphieunhap) {
         this.machitietphieunhap = machitietphieunhap;
     }
@@ -113,6 +132,32 @@ public class ChiTietPhieuNhap {
 
     public void setThanhtien(IntegerProperty thanhtien) {
         this.thanhtien = thanhtien;
+    }
+
+    public void setTensanpham(StringProperty tensanpham) {
+        this.tensanpham = tensanpham;
+    }
+
+    public void setString_soluongsanphamnhap(StringProperty string_soluongsanphamnhap) {
+        this.string_soluongsanphamnhap = string_soluongsanphamnhap;
+        this.soluongsanphamnhap = new SimpleIntegerProperty(Integer.valueOf(string_soluongsanphamnhap.get()));
+    }
+
+    public void setString_giavon(StringProperty string_giavon) {
+        this.string_giavon = string_giavon;
+        this.giavon = new SimpleIntegerProperty(Integer.valueOf(string_giavon.get()));
+    }
+
+    public boolean isChecked() {
+        return checked.get();
+    }
+
+    public void setChecked(boolean checked) {
+        this.checked.set(checked);
+    }
+
+    public BooleanProperty checkedProperty() {
+        return checked;
     }
 
     public ObservableList<ChiTietPhieuNhap> getTableChiTietPhieuNhap(int maphieunhap) {
@@ -157,7 +202,7 @@ public class ChiTietPhieuNhap {
 
                 ptm.setString(1, masanpham.getValue());
                 ptm.setInt(2, maphieunhap.getValue());
-                ptm.setInt(3, soluongsanphamnhap.getValue());
+                ptm.setInt(3, Integer.valueOf(soluongsanphamnhap.getValue()));
                 ptm.setInt(4, giavon.getValue());
                 ptm.setInt(5, thanhtien.getValue());
                 ptm.setInt(6, machitietphieunhap.getValue());
@@ -214,10 +259,10 @@ public class ChiTietPhieuNhap {
         return true;
     }
 
-    public void LoadSearchSanPhamDaNhapTableView(TableView table) {
+    public ObservableList<ChiTietPhieuNhap> LoadSanPhamDaNhap(int mpn) {
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
-        ObservableList<ObservableList> data = FXCollections.observableArrayList();
+        ObservableList<ChiTietPhieuNhap> list = FXCollections.observableArrayList();
 
         if (con != null) {
             try {
@@ -226,77 +271,40 @@ public class ChiTietPhieuNhap {
                         + "FROM sanpham\n"
                         + "LEFT JOIN chitietphieunhap ON sanpham.masanpham = chitietphieunhap.masanpham\n"
                         + "where soluongsanphamnhap is not null;");
-
-                for (int i = 0; i < rs.getMetaData().getColumnCount(); i++) {
-                    final int j = i;
-                    TableColumn col = new TableColumn("" + i);
-
-                    col.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
-                        public ObservableValue<String> call(TableColumn.CellDataFeatures<ObservableList, String> param) {
-                            return new ReadOnlyObjectWrapper(param.getValue().get(j));
-                        }
-                    });
-
-                    table.getColumns().addAll(col);
-                }
-
                 while (rs.next()) {
-                    ObservableList<String> row = FXCollections.observableArrayList();
-                    int columnCount = rs.getMetaData().getColumnCount();
-                    for (int i = 1; i <= columnCount; i++) {
-                        row.add(rs.getString(i));
-
-                    }
-                    data.add(row);
+                    ChiTietPhieuNhap ctpn = new ChiTietPhieuNhap(mpn,
+                            rs.getString("masanpham"),
+                            rs.getString("tensanpham"));
+                    list.add(ctpn);
                 }
-                table.setItems(data);
             } catch (SQLException ex) {
-
             }
-
         }
+        return list;
     }
 
-    public void LoadSearchSanPhamChuaNhapTableView(TableView table) {
+    public ObservableList<ChiTietPhieuNhap> LoadSanPhamChuaNhap(int mpn) {
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
-        ObservableList<ObservableList> data = FXCollections.observableArrayList();
+        ObservableList<ChiTietPhieuNhap> list = FXCollections.observableArrayList();
 
         if (con != null) {
             try {
                 Statement stmnt = con.createStatement();
-                ResultSet rs = stmnt.executeQuery("SELECT  sanpham.masanpham, sanpham.tensanpham,soluongsanphamnhap "
+                ResultSet rs = stmnt.executeQuery("SELECT sanpham.masanpham, sanpham.tensanpham,soluongsanphamnhap "
                         + "FROM sanpham "
                         + "LEFT JOIN chitietphieunhap ON sanpham.masanpham = chitietphieunhap.masanpham "
                         + "where soluongsanphamnhap is null");
-
-                for (int i = 0; i < rs.getMetaData().getColumnCount(); i++) {
-                    final int j = i;
-                    TableColumn col = new TableColumn("" + i);
-
-                    col.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
-                        public ObservableValue<String> call(TableColumn.CellDataFeatures<ObservableList, String> param) {
-                            return new ReadOnlyObjectWrapper(param.getValue().get(j));
-                        }
-                    });
-                    table.getColumns().addAll(col);
-                }
-
                 while (rs.next()) {
-                    ObservableList<String> row = FXCollections.observableArrayList();
-                    int columnCount = rs.getMetaData().getColumnCount();
-                    for (int i = 1; i <= columnCount; i++) {
-                        row.add(rs.getString(i));
-
-                    }
-                    data.add(row);
+                    ChiTietPhieuNhap ctpn = new ChiTietPhieuNhap(mpn,
+                            rs.getString("masanpham"),
+                            rs.getString("tensanpham"));
+                    list.add(ctpn);
                 }
-                table.setItems(data);
             } catch (SQLException ex) {
-
             }
-
         }
+        return list;
     }
 
     public boolean CapNhatTongTienPhieuNhap(int maphieunhap) {

@@ -6,33 +6,37 @@
 package clothesstore_controller;
 
 import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXTextField;
-
 import java.net.URL;
 import java.util.ResourceBundle;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import clothesstore_model.ChiTietPhieuNhap;
-import clothesstore_model.PhieuNhap;
 import static clothesstore_controller.FXML_PhieuNhapController.mapn;
+import static clothesstore_controller.FXML_PhieuNhapController.rootCTPN;
+import static clothesstore_controller.FXML_SearchSanPhamController.listSP;
+import clothesstore_model.ChiTietPhieuNhap;
+import com.jfoenix.controls.JFXTextField;
 import java.io.IOException;
 import java.util.Optional;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
-import javafx.beans.value.ChangeListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableRow;
+import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.layout.AnchorPane;
+import javafx.util.Callback;
 
 /**
  * FXML Controller class
@@ -42,289 +46,226 @@ import javafx.scene.control.ButtonBar;
 public class FXML_ChiTietPhieuNhapController implements Initializable {
 
     @FXML
-    private TableView tablechitietsanpham;
+    private TableView tblCTPN;
     @FXML
-    private TableColumn machitietphieunhap;
+    private TableColumn clMaSP, clTenSP, clSoLuong, clGiaVon, clThanhTien;
     @FXML
-    private TableColumn sanpham;
-    @FXML
-    private TableColumn soluongsanphamnhap;
-    @FXML
-    private TableColumn giavon;
-    @FXML
-    private TableColumn thanhtien;
-    @FXML
-    private JFXTextField txtfisanpham;
-    @FXML
-    private JFXTextField txtfisoluong;
-    @FXML
-    private JFXTextField txtfigiavon;
-    @FXML
-    private JFXTextField txtfithanhtien;
-    @FXML
-    private JFXButton btnthem;
-    @FXML
-    private JFXButton btnluu;
-
-    private ChiTietPhieuNhap chitietpn;
-
-    public static Stage stageQuanLySearchSanPham;
-    @FXML
-    private JFXButton btnhuy;
+    private JFXButton btnBack, btnSave;
     @FXML
     private JFXTextField txtmaphieunhap;
-    @FXML
-    private JFXTextField txtgiaban;
-
+    public static ObservableList<ChiTietPhieuNhap> _listSP;
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-        InitTableView();
+        InitTableCTPN();
         txtmaphieunhap.setText(Integer.toString(mapn));
-        txtfigiavon.textProperty().addListener(new ChangeListener<String>() {
+    }
 
+    public void _setListSP(ObservableList<ChiTietPhieuNhap> list){
+        _listSP = list;
+        System.out.println(_listSP.size());
+    }
+    public void InitTableCTPN() {
+        clMaSP.setCellValueFactory(new PropertyValueFactory("masanpham"));
+        clTenSP.setCellValueFactory(new PropertyValueFactory("tensanpham"));
+        clThanhTien.setCellValueFactory(new PropertyValueFactory("thanhtien"));
+
+        clSoLuong.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ChiTietPhieuNhap, String>, ObservableValue<String>>() {
             @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                if (!newValue.matches("\\d*")) {
-                    txtfigiavon.setText(newValue.replaceAll("[^\\d]", ""));
-
-                }
-                if (txtfisoluong.getText().isEmpty() || newValue.isEmpty()) {
-                    txtfithanhtien.setText("0");
-                    return;
-                }
-                try {
-                    Integer value1 = Integer.valueOf(newValue);
-                    Integer value2 = Integer.valueOf(txtfisoluong.getText());
-                    Integer r = value1 * value2;
-                    txtfithanhtien.setText("" + r);
-                } catch (NumberFormatException ex) {
-
-                }
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<ChiTietPhieuNhap, String> p) {
+                return p.getValue().getString_soluongsanphamnhap();
             }
         });
-        txtfisoluong.textProperty().addListener(new ChangeListener<String>() {
-
+        clSoLuong.setCellFactory(new Callback<TableColumn<ChiTietPhieuNhap, String>, TableCell<ChiTietPhieuNhap, String>>() {
             @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                if (!newValue.matches("\\d*")) {
-                    txtfisoluong.setText(newValue.replaceAll("[^\\d]", ""));
-
-                }
-                if (txtfigiavon.getText().isEmpty() || newValue.isEmpty()) {
-                    txtfithanhtien.setText("0");
-                    return;
-                }
-                try {
-                    Integer value1 = Integer.valueOf(newValue);
-                    Integer value2 = Integer.valueOf(txtfigiavon.getText());
-                    Integer r = value1 * value2;
-                    txtfithanhtien.setText("" + r);
-                } catch (NumberFormatException ex) {
-
-                }
-
+            public TableCell<ChiTietPhieuNhap, String> call(TableColumn<ChiTietPhieuNhap, String> p) {
+                return new TextFieldTableCell();
+            }
+        });
+        clSoLuong.setCellFactory(TextFieldTableCell.forTableColumn());
+        clSoLuong.setOnEditStart(
+                new EventHandler<TableColumn.CellEditEvent<ChiTietPhieuNhap, String>>() {
+            @Override
+            public void handle(TableColumn.CellEditEvent<ChiTietPhieuNhap, String> t) {
+                btnSave.setDisable(true);
             }
         });
 
-    }
+        clGiaVon.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ChiTietPhieuNhap, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<ChiTietPhieuNhap, String> p) {
+                return p.getValue().getString_giavon();
+            }
+        });
 
-    public void InitTableView() {
-        ChiTietPhieuNhap ctpn = new ChiTietPhieuNhap();
-        ObservableList<ChiTietPhieuNhap> list = ctpn.getTableChiTietPhieuNhap(mapn);
-        machitietphieunhap.setCellValueFactory(new PropertyValueFactory("machitietphieunhap"));
-        sanpham.setCellValueFactory(new PropertyValueFactory("masanpham"));
-        soluongsanphamnhap.setCellValueFactory(new PropertyValueFactory("soluongsanphamnhap"));
-        giavon.setCellValueFactory(new PropertyValueFactory("giavon"));
-        thanhtien.setCellValueFactory(new PropertyValueFactory("thanhtien"));
-        tablechitietsanpham.setItems(list);
-    }
+        clGiaVon.setCellFactory(new Callback<TableColumn<ChiTietPhieuNhap, String>, TableCell<ChiTietPhieuNhap, String>>() {
+            @Override
+            public TableCell<ChiTietPhieuNhap, String> call(TableColumn<ChiTietPhieuNhap, String> p) {
+                return new TextFieldTableCell();
+            }
+        });
+        clGiaVon.setCellFactory(TextFieldTableCell.forTableColumn());
+        clGiaVon.setOnEditStart(
+                new EventHandler<TableColumn.CellEditEvent<ChiTietPhieuNhap, String>>() {
+            @Override
+            public void handle(TableColumn.CellEditEvent<ChiTietPhieuNhap, String> t) {
+                btnSave.setDisable(true);
+            }
+        });
+        tblCTPN.setRowFactory(tv -> {
+            TableRow<ChiTietPhieuNhap> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 1 && (!row.isEmpty())) {
+                    clGiaVon.setOnEditCommit(
+                            new EventHandler<TableColumn.CellEditEvent<ChiTietPhieuNhap, String>>() {
+                        @Override
+                        public void handle(TableColumn.CellEditEvent<ChiTietPhieuNhap, String> t) {
+                            btnSave.setDisable(false);
+                            try {
+                                ((ChiTietPhieuNhap) t.getTableView().getItems().get(
+                                        t.getTablePosition().getRow())).setString_giavon(
+                                        new SimpleStringProperty(t.getNewValue().trim()));
 
-    @FXML
-    private void Handler_Btnthem(ActionEvent event) {
-        String masp = txtfisanpham.getText();
-        //String maphieunhap = Integer.toString(mapn);
-        tablechitietsanpham.getSelectionModel().focus(-1);
-        int giaban = 0;
-        try {
-            giaban = Integer.parseInt(txtgiaban.getText());
-        } catch (Exception ex) {
-            System.out.println(ex);
-        }
-        int soluong = 0;
-        try {
-            soluong = Integer.parseInt(txtfisoluong.getText().toString());
-        } catch (Exception ex) {
-            System.out.println(ex);
-        }
-        int giavon = 0;
-        try {
-            giavon = Integer.parseInt(txtfigiavon.getText().toString());
-        } catch (Exception ex) {
-            System.out.println(ex);
-        }
-        int thanhtien = 0;
-        try {
-            thanhtien = Integer.parseInt(txtfithanhtien.getText().toString());
-        } catch (Exception ex) {
-            System.out.println(ex);
-        }
-        if (masp.equals("") || soluong == 0 || giavon == 0 || giaban == 0) {
+                                int sl = ((ChiTietPhieuNhap) t.getTableView().getItems().get(
+                                        t.getTablePosition().getRow())).getSoluongsanphamnhap();
+                                int gv = ((ChiTietPhieuNhap) t.getTableView().getItems().get(
+                                        t.getTablePosition().getRow())).getGiavon();
+                                int tt = sl * gv;
+                                ((ChiTietPhieuNhap) t.getTableView().getItems().get(
+                                        t.getTablePosition().getRow())).setThanhtien(
+                                        new SimpleIntegerProperty(tt));
+                                row.setItem(((ChiTietPhieuNhap) t.getTableView().getItems().get(
+                                        t.getTablePosition().getRow())));
+                                tblCTPN.refresh();
+                            } catch (NumberFormatException ex) {
+                                ((ChiTietPhieuNhap) t.getTableView().getItems().get(
+                                        t.getTablePosition().getRow())).setGiavon(
+                                        new SimpleIntegerProperty(0));
+                                ((ChiTietPhieuNhap) t.getTableView().getItems().get(
+                                        t.getTablePosition().getRow())).setThanhtien(
+                                        new SimpleIntegerProperty(0));
+                                //row.setStyle("-fx-background-color: red");
+                                ShowMessage
+                                        .showMessageBox(Alert.AlertType.ERROR, "Thông báo", null, "Giá vốn chỉ được nhập số")
+                                        .showAndWait();
+                                tblCTPN.refresh();
+                            }
+                        }
+                    });
+                    clSoLuong.setOnEditCommit(
+                            new EventHandler<TableColumn.CellEditEvent<ChiTietPhieuNhap, String>>() {
+                        @Override
+                        public void handle(TableColumn.CellEditEvent<ChiTietPhieuNhap, String> t) {
+                            btnSave.setDisable(false);
+                            try {
+                                ((ChiTietPhieuNhap) t.getTableView().getItems().get(
+                                        t.getTablePosition().getRow())).setString_soluongsanphamnhap(
+                                        new SimpleStringProperty(t.getNewValue().trim()));
+                                int sl = ((ChiTietPhieuNhap) t.getTableView().getItems().get(
+                                        t.getTablePosition().getRow())).getSoluongsanphamnhap();
+                                int gv = ((ChiTietPhieuNhap) t.getTableView().getItems().get(
+                                        t.getTablePosition().getRow())).getGiavon();
+                                int tt = sl * gv;
 
-            ButtonType cancel = new ButtonType("OK", ButtonBar.ButtonData.CANCEL_CLOSE);
-            Alert alert = new Alert(Alert.AlertType.WARNING,
-                    "Vui lòng điền đầy đủ thông tin",
-                    cancel);
-
-            alert.setTitle("Nhắc nhở");
-            alert.setHeaderText(null);
-            Optional<ButtonType> result = alert.showAndWait();
-        } else {
-            ChiTietPhieuNhap ctpn = new ChiTietPhieuNhap(masp, mapn, soluong, giavon, thanhtien);
-            ctpn.ThemChiTietPhieuNhap();
-            ctpn.CapNhatTongTienPhieuNhap(mapn);
-            ctpn.CapNhatGiaBanSanPham(masp, giaban);
-            InitTableView();
-        }
-    }
-
-    private void handler_thoat(ActionEvent event) {
-        Node source = (Node) event.getSource();
-        Stage stage = (Stage) source.getScene().getWindow();
-        stage.close();
-
-    }
-
-    @FXML
-    private void handler_luu(ActionEvent event) {
-
-        String masp = txtfisanpham.getText();
-        String maphieunhap = Integer.toString(mapn);
-        int giaban = 0;
-        try {
-            giaban = Integer.parseInt(txtgiaban.getText());
-        } catch (Exception ex) {
-            System.out.println(ex);
-        }
-        int soluong = 0;
-        try {
-            soluong = Integer.parseInt(txtfisoluong.getText().toString());
-        } catch (Exception ex) {
-            System.out.println(ex);
-        }
-        int giavon = 0;
-        try {
-            giavon = Integer.parseInt(txtfigiavon.getText().toString());
-        } catch (Exception ex) {
-            System.out.println(ex);
-        }
-        int thanhtien = 0;
-        try {
-            thanhtien = Integer.parseInt(txtfithanhtien.getText().toString());
-        } catch (Exception ex) {
-            System.out.println(ex);
-        }
-        if (masp.equals("") || soluong == 0 || giavon == 0 || giaban == 0) {
-
-            ButtonType cancel = new ButtonType("OK", ButtonBar.ButtonData.CANCEL_CLOSE);
-            Alert alert = new Alert(Alert.AlertType.WARNING,
-                    "Vui lòng điền đầy đủ thông tin",
-                    cancel);
-
-            alert.setTitle("Nhắc nhở");
-            alert.setHeaderText(null);
-            Optional<ButtonType> result = alert.showAndWait();
-        } else {
-            ChiTietPhieuNhap ctpn = new ChiTietPhieuNhap(chitietpn.getMachitietphieunhap(), masp, mapn, soluong, giavon, thanhtien);
-            ctpn.CapNhatChiTietPhieuNhap();
-            ctpn.CapNhatTongTienPhieuNhap(mapn);
-            ctpn.CapNhatGiaBanSanPham(masp, giaban);
-            InitTableView();
-            btnluu.setDisable(true);
-            btnthem.setDisable(false);
-            btnhuy.setDisable(true);
-        }
-
-    }
-
-    @FXML
-    private void handler_suachitietphieunhap(ActionEvent event) {
-        ChiTietPhieuNhap getSelectedRow = (ChiTietPhieuNhap) tablechitietsanpham.getSelectionModel().getSelectedItem();
-        chitietpn = (ChiTietPhieuNhap) tablechitietsanpham.getSelectionModel().getSelectedItem();
-        if (getSelectedRow == null) {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Nhắc nhở");
-            alert.setHeaderText(null);
-            alert.setContentText("Mời chọn chi tiết phiếu nhập mã ");
-            return;
-        }
-        txtfisanpham.setText(getSelectedRow.getMasanpham());
-        txtfisoluong.setText(Integer.toString(getSelectedRow.getSoluongsanphamnhap()));
-        txtfigiavon.setText(Integer.toString(getSelectedRow.getGiavon()));
-        txtfithanhtien.setText(Integer.toString(getSelectedRow.getThanhtien()));
-        btnluu.setDisable(false);
-        btnthem.setDisable(true);
-        btnhuy.setDisable(false);
-    }
-
-    @FXML
-    private void handler_xoachitietphieunhap(ActionEvent event) {
-        ChiTietPhieuNhap selectedForDeletion = (ChiTietPhieuNhap) tablechitietsanpham.getSelectionModel().getSelectedItem();
-        if (selectedForDeletion == null) {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
-                    "Mời chọn chi tiết phiếu nhập");
-            alert.setTitle("Nhắc nhở");
-            alert.setHeaderText(null);
-            return;
-        }
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Nhắc nhở");
-        alert.setHeaderText(null);
-        alert.setContentText("Bạn có muốn xóa chi tiết phiếu nhập mã " + selectedForDeletion.getMachitietphieunhap() + " ?");
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK) {
-            ChiTietPhieuNhap ctpn = new ChiTietPhieuNhap();
-            String maphieunhap = Integer.toString(mapn);
-            ctpn.XoaChiTietPhieuNhap(selectedForDeletion.getMachitietphieunhap(), maphieunhap);
-
-            ctpn.CapNhatTongTienPhieuNhap(mapn);
-            InitTableView();
-            System.out.println("Xoa Thanh Cong");
-        } else {
-            System.out.println("Xoa That Bai");
-        }
-    }
-
-    @FXML
-    private void handler_themsanpham(ActionEvent event) throws IOException {
-        try {
-
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("/clothesstore_view/FXML_SearchSanPham.fxml"));
-            loader.load();
-            Parent p = loader.getRoot();
-            Stage stage = new Stage();
-            stage.setScene(new Scene(p));
-            FXML_SearchSanPhamController wc = loader.<FXML_SearchSanPhamController>getController();
-
-            stage.setOnHidden((WindowEvent event1) -> {
-                txtfisanpham.setText(wc.getData());
+                                ((ChiTietPhieuNhap) t.getTableView().getItems().get(
+                                        t.getTablePosition().getRow())).setThanhtien(
+                                        new SimpleIntegerProperty(tt));
+                                row.setItem(((ChiTietPhieuNhap) t.getTableView().getItems().get(
+                                        t.getTablePosition().getRow())));
+                                tblCTPN.refresh();
+                            } catch (NumberFormatException ex) {
+                                ((ChiTietPhieuNhap) t.getTableView().getItems().get(
+                                        t.getTablePosition().getRow())).setSoluongsanphamnhap(
+                                        new SimpleIntegerProperty(0));
+                                ((ChiTietPhieuNhap) t.getTableView().getItems().get(
+                                        t.getTablePosition().getRow())).setThanhtien(
+                                        new SimpleIntegerProperty(0));
+                                //row.setStyle("-fx-background-color: red");
+                                ShowMessage
+                                        .showMessageBox(Alert.AlertType.ERROR, "Thông báo", null, "Số lượng chỉ được nhập số")
+                                        .showAndWait();
+                                tblCTPN.refresh();
+                            }
+                        }
+                    });
+                }
             });
-            stage.show();
-            stageQuanLySearchSanPham = stage;
-        } catch (Exception e) {
-            e.printStackTrace();
+            return row;
+        }
+        );
+        tblCTPN.setItems(_listSP);
+    }
+
+    @FXML
+    private void Handler_btnSave(ActionEvent event) {
+        boolean flag = true;
+        for (Object o : tblCTPN.getItems()) {
+            if (Integer.valueOf(clThanhTien.getCellData(o).toString()) <= 0) {
+                tblCTPN.getSelectionModel().select(o);
+                ShowMessage
+                        .showMessageBox(Alert.AlertType.ERROR, "Thông báo", null, "Số lượng và Giá vốn chỉ được nhập số (Số dương > 0)")
+                        .showAndWait();
+                flag = false;
+                break;
+            }
+        }
+        if (flag) {
+            ButtonType yes = new ButtonType("Lưu", ButtonBar.ButtonData.OK_DONE);
+            ButtonType cancel = new ButtonType("Huỷ", ButtonBar.ButtonData.CANCEL_CLOSE);
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
+                    "Bạn có chắc chắn muốn lưu",
+                    yes,
+                    cancel);
+
+            alert.setTitle("Nhắc nhở");
+            alert.setHeaderText(null);
+            Optional<ButtonType> result = alert.showAndWait();
+
+            if (result.isPresent() && result.get() == yes) {
+                for (int i = 0; i < tblCTPN.getItems().size(); i++) {
+                    String msp = clMaSP.getCellData(i).toString();
+                    int sl = Integer.valueOf(clSoLuong.getCellData(i).toString());
+                    int gv = Integer.valueOf(clGiaVon.getCellData(i).toString());
+                    int tt = Integer.valueOf(clThanhTien.getCellData(i).toString());
+                    ChiTietPhieuNhap ctpn = new ChiTietPhieuNhap(msp, mapn, sl, gv, tt);
+                    if(ctpn.ThemChiTietPhieuNhap()){
+                        btnSave.setDisable(true);
+                        btnBack.setDisable(true);
+                        System.out.println("Luu thanh cong");
+                    }
+                    else    
+                        System.out.println("Luu that bai");
+                }
+                ChiTietPhieuNhap ctpn = new ChiTietPhieuNhap();
+                ctpn.CapNhatTongTienPhieuNhap(mapn);
+            }
         }
     }
 
     @FXML
-    private void handler_huy(ActionEvent event) {
-        btnluu.setDisable(true);
-        btnthem.setDisable(false);
-        btnhuy.setDisable(true);
+    private void Handler_btnBack(ActionEvent event) {
+        AnchorPane searchSP;
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/clothesstore_view/FXML_SearchSanPham.fxml"));
+            searchSP = fxmlLoader.load();
+            SildingWindowAnimation silde = new SildingWindowAnimation();
+            int last = rootCTPN.getChildren().size() - 1;
+            silde.SildeBack(rootCTPN, (AnchorPane) rootCTPN.getChildren().get(last),
+                    SildingWindowAnimation.Direction.SildeRight);
+            searchSP.requestFocus();
+            rootCTPN.setLeftAnchor(searchSP, 0.0);
+            rootCTPN.setRightAnchor(searchSP, 0.0);
+            rootCTPN.setTopAnchor(searchSP, 0.0);
+            rootCTPN.setBottomAnchor(searchSP, 0.0);
+            
+            FXML_SearchSanPhamController controller = fxmlLoader.getController();
+            controller.setListSP(_listSP);
+        } catch (IOException ex) {
+            Logger.getLogger(FXML_SearchSanPhamController.class
+                    .getName()).log(Level.SEVERE, null, ex);
+        }
     }
-
 }

@@ -88,15 +88,15 @@ public class FXML_QuanLyTaiKhoanController implements Initializable {
         InitCmb();
         
         txtLuong.textProperty().addListener(new ChangeListener<String>() {
-        @Override
-        public void changed(ObservableValue<? extends String> observable, String oldValue, 
-            String newValue) {
-                if (!newValue.matches("\\d*")) { // set number only
-                    txtLuong.setText(newValue.replaceAll("[^\\d]", ""));
-                } 
-                if (newValue.length() >= 9) ((StringProperty)observable).setValue(oldValue); // limit input
-            }   
-        });
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, 
+                String newValue) {
+                    if (!newValue.matches("\\d*")) { // set number only
+                        txtLuong.setText(newValue.replaceAll("[^\\d]", ""));
+                    } 
+                    if (newValue.length() >= 9) ((StringProperty)observable).setValue(oldValue); // limit input
+                }   
+            });
     }    
     
     private void InitCmb(){
