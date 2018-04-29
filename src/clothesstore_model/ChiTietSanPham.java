@@ -10,6 +10,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.property.IntegerProperty;
@@ -267,11 +269,11 @@ public class ChiTietSanPham {
                 ResultSet rs = ptm.executeQuery();
                 while (rs.next()) {
                     ChiTietSanPham ctsp = new ChiTietSanPham(rs.getString("machitietsanpham"),
-                             rs.getString("masanpham"),
-                             rs.getString("mamau"),
-                             rs.getString("tensize"),
-                             rs.getInt("gioitinh"),
-                             rs.getInt("soluong"));
+                            rs.getString("masanpham"),
+                            rs.getString("mamau"),
+                            rs.getString("tensize"),
+                            rs.getInt("gioitinh"),
+                            rs.getInt("soluong"));
                     list.add(ctsp);
                 }
             } catch (Exception e) {
@@ -293,7 +295,7 @@ public class ChiTietSanPham {
             try {
                 java.sql.Statement stmnt = con.createStatement();
                 ResultSet rs = stmnt.executeQuery(query);
-                
+
                 int Col_count = rs.getMetaData().getColumnCount();
                 for (int i = 0; i < Col_count; i++) {
                     final int j = i;
@@ -332,10 +334,55 @@ public class ChiTietSanPham {
                 con.close();
             } catch (SQLException ex) {
 
-                System.out.println(""+ex);
+                System.out.println("" + ex);
             }
 
         }
 
+    }
+
+    public int getMAXSoluongCTSP() {
+        DBConnection db = new DBConnection();
+        Connection con = db.getConnecttion();
+        int sl = -1;
+        if (con != null) {
+            try {
+                String sql = "SELECT soluong FROM chitietsanpham where machitietsanpham = ?";
+                PreparedStatement ptm = con.prepareStatement(sql);
+                ptm.setString(1, machitietsanpham.get());
+                ResultSet rs = ptm.executeQuery();
+                while (rs.next()) {
+                    sl = rs.getInt("soluong");
+                    break;
+                }
+                ptm.close();
+                con.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ChiTietSanPham.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return sl;
+    }
+
+    public List<String> getListMactsp() {
+        List<String> list = new ArrayList<>();
+        DBConnection db = new DBConnection();
+        Connection con = db.getConnecttion();
+        if (con != null) {
+            try {
+                String sql = "SELECT machitietsanpham FROM chitietsanpham where soluong is not null";
+                PreparedStatement ptm = con.prepareStatement(sql);
+                ResultSet rs = ptm.executeQuery();
+                while (rs.next()) {
+                    String temp = rs.getString("machitietsanpham");
+                    list.add(temp);
+                }
+                ptm.close();
+                con.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ChiTietSanPham.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return list;
     }
 }

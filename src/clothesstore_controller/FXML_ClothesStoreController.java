@@ -60,10 +60,8 @@ public class FXML_ClothesStoreController implements Initializable {
                 root.setBottomAnchor(tongquan, 0.0);
                 break;
             case "btnDonHang":
-                AnchorPane donhang = FXMLLoader.load(getClass().getResource("/clothesstore_view/FXML_DonHang.fxml"));
-
+                AnchorPane donhang = FXMLLoader.load(getClass().getResource("/clothesstore_view/FXML_HoaDon.fxml"));
                 FXML_ClothesStoreController.rootP.getChildren().setAll(donhang);
-
                 root.setLeftAnchor(donhang, 0.0);
                 root.setRightAnchor(donhang, 0.0);
                 root.setTopAnchor(donhang, 0.0);

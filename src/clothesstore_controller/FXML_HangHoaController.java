@@ -59,6 +59,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.Callback;
 import javafx.util.Duration;
+import javafx.animation.SequentialTransition;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
@@ -99,7 +100,6 @@ public class FXML_HangHoaController implements Initializable {
     private JFXTextArea txt_area_ghichu;
     @FXML
     private JFXTreeTableView<SanPham> tree_table_vi;
-
     private JFXTreeTableColumn<SanPham, String> col_masanpham = new JFXTreeTableColumn<>("Mã sản phẩm");
     private JFXTreeTableColumn<SanPham, String> col_tensanpham = new JFXTreeTableColumn<>("Tên sản phẩm");
     private JFXTreeTableColumn<SanPham, String> col_nhasanxuat = new JFXTreeTableColumn<>("Tên nhà sản xuất");
@@ -108,7 +108,8 @@ public class FXML_HangHoaController implements Initializable {
     private int flag = 0;
     static List<SanPham> listspvuanhap = new ArrayList<>();
     private boolean StateNhomHang = true;
-    private boolean StateNhaSanXuat=true;
+    private boolean StateNhaSanXuat = true;
+
     @FXML
     private void ClickEvent(ActionEvent event) throws IOException {
         JFXButton btn = (JFXButton) event.getSource();
@@ -219,11 +220,11 @@ public class FXML_HangHoaController implements Initializable {
     }
 
     private void ShowFXML_NhaSanXuat() {
-        
+
         try {
-            AnchorPane NhaSanXuatAnchor =  FXMLLoader.load((getClass()
+            AnchorPane NhaSanXuatAnchor = FXMLLoader.load((getClass()
                     .getResource("/clothesstore_view/FXML_Nhasanxuat.fxml")));
-             if (StateNhaSanXuat) {
+            if (StateNhaSanXuat) {
                 btn_add_nhomhang.setDisable(StateNhaSanXuat);
                 NhaSanXuatAnchor.setLayoutX(454 + 34);
                 NhaSanXuatAnchor.setLayoutY(125);
@@ -236,7 +237,7 @@ public class FXML_HangHoaController implements Initializable {
                 StateNhaSanXuat = false;
 
             } else {
-                 btn_add_nhomhang.setDisable(StateNhaSanXuat);
+                btn_add_nhomhang.setDisable(StateNhaSanXuat);
                 FadeTransition ft = new FadeTransition(Duration.millis(500),
                         FXML_ClothesStoreController.rootP.getChildren().get(1));
                 ft.setFromValue(1.0);
@@ -291,15 +292,35 @@ public class FXML_HangHoaController implements Initializable {
         }
     }
 
+    private void btnDisableSildingWindow() {
+        if (StateNhaSanXuat == false) {
+            btn_add_nhomhang.setDisable(true);
+            btn_add_nhasanxuat.setDisable(false);
+            return;
+        }
+        if (StateNhomHang == false) {
+            btn_add_nhasanxuat.setDisable(true);
+            btn_add_nhomhang.setDisable(false);
+            return;
+        }
+        btn_add_nhomhang.setDisable(false);
+        btn_add_nhasanxuat.setDisable(false);
+    }
+
     private void ShowFXML_ChiTietSanPham(String masp) {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/clothesstore_view/FXML_ChiTietSanPham.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass()
+                    .getResource("/clothesstore_view/FXML_ChiTietSanPham.fxml"));
             AnchorPane chitietsanpham = fxmlLoader.load();
-            // FXML_ClothesStoreController.rootP.getChildren().setAll(chitietsanpham);
+            btn_add_nhasanxuat.setDisable(true);
+            btn_add_nhomhang.setDisable(true);
             FXML_ChiTietSanPhamController ctsp = fxmlLoader.getController();
             ctsp.setLbMasanpham_LoadTableView(masp);
+            ctsp.getbtnBack().setOnAction((ActionEvent event) -> {
+                ctsp.BacktoSanPham();
+                btnDisableSildingWindow();
+            });
             SildingWindowAnimation silde = new SildingWindowAnimation();
-            //AnchorPane hanghoa = FXMLLoader.load(getClass().getResource("/clothesstore_view/FXML_HangHoa.fxml"));
             silde.SildeTo(FXML_ClothesStoreController.rootP,
                     chitietsanpham,
                     SildingWindowAnimation.Direction.SildeLeft);
@@ -309,9 +330,12 @@ public class FXML_HangHoaController implements Initializable {
                 public void handle(KeyEvent event) {
                     if (Alt_leftArrow.match(event)) {
                         ctsp.BacktoSanPham();
+                        btnDisableSildingWindow();
+
                     }
                 }
             });
+
             chitietsanpham.requestFocus();
             FXML_ClothesStoreController.rootP.setLeftAnchor(chitietsanpham, 0.0);
             FXML_ClothesStoreController.rootP.setRightAnchor(chitietsanpham, 0.0);
@@ -479,7 +503,6 @@ public class FXML_HangHoaController implements Initializable {
                     txt_area_ghichu.setText("" + sanphamItem.getValue().getGhichu().get());
                     cmb_nhasanxuat.getSelectionModel().select(sanphamItem.getValue().getTennhasanxuat().get());
                     cmb_nhomhang.getSelectionModel().select(sanphamItem.getValue().getTennhomhang().get());
-
                 }
             }
         });

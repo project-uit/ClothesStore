@@ -241,20 +241,17 @@ public class FXML_ChiTietSanPhamController implements Initializable {
     }
 
     public void BacktoSanPham() {
-        try {
-            AnchorPane hanghoa = FXMLLoader.load(getClass().getResource("/clothesstore_view/FXML_HangHoa.fxml"));
-            SildingWindowAnimation silde = new SildingWindowAnimation();   
-            int last =FXML_ClothesStoreController.rootP.getChildren().size()-1;
-            silde.SildeBack(FXML_ClothesStoreController.rootP,(AnchorPane)FXML_ClothesStoreController.rootP.getChildren().get(last),                 
-                     SildingWindowAnimation.Direction.SildeRight);
-           // FXML_ClothesStoreController.rootP.getChildren().setAll(hanghoa);
-            FXML_ClothesStoreController.rootP.setLeftAnchor(hanghoa, 0.0);
-            FXML_ClothesStoreController.rootP.setRightAnchor(hanghoa, 0.0);
-            FXML_ClothesStoreController.rootP.setTopAnchor(hanghoa, 0.0);
-            FXML_ClothesStoreController.rootP.setBottomAnchor(hanghoa, 0.0);
-        } catch (IOException ex) {
-            Logger.getLogger(FXML_ChiTietSanPhamController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        SildingWindowAnimation silde = new SildingWindowAnimation();
+        int last =FXML_ClothesStoreController.rootP.getChildren().size()-1;
+        AnchorPane hanghoa = (AnchorPane)FXML_ClothesStoreController.rootP.getChildren().get(last);
+        silde.SildeBack(FXML_ClothesStoreController.rootP,
+                hanghoa,
+                SildingWindowAnimation.Direction.SildeRight);              
+        // FXML_ClothesStoreController.rootP.getChildren().setAll(hanghoa);
+        FXML_ClothesStoreController.rootP.setLeftAnchor(hanghoa, 0.0);
+        FXML_ClothesStoreController.rootP.setRightAnchor(hanghoa, 0.0);
+        FXML_ClothesStoreController.rootP.setTopAnchor(hanghoa, 0.0);
+        FXML_ClothesStoreController.rootP.setBottomAnchor(hanghoa, 0.0);
     }
 
     private void insertChiTietSanpham() {
@@ -346,14 +343,11 @@ public class FXML_ChiTietSanPhamController implements Initializable {
         context.getItems().addAll(itemXoa);
         table_view.setContextMenu(context);
     }
-
-    private void InitEvent() {
-        btnBack.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                BacktoSanPham();
-            }
-        });
+    public JFXButton getbtnBack()
+    {
+        return btnBack;
+    }
+    private void InitEvent() {                
         ObservableList<String> list = FXCollections.observableArrayList();
         list.add("1");
         list.add("0");

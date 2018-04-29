@@ -334,4 +334,28 @@ public class SanPham extends RecursiveTreeObject<SanPham> {
         }
         return wb;
     }
+     public int getDongia(String mactsp)
+    {
+        DBConnection db = new DBConnection();
+        Connection con = db.getConnecttion();
+        int dongia=-1;
+        String masp = mactsp.substring(0, 8);        
+        if (con != null) {
+             try {
+                String sql = "SELECT giaban FROM sanpham where masanpham = ?";
+                PreparedStatement ptm = con.prepareStatement(sql);
+                ptm.setString(1, masp);
+                ResultSet rs = ptm.executeQuery();
+                while (rs.next()) {
+                    dongia = rs.getInt("giaban");
+                    break;
+                }
+                ptm.close();
+                con.close();              
+            } catch (SQLException ex) {
+                Logger.getLogger(ChiTietSanPham.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return dongia;
+    }
 }

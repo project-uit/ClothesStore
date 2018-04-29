@@ -77,7 +77,7 @@ public class SidePanelContentController implements Initializable {
                 rootP.setBottomAnchor(tongquan, 0.0);
                 break;
             case "btnDonHang":
-                AnchorPane donhang = FXMLLoader.load(getClass().getResource("/clothesstore_view/FXML_DonHang.fxml"));
+                AnchorPane donhang = FXMLLoader.load(getClass().getResource("/clothesstore_view/FXML_HoaDon.fxml"));
                 FXML_ClothesStoreController.rootP.getChildren().setAll(donhang);
                 rootP.setLeftAnchor(donhang, 0.0);
                 rootP.setRightAnchor(donhang, 0.0);
