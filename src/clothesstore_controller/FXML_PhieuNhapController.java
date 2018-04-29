@@ -35,10 +35,9 @@ import javafx.stage.WindowEvent;
 import javafx.util.StringConverter;
 import clothesstore_model.NhaCungCap;
 import clothesstore_model.PhieuNhap;
-import java.util.HashSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.collections.FXCollections;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.layout.AnchorPane;
@@ -55,32 +54,22 @@ public class FXML_PhieuNhapController implements Initializable {
     @FXML
     private JFXComboBox cbnhacungcap;
     @FXML
-    private JFXButton btnthemphieu;
+    private TableColumn clmaphieunhap, clnhacungcap, clngaynhap, cltongtien;
     @FXML
-    private TableColumn clmaphieunhap;
+    private TableView<PhieuNhap> tableviewphieunhap;
     @FXML
-    private TableColumn clnhacungcap;
+    private JFXButton btnluuphieunhap, btnhuyphieunhap, btnthemphieu;
     @FXML
-    private TableColumn clngaynhap;
-    @FXML
-    private TableColumn cltongtien;
-
+    private MenuItem menuThem;
+    
     public static Stage stageQuanLyNCC;
     public static Stage stageQuanLyCTPN;
     public static AnchorPane rootCTPN;
     public static int mapn;
     private ChangeListener<NhaCungCap> listenerNCC;
-
+    public int getmaphieunhap;
+    private int manhacungcap;
     private PhieuNhap phieunhap;
-    @FXML
-    private TableView<PhieuNhap> tableviewphieunhap;
-    @FXML
-    private JFXButton btnluuphieunhap;
-    @FXML
-    private JFXButton btnhuyphieunhap;
-    @FXML
-    private MenuItem menuThem;
-
     /**
      * Initializes the controller class.
      */
@@ -90,7 +79,6 @@ public class FXML_PhieuNhapController implements Initializable {
         InitTableViewPhieuNhap();
         InitCmbNCC();
         datengaynhap.setValue(LocalDate.now());
-        //menuThem.setDisable(true);
     }
 
     @FXML
@@ -134,34 +122,6 @@ public class FXML_PhieuNhapController implements Initializable {
             e.printStackTrace();
         }
     }
-    public int getmaphieunhap;
-    private int manhacungcap;
-    private String tennhacungcap;
-
-    private void InitCmbNCC() {
-        NhaCungCap ncc = new NhaCungCap();
-        ObservableList<NhaCungCap> list = ncc.getTableNhaCungCap();
-        cbnhacungcap.setItems(list);
-        cbnhacungcap.setConverter(new StringConverter<NhaCungCap>() {
-            @Override
-            public String toString(NhaCungCap object) {
-                return object.getTencungcap();
-            }
-
-            @Override
-            public NhaCungCap fromString(String string) {
-                return null;
-            }
-        });
-        cbnhacungcap.getSelectionModel().selectedItemProperty().addListener(listenerNCC = new ChangeListener<NhaCungCap>() {
-            @Override
-            public void changed(ObservableValue<? extends NhaCungCap> observable, NhaCungCap oldValue, NhaCungCap newValue) {
-                System.out.println(newValue.getManhacungcap());
-                manhacungcap = newValue.getManhacungcap();
-                tennhacungcap = newValue.getTencungcap();
-            }
-        });
-    }
 
     @FXML
     private void handler_Themphieunhap(ActionEvent event) {
@@ -192,16 +152,6 @@ public class FXML_PhieuNhapController implements Initializable {
             pn.ThemPhieuNhap();
             InitTableViewPhieuNhap();
         }
-    }
-
-    public void InitTableViewPhieuNhap() {
-        PhieuNhap pn = new PhieuNhap();
-        ObservableList<PhieuNhap> list = pn.getListPhieuNhap();
-        clmaphieunhap.setCellValueFactory(new PropertyValueFactory("maphieunhap"));
-        clngaynhap.setCellValueFactory(new PropertyValueFactory("ngaynhap"));
-        clnhacungcap.setCellValueFactory(new PropertyValueFactory("tencungcap"));
-        cltongtien.setCellValueFactory(new PropertyValueFactory("tongtien"));
-        tableviewphieunhap.setItems(list);
     }
 
     @FXML
@@ -275,15 +225,13 @@ public class FXML_PhieuNhapController implements Initializable {
         Stage stage = new Stage();
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(new Scene(rootCTPN));
-        stage.showAndWait();
-
-        //stageQuanLyCTPN = stage;
         stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent event) {
                 InitTableViewPhieuNhap();
             }
         });
+        stage.showAndWait();
     }
 
     @FXML
@@ -340,22 +288,11 @@ public class FXML_PhieuNhapController implements Initializable {
 
     @FXML
     private void checkAdded(ContextMenuEvent event) {
-//        ObservableList<PhieuNhap> list = FXCollections.observableArrayList();
-//        PhieuNhap pn = new PhieuNhap();
-//        list = pn.getListPhieuNhapDaThemCTPN();
-//        for (PhieuNhap item : list) {
-//            if (item.getMaphieunhap() == tableviewphieunhap.getSelectionModel().getSelectedItem().getMaphieunhap()){
-//                menuThem.setDisable(true);
-//                break;
-//            }
-//            else
-//                menuThem.setDisable(false);
-//        }
-            if (tableviewphieunhap.getSelectionModel().getSelectedItem().getTongtien() != 0){
-                menuThem.setDisable(true);
-            }
-            else
-                menuThem.setDisable(false);
+        if (tableviewphieunhap.getSelectionModel().getSelectedItem().getTongtien() != 0) {
+            menuThem.setDisable(true);
+        } else {
+            menuThem.setDisable(false);
+        }
     }
 
     @FXML
@@ -364,5 +301,39 @@ public class FXML_PhieuNhapController implements Initializable {
         btnthemphieu.setDisable(false);
         btnhuyphieunhap.setDisable(true);
     }
+    
+    private void InitCmbNCC() {
+        NhaCungCap ncc = new NhaCungCap();
+        ObservableList<NhaCungCap> list = ncc.getTableNhaCungCap();
+        cbnhacungcap.setItems(list);
+        cbnhacungcap.setConverter(new StringConverter<NhaCungCap>() {
+            @Override
+            public String toString(NhaCungCap object) {
+                return object.getTencungcap();
+            }
 
+            @Override
+            public NhaCungCap fromString(String string) {
+                return null;
+            }
+        });
+        cbnhacungcap.getSelectionModel().selectedItemProperty().addListener(listenerNCC = new ChangeListener<NhaCungCap>() {
+            @Override
+            public void changed(ObservableValue<? extends NhaCungCap> observable, NhaCungCap oldValue, NhaCungCap newValue) {
+                System.out.println(newValue.getManhacungcap());
+                manhacungcap = newValue.getManhacungcap();
+            }
+        });
+    }
+    
+    public void InitTableViewPhieuNhap() {
+        PhieuNhap pn = new PhieuNhap();
+        ObservableList<PhieuNhap> list = pn.getListPhieuNhap();
+        clmaphieunhap.setCellValueFactory(new PropertyValueFactory("maphieunhap"));
+        clngaynhap.setCellValueFactory(new PropertyValueFactory("ngaynhap"));
+        clnhacungcap.setCellValueFactory(new PropertyValueFactory("tencungcap"));
+        cltongtien.setCellValueFactory(new PropertyValueFactory("tongtien"));
+        tableviewphieunhap.setItems(list);
+        tableviewphieunhap.setPlaceholder(new Label("Không tìm thấy phiếu nhập"));
+    }
 }

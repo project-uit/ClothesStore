@@ -76,7 +76,11 @@ public class FXML_NhapKhoController implements Initializable {
         PhieuNhap pn = new PhieuNhap();
         ObservableList<PhieuNhap> list = pn.getListPhieuNhap();
         InitTableViewPhieuNhap(list);
+        InitCMB();
         tableviewchitietphieunhap.setPlaceholder(new Label("Chọn vào phiếu nhập ở bảng trên để nhập kho"));
+    }
+
+    private void InitCMB() {
         checkboxFilter.selectedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
@@ -172,7 +176,7 @@ public class FXML_NhapKhoController implements Initializable {
         listPNChuaNhapKho = ksp.getListMaPNChuaNhapKho();
 
         for (Object PNChuaNhapKho : listPNChuaNhapKho) {
-            if (Integer.valueOf(PNChuaNhapKho.toString()) == mapn) {
+            if (mapn == Integer.valueOf(PNChuaNhapKho.toString())) {
                 return false;
             }
         }
