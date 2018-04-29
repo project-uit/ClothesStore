@@ -42,7 +42,7 @@
             <Font size="33.0" />
          </font>
       </Label>
-      <TableView fx:id="tableviewphieunhap" layoutX="18.0" layoutY="90.0" prefHeight="359.0" prefWidth="810.0" style="-fx-border-radius: 5; -fx-border-width: 1; -fx-border-color: #4681f5;">
+      <TableView fx:id="tableviewphieunhap" layoutX="18.0" layoutY="90.0" onContextMenuRequested="#checkAdded" prefHeight="359.0" prefWidth="810.0" style="-fx-border-radius: 5; -fx-border-width: 1; -fx-border-color: #4681f5;">
          <columns>
             <TableColumn fx:id="clmaphieunhap" prefWidth="163.0" text="Mã Phiếu Nhập" />
             <TableColumn fx:id="clnhacungcap" prefWidth="255.0" text="Nhà Cung Cấp" />
@@ -52,8 +52,9 @@
          <contextMenu>
             <ContextMenu>
                <items>
+                  <MenuItem mnemonicParsing="false" onAction="#handler_xemchitietphieunhap" text="Xem chi tiết" />
+                  <MenuItem fx:id="menuThem" mnemonicParsing="false" onAction="#handler_themchitietphieunhap" text="Thêm chi tiết" />
                   <MenuItem mnemonicParsing="false" onAction="#handler_xoaphieunhap" text="Xóa" />
-                  <MenuItem mnemonicParsing="false" onAction="#handler_themchitietphieunhap" text="Thêm chi tiết" />
                   <MenuItem mnemonicParsing="false" onAction="#handler_suaphieunhap" text="Sửa" />
                </items>
             </ContextMenu>

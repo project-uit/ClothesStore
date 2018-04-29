@@ -5,12 +5,19 @@ import static clothesstore_controller.FXML_DangNhapController.UserID;
 import static clothesstore_controller.FXML_DangNhapController.stageMain;
 import static clothesstore_view.ClothesStore._rootDangNhap;
 import static clothesstore_view.ClothesStore.stageDangNhap;
+import  clothesstore_model.time;
 import com.jfoenix.controls.JFXButton;
 import java.io.IOException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -21,6 +28,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.util.Duration;
 
 
 public class SidePanelContentController implements Initializable {
@@ -53,14 +61,40 @@ public class SidePanelContentController implements Initializable {
     private JFXButton btnThoat;
     @FXML
     private JFXButton btnNhapKho;
+    @FXML
+    private JFXButton btnTonKho;
+    @FXML
+    private Label datetime;
+    @FXML
+    private Label date1;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         //todo
+        bindToTime();
+        time time = new time();
+        date1.setText(time.tanggal());
         _vbox = vbox;
         lbUser.setText("Xin chào "+UserID);
     }    
     
+    private void bindToTime() {
+    Timeline timeline = new Timeline(
+    new KeyFrame(Duration.seconds(0),
+      new EventHandler<ActionEvent>() {
+        @Override public void handle(ActionEvent actionEvent) {
+          Calendar time = Calendar.getInstance();
+          SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
+          datetime.setText(simpleDateFormat.format(time.getTime()));
+          
+        }
+      }
+    ),
+    new KeyFrame(Duration.seconds(1))
+    );
+    timeline.setCycleCount(Animation.INDEFINITE);
+    timeline.play();
+    }
     @FXML
     private void changeTab(ActionEvent event) throws IOException {
         JFXButton btn = (JFXButton) event.getSource();

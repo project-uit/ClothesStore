@@ -11,6 +11,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -25,15 +27,16 @@ public class PhieuNhap {
     private IntegerProperty manhacungcap;
     private Date ngaynhap;
 
-    public PhieuNhap(int maphieunhap, int tongtien, int manhacungcap, Date ngaynhap) {
+    private StringProperty tencungcap;
+
+    public PhieuNhap(int maphieunhap, int tongtien, String tencungcap, Date ngaynhap) {
         this.maphieunhap = new SimpleIntegerProperty(maphieunhap);
         this.tongtien = new SimpleIntegerProperty(tongtien);
-        this.manhacungcap = new SimpleIntegerProperty(manhacungcap);
+        this.tencungcap = new SimpleStringProperty(tencungcap);
         this.ngaynhap = ngaynhap;
     }
 
     public PhieuNhap(int manhacungcap, Date ngaynhap, int tongtien) {
-
         this.tongtien = new SimpleIntegerProperty(tongtien);
         this.manhacungcap = new SimpleIntegerProperty(manhacungcap);
         this.ngaynhap = ngaynhap;
@@ -80,11 +83,19 @@ public class PhieuNhap {
         this.ngaynhap = ngaynhap;
     }
 
+    public String getTencungcap() {
+        return tencungcap.getValue();
+    }
+
+    public void setTencungcap(StringProperty tencungcap) {
+        this.tencungcap = tencungcap;
+    }
+
     public ObservableList<PhieuNhap> getListPhieuNhap() {
         ObservableList<PhieuNhap> list = FXCollections.observableArrayList();
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
-        String sql = "SELECT * FROM phieunhap";
+        String sql = "SELECT * FROM phieunhap, nhacungcap WHERE phieunhap.manhacungcap = nhacungcap.manhacungcap";
         if (con != null) {
             try {
                 PreparedStatement ptm = con.prepareStatement(sql);
@@ -92,9 +103,37 @@ public class PhieuNhap {
                 while (rs.next()) {
 
                     PhieuNhap phieunhap = new PhieuNhap(rs.getInt("maphieunhap"),
-                             rs.getInt("tongtien"),
-                             rs.getInt("manhacungcap"),
-                             rs.getDate("ngaynhap"));
+                            rs.getInt("tongtien"),
+                            rs.getString("tencungcap"),
+                            rs.getDate("ngaynhap"));
+
+                    list.add(phieunhap);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return list;
+    }
+
+    public ObservableList<PhieuNhap> getListPhieuNhapDaThemCTPN() {
+        ObservableList<PhieuNhap> list = FXCollections.observableArrayList();
+        DBConnection db = new DBConnection();
+        Connection con = db.getConnecttion();
+        String sql = "SELECT distinct pn.maphieunhap, pn.tongtien, pn.manhacungcap, pn.ngaynhap "
+                + "FROM phieunhap pn "
+                + "LEFT JOIN chitietphieunhap ctpn ON pn.maphieunhap = ctpn.maphieunhap "
+                + "where ctpn.maphieunhap is not null";
+        if (con != null) {
+            try {
+                PreparedStatement ptm = con.prepareStatement(sql);
+                ResultSet rs = ptm.executeQuery();
+                while (rs.next()) {
+
+                    PhieuNhap phieunhap = new PhieuNhap(rs.getInt("maphieunhap"),
+                            rs.getInt("tongtien"),
+                            rs.getString("manhacungcap"),
+                            rs.getDate("ngaynhap"));
 
                     list.add(phieunhap);
                 }
@@ -109,10 +148,13 @@ public class PhieuNhap {
         ObservableList<PhieuNhap> list = FXCollections.observableArrayList();
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
-        String sql = "SELECT pn.maphieunhap, pn.tongtien, pn.manhacungcap, pn.ngaynhap "
-                + "FROM phieunhap pn "
-                + "LEFT JOIN khosanpham ksp ON pn.maphieunhap = ksp.maphieunhap "
-                + "where ksp.makhosanpham is null";
+        String sql = "SELECT maphieunhap, tongtien, ngaynhap, tencungcap\n"
+                + "FROM(\n"
+                + "	select pn.maphieunhap, pn.tongtien, pn.ngaynhap, pn.manhacungcap\n"
+                + "	from phieunhap pn\n"
+                + "	left join khosanpham ksp on pn.maphieunhap = ksp.maphieunhap \n"
+                + "	where ksp.makhosanpham is null) PN, nhacungcap NCC\n"
+                + "WHERE PN.maphieunhap = NCC.manhacungcap";
         if (con != null) {
             try {
                 PreparedStatement ptm = con.prepareStatement(sql);
@@ -120,9 +162,9 @@ public class PhieuNhap {
                 while (rs.next()) {
 
                     PhieuNhap phieunhap = new PhieuNhap(rs.getInt("maphieunhap"),
-                             rs.getInt("tongtien"),
-                             rs.getInt("manhacungcap"),
-                             rs.getDate("ngaynhap"));
+                            rs.getInt("tongtien"),
+                            rs.getString("tencungcap"),
+                            rs.getDate("ngaynhap"));
 
                     list.add(phieunhap);
                 }
@@ -137,10 +179,13 @@ public class PhieuNhap {
         ObservableList<PhieuNhap> list = FXCollections.observableArrayList();
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
-        String sql = "SELECT pn.maphieunhap, pn.tongtien, pn.manhacungcap, pn.ngaynhap "
-                + "FROM phieunhap pn "
-                + "LEFT JOIN khosanpham ksp ON pn.maphieunhap = ksp.maphieunhap "
-                + "where ksp.makhosanpham is null and pn.ngaynhap = '" + date + "' ";
+        String sql = "SELECT maphieunhap, tongtien, ngaynhap, tencungcap\n"
+                + "FROM(\n"
+                + "	select pn.maphieunhap, pn.tongtien, pn.ngaynhap, pn.manhacungcap\n"
+                + "	from phieunhap pn\n"
+                + "	left join khosanpham ksp on pn.maphieunhap = ksp.maphieunhap \n"
+                + "	where ksp.makhosanpham is null) PN, nhacungcap NCC\n"
+                + "WHERE PN.maphieunhap = NCC.manhacungcap and PN.ngaynhap = '" + date + "'";
         if (con != null) {
             try {
                 PreparedStatement ptm = con.prepareStatement(sql);
@@ -148,9 +193,9 @@ public class PhieuNhap {
                 while (rs.next()) {
 
                     PhieuNhap phieunhap = new PhieuNhap(rs.getInt("maphieunhap"),
-                             rs.getInt("tongtien"),
-                             rs.getInt("manhacungcap"),
-                             rs.getDate("ngaynhap"));
+                            rs.getInt("tongtien"),
+                            rs.getString("tencungcap"),
+                            rs.getDate("ngaynhap"));
 
                     list.add(phieunhap);
                 }
@@ -165,18 +210,17 @@ public class PhieuNhap {
         ObservableList<PhieuNhap> list = FXCollections.observableArrayList();
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
-        String sql = "SELECT * FROM phieunhap WHERE ngaynhap = '" + ngay + "'";
+        String sql = "SELECT * FROM phieunhap pn, nhacungcap ncc "
+                + "WHERE pn.manhacungcap = ncc.manhacungcap and ngaynhap = '" + ngay + "'";
         if (con != null) {
             try {
                 PreparedStatement ptm = con.prepareStatement(sql);
                 ResultSet rs = ptm.executeQuery();
                 while (rs.next()) {
-
                     PhieuNhap phieunhap = new PhieuNhap(rs.getInt("maphieunhap"),
-                             rs.getInt("tongtien"),
-                             rs.getInt("manhacungcap"),
-                             rs.getDate("ngaynhap"));
-
+                            rs.getInt("tongtien"),
+                            rs.getString("tencungcap"),
+                            rs.getDate("ngaynhap"));
                     list.add(phieunhap);
                 }
             } catch (Exception e) {

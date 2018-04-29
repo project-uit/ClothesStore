@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -40,7 +39,6 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
-import javafx.util.Callback;
 
 /**
  * FXML Controller class
@@ -50,7 +48,9 @@ import javafx.util.Callback;
 public class FXML_NhapKhoController implements Initializable {
 
     @FXML
-    private TableView tableviewphieunhap, tableviewchitietphieunhap;
+    private TableView tableviewphieunhap;
+    @FXML
+    private TableView<ChiTietPhieuNhap> tableviewchitietphieunhap;
     @FXML
     private TableColumn clmaphieunhap, _clmaphieunhap, clgiavon, clthanhtien,
             clsoluong, clsanpham, cltensanpham, clmachitiet, cltongtien, clngaynhap, clnhacungcap;
@@ -106,7 +106,7 @@ public class FXML_NhapKhoController implements Initializable {
     private void InitTableViewPhieuNhap(ObservableList<PhieuNhap> list) {
         clmaphieunhap.setCellValueFactory(new PropertyValueFactory("maphieunhap"));
         clngaynhap.setCellValueFactory(new PropertyValueFactory("ngaynhap"));
-        clnhacungcap.setCellValueFactory(new PropertyValueFactory("manhacungcap"));
+        clnhacungcap.setCellValueFactory(new PropertyValueFactory("tencungcap"));
         cltongtien.setCellValueFactory(new PropertyValueFactory("tongtien"));
         tableviewphieunhap.setPlaceholder(new Label("Tất cả các phiếu nhập đã được nhập "));
         tableviewphieunhap.setItems(list);
@@ -122,7 +122,14 @@ public class FXML_NhapKhoController implements Initializable {
             });
             return row;
         });
-
+        tableviewphieunhap.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
+            @Override
+            public void changed(ObservableValue observableValue, Object oldValue, Object newValue) {
+                if (tableviewphieunhap.getSelectionModel().getSelectedItem() == null) {
+                    tableviewchitietphieunhap.getItems().clear();
+                }
+            }
+        });
     }
 
     private void InitTableViewChiTietPhieuNhap(int maphieunhap) {
