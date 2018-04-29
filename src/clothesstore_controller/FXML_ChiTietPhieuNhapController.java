@@ -17,7 +17,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import static clothesstore_controller.FXML_PhieuNhapController.mapn;
 import static clothesstore_controller.FXML_PhieuNhapController.rootCTPN;
 import clothesstore_model.ChiTietPhieuNhap;
-import clothesstore_model.SanPham;
 import com.jfoenix.controls.JFXTextField;
 import java.io.IOException;
 import java.util.Optional;

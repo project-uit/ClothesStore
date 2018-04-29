@@ -35,6 +35,12 @@ import javafx.stage.WindowEvent;
 import javafx.util.StringConverter;
 import clothesstore_model.NhaCungCap;
 import clothesstore_model.PhieuNhap;
+import java.util.HashSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.collections.FXCollections;
+import javafx.scene.control.MenuItem;
+import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.layout.AnchorPane;
 
 /**
@@ -72,6 +78,8 @@ public class FXML_PhieuNhapController implements Initializable {
     private JFXButton btnluuphieunhap;
     @FXML
     private JFXButton btnhuyphieunhap;
+    @FXML
+    private MenuItem menuThem;
 
     /**
      * Initializes the controller class.
@@ -82,6 +90,7 @@ public class FXML_PhieuNhapController implements Initializable {
         InitTableViewPhieuNhap();
         InitCmbNCC();
         datengaynhap.setValue(LocalDate.now());
+        //menuThem.setDisable(true);
     }
 
     @FXML
@@ -168,7 +177,6 @@ public class FXML_PhieuNhapController implements Initializable {
             System.out.println(ex);
         }
         int tongtien = 0;
-        System.out.println("" + _ngaynhap);
         if (nhacc == 0 || _ngaynhap == null) {
 
             ButtonType cancel = new ButtonType("OK", ButtonBar.ButtonData.CANCEL_CLOSE);
@@ -183,7 +191,6 @@ public class FXML_PhieuNhapController implements Initializable {
             PhieuNhap pn = new PhieuNhap(nhacc, ngaynhap, tongtien);
             pn.ThemPhieuNhap();
             InitTableViewPhieuNhap();
-            Reset();
         }
     }
 
@@ -192,7 +199,7 @@ public class FXML_PhieuNhapController implements Initializable {
         ObservableList<PhieuNhap> list = pn.getListPhieuNhap();
         clmaphieunhap.setCellValueFactory(new PropertyValueFactory("maphieunhap"));
         clngaynhap.setCellValueFactory(new PropertyValueFactory("ngaynhap"));
-        clnhacungcap.setCellValueFactory(new PropertyValueFactory("manhacungcap"));
+        clnhacungcap.setCellValueFactory(new PropertyValueFactory("tencungcap"));
         cltongtien.setCellValueFactory(new PropertyValueFactory("tongtien"));
         tableviewphieunhap.setItems(list);
     }
@@ -224,7 +231,31 @@ public class FXML_PhieuNhapController implements Initializable {
     }
 
     @FXML
-    private void handler_themchitietphieunhap(ActionEvent event) throws IOException {
+    private void handler_xemchitietphieunhap(ActionEvent event) {
+        PhieuNhap selectedForViewing = tableviewphieunhap.getSelectionModel().getSelectedItem();
+        if (selectedForViewing == null) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
+                    "Mời chọn phiếu nhập");
+            alert.setTitle("Nhắc nhở");
+            alert.setHeaderText(null);
+            return;
+        }
+
+        PhieuNhap getSelectedRow = tableviewphieunhap.getSelectionModel().getSelectedItem();
+        mapn = getSelectedRow.getMaphieunhap();
+        try {
+            Parent parent = FXMLLoader.load(getClass().getResource("/clothesstore_view/FXML_XemCTPN.fxml"));
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setScene(new Scene(parent));
+            stage.showAndWait();
+        } catch (IOException ex) {
+            Logger.getLogger(FXML_PhieuNhapController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @FXML
+    private void handler_themchitietphieunhap(ActionEvent event) {
         PhieuNhap selectedForDeletion = tableviewphieunhap.getSelectionModel().getSelectedItem();
         if (selectedForDeletion == null) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
@@ -236,21 +267,23 @@ public class FXML_PhieuNhapController implements Initializable {
 
         PhieuNhap getSelectedRow = tableviewphieunhap.getSelectionModel().getSelectedItem();
         mapn = getSelectedRow.getMaphieunhap();
-        rootCTPN = FXMLLoader.load(getClass().getResource("/clothesstore_view/FXML_SearchSanPham.fxml"));
+        try {
+            rootCTPN = FXMLLoader.load(getClass().getResource("/clothesstore_view/FXML_SearchSanPham.fxml"));
+        } catch (IOException ex) {
+            Logger.getLogger(FXML_PhieuNhapController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         Stage stage = new Stage();
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(new Scene(rootCTPN));
         stage.showAndWait();
-        
-        //stageQuanLyCTPN = stage;
 
+        //stageQuanLyCTPN = stage;
         stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent event) {
                 InitTableViewPhieuNhap();
             }
         });
-
     }
 
     @FXML
@@ -305,8 +338,24 @@ public class FXML_PhieuNhapController implements Initializable {
         }
     }
 
-    private void Reset() {
-
+    @FXML
+    private void checkAdded(ContextMenuEvent event) {
+//        ObservableList<PhieuNhap> list = FXCollections.observableArrayList();
+//        PhieuNhap pn = new PhieuNhap();
+//        list = pn.getListPhieuNhapDaThemCTPN();
+//        for (PhieuNhap item : list) {
+//            if (item.getMaphieunhap() == tableviewphieunhap.getSelectionModel().getSelectedItem().getMaphieunhap()){
+//                menuThem.setDisable(true);
+//                break;
+//            }
+//            else
+//                menuThem.setDisable(false);
+//        }
+            if (tableviewphieunhap.getSelectionModel().getSelectedItem().getTongtien() != 0){
+                menuThem.setDisable(true);
+            }
+            else
+                menuThem.setDisable(false);
     }
 
     @FXML

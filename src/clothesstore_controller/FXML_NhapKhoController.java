@@ -48,7 +48,9 @@ import javafx.stage.WindowEvent;
 public class FXML_NhapKhoController implements Initializable {
 
     @FXML
-    private TableView tableviewphieunhap, tableviewchitietphieunhap;
+    private TableView tableviewphieunhap;
+    @FXML
+    private TableView<ChiTietPhieuNhap> tableviewchitietphieunhap;
     @FXML
     private TableColumn clmaphieunhap, _clmaphieunhap, clgiavon, clthanhtien,
             clsoluong, clsanpham, cltensanpham, clmachitiet, cltongtien, clngaynhap, clnhacungcap;
@@ -104,7 +106,7 @@ public class FXML_NhapKhoController implements Initializable {
     private void InitTableViewPhieuNhap(ObservableList<PhieuNhap> list) {
         clmaphieunhap.setCellValueFactory(new PropertyValueFactory("maphieunhap"));
         clngaynhap.setCellValueFactory(new PropertyValueFactory("ngaynhap"));
-        clnhacungcap.setCellValueFactory(new PropertyValueFactory("manhacungcap"));
+        clnhacungcap.setCellValueFactory(new PropertyValueFactory("tencungcap"));
         cltongtien.setCellValueFactory(new PropertyValueFactory("tongtien"));
         tableviewphieunhap.setPlaceholder(new Label("Tất cả các phiếu nhập đã được nhập "));
         tableviewphieunhap.setItems(list);
@@ -120,7 +122,14 @@ public class FXML_NhapKhoController implements Initializable {
             });
             return row;
         });
-
+        tableviewphieunhap.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
+            @Override
+            public void changed(ObservableValue observableValue, Object oldValue, Object newValue) {
+                if (tableviewphieunhap.getSelectionModel().getSelectedItem() == null) {
+                    tableviewchitietphieunhap.getItems().clear();
+                }
+            }
+        });
     }
 
     private void InitTableViewChiTietPhieuNhap(int maphieunhap) {
