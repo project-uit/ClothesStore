@@ -30,6 +30,8 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
@@ -38,6 +40,7 @@ import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TableView;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.controlsfx.control.textfield.TextFields;
 
@@ -53,7 +56,7 @@ public class FXML_HoaDonController implements Initializable {
      */
     @FXML
     private JFXButton btnThem, btnXoa, btnLapHoaDon, btnThanhToan,
-            btnInHoaDon, btnThemthongtinkhachhang, btnchucnang;
+            btnInHoaDon, btnThemthongtinkhachhang, btnchucnang,btncaidat;
     @FXML
     private JFXNodesList nodelistbtn;
     @FXML
@@ -74,13 +77,15 @@ public class FXML_HoaDonController implements Initializable {
 
         InitTextField();
         mahoadon = 0;
-
+        
         Tooltip tiptext = new Tooltip("Lập hóa đơn\nIn hóa đơn\nThêm thông tin khách hàng");
+        btncaidat.setTooltip(new Tooltip("Thay đổi thông tin hóa đơn"));
         btnchucnang.setTooltip(tiptext);
         nodelistbtn.addAnimatedNode(btnchucnang);
         nodelistbtn.addAnimatedNode(btnLapHoaDon);
         nodelistbtn.addAnimatedNode(btnInHoaDon);
         nodelistbtn.addAnimatedNode(btnThemthongtinkhachhang);
+        nodelistbtn.addAnimatedNode(btncaidat);      
         nodelistbtn.setSpacing(5);
 
         table_view.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
@@ -170,6 +175,16 @@ public class FXML_HoaDonController implements Initializable {
             txt_fi_thanhtien.setText("" + thanhtien);
         }
         );
+    }
+
+    @FXML
+    private void btncaidat_click(ActionEvent act) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/clothesstore_view/FXML_CuaHang.fxml"));
+        Parent root = (Parent) fxmlLoader.load();
+        Stage stage = new Stage();
+        stage.setTitle("Thông tin hóa đơn");
+        stage.setScene(new Scene(root));
+        stage.show();
     }
 
     @FXML

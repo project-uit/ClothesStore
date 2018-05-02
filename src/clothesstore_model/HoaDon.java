@@ -240,16 +240,18 @@ public class HoaDon {
 
     public void inhoadon() {
         try {
+            //fix path
             String path = "E:/project/ClothesStore/ClothesStore/src/clothesstore_view/invoice_report.jrxml";
             JasperReport jr = JasperCompileManager.compileReport(path);
             HashMap<String, Object> para = new HashMap<>();
-            para.put("tencuahang", "yolo");
+            CuaHang ch = CuaHang.getObject();          
+            para.put("tencuahang", ch.getTencuahang().get());
             para.put("tennhanvien", "Hizen");
             para.put("ngayban", getngaythanhtoanhd());
             para.put("mahoadon", "" + mahoadon.get());
-            para.put("diachi", "số xx đường xxx quận zz phường yy, TpHCM");
-            para.put("sodienthoai", "0123456789");
-            para.put("email", "today@tomorrow.com");
+            para.put("diachi", ch.getDiachi().get());
+            para.put("sodienthoai", ch.getSodienthoai().get());
+            para.put("email", ch.getEmail().get());
             para.put("tongtien", "" + tongtien.get());
             ChiTietHoaDon cthd = new ChiTietHoaDon();
             cthd.setMahoadon(mahoadon);

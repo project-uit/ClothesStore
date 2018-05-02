@@ -12,7 +12,16 @@ use ClothesShop;
 
 insert into khachhang
 values ('123','ccc');
-
+create table cuahang
+(
+id int primary key,
+tencuahang nvarchar(30),
+diachi nvarchar(30), 
+sodienthoai nvarchar(30),
+email nvarchar(30)
+);
+insert into cuahang
+values(1,'Zalora store','35 đường Hưng pro, phường 4 quận 4, TpHCM','090123456789','Zalorastore@gmail.com');
 create table nhacungcap
 (
 manhacungcap INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,

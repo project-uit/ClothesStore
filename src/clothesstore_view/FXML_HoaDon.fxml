@@ -87,5 +87,10 @@
             <Font size="14.0" />
          </font>
       </JFXButton>
+      <JFXButton fx:id="btncaidat" layoutX="706.0" layoutY="601.0" onAction="#btncaidat_click" prefHeight="30.0" prefWidth="111.0" style="-fx-background-color: #4681f5;" text="Cài đặt" textFill="WHITE">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </JFXButton>
    </children>
 </AnchorPane>
