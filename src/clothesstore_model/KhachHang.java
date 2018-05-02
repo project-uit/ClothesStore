@@ -49,6 +49,62 @@ public class KhachHang {
         this.sodienthoai = sodienthoai;
     }
 
+    public boolean isEmpty() {
+        return (sodienthoai.isEmpty().get());
+    }
+
+    public boolean insert() {
+        DBConnection db = new DBConnection();
+        Connection con = db.getConnecttion();
+        if (con != null) {
+            String query = "insert into khachhang "
+                    + " values(?,?)";
+            try {
+                PreparedStatement ptm = con.prepareStatement(query);
+                if(tenkhachhang.get().isEmpty())
+                {
+                    tenkhachhang.set("No Name");
+                }
+                ptm.setString(1, sodienthoai.get());
+                ptm.setString(2, tenkhachhang.get());
+                int check = ptm.executeUpdate();
+                if (check != 0) {
+                    ptm.close();
+                    con.close();
+                    return true;
+                }
+            } catch (SQLException ex) {
+                System.out.println("" + ex);
+            }
+        }
+        return false;
+    }
+
+    public boolean ktthongtin_kh(String sdt) {
+        DBConnection db = new DBConnection();
+        Connection con = db.getConnecttion();
+        int tontai = 0;
+        if (con != null) {
+            try {
+                String sql = "SELECT count(*) FROM khachhang where sodienthoai = ?";
+                PreparedStatement ptm = con.prepareStatement(sql);
+                ptm.setString(1, sdt);
+                ResultSet rs = ptm.executeQuery();
+                if (rs.next()) {
+                    tontai = rs.getInt(1);
+                }
+                ptm.close();
+                con.close();
+                if (tontai > 0) {
+                    return true;
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(ChiTietSanPham.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return false;
+    }
+
     public String getTenkhachhang(String sdt) {
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();

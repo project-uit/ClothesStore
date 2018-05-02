@@ -1,25 +1,17 @@
-﻿drop table khachhang;
-drop table nhacungcap;
-drop table nhanvien;
-drop table nhasanxuat;
-drop table nhomhang;
-drop table sanpham ;
-
-create database ClothesShop
-drop database ClothesShop
-use ClothesShop
+drop table  if exists khachhang;
+drop table  if exists nhacungcap;
+drop table  if exists nhanvien;
+drop table  if exists nhasanxuat;
+drop table  if exists nhomhang;
+drop table if exists sanpham;
+drop database if exists ClothesShop;
 
 
-select *
-from khachhang
-where tenkhachhang = 'chú'
-Collate utf8_unicode_ci;
+create database ClothesShop;
+use ClothesShop;
 
-create table khachhang
-(
-sodienthoai char(15) PRIMARY KEY,
-tenkhachhang nvarchar(50)
-);
+insert into khachhang
+values ('123','ccc');
 
 create table nhacungcap
 (
@@ -46,12 +38,12 @@ insert into nhanvien(tennhanvien,diachi,gioitinh,ngaysinh,cmnd,trangthai,luong)
 values('ccc', 'le hong phong',1,'1995-01-19','123456',1,50000);
 create table nhomhang
 (
-tennhomhang nvarchar(30) PRIMARY KEY
-);
+tennhomhang nvarchar(30) PRIMARY KEY COLLATE utf8_unicode_ci
+)ENGINE=INNODB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 create table nhasanxuat
 (
-tennhasanxuat nvarchar(50)  PRIMARY KEY
-);
+tennhasanxuat nvarchar(50)  PRIMARY KEY COLLATE utf8_unicode_ci
+)ENGINE=INNODB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 -- tạo sản phẩm và chi tiết sản phẩm trước khi lập phiếu nhập, ko nhập giaban, ko nhập số lượng
 create table sanpham
 (
@@ -155,19 +147,20 @@ FOREIGN KEY (manhanvien)
 REFERENCES nhanvien(manhanvien)
 );
 
+insert into hoadon(manhanvien,sodienthoai,ngayban,tongtien)
+ values(1,'123',now(),500);
 create table hoadon
 (
 mahoadon   INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 manhanvien INT(6) UNSIGNED,
 FOREIGN KEY (manhanvien)
 REFERENCES nhanvien(manhanvien),
-sodienthoai char(15),
-FOREIGN KEY (sodienthoai)
-REFERENCES khachhang(sodienthoai),
 ngayban datetime,
 tongtien int 
 );
+SELECT NOW();
 -- thanh toán hóa đơn bằng cách nhập machitietsanpham đc định nghĩa do user
+
 create table chitiethoadon
 (
 machitiethoadon  INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -177,9 +170,24 @@ REFERENCES hoadon(mahoadon),
 machitietsanpham varchar(30),
 FOREIGN KEY (machitietsanpham)
 REFERENCES chitietsanpham(machitietsanpham),
-soluongmua int 
+soluongmua int,
+thanhtien int
 );
-
+create table khachhang
+(
+sodienthoai char(15) PRIMARY KEY,
+tenkhachhang nvarchar(50)
+);
+create table chitietkhachhang
+(
+machitietkhachhang  INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+sodienthoai char(15),
+FOREIGN KEY (sodienthoai)
+REFERENCES khachhang(sodienthoai),
+mahoadon   INT(6) UNSIGNED,
+FOREIGN KEY (mahoadon)
+REFERENCES hoadon(mahoadon)
+);
 CREATE TABLE dangnhap(
 tentaikhoan varchar(55) not null primary key,
 matkhau varchar(55) not null,
@@ -213,3 +221,43 @@ before delete ON sanpham
 for each row
 	delete from chitietsanpham 
     where chitietsanpham.masanpham=old.masanpham and old.giaban is null;
+
+
+DROP TRIGGER IF EXISTS before_hoadon_delete;
+DELIMITER $$
+create trigger before_hoadon_delete 
+before delete ON hoadon
+for each row
+BEGIN
+	delete from chitiethoadon 
+    where chitiethoadon.mahoadon=old.mahoadon;    
+    delete from chitietkhachhang
+    where chitietkhachhang.mahoadon = old.mahoadon;
+END$$
+DELIMITER ;
+
+drop PROCEDURE IF EXISTS update_soluong_ctsp_sauthanhtoan;
+DELIMITER $$
+CREATE PROCEDURE update_soluong_ctsp_sauthanhtoan(IN mactsp varchar(33), in soluongmua int)
+BEGIN
+	Declare soluongsp int default 0;
+    set soluongsp= (select soluong from chitietsanpham where machitietsanpham=mactsp) - soluongmua;
+    update chitietsanpham
+    set soluong=soluongsp
+    where machitietsanpham = mactsp;
+END; $$
+DELIMITER ;
+
+drop PROCEDURE IF EXISTS update_soluong_ctsp_huythanhtoan;
+DELIMITER $$
+CREATE PROCEDURE update_soluong_ctsp_huythanhtoan(IN mactsp varchar(33), in soluongmua int)
+BEGIN
+	Declare soluongsp int default 0;
+    set soluongsp= (select soluong from chitietsanpham where machitietsanpham=mactsp) + soluongmua;
+    update chitietsanpham
+    set soluong=soluongsp
+    where machitietsanpham = mactsp;
+END; $$
+DELIMITER ;
+
+CALL update_soluong_ctsp_huythanhtoan('SP0CEOYG01231',3);

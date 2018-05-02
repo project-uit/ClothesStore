@@ -6,6 +6,7 @@
 package clothesstore_model;
 
 import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -384,5 +385,24 @@ public class ChiTietSanPham {
             }
         }
         return list;
+    }
+   
+     /*true nếu muốn thanh toán và cập nhật lại số lượng của ctsp
+    false nếu hủy thanh toán (không lập hóa đơn)
+    */ 
+    public void Update_soluong(boolean bl) {
+        DBConnection db = new DBConnection();
+        Connection con = db.getConnecttion();
+        String call = (bl ? "{call update_soluong_ctsp_sauthanhtoan(?,?)}"
+                : "{call update_soluong_ctsp_huythanhtoan(?,?)}");
+        try (CallableStatement stmt = con.prepareCall(call)) {
+            stmt.setString(1, machitietsanpham.get());
+            stmt.setInt(2, soluong.get());
+            stmt.execute();
+            con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(ChiTietSanPham.class.getName()).log(Level.SEVERE, null, ex);
+        }
+       
     }
 }

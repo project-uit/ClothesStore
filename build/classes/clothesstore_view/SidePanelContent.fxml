@@ -16,9 +16,9 @@
             <DropShadow />
          </effect>
       </AnchorPane>
-      <VBox fx:id="vbox" layoutY="158.0" prefHeight="541.0" prefWidth="235.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="159.0">
+      <VBox fx:id="vbox" layoutY="167.0" prefHeight="533.0" prefWidth="235.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="167.0">
          <children>
-            <JFXButton fx:id="btnTongQuan" alignment="BASELINE_LEFT" graphicTextGap="60.0" onAction="#changeTab" prefHeight="43.0" prefWidth="235.0" ripplerFill="#1451d9" text="Tổng quan">
+            <JFXButton fx:id="btnTongQuan" alignment="BASELINE_LEFT" graphicTextGap="60.0" onAction="#changeTab" prefHeight="36.0" prefWidth="235.0" ripplerFill="#1451d9" text="Tổng quan">
                <graphic>
                   <ImageView fitHeight="30.0" fitWidth="41.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -119,21 +119,29 @@
             </JFXButton>
          </children>
       </VBox>
-      <AnchorPane prefHeight="158.0" prefWidth="235.0" style="-fx-background-color: #fff;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <AnchorPane prefHeight="167.0" prefWidth="235.0" style="-fx-background-color: #fff;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <effect>
             <DropShadow />
          </effect>
          <children>
-            <ImageView fitHeight="104.0" fitWidth="131.0" layoutX="66.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);;">
+            <ImageView fitHeight="72.0" fitWidth="104.0" layoutX="82.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);;">
                <image>
                   <Image url="@img/User.png" />
                </image>
             </ImageView>
-            <Label fx:id="lbUser" alignment="CENTER" contentDisplay="CENTER" layoutY="120.0" prefHeight="28.0" prefWidth="235.0" text="Hello" textAlignment="CENTER" wrapText="true">
+            <Label fx:id="lbUser" alignment="CENTER" contentDisplay="CENTER" layoutY="129.0" prefHeight="35.0" prefWidth="235.0" text="Hello" textAlignment="CENTER" wrapText="true">
                <font>
                   <Font size="23.0" />
                </font>
             </Label>
+            <Label fx:id="datetime" layoutX="82.0" layoutY="116.0" text="time">
+               <font>
+                  <Font size="17.0" />
+               </font></Label>
+            <Label fx:id="date1" layoutX="65.0" layoutY="90.0" text="date">
+               <font>
+                  <Font size="17.0" />
+               </font></Label>
          </children>
       </AnchorPane>
    </children>
