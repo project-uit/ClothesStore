@@ -66,7 +66,6 @@ public class FXML_ChiTietPhieuNhapController implements Initializable {
 
     public void _setListSP(ObservableList<ChiTietPhieuNhap> list) {
         _listSP = list;
-        System.out.println(_listSP.size());
     }
 
     public void InitTableCTPN() {
@@ -252,8 +251,15 @@ public class FXML_ChiTietPhieuNhapController implements Initializable {
             }
             try {
                 int gb = Integer.valueOf(clGiaBan.getCellData(o).toString());
-                if (gb <= 0)
+                if (gb <= 0) {
                     flag = false;
+                    tblCTPN.getSelectionModel().select(o);
+                    ShowMessage
+                            .showMessageBox(Alert.AlertType.ERROR, "Thông báo", null, "Giá bán chỉ được nhập số (Số dương > 0)")
+                            .showAndWait();
+                    flag = false;
+                    break;
+                }
             } catch (NumberFormatException ex) {
                 tblCTPN.getSelectionModel().select(o);
                 ShowMessage

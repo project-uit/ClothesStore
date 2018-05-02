@@ -21,6 +21,7 @@ import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -62,11 +63,6 @@ public class FXML_SearchSanPhamController implements Initializable {
         tblSanPhamChuaNhap.setItems(dataTableSPChuaNhap);
     }
 
-    public void setListSP(ObservableList<ChiTietPhieuNhap> list) {
-        listSP = list;
-        System.out.println(listSP.size());
-    }
-
     @FXML
     private void handler_btnNext(ActionEvent event) {
         AnchorPane ctpn;
@@ -92,6 +88,11 @@ public class FXML_SearchSanPhamController implements Initializable {
         }
     }
 
+    public void setListSP(ObservableList<ChiTietPhieuNhap> list) {
+        listSP = list;
+        System.out.println(listSP.size());
+    }
+
     private void InitTableSPDaNhap() {
         clMaSP1.setCellValueFactory(new PropertyValueFactory("masanpham"));
         clTenSP1.setCellValueFactory(new PropertyValueFactory("tensanpham"));
@@ -108,6 +109,7 @@ public class FXML_SearchSanPhamController implements Initializable {
                 return dataTableSPDaNhap.get(param).checkedProperty();
             }
         }));
+        tblSanPhamDaNhap.setPlaceholder(new Label("Không tìm thấy sản phẩm"));
     }
 
     private void InitTableSPChuaNhap() {
@@ -126,5 +128,6 @@ public class FXML_SearchSanPhamController implements Initializable {
                 return dataTableSPChuaNhap.get(param).checkedProperty();
             }
         }));
+        tblSanPhamChuaNhap.setPlaceholder(new Label("Không tìm thấy sản phẩm"));
     }
 }

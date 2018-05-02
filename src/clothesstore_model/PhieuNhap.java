@@ -116,34 +116,6 @@ public class PhieuNhap {
         return list;
     }
 
-    public ObservableList<PhieuNhap> getListPhieuNhapDaThemCTPN() {
-        ObservableList<PhieuNhap> list = FXCollections.observableArrayList();
-        DBConnection db = new DBConnection();
-        Connection con = db.getConnecttion();
-        String sql = "SELECT distinct pn.maphieunhap, pn.tongtien, pn.manhacungcap, pn.ngaynhap "
-                + "FROM phieunhap pn "
-                + "LEFT JOIN chitietphieunhap ctpn ON pn.maphieunhap = ctpn.maphieunhap "
-                + "where ctpn.maphieunhap is not null";
-        if (con != null) {
-            try {
-                PreparedStatement ptm = con.prepareStatement(sql);
-                ResultSet rs = ptm.executeQuery();
-                while (rs.next()) {
-
-                    PhieuNhap phieunhap = new PhieuNhap(rs.getInt("maphieunhap"),
-                            rs.getInt("tongtien"),
-                            rs.getString("manhacungcap"),
-                            rs.getDate("ngaynhap"));
-
-                    list.add(phieunhap);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        return list;
-    }
-
     public ObservableList<PhieuNhap> getListPhieuNhapChuaNhapKho() {
         ObservableList<PhieuNhap> list = FXCollections.observableArrayList();
         DBConnection db = new DBConnection();
@@ -154,7 +126,7 @@ public class PhieuNhap {
                 + "	from phieunhap pn\n"
                 + "	left join khosanpham ksp on pn.maphieunhap = ksp.maphieunhap \n"
                 + "	where ksp.makhosanpham is null) PN, nhacungcap NCC\n"
-                + "WHERE PN.maphieunhap = NCC.manhacungcap";
+                + "WHERE PN.manhacungcap = NCC.manhacungcap";
         if (con != null) {
             try {
                 PreparedStatement ptm = con.prepareStatement(sql);
