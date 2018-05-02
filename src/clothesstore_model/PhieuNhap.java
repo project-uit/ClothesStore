@@ -126,7 +126,7 @@ public class PhieuNhap {
                 + "	from phieunhap pn\n"
                 + "	left join khosanpham ksp on pn.maphieunhap = ksp.maphieunhap \n"
                 + "	where ksp.makhosanpham is null) PN, nhacungcap NCC\n"
-                + "WHERE PN.maphieunhap = NCC.manhacungcap";
+                + "WHERE PN.manhacungcap = NCC.manhacungcap";
         if (con != null) {
             try {
                 PreparedStatement ptm = con.prepareStatement(sql);

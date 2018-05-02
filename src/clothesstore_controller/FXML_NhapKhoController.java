@@ -126,14 +126,14 @@ public class FXML_NhapKhoController implements Initializable {
             });
             return row;
         });
-        tableviewphieunhap.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
-            @Override
-            public void changed(ObservableValue observableValue, Object oldValue, Object newValue) {
-                if (tableviewphieunhap.getSelectionModel().getSelectedItem() == null) {
-                    tableviewchitietphieunhap.getItems().clear();
-                }
-            }
-        });
+//        tableviewphieunhap.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
+//            @Override
+//            public void changed(ObservableValue observableValue, Object oldValue, Object newValue) {
+//                if (tableviewphieunhap.getSelectionModel().getSelectedItem() == null) {
+//                    tableviewchitietphieunhap.getItems().clear();
+//                }
+//            }
+//        });
     }
 
     private void InitTableViewChiTietPhieuNhap(int maphieunhap) {
@@ -203,7 +203,6 @@ public class FXML_NhapKhoController implements Initializable {
                     ObservableList<PhieuNhap> list = pn.getListPhieuNhap();
                     InitTableViewPhieuNhap(list);
                 }
-                tableviewchitietphieunhap.getItems().clear();
             });
             stageCTKSP.show();
         } catch (IOException ex) {
