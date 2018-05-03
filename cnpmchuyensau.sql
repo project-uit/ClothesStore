@@ -197,6 +197,7 @@ mahoadon   INT(6) UNSIGNED,
 FOREIGN KEY (mahoadon)
 REFERENCES hoadon(mahoadon)
 );
+
 CREATE TABLE dangnhap(
 tentaikhoan varchar(55) not null primary key,
 matkhau varchar(55) not null,
@@ -205,6 +206,7 @@ manhanvien INT(6) UNSIGNED,
 FOREIGN KEY (manhanvien)
 REFERENCES nhanvien(manhanvien)
 );
+
 insert into dangnhap(tentaikhoan, matkhau,phanquyen,manhanvien)
 values ('admin','123',1,1);
 --  thống kê theo masanpham theo 1 tháng 
@@ -270,3 +272,6 @@ END; $$
 DELIMITER ;
 
 CALL update_soluong_ctsp_huythanhtoan('SP0CEOYG01231',3);
+
+
+select 

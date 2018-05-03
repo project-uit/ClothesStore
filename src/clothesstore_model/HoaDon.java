@@ -135,7 +135,8 @@ public class HoaDon {
         Connection con = db.getConnecttion();
 
         if (con != null) {
-            String query = "select ngayban from hoadon where mahoadon = " + mahoadon.get();
+            String query = "select DATE_FORMAT(ngayban, '%d/%m/%Y %T') "
+                    + "from hoadon where mahoadon = " + mahoadon.get();
             try {
                 PreparedStatement ptm = con.prepareStatement(query);
                 ResultSet rs = ptm.executeQuery();
