@@ -242,7 +242,7 @@ public class HoaDon {
     public void inhoadon() {
         try {
             //fix path
-            String path = "E:/project/ClothesStore/ClothesStore/src/clothesstore_view/invoice_report.jrxml";
+            String path = "/Users/dieunguyen/Documents/GitHub/project-uit/ClothesStore/src/clothesstore_view/invoice_report.jrxml";
             JasperReport jr = JasperCompileManager.compileReport(path);
             HashMap<String, Object> para = new HashMap<>();
             CuaHang ch = CuaHang.getObject();          

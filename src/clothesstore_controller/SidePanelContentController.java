@@ -142,6 +142,14 @@ public class SidePanelContentController implements Initializable {
                 rootP.setTopAnchor(nhapkho, 0.0);
                 rootP.setBottomAnchor(nhapkho, 0.0);
                 break;
+            case "btnBieuDo":
+                AnchorPane thongke = FXMLLoader.load(getClass().getResource("/clothesstore_view/FXML_ThongKe.fxml"));
+                FXML_ClothesStoreController.rootP.getChildren().setAll(thongke);
+                rootP.setLeftAnchor(thongke, 0.0);
+                rootP.setRightAnchor(thongke, 0.0);
+                rootP.setTopAnchor(thongke, 0.0);
+                rootP.setBottomAnchor(thongke, 0.0);
+                break;                
             case "btnQuanLyTK":
                 AnchorPane QLTK = FXMLLoader.load(getClass().getResource("/clothesstore_view/FXML_QuanLyTaiKhoan.fxml"));
                 
