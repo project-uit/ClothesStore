@@ -8,22 +8,22 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="ClothesStore.jar" size="573815" download="eager" />
-    <jar href="lib\apache-commons.jar" size="857029" download="eager" />
-    <jar href="lib\commons-collections4-4.1.jar" size="751238" download="eager" />
-    <jar href="lib\commons-digester-2.1.jar" size="196768" download="eager" />
-    <jar href="lib\controlsfx-8.40.11.jar" size="985420" download="eager" />
-    <jar href="lib\fontawesomefx-8.9.jar" size="571068" download="eager" />
-    <jar href="lib\jasperreports-6.5.1.jar" size="5493900" download="eager" />
-    <jar href="lib\jasperreports-fonts-6.5.1.jar" size="2478075" download="eager" />
-    <jar href="lib\jasperreports-javaflow-6.5.1.jar" size="5559945" download="eager" />
-    <jar href="lib\jfoenix-8.0.1.jar" size="2405715" download="eager" />
-    <jar href="lib\mysql-connector-java-5.1.6-bin.jar" size="703265" download="eager" />
-    <jar href="lib\org.slf4j.jar" size="25689" download="eager" />
-    <jar href="lib\poi-3.17.jar" size="2701171" download="eager" />
-    <jar href="lib\poi-ooxml-3.17.jar" size="1479023" download="eager" />
-    <jar href="lib\poi-ooxml-schemas-3.17.jar" size="5924600" download="eager" />
-    <jar href="lib\xmlbeans-2.6.0.jar" size="2730866" download="eager" />
+    <jar href="ClothesStore.jar" size="575317" download="eager" />
+    <jar href="lib/apache-commons.jar" size="857029" download="eager" />
+    <jar href="lib/commons-collections4-4.1.jar" size="751238" download="eager" />
+    <jar href="lib/commons-digester-2.1.jar" size="196768" download="eager" />
+    <jar href="lib/controlsfx-8.40.11.jar" size="985420" download="eager" />
+    <jar href="lib/fontawesomefx-8.9.jar" size="571068" download="eager" />
+    <jar href="lib/jasperreports-6.5.1.jar" size="5493900" download="eager" />
+    <jar href="lib/jasperreports-fonts-6.5.1.jar" size="2478075" download="eager" />
+    <jar href="lib/jasperreports-javaflow-6.5.1.jar" size="5559945" download="eager" />
+    <jar href="lib/jfoenix-8.0.1.jar" size="2405715" download="eager" />
+    <jar href="lib/mysql-connector-java-5.1.6-bin.jar" size="703265" download="eager" />
+    <jar href="lib/org.slf4j.jar" size="25689" download="eager" />
+    <jar href="lib/poi-3.17.jar" size="2701171" download="eager" />
+    <jar href="lib/poi-ooxml-3.17.jar" size="1479023" download="eager" />
+    <jar href="lib/poi-ooxml-schemas-3.17.jar" size="5924600" download="eager" />
+    <jar href="lib/xmlbeans-2.6.0.jar" size="2730866" download="eager" />
   </resources>
   <applet-desc  width="800" height="600" main-class="com.javafx.main.NoJavaFXFallback"  name="ClothesStore" >
     <param name="requiredFXVersion" value="8.0+"/>
