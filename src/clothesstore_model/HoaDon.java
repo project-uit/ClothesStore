@@ -5,22 +5,21 @@
  */
 package clothesstore_model;
 
-import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
@@ -245,7 +244,7 @@ public class HoaDon {
             String path = "/Users/dieunguyen/Documents/GitHub/project-uit/ClothesStore/src/clothesstore_view/invoice_report.jrxml";
             JasperReport jr = JasperCompileManager.compileReport(path);
             HashMap<String, Object> para = new HashMap<>();
-            CuaHang ch = CuaHang.getObject();          
+            CuaHang ch = CuaHang.getObject();
             para.put("tencuahang", ch.getTencuahang().get());
             para.put("tennhanvien", "Hizen");
             para.put("ngayban", getngaythanhtoanhd());
@@ -264,7 +263,7 @@ public class HoaDon {
                 String soluong = data.get(i).toString().split(",")[1].substring(1);
                 String giaban = data.get(i).toString().split(",")[2].substring(1);
                 int n = data.get(i).toString().split(",")[3].length();
-                String thanhtien = data.get(i).toString().split(",")[3].substring(1,n-1);
+                String thanhtien = data.get(i).toString().split(",")[3].substring(1, n - 1);
                 paras.put("tensp", tensp);
                 paras.put("soluong", soluong);
                 paras.put("giaban", giaban);
@@ -279,6 +278,154 @@ public class HoaDon {
         } catch (JRException ex) {
             Logger.getLogger(HoaDon.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
 
+    public List getDoanhThu12months() {
+        List doanhthu12months = new ArrayList();
+        DBConnection db = new DBConnection();
+        Connection con = db.getConnecttion();
+        if (con != null) {
+            int i = 1;
+            while (i <= 12) {
+                String query = "select sum(tongtien) from hoadon "
+                        + "where MONTH(ngayban)= ?";
+                try {
+                    PreparedStatement ptm = con.prepareStatement(query);
+                    ptm.setInt(1, i);
+                    ResultSet rs = ptm.executeQuery();
+                    while (rs.next()) {
+                        Integer sum = rs.getInt(1);
+                        doanhthu12months.add(sum);
+                    }
+                    i++;
+                } catch (SQLException ex) {
+                    System.out.println("" + ex);
+                }
+            }
+        }
+        return doanhthu12months;
+    }
+    public Integer getActivities_TienBanHang(String time) {
+        Integer tienbanhang = 0;
+        DBConnection db = new DBConnection();
+        Connection con = db.getConnecttion();
+        if (con != null) {
+                String query = "";
+                switch (time) {
+                    case "homnay":
+                        query = "select sum(tongtien) from hoadon where DATE(ngayban) = CURDATE();";
+                        break;
+                    case "tuannay":
+                        query = "select sum(tongtien) from hoadon where YEARWEEK(ngayban) = YEARWEEK(NOW());";
+                        break;
+                    case "tuantruoc":
+                        query = "select sum(tongtien) from hoadon where YEARWEEK(ngayban) = YEARWEEK(NOW()) - 1;";
+                        break;
+                    case "thangnay":
+                        query = "select sum(tongtien) from hoadon where month(ngayban) = month(NOW());";
+                        break;
+                    case "thangtruoc":
+                        query = "select sum(tongtien) from hoadon where month(ngayban) = month(NOW()) - 1;";
+                        break;
+                }
+                try {
+                    PreparedStatement ptm = con.prepareStatement(query);
+                    ResultSet rs = ptm.executeQuery();
+                    while (rs.next()) {
+                        tienbanhang = rs.getInt(1);
+                    }
+                } catch (SQLException ex) {
+                    System.out.println("" + ex);
+                }
+            }
+        return tienbanhang;
+    }
+    public Integer getActivities_TienSoDonHang(String time) {
+        Integer sohoadon = 0;
+        DBConnection db = new DBConnection();
+        Connection con = db.getConnecttion();
+        if (con != null) {
+                String query = "";
+                switch (time) {
+                    case "homnay":
+                        query = "select count(mahoadon) from hoadon where DATE(ngayban) = CURDATE();";
+                        break;
+                    case "tuannay":
+                        query = "select count(mahoadon) from hoadon where YEARWEEK(ngayban) = YEARWEEK(NOW());";
+                        break;
+                    case "tuantruoc":
+                        query = "select count(mahoadon) from hoadon where YEARWEEK(ngayban) = YEARWEEK(NOW()) - 1;";
+                        break;
+                    case "thangnay":
+                        query = "select count(mahoadon) from hoadon where month(ngayban) = month(NOW());";
+                        break;
+                    case "thangtruoc":
+                        query = "select count(mahoadon) from hoadon where month(ngayban) = month(NOW()) - 1;";
+                        break;
+                }
+                try {
+                    PreparedStatement ptm = con.prepareStatement(query);
+                    ResultSet rs = ptm.executeQuery();
+                    while (rs.next()) {
+                        sohoadon = rs.getInt(1);
+                    }
+                } catch (SQLException ex) {
+                    System.out.println("" + ex);
+                }
+            }
+        return sohoadon;
+    }
+    public Integer getActivities_TienSoHangHoa(String time) {
+        Integer sohanghoa = 0;
+        DBConnection db = new DBConnection();
+        Connection con = db.getConnecttion();
+        if (con != null) {
+                String query = "";
+                switch (time) {
+                    case "homnay":
+                        query = "select sum(soluongmua) from hoadon, chitiethoadon where hoadon.mahoadon = chitiethoadon.mahoadon and DATE(ngayban) = CURDATE();";
+                        break;
+                    case "tuannay":
+                        query = "select sum(soluongmua) from hoadon, chitiethoadon where hoadon.mahoadon = chitiethoadon.mahoadon and YEARWEEK(ngayban) = YEARWEEK(NOW());";
+                        break;
+                    case "tuantruoc":
+                        query = "select sum(soluongmua) from hoadon, chitiethoadon where hoadon.mahoadon = chitiethoadon.mahoadon and YEARWEEK(ngayban) = YEARWEEK(NOW())-1;";
+                        break;
+                    case "thangnay":
+                        query = "select sum(soluongmua) from hoadon, chitiethoadon where hoadon.mahoadon = chitiethoadon.mahoadon and month(ngayban) = month(NOW());";
+                        break;
+                    case "thangtruoc":
+                        query = "select sum(soluongmua) from hoadon, chitiethoadon where hoadon.mahoadon = chitiethoadon.mahoadon and month(ngayban) = month(NOW())-1;";
+                        break;
+                }
+                try {
+                    PreparedStatement ptm = con.prepareStatement(query);
+                    ResultSet rs = ptm.executeQuery();
+                    while (rs.next()) {
+                        sohanghoa = rs.getInt(1);
+                    }
+                } catch (SQLException ex) {
+                    System.out.println("" + ex);
+                }
+            }
+        return sohanghoa;
+    } 
+    public Integer getCountHetHang() {
+        Integer count = 0;
+        DBConnection db = new DBConnection();
+        Connection con = db.getConnecttion();
+        if (con != null) {
+                String query = "select count(machitietsanpham) from chitietsanpham where soluong = 0;";
+                try {
+                    PreparedStatement ptm = con.prepareStatement(query);
+                    ResultSet rs = ptm.executeQuery();
+                    while (rs.next()) {
+                        count = rs.getInt(1);
+                    }
+                } catch (SQLException ex) {
+                    System.out.println("" + ex);
+                }
+            }
+        return count;
     }
 }

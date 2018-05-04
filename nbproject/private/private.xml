@@ -2,16 +2,9 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-<<<<<<< HEAD
-        <group/>
-=======
         <group>
-            <file>file:/Users/dieunguyen/Documents/GitHub/project-uit/ClothesStore/src/clothesstore_controller/FXML_ThongKeController.java</file>
-            <file>file:/Users/dieunguyen/Documents/GitHub/project-uit/ClothesStore/src/clothesstore_controller/SidePanelContentController.java</file>
-            <file>file:/Users/dieunguyen/Documents/GitHub/project-uit/ClothesStore/src/clothesstore_controller/SildingWindowAnimation.java</file>
-            <file>file:/Users/dieunguyen/Documents/GitHub/project-uit/ClothesStore/src/clothesstore_controller/FXML_HoaDonController.java</file>
-            <file>file:/Users/dieunguyen/Documents/GitHub/project-uit/ClothesStore/src/clothesstore_model/HoaDon.java</file>
+            <file>file:/D:/Documents/GitHub/ClothesStore/src/clothesstore_controller/FXML_ThongKeController.java</file>
+            <file>file:/D:/Documents/GitHub/ClothesStore/src/clothesstore_model/HoaDon.java</file>
         </group>
->>>>>>> a142cf3c0b05a2bbe4bf3990539d3f87b1fb7956
     </open-files>
 </project-private>
