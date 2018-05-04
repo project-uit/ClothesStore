@@ -1,27 +1,16 @@
-drop table  if exists khachhang;
-drop table  if exists nhacungcap;
-drop table  if exists nhanvien;
-drop table  if exists nhasanxuat;
-drop table  if exists nhomhang;
-drop table if exists sanpham;
-drop database if exists ClothesShop;
-
-
 create database ClothesShop;
 use ClothesShop;
 
-insert into khachhang
-values ('123','ccc');
 create table cuahang
 (
 id int primary key,
 tencuahang nvarchar(30),
-diachi nvarchar(30), 
+diachi nvarchar(300), 
 sodienthoai nvarchar(30),
 email nvarchar(30)
 );
 insert into cuahang
-values(1,'Zalora store','35 đường Hưng pro, phường 4 quận 4, TpHCM','090123456789','Zalorastore@gmail.com');
+values(1,'Zalora store','35 đường Hưng pro, phường 4 quận 4, TpHCM','0123456789','Zalorastore@gmail.com');
 create table nhacungcap
 (
 manhacungcap INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -156,12 +145,12 @@ FOREIGN KEY (manhanvien)
 REFERENCES nhanvien(manhanvien)
 );
 
-insert into hoadon(manhanvien,sodienthoai,ngayban,tongtien)
- values(1,'123',now(),500);
+
 create table hoadon
 (
 mahoadon   INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 manhanvien INT(6) UNSIGNED,
+sodienthoai Int (13),
 FOREIGN KEY (manhanvien)
 REFERENCES nhanvien(manhanvien),
 ngayban datetime,
@@ -169,6 +158,8 @@ tongtien int
 );
 SELECT NOW();
 -- thanh toán hóa đơn bằng cách nhập machitietsanpham đc định nghĩa do user
+insert into hoadon(manhanvien,sodienthoai,ngayban,tongtien)
+values(1,'0123456789',now(),500);
 
 create table chitiethoadon
 (
@@ -187,6 +178,9 @@ create table khachhang
 sodienthoai char(15) PRIMARY KEY,
 tenkhachhang nvarchar(50)
 );
+insert into khachhang
+values ('0123456789','Nguyen Van A');
+
 create table chitietkhachhang
 (
 machitietkhachhang  INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -272,6 +266,3 @@ END; $$
 DELIMITER ;
 
 CALL update_soluong_ctsp_huythanhtoan('SP0CEOYG01231',3);
-
-
-select 
