@@ -63,9 +63,10 @@ public class FXML_ThongKeController implements Initializable {
             @Override
             public void changed(ObservableValue ov, String t, String t1) {
                 try {
+                    int y = Integer.valueOf(t1);
                     chartDoanhThu.setTitle("Thống kê doanh thu trong năm " + t1);
                     chartDoanhThu.getData().clear();
-                    initChartDoanhThu(Integer.valueOf(t1));
+                    initChartDoanhThu(y);
                 } catch (NumberFormatException ex) {
                     ShowMessage
                             .showMessageBox(Alert.AlertType.ERROR, "Thông báo", null, "Nhập năm không đúng")
