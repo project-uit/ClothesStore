@@ -5,10 +5,12 @@
  */
 package clothesstore_model;
 
+import com.jfoenix.controls.JFXComboBox;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.Date;
@@ -241,7 +243,7 @@ public class HoaDon {
     public void inhoadon() {
         try {
             //fix path
-            String path = "/Users/dieunguyen/Documents/GitHub/project-uit/ClothesStore/src/clothesstore_view/invoice_report.jrxml";
+            String path = "invoice_report.jrxml";
             JasperReport jr = JasperCompileManager.compileReport(path);
             HashMap<String, Object> para = new HashMap<>();
             CuaHang ch = CuaHang.getObject();
@@ -306,127 +308,148 @@ public class HoaDon {
         }
         return doanhthu12months;
     }
+
     public Integer getActivities_TienBanHang(String time) {
         Integer tienbanhang = 0;
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
         if (con != null) {
-                String query = "";
-                switch (time) {
-                    case "homnay":
-                        query = "select sum(tongtien) from hoadon where DATE(ngayban) = CURDATE();";
-                        break;
-                    case "tuannay":
-                        query = "select sum(tongtien) from hoadon where YEARWEEK(ngayban) = YEARWEEK(NOW());";
-                        break;
-                    case "tuantruoc":
-                        query = "select sum(tongtien) from hoadon where YEARWEEK(ngayban) = YEARWEEK(NOW()) - 1;";
-                        break;
-                    case "thangnay":
-                        query = "select sum(tongtien) from hoadon where month(ngayban) = month(NOW());";
-                        break;
-                    case "thangtruoc":
-                        query = "select sum(tongtien) from hoadon where month(ngayban) = month(NOW()) - 1;";
-                        break;
-                }
-                try {
-                    PreparedStatement ptm = con.prepareStatement(query);
-                    ResultSet rs = ptm.executeQuery();
-                    while (rs.next()) {
-                        tienbanhang = rs.getInt(1);
-                    }
-                } catch (SQLException ex) {
-                    System.out.println("" + ex);
-                }
+            String query = "";
+            switch (time) {
+                case "homnay":
+                    query = "select sum(tongtien) from hoadon where DATE(ngayban) = CURDATE();";
+                    break;
+                case "tuannay":
+                    query = "select sum(tongtien) from hoadon where YEARWEEK(ngayban) = YEARWEEK(NOW());";
+                    break;
+                case "tuantruoc":
+                    query = "select sum(tongtien) from hoadon where YEARWEEK(ngayban) = YEARWEEK(NOW()) - 1;";
+                    break;
+                case "thangnay":
+                    query = "select sum(tongtien) from hoadon where month(ngayban) = month(NOW());";
+                    break;
+                case "thangtruoc":
+                    query = "select sum(tongtien) from hoadon where month(ngayban) = month(NOW()) - 1;";
+                    break;
             }
+            try {
+                PreparedStatement ptm = con.prepareStatement(query);
+                ResultSet rs = ptm.executeQuery();
+                while (rs.next()) {
+                    tienbanhang = rs.getInt(1);
+                }
+            } catch (SQLException ex) {
+                System.out.println("" + ex);
+            }
+        }
         return tienbanhang;
     }
+
     public Integer getActivities_TienSoDonHang(String time) {
         Integer sohoadon = 0;
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
         if (con != null) {
-                String query = "";
-                switch (time) {
-                    case "homnay":
-                        query = "select count(mahoadon) from hoadon where DATE(ngayban) = CURDATE();";
-                        break;
-                    case "tuannay":
-                        query = "select count(mahoadon) from hoadon where YEARWEEK(ngayban) = YEARWEEK(NOW());";
-                        break;
-                    case "tuantruoc":
-                        query = "select count(mahoadon) from hoadon where YEARWEEK(ngayban) = YEARWEEK(NOW()) - 1;";
-                        break;
-                    case "thangnay":
-                        query = "select count(mahoadon) from hoadon where month(ngayban) = month(NOW());";
-                        break;
-                    case "thangtruoc":
-                        query = "select count(mahoadon) from hoadon where month(ngayban) = month(NOW()) - 1;";
-                        break;
-                }
-                try {
-                    PreparedStatement ptm = con.prepareStatement(query);
-                    ResultSet rs = ptm.executeQuery();
-                    while (rs.next()) {
-                        sohoadon = rs.getInt(1);
-                    }
-                } catch (SQLException ex) {
-                    System.out.println("" + ex);
-                }
+            String query = "";
+            switch (time) {
+                case "homnay":
+                    query = "select count(mahoadon) from hoadon where DATE(ngayban) = CURDATE();";
+                    break;
+                case "tuannay":
+                    query = "select count(mahoadon) from hoadon where YEARWEEK(ngayban) = YEARWEEK(NOW());";
+                    break;
+                case "tuantruoc":
+                    query = "select count(mahoadon) from hoadon where YEARWEEK(ngayban) = YEARWEEK(NOW()) - 1;";
+                    break;
+                case "thangnay":
+                    query = "select count(mahoadon) from hoadon where month(ngayban) = month(NOW());";
+                    break;
+                case "thangtruoc":
+                    query = "select count(mahoadon) from hoadon where month(ngayban) = month(NOW()) - 1;";
+                    break;
             }
+            try {
+                PreparedStatement ptm = con.prepareStatement(query);
+                ResultSet rs = ptm.executeQuery();
+                while (rs.next()) {
+                    sohoadon = rs.getInt(1);
+                }
+            } catch (SQLException ex) {
+                System.out.println("" + ex);
+            }
+        }
         return sohoadon;
     }
+
     public Integer getActivities_TienSoHangHoa(String time) {
         Integer sohanghoa = 0;
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
         if (con != null) {
-                String query = "";
-                switch (time) {
-                    case "homnay":
-                        query = "select sum(soluongmua) from hoadon, chitiethoadon where hoadon.mahoadon = chitiethoadon.mahoadon and DATE(ngayban) = CURDATE();";
-                        break;
-                    case "tuannay":
-                        query = "select sum(soluongmua) from hoadon, chitiethoadon where hoadon.mahoadon = chitiethoadon.mahoadon and YEARWEEK(ngayban) = YEARWEEK(NOW());";
-                        break;
-                    case "tuantruoc":
-                        query = "select sum(soluongmua) from hoadon, chitiethoadon where hoadon.mahoadon = chitiethoadon.mahoadon and YEARWEEK(ngayban) = YEARWEEK(NOW())-1;";
-                        break;
-                    case "thangnay":
-                        query = "select sum(soluongmua) from hoadon, chitiethoadon where hoadon.mahoadon = chitiethoadon.mahoadon and month(ngayban) = month(NOW());";
-                        break;
-                    case "thangtruoc":
-                        query = "select sum(soluongmua) from hoadon, chitiethoadon where hoadon.mahoadon = chitiethoadon.mahoadon and month(ngayban) = month(NOW())-1;";
-                        break;
-                }
-                try {
-                    PreparedStatement ptm = con.prepareStatement(query);
-                    ResultSet rs = ptm.executeQuery();
-                    while (rs.next()) {
-                        sohanghoa = rs.getInt(1);
-                    }
-                } catch (SQLException ex) {
-                    System.out.println("" + ex);
-                }
+            String query = "";
+            switch (time) {
+                case "homnay":
+                    query = "select sum(soluongmua) from hoadon, chitiethoadon where hoadon.mahoadon = chitiethoadon.mahoadon and DATE(ngayban) = CURDATE();";
+                    break;
+                case "tuannay":
+                    query = "select sum(soluongmua) from hoadon, chitiethoadon where hoadon.mahoadon = chitiethoadon.mahoadon and YEARWEEK(ngayban) = YEARWEEK(NOW());";
+                    break;
+                case "tuantruoc":
+                    query = "select sum(soluongmua) from hoadon, chitiethoadon where hoadon.mahoadon = chitiethoadon.mahoadon and YEARWEEK(ngayban) = YEARWEEK(NOW())-1;";
+                    break;
+                case "thangnay":
+                    query = "select sum(soluongmua) from hoadon, chitiethoadon where hoadon.mahoadon = chitiethoadon.mahoadon and month(ngayban) = month(NOW());";
+                    break;
+                case "thangtruoc":
+                    query = "select sum(soluongmua) from hoadon, chitiethoadon where hoadon.mahoadon = chitiethoadon.mahoadon and month(ngayban) = month(NOW())-1;";
+                    break;
             }
+            try {
+                PreparedStatement ptm = con.prepareStatement(query);
+                ResultSet rs = ptm.executeQuery();
+                while (rs.next()) {
+                    sohanghoa = rs.getInt(1);
+                }
+            } catch (SQLException ex) {
+                System.out.println("" + ex);
+            }
+        }
         return sohanghoa;
-    } 
+    }
+
     public Integer getCountHetHang() {
         Integer count = 0;
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
         if (con != null) {
-                String query = "select count(machitietsanpham) from chitietsanpham where soluong = 0;";
-                try {
-                    PreparedStatement ptm = con.prepareStatement(query);
-                    ResultSet rs = ptm.executeQuery();
-                    while (rs.next()) {
-                        count = rs.getInt(1);
-                    }
-                } catch (SQLException ex) {
-                    System.out.println("" + ex);
+            String query = "select count(machitietsanpham) from chitietsanpham where soluong = 0;";
+            try {
+                PreparedStatement ptm = con.prepareStatement(query);
+                ResultSet rs = ptm.executeQuery();
+                while (rs.next()) {
+                    count = rs.getInt(1);
                 }
+            } catch (SQLException ex) {
+                System.out.println("" + ex);
             }
+        }
         return count;
+    }
+
+    public void load_cmb_year(JFXComboBox<Integer> cmb) {
+        DBConnection db = new DBConnection();
+        Connection con = db.getConnecttion();
+        if (con != null) {
+            try (
+                    Statement stmnt = con.createStatement();
+                    ResultSet rs = stmnt.executeQuery("select distinct year(ngayban) from hoadon");) {
+                while (rs.next()) {
+                    cmb.getItems().add(rs.getInt(1));
+                }
+            } catch (SQLException ex) {
+
+            }
+
+        }
     }
 }

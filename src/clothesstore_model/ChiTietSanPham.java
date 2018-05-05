@@ -371,7 +371,7 @@ public class ChiTietSanPham {
         Connection con = db.getConnecttion();
         if (con != null) {
             try {
-                String sql = "SELECT machitietsanpham FROM chitietsanpham where soluong is not null";
+                String sql = "SELECT machitietsanpham FROM chitietsanpham where soluong > 0 and soluong is not null";
                 PreparedStatement ptm = con.prepareStatement(sql);
                 ResultSet rs = ptm.executeQuery();
                 while (rs.next()) {

@@ -56,7 +56,7 @@ public class FXML_HoaDonController implements Initializable {
      */
     @FXML
     private JFXButton btnThem, btnXoa, btnLapHoaDon, btnThanhToan,
-            btnInHoaDon, btnThemthongtinkhachhang, btnchucnang,btncaidat;
+            btnInHoaDon, btnThemthongtinkhachhang, btnchucnang, btncaidat;
     @FXML
     private JFXNodesList nodelistbtn;
     @FXML
@@ -77,7 +77,7 @@ public class FXML_HoaDonController implements Initializable {
 
         InitTextField();
         mahoadon = 0;
-        
+
         Tooltip tiptext = new Tooltip("Lập hóa đơn\nIn hóa đơn\nThêm thông tin khách hàng");
         btncaidat.setTooltip(new Tooltip("Thay đổi thông tin hóa đơn"));
         btnchucnang.setTooltip(tiptext);
@@ -85,7 +85,7 @@ public class FXML_HoaDonController implements Initializable {
         nodelistbtn.addAnimatedNode(btnLapHoaDon);
         nodelistbtn.addAnimatedNode(btnInHoaDon);
         nodelistbtn.addAnimatedNode(btnThemthongtinkhachhang);
-        nodelistbtn.addAnimatedNode(btncaidat);      
+        nodelistbtn.addAnimatedNode(btncaidat);
         nodelistbtn.setSpacing(5);
 
         table_view.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
@@ -143,6 +143,14 @@ public class FXML_HoaDonController implements Initializable {
                 if (newValue.length() >= 10) {
                     getDonGia(newValue);
                     InitSpinner(newValue);
+                }
+                if (newValue.length() == 0) {
+                    SpinnerValueFactory<Integer> valueFactory
+                            = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 0);
+                    spin_soluong.setValueFactory(valueFactory);
+                    txt_fi_dongia.clear();
+                    
+                    txt_fi_thanhtien.setText(""+0);
                 }
             }
         });
@@ -222,9 +230,8 @@ public class FXML_HoaDonController implements Initializable {
         checkLaphoadon = true;
         stateBtnLuu = false;
         txt_fi_tongtien.setText("0");
-        txt_fi_machitietsanpham.setText("");
-        txt_fi_dongia.setText("");
-        txt_fi_thanhtien.setText("0");
+        txt_fi_machitietsanpham.setText("");        
+        tongtien=0;
         viewListTable();
         if (FXML_ClothesStoreController.rootP.getChildren().size() == 2) {
             FXML_ClothesStoreController.rootP.getChildren().remove(1);
@@ -262,6 +269,7 @@ public class FXML_HoaDonController implements Initializable {
         btnThemthongtinkhachhang.setDisable(true);
         checkLaphoadon = true;
         stateBtnLuu = false;
+        txt_fi_machitietsanpham.setText("");
         txt_fi_tongtien.setText("0");
         HoaDon hoadon = new HoaDon(new SimpleIntegerProperty(mahoadon));
         if (hoadon.delete()) {
@@ -270,6 +278,7 @@ public class FXML_HoaDonController implements Initializable {
             if (FXML_ClothesStoreController.rootP.getChildren().size() == 2) {
                 FXML_ClothesStoreController.rootP.getChildren().remove(1);
             }
+            tongtien=0;
             ShowMessage
                     .showMessageBox(Alert.AlertType.INFORMATION, "Thông báo", null, "Hủy hóa đơn thành công")
                     .showAndWait();
