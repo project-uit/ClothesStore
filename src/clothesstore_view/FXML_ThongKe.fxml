@@ -4,6 +4,7 @@
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
@@ -26,6 +27,7 @@
                             <NumberAxis fx:id="y" label="Doanh thu" side="LEFT" />
                           </yAxis>
                         </BarChart>
+                        <ComboBox fx:id="cmbYear" editable="true" layoutX="687.0" layoutY="20.0" prefHeight="25.0" prefWidth="104.0" />
                      </children>
                   </AnchorPane>
             </content>

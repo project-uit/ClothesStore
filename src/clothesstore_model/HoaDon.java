@@ -280,7 +280,7 @@ public class HoaDon {
         }
     }
 
-    public List getDoanhThu12months() {
+    public List getDoanhThu12months(Integer year) {
         List doanhthu12months = new ArrayList();
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
@@ -288,10 +288,11 @@ public class HoaDon {
             int i = 1;
             while (i <= 12) {
                 String query = "select sum(tongtien) from hoadon "
-                        + "where MONTH(ngayban)= ?";
+                        + "where MONTH(ngayban)= ? and YEAR(ngayban) = ?";
                 try {
                     PreparedStatement ptm = con.prepareStatement(query);
                     ptm.setInt(1, i);
+                    ptm.setInt(2, year);
                     ResultSet rs = ptm.executeQuery();
                     while (rs.next()) {
                         Integer sum = rs.getInt(1);
