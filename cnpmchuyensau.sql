@@ -266,3 +266,48 @@ END; $$
 DELIMITER ;
 
 CALL update_soluong_ctsp_huythanhtoan('SP0CEOYG01231',3);
+
+drop PROCEDURE if exists soluongban_theoquy;
+DELIMITER $$
+CREATE PROCEDURE soluongban_theoquy(in quy int, in nam int)
+BEGIN
+DECLARE x int;
+DECLARE y int;
+if quy = 1 then set x=1;
+elseif quy =2 then set x=4;
+elseif quy = 3 then set x=7;
+else set x = 10;
+end if;
+set y= x+2;
+select  sp.masanpham, sp.tensanpham, sum(soluongmua),
+sum(soluongmua)*sp.giaban as tongdoanhthu
+from chitiethoadon cthd, hoadon hd, chitietsanpham ctsp, sanpham sp
+where cthd.mahoadon=hd.mahoadon and ctsp.masanpham=sp.masanpham 
+and cthd.machitietsanpham=ctsp.machitietsanpham 
+and month(ngayban) >=  x  and  month(ngayban) <=  y
+and  year(ngayban) = nam
+group by sp.masanpham 
+order by sum(soluongmua) desc
+limit 5;
+END; $$
+DELIMITER ;
+
+DELIMITER $$
+CREATE FUNCTION getTongsoluong_quy(quy int, nam int)
+    RETURNS int
+    BEGIN
+	declare tongsoluong int default 0;
+	DECLARE x int;
+	DECLARE y int;
+	if quy = 1 then set x=1;
+	elseif quy =2 then set x=4;
+	elseif quy = 3 then set x=7;
+	else set x = 10;
+	end if;
+	set y= x+2;
+    set tongsoluong = (select sum(soluongmua) from chitiethoadon cthd, hoadon hd 
+	where cthd.mahoadon=hd.mahoadon and year(ngayban) = nam
+	and month(ngayban) >=  x  and  month(ngayban) <=  y);
+    RETURN tongsoluong ;
+    END$$
+DELIMITER ;
