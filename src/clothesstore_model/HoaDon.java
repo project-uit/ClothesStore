@@ -23,6 +23,7 @@ import java.util.logging.Logger;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
+import javafx.scene.control.ComboBox;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -437,6 +438,23 @@ public class HoaDon {
     }
 
     public void load_cmb_year(JFXComboBox<Integer> cmb) {
+        DBConnection db = new DBConnection();
+        Connection con = db.getConnecttion();
+        if (con != null) {
+            try (
+                    Statement stmnt = con.createStatement();
+                    ResultSet rs = stmnt.executeQuery("select distinct year(ngayban) from hoadon");) {
+                while (rs.next()) {
+                    cmb.getItems().add(rs.getInt(1));
+                }
+            } catch (SQLException ex) {
+
+            }
+
+        }
+    }
+    
+    public void load_cmb_year_(ComboBox cmb) {
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
         if (con != null) {

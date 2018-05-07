@@ -75,14 +75,9 @@ public class FXML_ThongKeController implements Initializable {
 
     private void initCbbYear() {
         LocalDate today = LocalDate.now();
-        cmbYear.getItems();
-        List listYear = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            String y = String.valueOf(today.getYear() - i);
-            listYear.add(String.valueOf(y));
-        }
-        Collections.sort(listYear);
-        cmbYear.getItems().addAll(listYear);
+        HoaDon hd = new HoaDon();
+        hd.load_cmb_year_(cmbYear); 
+        //Collections.sort(listYear);
         cmbYear.valueProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue ov, String t, String t1) {
@@ -98,7 +93,8 @@ public class FXML_ThongKeController implements Initializable {
                 }
             }
         });
-        cmbYear.getSelectionModel().select("" + today.getYear());
+        
+        cmbYear.getSelectionModel().select(""+Collections.max(cmbYear.getItems()));
     }
 
     private void initChartDoanhThu(Integer year) {
