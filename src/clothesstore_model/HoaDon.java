@@ -11,17 +11,17 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import static javafx.collections.FXCollections.observableArrayList;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ComboBox;
 import net.sf.jasperreports.engine.JRException;
@@ -44,6 +44,8 @@ public class HoaDon {
     private Date ngayban;
     private IntegerProperty tongtien;
 
+    private StringProperty tennhanvien;
+
     public HoaDon() {
     }
 
@@ -59,9 +61,25 @@ public class HoaDon {
         this.tongtien = tongtien;
     }
 
+    public HoaDon(IntegerProperty mahoadon, StringProperty tennhanvien, StringProperty sodienthoai, Date ngayban, IntegerProperty tongtien) {
+        this.mahoadon = mahoadon;
+        this.sodienthoai = sodienthoai;
+        this.ngayban = ngayban;
+        this.tongtien = tongtien;
+        this.tennhanvien = tennhanvien;
+    }
+
     public HoaDon(IntegerProperty mahoadon, IntegerProperty tongtien) {
         this.mahoadon = mahoadon;
         this.tongtien = tongtien;
+    }
+
+    public StringProperty getTennhanvien() {
+        return tennhanvien;
+    }
+
+    public void setTennhanvien(StringProperty tennhanvien) {
+        this.tennhanvien = tennhanvien;
     }
 
     public IntegerProperty getMahoadon() {
@@ -453,7 +471,7 @@ public class HoaDon {
 
         }
     }
-    
+
     public void load_cmb_year_(ComboBox cmb) {
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
@@ -462,12 +480,67 @@ public class HoaDon {
                     Statement stmnt = con.createStatement();
                     ResultSet rs = stmnt.executeQuery("select distinct year(ngayban) from hoadon");) {
                 while (rs.next()) {
-                    cmb.getItems().add(""+rs.getInt(1));
+                    cmb.getItems().add("" + rs.getInt(1));
                 }
             } catch (SQLException ex) {
 
             }
 
         }
+    }
+
+    public ObservableList getListHoaDon() {
+        ObservableList<HoaDon> list = observableArrayList();
+        DBConnection db = new DBConnection();
+        Connection con = db.getConnecttion();
+        if (con != null) {
+            String query = "select mahoadon, tennhanvien, sodienthoai, ngayban,"
+                    + " tongtien from hoadon, nhanvien "
+                    + "where hoadon.manhanvien = nhanvien.manhanvien;";
+            try {
+                PreparedStatement ptm = con.prepareStatement(query);
+                ResultSet rs = ptm.executeQuery();
+                while (rs.next()) {
+                    IntegerProperty mhd = new SimpleIntegerProperty(rs.getInt(1));;
+                    StringProperty tnv = new SimpleStringProperty(rs.getString(2));;
+                    StringProperty sdt = new SimpleStringProperty(rs.getString(3));;
+                    Date nb = rs.getDate(4);
+                    IntegerProperty tt =new SimpleIntegerProperty(rs.getInt(1));;
+                    HoaDon hd = new HoaDon(mhd, tnv, sdt, nb, tt);
+                    list.add(hd);
+                }
+            } catch (SQLException ex) {
+                System.out.println("" + ex);
+            }
+        }
+        return list;
+    }
+    public ObservableList getListHoaDonFromDate(Date date) {
+        ObservableList<HoaDon> list = observableArrayList();
+        DBConnection db = new DBConnection();
+        Connection con = db.getConnecttion();
+        if (con != null) {
+            String query = "select mahoadon, tennhanvien, sodienthoai, DATE(ngayban),"
+                    + " tongtien from hoadon, nhanvien "
+                    + "where hoadon.manhanvien = nhanvien.manhanvien"
+                    + "and ngayban = ?;";
+            try {
+                PreparedStatement ptm = con.prepareStatement(query);
+                ptm.setDate(1, (java.sql.Date) date);
+                ResultSet rs = ptm.executeQuery();
+                while (rs.next()) {
+                    IntegerProperty mhd = new SimpleIntegerProperty(rs.getInt(1));;
+                    StringProperty tnv = new SimpleStringProperty(rs.getString(2));;
+                    StringProperty sdt = new SimpleStringProperty(rs.getString(3));;
+                    Date nb = rs.getDate(4);
+                    IntegerProperty tt =new SimpleIntegerProperty(rs.getInt(1));;
+                    HoaDon hd = new HoaDon(mhd, tnv, sdt, nb, tt);
+                    list.add(hd);
+                }
+            } catch (SQLException ex) {
+                System.out.println("" + ex);
+            }
+        }
+        return list;
     }
 }

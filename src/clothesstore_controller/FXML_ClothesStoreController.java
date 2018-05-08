@@ -78,7 +78,7 @@ public class FXML_ClothesStoreController implements Initializable {
                 root.setBottomAnchor(hanghoa, 0.0);
                 break;
             case "btnNhapKho":
-                AnchorPane nhapkho = FXMLLoader.load(getClass().getResource("/clothesstore_view/FXML_NhapKho.fxml"));
+                AnchorPane nhapkho = FXMLLoader.load(getClass().getResource("/clothesstore_view/FXML_DonHang.fxml"));
                 FXML_ClothesStoreController.rootP.getChildren().setAll(nhapkho);
 
                 root.setLeftAnchor(nhapkho, 0.0);
