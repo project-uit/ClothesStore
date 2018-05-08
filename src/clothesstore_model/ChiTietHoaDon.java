@@ -145,7 +145,7 @@ public class ChiTietHoaDon {
         if (con != null) {
             try {
                 String query = "select sp.tensanpham,cthd.soluongmua,sp.giaban,cthd.thanhtien "
-                        + "from chitiethoadon cthd, chitietsanpham ctsp, sanpham sp, hoadon hd , mausac "
+                        + "from chitiethoadon cthd, chitietsanpham ctsp, sanpham sp, hoadon hd "
                         + "where cthd.machitietsanpham=ctsp.machitietsanpham and sp.masanpham = ctsp.masanpham "
                                 + "and cthd.mahoadon=hd.mahoadon and cthd.mahoadon = "+mahoadon.get();
                 Statement stmnt = con.createStatement();               

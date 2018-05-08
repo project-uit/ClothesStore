@@ -81,7 +81,7 @@ public class FXML_ChiTietKhoSPController implements Initializable {
             }
             MauSac ms = new MauSac();
 
-            String ten = _ctsp.getSize().get() + "_" + ms.getTenMauFromMaMau(_ctsp.getMausac().get())  + "_" + gioitinh;
+            String ten = _ctsp.getSize().get() + "_" + _ctsp.getMausac().get()  + "_" + gioitinh;
             String maCTSP = _ctsp.getMachitietsanpham().get();
             String soluong = "0";
             ChiTietKhoSanPham ctksp = new ChiTietKhoSanPham(maCTSP, ten, soluong);

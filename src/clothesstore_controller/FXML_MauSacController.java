@@ -40,7 +40,8 @@ public class FXML_MauSacController implements Initializable {
     private JFXTextField txt_fi_tenmausac;
     @FXML
     private TableView<String> table_view;
-    private String mamau;
+    private String tenmau;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
@@ -52,9 +53,9 @@ public class FXML_MauSacController implements Initializable {
             public void changed(ObservableValue observableValue, Object oldValue, Object newValue) {
 
                 if (table_view.getSelectionModel().getSelectedItem() != null) {
-                    // newValue lấy hết giá trị trong 1 hàng
-                    mamau = newValue.toString().split(",")[0].substring(1).trim(); // lấy giá trị ở cột thứ i
-                    System.out.println(""+mamau);
+                    
+                    tenmau = newValue.toString().split(",")[0].substring(1).trim();
+                    System.out.println("" + tenmau);
                 }
             }
         });
@@ -76,9 +77,7 @@ public class FXML_MauSacController implements Initializable {
         }
         MauSac mausac = new MauSac();
         mausac.LoadTable(table_view);
-        table_view.getColumns().get(0).setVisible(false);
-        table_view.getColumns().get(1).setText("Tên màu");
-        table_view.getColumns().get(2).setVisible(false);
+        table_view.getColumns().get(0).setText("Tên màu");
     }
 
     private void ThemMauSac() {
@@ -97,10 +96,9 @@ public class FXML_MauSacController implements Initializable {
     }
 
     private void XoaMauSac() {
-        StringProperty tenmau = new SimpleStringProperty(mamau);
-        IntegerProperty trangthai = new SimpleIntegerProperty(0);
-        MauSac mausac = new MauSac(tenmau, trangthai);
-        if (mausac.UpdateNotToSee()) {
+        StringProperty _tenmau = new SimpleStringProperty(this.tenmau);
+        MauSac mausac = new MauSac(_tenmau);
+        if (mausac.delete()) {
             viewTable();
             ShowMessage
                     .showMessageBox(Alert.AlertType.INFORMATION, "Thông báo", null, "Xóa dữ liệu thành công")

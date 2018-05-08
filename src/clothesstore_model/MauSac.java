@@ -11,6 +11,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.Normalizer;
+import java.util.regex.Pattern;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -23,64 +25,33 @@ import javafx.scene.control.TableView;
  */
 public class MauSac {
 
-    private StringProperty mamau;
     private StringProperty tenmau;
-    private IntegerProperty trangthai;
 
     public MauSac() {
     }
 
-    public MauSac(StringProperty mamau, StringProperty tenmau, IntegerProperty trangthai) {
-        this.mamau = mamau;
-        this.tenmau = tenmau;
-        this.trangthai = trangthai;
-    }
-
-    public MauSac(StringProperty mamau, IntegerProperty trangthai) {
-        this.mamau = mamau;
-        this.trangthai = trangthai;
-    }
-
     public MauSac(StringProperty tenmau) {
         this.tenmau = tenmau;
-        trangthai = new SimpleIntegerProperty(1);
-
-    }
-
-    public StringProperty getMamau() {
-        return mamau;
     }
 
     public StringProperty getTenmau() {
         return tenmau;
     }
 
-    public IntegerProperty getTrangthai() {
-        return trangthai;
-    }
-
-    public void setMamau(StringProperty mamau) {
-        this.mamau = mamau;
-    }
-
     public void setTenmau(StringProperty tenmau) {
         this.tenmau = tenmau;
-    }
-
-    public void setTrangthai(IntegerProperty trangthai) {
-        this.trangthai = trangthai;
     }
 
     public boolean insert() {
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
         if (con != null) {
-            String query = "insert into mausac(tenmau,trangthai)"
-                    + " values(?,?)";
+            String query = "insert into mausac"
+                    + " values(?)";
             try {
                 PreparedStatement ptm = con.prepareStatement(query);
                 ptm.setString(1, tenmau.get());
-                ptm.setInt(2, trangthai.get());
+
                 int check = ptm.executeUpdate();
                 if (check != 0) {
                     ptm.close();
@@ -95,18 +66,18 @@ public class MauSac {
         return false;
     }
 
-    public boolean UpdateNotToSee() {
+    public boolean delete() {
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
         if (con != null) {
-            String query = "Update mausac set trangthai=? where mamau=?";
+            String query = "delete from mausac "
+                    + "where tenmau=?";
             try {
                 PreparedStatement ptm = con.prepareStatement(query);
-                ptm.setInt(1, trangthai.get());
-                ptm.setString(2, mamau.get());
+                ptm.setString(1, tenmau.get());
+
                 int check = ptm.executeUpdate();
                 if (check != 0) {
-
                     ptm.close();
                     con.close();
                     return true;
@@ -125,13 +96,9 @@ public class MauSac {
         if (con != null) {
             try (
                     Statement stmnt = con.createStatement();
-                    ResultSet rs = stmnt.executeQuery("select * from mausac where trangthai=1");) {
-                while (rs.next()) {
-                    StringProperty _tenmau = new SimpleStringProperty(rs.getString("tenmau"));
-                    StringProperty _mamau = new SimpleStringProperty(rs.getString("mamau"));
-                    IntegerProperty _trangthai = new SimpleIntegerProperty(rs.getInt("trangthai"));
-                    MauSac mausac = new MauSac(_mamau, _tenmau, _trangthai);
-                    cmb.getItems().add(mausac);
+                    ResultSet rs = stmnt.executeQuery("select * from mausac");) {
+                while (rs.next()) {                  
+                    cmb.getItems().add(rs.getString(1));
                 }
 
             } catch (SQLException ex) {
@@ -142,26 +109,18 @@ public class MauSac {
     }
 
     public void LoadTable(TableView tbv) {
-        LoadTableFromDB tb = new LoadTableFromDB("select * from mausac where trangthai=1");
+        LoadTableFromDB tb = new LoadTableFromDB("select * from mausac ");
         tb.LoadTable(tbv);
     }
 
-    public String  getTenMauFromMaMau(String mamau) {
-        String tenmau ="";
-        DBConnection db = new DBConnection();
-        Connection con = db.getConnecttion();
-        String sql = "SELECT tenmau FROM mausac WHERE mamau ='"+mamau+"'";
-        if (con != null) {
-            try {
-                PreparedStatement ptm = con.prepareStatement(sql);
-                ResultSet rs = ptm.executeQuery();
-                while (rs.next()) {
-                    tenmau = rs.getString("tenmau");
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+    public static String convertTVToEN(String str) {
+        try {
+            String temp = Normalizer.normalize(str, Normalizer.Form.NFD);
+            Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
+            return pattern.matcher(temp).replaceAll("").toLowerCase().replaceAll(" ", "_").replaceAll("đ", "d");
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return tenmau;
+        return "";
     }
 }

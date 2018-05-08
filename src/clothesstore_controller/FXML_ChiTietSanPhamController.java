@@ -72,7 +72,7 @@ public class FXML_ChiTietSanPhamController implements Initializable {
     @FXML
     private JFXComboBox<String> cmb_gioitinh;
     @FXML
-    private JFXComboBox<MauSac> cmb_mausac;
+    private JFXComboBox<String> cmb_mausac;
     @FXML
     private TableView<String> table_view;
     @FXML
@@ -100,11 +100,9 @@ public class FXML_ChiTietSanPhamController implements Initializable {
                     Size size = new Size(temp);
                     cmb_size.getSelectionModel().select(size);
                     temp = new SimpleStringProperty(newValue.toString().split(",")[2].substring(1).trim());
-                    StringProperty mamau
-                            = new SimpleStringProperty(newValue.toString().split(",")[4].substring(1).trim());
-                    IntegerProperty trangthai = new SimpleIntegerProperty(1);
-                    MauSac mausac = new MauSac(mamau, temp/* tên màu */, trangthai);
-                    cmb_mausac.getSelectionModel().select(mausac);
+      
+                   // MauSac mausac = new MauSac(temp);
+                    cmb_mausac.getSelectionModel().select(temp.get());
                     cmb_gioitinh.getSelectionModel().select(newValue.toString().split(",")[3].substring(1).trim());
                 }
             }
@@ -132,7 +130,6 @@ public class FXML_ChiTietSanPhamController implements Initializable {
         table_view.getColumns().get(1).setText("Tên size");
         table_view.getColumns().get(2).setText("Màu sắc");
         table_view.getColumns().get(3).setText("Giới tính");
-        table_view.getColumns().get(4).setVisible(false);
         table_view.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     }
 
@@ -242,11 +239,11 @@ public class FXML_ChiTietSanPhamController implements Initializable {
 
     public void BacktoSanPham() {
         SildingWindowAnimation silde = new SildingWindowAnimation();
-        int last =FXML_ClothesStoreController.rootP.getChildren().size()-1;
-        AnchorPane hanghoa = (AnchorPane)FXML_ClothesStoreController.rootP.getChildren().get(last);
+        int last = FXML_ClothesStoreController.rootP.getChildren().size() - 1;
+        AnchorPane hanghoa = (AnchorPane) FXML_ClothesStoreController.rootP.getChildren().get(last);
         silde.SildeBack(FXML_ClothesStoreController.rootP,
                 hanghoa,
-                SildingWindowAnimation.Direction.SildeRight);              
+                SildingWindowAnimation.Direction.SildeRight);
         // FXML_ClothesStoreController.rootP.getChildren().setAll(hanghoa);
         FXML_ClothesStoreController.rootP.setLeftAnchor(hanghoa, 0.0);
         FXML_ClothesStoreController.rootP.setRightAnchor(hanghoa, 0.0);
@@ -255,12 +252,12 @@ public class FXML_ChiTietSanPhamController implements Initializable {
     }
 
     private void insertChiTietSanpham() {
-        String _mamau = cmb_mausac.getValue().getMamau().get().split("]")[0].substring(0);
+        String _mamau = MauSac.convertTVToEN(cmb_mausac.getValue());
         String mactsp = this.masanpham
                 + cmb_gioitinh.getSelectionModel().getSelectedItem()
                 + cmb_size.getValue().getTensize().get()
                 + _mamau;
-
+        System.out.println("" + mactsp);
         StringProperty machitietsanpham = new SimpleStringProperty(mactsp);
         StringProperty _masanpham = new SimpleStringProperty(this.masanpham);
         StringProperty tensize = cmb_size.getValue().getTensize();
@@ -343,22 +340,26 @@ public class FXML_ChiTietSanPhamController implements Initializable {
         context.getItems().addAll(itemXoa);
         table_view.setContextMenu(context);
     }
-    public JFXButton getbtnBack()
-    {
+
+    public JFXButton getbtnBack() {
         return btnBack;
     }
-    private void InitEvent() {                
+
+    private void InitEvent() {
         ObservableList<String> list = FXCollections.observableArrayList();
         list.add("1");
         list.add("0");
+        list.add("2");
         cmb_gioitinh.setItems(list);
         cmb_gioitinh.setConverter(new StringConverter<String>() {
             @Override
             public String toString(String object) {
                 if (object.equals("1")) {
                     return "Nam";
-                } else {
+                } else if (object.equals("0")) {
                     return "Nữ";
+                } else {
+                    return "Unisex";
                 }
             }
 
@@ -369,14 +370,14 @@ public class FXML_ChiTietSanPhamController implements Initializable {
 
         });
         cmb_gioitinh.getSelectionModel().selectFirst();
-        cmb_mausac.setConverter(new StringConverter<MauSac>() {
+        cmb_mausac.setConverter(new StringConverter<String>() {
             @Override
-            public String toString(MauSac object) {
-                return object.getTenmau().get();
+            public String toString(String object) {
+                return object;
             }
 
             @Override
-            public MauSac fromString(String string) {
+            public String fromString(String string) {
                 return null;
             }
         });

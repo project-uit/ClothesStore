@@ -36,7 +36,7 @@ public class ChiTietSanPham {
     private StringProperty machitietsanpham;
     private StringProperty masanpham;
     private StringProperty tensize;
-    private StringProperty mamau;
+    private StringProperty tenmau;
     private IntegerProperty gioitinh;
     private IntegerProperty soluong;
 
@@ -51,7 +51,7 @@ public class ChiTietSanPham {
         this.machitietsanpham = machitietsanpham;
         this.masanpham = masanpham;
         this.tensize = tensize;
-        this.mamau = mamau;
+        this.tenmau = mamau;
         this.gioitinh = gioitinh;
         this.soluong = soluong;
     }
@@ -60,7 +60,7 @@ public class ChiTietSanPham {
         this.machitietsanpham = machitietsanpham;
         this.masanpham = masanpham;
         this.tensize = tensize;
-        this.mamau = mamau;
+        this.tenmau = mamau;
         this.gioitinh = gioitinh;
     }
 
@@ -69,11 +69,11 @@ public class ChiTietSanPham {
         this.soluong = soluong;
     }
 
-    public ChiTietSanPham(String machitietsanpham, String masanpham, String mamau, String tensize, int gioitinh, int soluong) {
+    public ChiTietSanPham(String machitietsanpham, String masanpham, String tenmau, String tensize, int gioitinh, int soluong) {
         this.machitietsanpham = new SimpleStringProperty(machitietsanpham);
         this.masanpham = new SimpleStringProperty(masanpham);
         this.tensize = new SimpleStringProperty(tensize);
-        this.mamau = new SimpleStringProperty(mamau);
+        this.tenmau = new SimpleStringProperty(tenmau);
         this.gioitinh = new SimpleIntegerProperty(gioitinh);
         this.soluong = new SimpleIntegerProperty(soluong);
     }
@@ -90,8 +90,8 @@ public class ChiTietSanPham {
         this.tensize = tensize;
     }
 
-    public void setMausac(StringProperty mamau) {
-        this.mamau = mamau;
+    public void setMausac(StringProperty tenmau) {
+        this.tenmau = tenmau;
     }
 
     public void setGioitinh(IntegerProperty gioitinh) {
@@ -115,7 +115,7 @@ public class ChiTietSanPham {
     }
 
     public StringProperty getMausac() {
-        return mamau;
+        return tenmau;
     }
 
     public IntegerProperty getGioitinh() {
@@ -127,7 +127,7 @@ public class ChiTietSanPham {
     }
 
     public boolean isEmpty() {
-        return (tensize.get().isEmpty() || mamau.get().isEmpty());
+        return (tensize.get().isEmpty() || tenmau.get().isEmpty());
     }
 
     public int insert() {
@@ -136,14 +136,14 @@ public class ChiTietSanPham {
         Connection con = db.getConnecttion();
         if (con != null) {
 
-            String query = "insert into chitietsanpham(machitietsanpham,masanpham,tensize,mamau,gioitinh)"
+            String query = "insert into chitietsanpham(machitietsanpham,masanpham,tensize,tenmau,gioitinh)"
                     + " values(?,?,?,?,?)";
             try {
                 PreparedStatement ptm = con.prepareStatement(query);
                 ptm.setString(1, machitietsanpham.get());
                 ptm.setString(2, masanpham.get());
                 ptm.setString(3, tensize.get());
-                ptm.setString(4, mamau.get());
+                ptm.setString(4, tenmau.get());
                 ptm.setInt(5, gioitinh.get());
                 int check = ptm.executeUpdate();
                 if (check != 0) {
@@ -193,11 +193,11 @@ public class ChiTietSanPham {
         Connection con = db.getConnecttion();
         if (con != null) {
             String query;
-            query = "update chitietsanpham set tensize=?, mamau=?,gioitinh=? where machitietsanpham = ?";
+            query = "update chitietsanpham set tensize=?, tenmau=?,gioitinh=? where machitietsanpham = ?";
             try {
                 PreparedStatement ptm = con.prepareStatement(query);
                 ptm.setString(1, tensize.get());
-                ptm.setString(2, mamau.get());
+                ptm.setString(2, tenmau.get());
                 ptm.setInt(3, gioitinh.get());
                 ptm.setString(4, machitietsanpham.get());
                 int check = ptm.executeUpdate();
@@ -271,7 +271,7 @@ public class ChiTietSanPham {
                 while (rs.next()) {
                     ChiTietSanPham ctsp = new ChiTietSanPham(rs.getString("machitietsanpham"),
                             rs.getString("masanpham"),
-                            rs.getString("mamau"),
+                            rs.getString("tenmau"),
                             rs.getString("tensize"),
                             rs.getInt("gioitinh"),
                             rs.getInt("soluong"));
@@ -285,14 +285,13 @@ public class ChiTietSanPham {
     }
 
     public void LoadTable(TableView tableview) {
-        String query = "Select machitietsanpham,tensize,tenmau,gioitinh,mausac.mamau "
-                + "from chitietsanpham,mausac "
-                + "where chitietsanpham.mamau=mausac.mamau and masanpham = '" + masanpham.get() + "'";
+        String query = "Select machitietsanpham,tensize,tenmau,gioitinh "
+                + "from chitietsanpham "
+                + "where masanpham = '" + masanpham.get() + "'";
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
         ObservableList<ObservableList> data = FXCollections.observableArrayList();
         if (con != null) {
-
             try {
                 java.sql.Statement stmnt = con.createStatement();
                 ResultSet rs = stmnt.executeQuery(query);
@@ -306,8 +305,12 @@ public class ChiTietSanPham {
                             public ObservableValue<String> call(TableColumn.CellDataFeatures<ObservableList, String> param) {
                                 if (param.getValue().get(j).equals("1")) {
                                     return new SimpleStringProperty("Nam");
-                                } else {
+                                } else if (param.getValue().get(j).equals("0")){
                                     return new SimpleStringProperty("Nữ");
+                                }
+                                else
+                                {
+                                    return new SimpleStringProperty("Unisex");
                                 }
 
                             }
