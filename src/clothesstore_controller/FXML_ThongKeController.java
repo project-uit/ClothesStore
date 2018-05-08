@@ -41,6 +41,7 @@ import javafx.scene.control.Label;
 import javafx.stage.FileChooser;
 import javafx.util.StringConverter;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
 /**
  * FXML Controller class
  *
@@ -76,7 +77,7 @@ public class FXML_ThongKeController implements Initializable {
     private void initCbbYear() {
         LocalDate today = LocalDate.now();
         HoaDon hd = new HoaDon();
-        hd.load_cmb_year_(cmbYear); 
+        hd.load_cmb_year_(cmbYear);
         //Collections.sort(listYear);
         cmbYear.valueProperty().addListener(new ChangeListener<String>() {
             @Override
@@ -93,9 +94,11 @@ public class FXML_ThongKeController implements Initializable {
                 }
             }
         });
-        
-        cmbYear.getSelectionModel().select(""+Collections.max(cmbYear.getItems()));
+
+        cmbYear.getSelectionModel().select("" + Collections.max(cmbYear.getItems()));
     }
+
+
 
     private void initChartDoanhThu(Integer year) {
         HoaDon hd = new HoaDon();
@@ -118,7 +121,7 @@ public class FXML_ThongKeController implements Initializable {
         chartDoanhThu.getData().setAll(data);
 
     }
-     @FXML
+    @FXML
     private PieChart piechart_thongkesp_banchay;
     @FXML
     private JFXComboBox<Integer> cmb_nam;

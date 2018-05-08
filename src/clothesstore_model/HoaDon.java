@@ -462,7 +462,7 @@ public class HoaDon {
                     Statement stmnt = con.createStatement();
                     ResultSet rs = stmnt.executeQuery("select distinct year(ngayban) from hoadon");) {
                 while (rs.next()) {
-                    cmb.getItems().add(rs.getInt(1));
+                    cmb.getItems().add(""+rs.getInt(1));
                 }
             } catch (SQLException ex) {
 
