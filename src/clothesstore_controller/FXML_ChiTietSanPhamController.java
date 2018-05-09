@@ -92,18 +92,19 @@ public class FXML_ChiTietSanPhamController implements Initializable {
 
                 if (table_view.getSelectionModel().getSelectedItem() != null) {
                     btnXoa.setDisable(false);
-
+                    
                     String mactsp = newValue.toString().split(",")[0].substring(1).trim();
                     txt_fi_machitietsanpham.setText(mactsp);
                     StringProperty temp
                             = new SimpleStringProperty(newValue.toString().split(",")[1].substring(1).trim());
                     Size size = new Size(temp);
                     cmb_size.getSelectionModel().select(size);
-                    temp = new SimpleStringProperty(newValue.toString().split(",")[2].substring(1).trim());
-      
-                   // MauSac mausac = new MauSac(temp);
+                    
+                    temp = new SimpleStringProperty(newValue.toString().split(",")[2].substring(1).trim());               
                     cmb_mausac.getSelectionModel().select(temp.get());
-                    cmb_gioitinh.getSelectionModel().select(newValue.toString().split(",")[3].substring(1).trim());
+                   // temp = new SimpleStringProperty(newValue.toString().split(",")[3].split("]")[0]); 
+                    String gioitinh = newValue.toString().split(",")[3].split("]")[0].trim();
+                    cmb_gioitinh.getSelectionModel().select(gioitinh);
                 }
             }
         });
@@ -146,7 +147,6 @@ public class FXML_ChiTietSanPhamController implements Initializable {
             table_view.getSelectionModel().clearSelection();
             btnXoa.setDisable(true);
             btnThem.setDisable(true);
-
             btnHuy.setVisible(true);
             btnDongy.setVisible(true);
             table_view.setDisable(true);
@@ -252,22 +252,21 @@ public class FXML_ChiTietSanPhamController implements Initializable {
     }
 
     private void insertChiTietSanpham() {
-        String _mamau = MauSac.convertTVToEN(cmb_mausac.getValue());
+        String _tenmau = MauSac.convertTVToEN(cmb_mausac.getValue());
         String mactsp = this.masanpham
-                + cmb_gioitinh.getSelectionModel().getSelectedItem()
+                + cmb_gioitinh.getValue().split("]")[0]
                 + cmb_size.getValue().getTensize().get()
-                + _mamau;
+                + _tenmau;
         System.out.println("" + mactsp);
         StringProperty machitietsanpham = new SimpleStringProperty(mactsp);
         StringProperty _masanpham = new SimpleStringProperty(this.masanpham);
         StringProperty tensize = cmb_size.getValue().getTensize();
-        StringProperty mamau = new SimpleStringProperty(_mamau);
-        String _gioitinh = cmb_gioitinh.getSelectionModel().getSelectedItem();
-
+        StringProperty tenmau = new SimpleStringProperty(cmb_mausac.getValue());
+        String _gioitinh = cmb_gioitinh.getValue().split("]")[0];
         int x = Integer.parseInt(_gioitinh);
         IntegerProperty gioitinh = new SimpleIntegerProperty(x);
         ChiTietSanPham chitietsanpham
-                = new ChiTietSanPham(machitietsanpham, _masanpham, tensize, mamau, gioitinh);
+                = new ChiTietSanPham(machitietsanpham, _masanpham, tensize, tenmau, gioitinh);
 
         if (chitietsanpham.isEmpty()) {
             ShowMessage
@@ -347,6 +346,7 @@ public class FXML_ChiTietSanPhamController implements Initializable {
 
     private void InitEvent() {
         ObservableList<String> list = FXCollections.observableArrayList();
+
         list.add("1");
         list.add("0");
         list.add("2");
@@ -358,9 +358,8 @@ public class FXML_ChiTietSanPhamController implements Initializable {
                     return "Nam";
                 } else if (object.equals("0")) {
                     return "Nữ";
-                } else {
-                    return "Unisex";
                 }
+                return "Unisex";
             }
 
             @Override

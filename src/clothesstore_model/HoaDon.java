@@ -5,6 +5,7 @@
  */
 package clothesstore_model;
 
+import clothesstore_controller.FXML_DangNhapController;
 import com.jfoenix.controls.JFXComboBox;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -249,7 +250,7 @@ public class HoaDon {
             HashMap<String, Object> para = new HashMap<>();
             CuaHang ch = CuaHang.getObject();
             para.put("tencuahang", ch.getTencuahang().get());
-            para.put("tennhanvien", "Hizen");
+            para.put("tennhanvien", FXML_DangNhapController.TenNhanVien);
             para.put("ngayban", getngaythanhtoanhd());
             para.put("mahoadon", "" + mahoadon.get());
             para.put("diachi", ch.getDiachi().get());

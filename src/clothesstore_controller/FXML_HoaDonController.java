@@ -248,7 +248,7 @@ public class FXML_HoaDonController implements Initializable {
         checkLaphoadon = false;
 
         HoaDon hoadon = new HoaDon();
-        hoadon.setManhanvien(new SimpleIntegerProperty(1));
+        hoadon.setManhanvien(new SimpleIntegerProperty(FXML_DangNhapController.MaNhanVien));
         if (hoadon.insert()) {
             mahoadon = hoadon.getMaHD();
             System.out.println("" + mahoadon.toString());

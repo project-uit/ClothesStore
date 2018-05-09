@@ -207,7 +207,6 @@ public class FXML_ThongKeController implements Initializable {
                     return "Quý 4";
                 }
             }
-
             @Override
             public Integer fromString(String string) {
                 throw new UnsupportedOperationException("Not supported yet.");
