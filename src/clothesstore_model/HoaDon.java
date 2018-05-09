@@ -501,11 +501,11 @@ public class HoaDon {
                 PreparedStatement ptm = con.prepareStatement(query);
                 ResultSet rs = ptm.executeQuery();
                 while (rs.next()) {
-                    IntegerProperty mhd = new SimpleIntegerProperty(rs.getInt(1));;
-                    StringProperty tnv = new SimpleStringProperty(rs.getString(2));;
-                    StringProperty sdt = new SimpleStringProperty(rs.getString(3));;
+                    IntegerProperty mhd = new SimpleIntegerProperty(rs.getInt(1));
+                    StringProperty tnv = new SimpleStringProperty(rs.getString(2));
+                    StringProperty sdt = new SimpleStringProperty(rs.getString(3));
                     Date nb = rs.getDate(4);
-                    IntegerProperty tt =new SimpleIntegerProperty(rs.getInt(1));;
+                    IntegerProperty tt = new SimpleIntegerProperty(rs.getInt(5));
                     HoaDon hd = new HoaDon(mhd, tnv, sdt, nb, tt);
                     list.add(hd);
                 }
@@ -515,25 +515,26 @@ public class HoaDon {
         }
         return list;
     }
+
     public ObservableList getListHoaDonFromDate(Date date) {
         ObservableList<HoaDon> list = observableArrayList();
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
         if (con != null) {
-            String query = "select mahoadon, tennhanvien, sodienthoai, DATE(ngayban),"
+            String query = "select mahoadon, tennhanvien, sodienthoai, ngayban,"
                     + " tongtien from hoadon, nhanvien "
                     + "where hoadon.manhanvien = nhanvien.manhanvien"
-                    + "and ngayban = ?;";
+                    + "and DATE(ngayban) = ?;";
             try {
                 PreparedStatement ptm = con.prepareStatement(query);
                 ptm.setDate(1, (java.sql.Date) date);
                 ResultSet rs = ptm.executeQuery();
                 while (rs.next()) {
-                    IntegerProperty mhd = new SimpleIntegerProperty(rs.getInt(1));;
-                    StringProperty tnv = new SimpleStringProperty(rs.getString(2));;
-                    StringProperty sdt = new SimpleStringProperty(rs.getString(3));;
+                    IntegerProperty mhd = new SimpleIntegerProperty(rs.getInt(1));
+                    StringProperty tnv = new SimpleStringProperty(rs.getString(2));
+                    StringProperty sdt = new SimpleStringProperty(rs.getString(3));
                     Date nb = rs.getDate(4);
-                    IntegerProperty tt =new SimpleIntegerProperty(rs.getInt(1));;
+                    IntegerProperty tt = new SimpleIntegerProperty(rs.getInt(5));
                     HoaDon hd = new HoaDon(mhd, tnv, sdt, nb, tt);
                     list.add(hd);
                 }
@@ -542,5 +543,32 @@ public class HoaDon {
             }
         }
         return list;
+    }
+
+    public HoaDon getHoaDonFromMaHD(Integer mahd) {
+        HoaDon hd = new HoaDon();
+        DBConnection db = new DBConnection();
+        Connection con = db.getConnecttion();
+        if (con != null) {
+            String query = "select mahoadon, tennhanvien, sodienthoai, ngayban, tongtien "
+                    + "from hoadon, nhanvien "
+                    + "where hoadon.manhanvien = nhanvien.manhanvien and mahoadon = ?;";
+            try {
+                PreparedStatement ptm = con.prepareStatement(query);
+                ptm.setInt(1, mahd);
+                ResultSet rs = ptm.executeQuery();
+                while (rs.next()) {
+                    IntegerProperty mhd = new SimpleIntegerProperty(rs.getInt(1));
+                    StringProperty tnv = new SimpleStringProperty(rs.getString(2));
+                    StringProperty sdt = new SimpleStringProperty(rs.getString(3));
+                    Date nb = rs.getDate(4);
+                    IntegerProperty tt = new SimpleIntegerProperty(rs.getInt(5));
+                    hd = new HoaDon(mhd, tnv, sdt, nb, tt);
+                }
+            } catch (SQLException ex) {
+                System.out.println("" + ex);
+            }
+        }
+        return hd;
     }
 }

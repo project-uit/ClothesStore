@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.gluonhq.charm.glisten.control.AutoCompleteTextField?>
 <?import com.jfoenix.controls.JFXDatePicker?>
 <?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -31,7 +33,10 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <JFXDatePicker fx:id="dtpNgay" editable="false" layoutX="648.0" layoutY="33.0" prefHeight="25.0" prefWidth="121.0" promptText="Tất cả" />
+      <JFXDatePicker fx:id="dtpNgay" editable="false" layoutX="648.0" layoutY="33.0" prefHeight="25.0" prefWidth="121.0" promptText="Đến ngày" />
       <Hyperlink fx:id="linkBoChon" layoutX="776.0" layoutY="34.0" text="Bỏ chọn" />
+      <JFXDatePicker fx:id="dtpNgay1" editable="false" layoutX="502.0" layoutY="33.0" prefHeight="25.0" prefWidth="121.0" promptText="Từ ngày" />
+      <Label layoutX="628.0" layoutY="37.0" text="-" />
+      <AutoCompleteTextField fx:id="txtSeach" layoutX="19.0" layoutY="24.0" />
    </children>
 </AnchorPane>
