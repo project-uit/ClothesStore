@@ -20,6 +20,7 @@ import javafx.scene.control.TableView;
  * @author quochung
  */
 public class Size {
+
     private StringProperty tensize;
 
     public Size() {
@@ -36,17 +37,18 @@ public class Size {
     public void setTensize(StringProperty tensize) {
         this.tensize = tensize;
     }
+
     public boolean insert() {
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
         if (con != null) {
             String query = "insert into size(tensize)"
                     + " values(?) ";
-                    
+
             try {
                 PreparedStatement ptm = con.prepareStatement(query);
                 ptm.setString(1, tensize.get());
-                
+
                 int check = ptm.executeUpdate();
                 if (check != 0) {
                     ptm.close();
@@ -60,16 +62,17 @@ public class Size {
         }
         return false;
     }
-     public boolean delete() {
+
+    public boolean delete() {
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
         if (con != null) {
             String query = "delete from size where tensize =? ";
-                    
+
             try {
                 PreparedStatement ptm = con.prepareStatement(query);
                 ptm.setString(1, tensize.get());
-                
+
                 int check = ptm.executeUpdate();
                 if (check != 0) {
                     ptm.close();
@@ -83,11 +86,13 @@ public class Size {
         }
         return false;
     }
+
     public void LoadTable(TableView tbv) {
         LoadTableFromDB tb = new LoadTableFromDB("select * from size");
         tb.LoadTable(tbv);
     }
-      public void LoadCmB(JFXComboBox cmb) {
+
+    public void LoadCmB(JFXComboBox cmb) {
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
         if (con != null) {
@@ -95,11 +100,31 @@ public class Size {
                     Statement stmnt = con.createStatement();
                     ResultSet rs = stmnt.executeQuery("select * from size");) {
                 while (rs.next()) {
-                    StringProperty _tensize = new SimpleStringProperty(rs.getString("tensize"));               
+                    StringProperty _tensize = new SimpleStringProperty(rs.getString("tensize"));
                     Size size = new Size(_tensize);
                     cmb.getItems().add(size);
                 }
-                
+
+            } catch (SQLException ex) {
+
+            }
+
+        }
+    }
+
+    public void loadcmb(JFXComboBox cmb) {
+        DBConnection db = new DBConnection();
+        Connection con = db.getConnecttion();
+        if (con != null) {
+            try (
+                    Statement stmnt = con.createStatement();
+                    ResultSet rs = stmnt.executeQuery("select * from size");) {
+                while (rs.next()) {
+                    
+                   
+                    cmb.getItems().add(rs.getString("tensize"));
+                }
+
             } catch (SQLException ex) {
 
             }
