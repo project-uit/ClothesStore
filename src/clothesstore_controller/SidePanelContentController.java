@@ -5,7 +5,7 @@ import static clothesstore_controller.FXML_DangNhapController.UserID;
 import static clothesstore_controller.FXML_DangNhapController.stageMain;
 import static clothesstore_view.ClothesStore._rootDangNhap;
 import static clothesstore_view.ClothesStore.stageDangNhap;
-import  clothesstore_model.time;
+import clothesstore_model.time;
 import com.jfoenix.controls.JFXButton;
 import java.io.IOException;
 import java.net.URL;
@@ -30,13 +30,12 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
-
 public class SidePanelContentController implements Initializable {
 
     @FXML
     private VBox vbox;
     public static VBox _vbox;
-    
+
     @FXML
     private Label lbUser;
     @FXML
@@ -67,7 +66,7 @@ public class SidePanelContentController implements Initializable {
     private Label datetime;
     @FXML
     private Label date1;
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         //todo
@@ -75,36 +74,37 @@ public class SidePanelContentController implements Initializable {
         time time = new time();
         date1.setText(time.tanggal());
         _vbox = vbox;
-        lbUser.setText("Xin chào "+UserID);
-    }    
-    
-    private void bindToTime() {
-    Timeline timeline = new Timeline(
-    new KeyFrame(Duration.seconds(0),
-      new EventHandler<ActionEvent>() {
-        @Override public void handle(ActionEvent actionEvent) {
-          Calendar time = Calendar.getInstance();
-          SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
-          datetime.setText(simpleDateFormat.format(time.getTime()));
-          
-        }
-      }
-    ),
-    new KeyFrame(Duration.seconds(1))
-    );
-    timeline.setCycleCount(Animation.INDEFINITE);
-    timeline.play();
+        lbUser.setText("Xin chào " + UserID);
     }
+
+    private void bindToTime() {
+        Timeline timeline = new Timeline(
+                new KeyFrame(Duration.seconds(0),
+                        new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent actionEvent) {
+                        Calendar time = Calendar.getInstance();
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
+                        datetime.setText(simpleDateFormat.format(time.getTime()));
+
+                    }
+                }
+                ),
+                new KeyFrame(Duration.seconds(1))
+        );
+        timeline.setCycleCount(Animation.INDEFINITE);
+        timeline.play();
+    }
+
     @FXML
     private void changeTab(ActionEvent event) throws IOException {
         JFXButton btn = (JFXButton) event.getSource();
         System.out.println(btn.getText());
         FXML_ClothesStoreController.rootP.getChildren().removeAll();
-        switch(btn.getId())
-        {
-            case "btnTongQuan":       
-                AnchorPane tongquan = FXMLLoader.load(getClass().getResource("/clothesstore_view/FXML_TongQuan.fxml"));           
-                FXML_ClothesStoreController.rootP.getChildren().setAll(tongquan); 
+        switch (btn.getId()) {
+            case "btnTongQuan":
+                AnchorPane tongquan = FXMLLoader.load(getClass().getResource("/clothesstore_view/FXML_TongQuan.fxml"));
+                FXML_ClothesStoreController.rootP.getChildren().setAll(tongquan);
                 rootP.setLeftAnchor(tongquan, 0.0);
                 rootP.setRightAnchor(tongquan, 0.0);
                 rootP.setTopAnchor(tongquan, 0.0);
@@ -149,19 +149,19 @@ public class SidePanelContentController implements Initializable {
                 rootP.setRightAnchor(thongke, 0.0);
                 rootP.setTopAnchor(thongke, 0.0);
                 rootP.setBottomAnchor(thongke, 0.0);
-                break;                
+                break;
             case "btnQuanLyTK":
                 AnchorPane QLTK = FXMLLoader.load(getClass().getResource("/clothesstore_view/FXML_QuanLyTaiKhoan.fxml"));
-                
+
                 FXML_ClothesStoreController.rootP.getChildren().setAll(QLTK);
                 rootP.setLeftAnchor(QLTK, 0.0);
                 rootP.setRightAnchor(QLTK, 0.0);
                 rootP.setTopAnchor(QLTK, 0.0);
                 rootP.setBottomAnchor(QLTK, 0.0);
-                
+
                 //rootP.widthProperty().addListener( ( observable, oldValue, newValue ) -> FXML_QuanLyTaiKhoanController._QLNVpane.setPrefWidth( newValue.doubleValue() ) );
                 //rootP.heightProperty().addListener( ( observable, oldValue, newValue ) -> FXML_QuanLyTaiKhoanController._QLNVpane.setPrefHeight( newValue.doubleValue() ) );
-                break;    
+                break;
             case "btnDangXuat":
                 ButtonType yes = new ButtonType("Đăng xuất", ButtonBar.ButtonData.OK_DONE);
                 ButtonType cancel = new ButtonType("Huỷ", ButtonBar.ButtonData.CANCEL_CLOSE);
@@ -181,7 +181,15 @@ public class SidePanelContentController implements Initializable {
                     _rootDangNhap.getChildren().setAll(pane);
                     stageDangNhap.show();
                     break;
-                }           
+                }
+            case "btnLoiNhuan":
+                AnchorPane tracuu = FXMLLoader.load(getClass().getResource("/clothesstore_view/FXML_TraCuu.fxml"));
+                FXML_ClothesStoreController.rootP.getChildren().setAll(tracuu);
+                rootP.setLeftAnchor(tracuu, 0.0);
+                rootP.setRightAnchor(tracuu, 0.0);
+                rootP.setTopAnchor(tracuu, 0.0);
+                rootP.setBottomAnchor(tracuu, 0.0);
+                break;
         }
     }
 
@@ -200,7 +208,7 @@ public class SidePanelContentController implements Initializable {
 
         if (result.isPresent() && result.get() == yes) {
             System.exit(0);
-        }            
+        }
     }
-    
+
 }

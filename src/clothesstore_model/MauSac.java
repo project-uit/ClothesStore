@@ -93,11 +93,12 @@ public class MauSac {
     public void LoadCmB(JFXComboBox cmb) {
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
+        
         if (con != null) {
             try (
                     Statement stmnt = con.createStatement();
                     ResultSet rs = stmnt.executeQuery("select * from mausac");) {
-                while (rs.next()) {                  
+                while (rs.next()) {
                     cmb.getItems().add(rs.getString(1));
                 }
 

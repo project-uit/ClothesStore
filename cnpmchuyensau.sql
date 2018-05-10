@@ -1,16 +1,19 @@
 create database ClothesShop;
 use ClothesShop;
 
+
+
 create table cuahang
 (
 id int primary key,
-tencuahang nvarchar(30),
-diachi nvarchar(300), 
-sodienthoai nvarchar(30),
-email nvarchar(30)
+tencuahang nvarchar(50),
+diachi nvarchar(100), 
+sodienthoai nvarchar(15),
+email nvarchar(50)
 );
 insert into cuahang
-values(1,'Zalora store','35 đường Hưng pro, phường 4 quận 4, TpHCM','0123456789','Zalorastore@gmail.com');
+values(1,'Zalora store','35 đường Hưng pro, phường 4 quận 4,
+ TpHCM','090123456789','Zalorastore@gmail.com');
 create table nhacungcap
 (
 manhacungcap INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -84,25 +87,36 @@ DELIMITER ;
 
 create table mausac
 (
-mamau int  UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-tenmau nvarchar(20),
-trangthai int
+tenmau nvarchar(30)  PRIMARY KEY Collate utf8_unicode_ci
 );
+
+insert into mausac
+values('Đỏ');
+insert into mausac
+values('Xanh dương');
+insert into mausac
+values('Xanh lá');
+
 create table size
 (
 tensize char(5) primary key
 );
 
+insert into size
+values('S');
+insert into size
+values('M');
+insert into size
+values('L');
+
 create table chitietsanpham
 (
-machitietsanpham varchar(33)  PRIMARY KEY,
+machitietsanpham varchar(45)  PRIMARY KEY,
 masanpham char(8),
 FOREIGN KEY (masanpham)
 REFERENCES sanpham(masanpham),
 tensize char(5),
-mamau int(6)  UNSIGNED,
-FOREIGN KEY (mamau)
-REFERENCES mausac(mamau),
+tenmau nvarchar(30),
 gioitinh int,
 soluong int
 );
@@ -145,22 +159,16 @@ FOREIGN KEY (manhanvien)
 REFERENCES nhanvien(manhanvien)
 );
 
-
 create table hoadon
 (
 mahoadon   INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 manhanvien INT(6) UNSIGNED,
-sodienthoai Int (13),
 FOREIGN KEY (manhanvien)
 REFERENCES nhanvien(manhanvien),
 ngayban datetime,
 tongtien int 
 );
-SELECT NOW();
 -- thanh toán hóa đơn bằng cách nhập machitietsanpham đc định nghĩa do user
-insert into hoadon(manhanvien,sodienthoai,ngayban,tongtien)
-values(1,'0123456789',now(),500);
-
 create table chitiethoadon
 (
 machitiethoadon  INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -179,8 +187,9 @@ sodienthoai char(15) PRIMARY KEY,
 tenkhachhang nvarchar(50)
 );
 insert into khachhang
-values ('0123456789','Nguyen Van A');
-
+values ('0909478','Hope');
+insert into khachhang
+values ('0905678','Hand');
 create table chitietkhachhang
 (
 machitietkhachhang  INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -191,7 +200,6 @@ mahoadon   INT(6) UNSIGNED,
 FOREIGN KEY (mahoadon)
 REFERENCES hoadon(mahoadon)
 );
-
 CREATE TABLE dangnhap(
 tentaikhoan varchar(55) not null primary key,
 matkhau varchar(55) not null,
@@ -200,7 +208,6 @@ manhanvien INT(6) UNSIGNED,
 FOREIGN KEY (manhanvien)
 REFERENCES nhanvien(manhanvien)
 );
-
 insert into dangnhap(tentaikhoan, matkhau,phanquyen,manhanvien)
 values ('admin','123',1,1);
 --  thống kê theo masanpham theo 1 tháng 
@@ -265,8 +272,7 @@ BEGIN
 END; $$
 DELIMITER ;
 
-CALL update_soluong_ctsp_huythanhtoan('SP0CEOYG01231',3);
-
+-- xuất 5 mặt hàng bán chạy trong 1 quý tháng nằm trong khoảng (x,y)
 drop PROCEDURE if exists soluongban_theoquy;
 DELIMITER $$
 CREATE PROCEDURE soluongban_theoquy(in quy int, in nam int)
@@ -311,3 +317,12 @@ CREATE FUNCTION getTongsoluong_quy(quy int, nam int)
     RETURN tongsoluong ;
     END$$
 DELIMITER ;
+
+select  sp.masanpham,sp.tensanpham,sp.tennhomhang,sp.tennhasanxuat,
+ctsp.tenmau,ctsp.gioitinh, ctsp.tensize,ctsp.soluong,sp.giaban
+from sanpham sp
+join chitietsanpham ctsp on sp.masanpham = ctsp.masanpham
+where ctsp.soluong>=0 and gioitinh='' 
+and tensize='' and tenmau='' 
+and tennhomhang='' and tennhasanxuat=''
+and tensanpham ='';
