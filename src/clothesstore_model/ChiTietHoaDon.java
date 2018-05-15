@@ -10,18 +10,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.util.Callback;
 
 /**
  *
@@ -35,6 +30,9 @@ public class ChiTietHoaDon {
     private IntegerProperty soluongmua;
     private IntegerProperty thanhtien;
 
+    private StringProperty tensanpham;
+    private IntegerProperty giaban;
+
     public ChiTietHoaDon() {
     }
 
@@ -45,12 +43,29 @@ public class ChiTietHoaDon {
         this.thanhtien = thanhtien;
     }
 
+    public ChiTietHoaDon(IntegerProperty mahoadon, StringProperty machitietsanpham, StringProperty tensanpham, IntegerProperty soluongmua, IntegerProperty giaban, IntegerProperty thanhtien) {
+        this.mahoadon = mahoadon;
+        this.machitietsanpham = machitietsanpham;
+        this.tensanpham = tensanpham;
+        this.soluongmua = soluongmua;
+        this.giaban = giaban;
+        this.thanhtien = thanhtien;
+    }
+
     public IntegerProperty getMachitiethoadon() {
         return machitiethoadon;
     }
 
     public IntegerProperty getMahoadon() {
         return mahoadon;
+    }
+
+    public StringProperty getTensanpham() {
+        return tensanpham;
+    }
+
+    public void setTensanpham(StringProperty tensanpham) {
+        this.tensanpham = tensanpham;
     }
 
     public StringProperty getMachitietsanpham() {
@@ -63,6 +78,14 @@ public class ChiTietHoaDon {
 
     public IntegerProperty getThanhtien() {
         return thanhtien;
+    }
+
+    public IntegerProperty getGiaban() {
+        return giaban;
+    }
+
+    public void setGiaban(IntegerProperty giaban) {
+        this.giaban = giaban;
     }
 
     public void setMachitiethoadon(IntegerProperty machitiethoadon) {
@@ -147,8 +170,8 @@ public class ChiTietHoaDon {
                 String query = "select sp.tensanpham,cthd.soluongmua,sp.giaban,cthd.thanhtien "
                         + "from chitiethoadon cthd, chitietsanpham ctsp, sanpham sp, hoadon hd "
                         + "where cthd.machitietsanpham=ctsp.machitietsanpham and sp.masanpham = ctsp.masanpham "
-                                + "and cthd.mahoadon=hd.mahoadon and cthd.mahoadon = "+mahoadon.get();
-                Statement stmnt = con.createStatement();               
+                        + "and cthd.mahoadon=hd.mahoadon and cthd.mahoadon = " + mahoadon.get();
+                Statement stmnt = con.createStatement();
                 ResultSet rs = stmnt.executeQuery(query);
                 while (rs.next()) {
                     ObservableList<String> row = FXCollections.observableArrayList();
@@ -159,6 +182,39 @@ public class ChiTietHoaDon {
                     data.add(row);
                 }
                 stmnt.close();
+                con.close();
+            } catch (SQLException ex) {
+
+            }
+        }
+        return data;
+    }
+
+    public ObservableList getCTHDfromMaHD(int mahd) {
+        DBConnection db = new DBConnection();
+        Connection con = db.getConnecttion();
+        ObservableList data = FXCollections.observableArrayList();
+        if (con != null) {
+            try {
+                String query = "select ctsp.machitietsanpham, sp.tensanpham,"
+                        + "cthd.soluongmua,sp.giaban,cthd.thanhtien\n"
+                        + "from chitiethoadon cthd, chitietsanpham ctsp, sanpham sp\n"
+                        + "where cthd.machitietsanpham = ctsp.machitietsanpham and ctsp.masanpham = sp.masanpham\n"
+                        + "and  cthd.mahoadon = " + mahd + ";";
+                try (Statement stmnt = con.createStatement()) {
+                    ResultSet rs = stmnt.executeQuery(query);
+                    while (rs.next()) {
+
+                        ChiTietHoaDon cthd = new ChiTietHoaDon(
+                                new SimpleIntegerProperty(mahd),
+                                 new SimpleStringProperty(rs.getString(1)),
+                                 new SimpleStringProperty(rs.getString(2)),
+                                 new SimpleIntegerProperty(rs.getInt(3)),
+                                 new SimpleIntegerProperty(rs.getInt(4)),
+                                 new SimpleIntegerProperty(rs.getInt(5)));
+                        data.add(cthd);
+                    }
+                }
                 con.close();
             } catch (SQLException ex) {
 

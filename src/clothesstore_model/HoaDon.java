@@ -517,18 +517,18 @@ public class HoaDon {
         return list;
     }
 
-    public ObservableList getListHoaDonFromDate(Date date) {
+    public ObservableList getListHoaDonFromDate(Date from, Date to) {
         ObservableList<HoaDon> list = observableArrayList();
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
         if (con != null) {
-            String query = "select mahoadon, tennhanvien, sodienthoai, ngayban,"
-                    + " tongtien from hoadon, nhanvien "
-                    + "where hoadon.manhanvien = nhanvien.manhanvien"
-                    + "and DATE(ngayban) = ?;";
+            String query = "select mahoadon, tennhanvien, sodienthoai, ngayban, tongtien from hoadon, nhanvien\n"
+                    + "where hoadon.manhanvien = nhanvien.manhanvien\n"
+                    + "and DATE(ngayban) BETWEEN ? AND ?;";
             try {
                 PreparedStatement ptm = con.prepareStatement(query);
-                ptm.setDate(1, (java.sql.Date) date);
+                ptm.setDate(1, (java.sql.Date) from);
+                ptm.setDate(2, (java.sql.Date) to);
                 ResultSet rs = ptm.executeQuery();
                 while (rs.next()) {
                     IntegerProperty mhd = new SimpleIntegerProperty(rs.getInt(1));
