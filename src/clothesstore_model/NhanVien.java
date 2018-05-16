@@ -173,6 +173,7 @@ public class NhanVien {
                             , rs.getString("matkhau")
                             , rs.getInt("phanquyen")
                             , rs.getInt("manhanvien"));
+                   
                     
                     NhanVien nhanvien = new NhanVien(rs.getInt("manhanvien")
                             , rs.getString("tennhanvien")
