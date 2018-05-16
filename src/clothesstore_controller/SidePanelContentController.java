@@ -39,30 +39,6 @@ public class SidePanelContentController implements Initializable {
     @FXML
     private Label lbUser;
     @FXML
-    private AnchorPane paneDrawer;
-    @FXML
-    private JFXButton btnTongQuan;
-    @FXML
-    private JFXButton btnDonHang;
-    @FXML
-    private JFXButton btnHangHoa;
-    @FXML
-    private JFXButton btnPhieuNhap;
-    @FXML
-    private JFXButton btnLoiNhuan;
-    @FXML
-    private JFXButton btnBieuDo;
-    @FXML
-    private JFXButton btnQuanLyTK;
-    @FXML
-    private JFXButton btnDangXuat;
-    @FXML
-    private JFXButton btnThoat;
-    @FXML
-    private JFXButton btnNhapKho;
-    @FXML
-    private JFXButton btnTonKho;
-    @FXML
     private Label datetime;
     @FXML
     private Label date1;
@@ -110,13 +86,21 @@ public class SidePanelContentController implements Initializable {
                 rootP.setTopAnchor(tongquan, 0.0);
                 rootP.setBottomAnchor(tongquan, 0.0);
                 break;
-            case "btnDonHang":
+            case "btnHoaDon":
                 AnchorPane donhang = FXMLLoader.load(getClass().getResource("/clothesstore_view/FXML_HoaDon.fxml"));
                 FXML_ClothesStoreController.rootP.getChildren().setAll(donhang);
                 rootP.setLeftAnchor(donhang, 0.0);
                 rootP.setRightAnchor(donhang, 0.0);
                 rootP.setTopAnchor(donhang, 0.0);
                 rootP.setBottomAnchor(donhang, 0.0);
+                break;
+            case "btnReturn":
+                AnchorPane Return = FXMLLoader.load(getClass().getResource("/clothesstore_view/FXML_Return.fxml"));
+                FXML_ClothesStoreController.rootP.getChildren().setAll(Return);
+                rootP.setLeftAnchor(Return, 0.0);
+                rootP.setRightAnchor(Return, 0.0);
+                rootP.setTopAnchor(Return, 0.0);
+                rootP.setBottomAnchor(Return, 0.0);
                 break;
             case "btnHangHoa":
                 AnchorPane hanghoa = FXMLLoader.load(getClass().getResource("/clothesstore_view/FXML_HangHoa.fxml"));
