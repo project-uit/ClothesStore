@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane id="AnchorPane" prefHeight="720.0" prefWidth="845.0" style="-fx-background-color: #deeeef;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clothesstore_controller.FXML_ChiTietDoiTraController">
+   <children>
+      <TableView fx:id="tblChiTietHoaDon" layoutX="18.0" layoutY="257.0" prefHeight="308.0" prefWidth="810.0">
+         <columns>
+            <TableColumn fx:id="clMaCTSP" prefWidth="75.0" text="Mã chi tiết sản phẩm" />
+            <TableColumn fx:id="clTenSP" prefWidth="75.0" text="Tên sản phẩm" />
+            <TableColumn fx:id="clGiaBan" prefWidth="75.0" text="Giá bán" />
+            <TableColumn fx:id="clSoLuong" prefWidth="75.0" text="Số lượng" />
+            <TableColumn fx:id="clThanhTien" prefWidth="75.0" text="Thành tiền" />
+         </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
+      </TableView>
+   </children>
+</AnchorPane>

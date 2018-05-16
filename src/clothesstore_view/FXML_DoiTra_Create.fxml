@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXDatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" fx:id="btnCreate" prefHeight="284.0" prefWidth="466.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clothesstore_controller.FXML_DoiTra_CreateController">
+   <children>
+      <JFXDatePicker fx:id="dtpNgay" layoutX="282.0" layoutY="52.0" prefHeight="27.0" prefWidth="145.0" />
+      <TextArea fx:id="txtLyDo" layoutX="40.0" layoutY="107.0" prefHeight="109.0" prefWidth="387.0" />
+      <Label layoutX="282.0" layoutY="35.0" text="Ngày trả" />
+      <Label fx:id="lbMaHoaDon" layoutX="40.0" layoutY="30.0" text="Ma HD">
+         <font>
+            <Font size="22.0" />
+         </font>
+      </Label>
+      <Label layoutX="40.0" layoutY="79.0" text="Lý do đổi trả" />
+      <JFXButton fx:id="btnCreate" layoutX="314.0" layoutY="231.0" onAction="#Handler_btnCreate" ripplerFill="BLACK" style="-fx-background-color: #4681f5;" text="Tạo" textFill="WHITE" wrapText="true" />
+      <JFXButton fx:id="btnExit" layoutX="373.0" layoutY="231.0" onAction="#Handler_btnExit" ripplerFill="BLACK" style="-fx-background-color: #4681f5;" text="Thoát" textFill="WHITE" wrapText="true" />
+   </children>
+</AnchorPane>

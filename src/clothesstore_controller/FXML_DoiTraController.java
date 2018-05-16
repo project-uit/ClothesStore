@@ -7,7 +7,9 @@ package clothesstore_controller;
 
 import clothesstore_model.ChiTietHoaDon;
 import clothesstore_model.HoaDon;
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDatePicker;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
 import java.text.ParseException;
@@ -25,10 +27,16 @@ import javafx.beans.value.ObservableValue;
 import static javafx.collections.FXCollections.observableArrayList;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Callback;
 import org.controlsfx.control.textfield.TextFields;
 
@@ -37,11 +45,13 @@ import org.controlsfx.control.textfield.TextFields;
  *
  * @author dieunguyen
  */
-public class FXML_ReturnController implements Initializable {
+public class FXML_DoiTraController implements Initializable {
 
     /**
      * Initializes the controller class.
      */
+    @FXML
+    private JFXButton btnCreate;
     @FXML
     private TableColumn clMaHoaDon, clTenNV, clSDT, clNgayBan, clTongTien,
             clMaCTSP, clTenSP, clSoLuong, clGiaBan, clThanhTien;
@@ -53,7 +63,8 @@ public class FXML_ReturnController implements Initializable {
     private TextField txtSearch;
     @FXML
     private JFXDatePicker dtpFrom, dtpTo;
-
+    public static Stage stageDoiTra_Create;
+    public static int mahd;
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
@@ -91,7 +102,6 @@ public class FXML_ReturnController implements Initializable {
                 }
             }
         });
-
     }
 
     private void initTableHoaDon() {
@@ -131,8 +141,13 @@ public class FXML_ReturnController implements Initializable {
             public void changed(ObservableValue observableValue, Object oldValue, Object newValue) {
                 if (tblHoaDon.getSelectionModel().getSelectedItem() != null) {
                     HoaDon hd = tblHoaDon.getSelectionModel().getSelectedItem();
-                    initTableChiTietHoaDon(hd.getMahoadon().get());
+                    mahd = hd.getMahoadon().get();
+                    initTableChiTietHoaDon(mahd);
+                    
+                    btnCreate.setDisable(false);
                 }
+                else
+                    btnCreate.setDisable(true);
             }
         });
         HoaDon hd = new HoaDon();
@@ -187,7 +202,7 @@ public class FXML_ReturnController implements Initializable {
             try {
                 _date = new SimpleDateFormat("yyyy-MM-dd").parse(localdate.toString());
             } catch (ParseException ex) {
-                Logger.getLogger(FXML_ReturnController.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(FXML_DoiTraController.class.getName()).log(Level.SEVERE, null, ex);
             }
             selectedDateTo = new java.sql.Date(_date.getTime());
         } else {
@@ -229,5 +244,22 @@ public class FXML_ReturnController implements Initializable {
         dtpFrom.setValue(null);
         dtpTo.setValue(null);
         initTableHoaDon();
+    }
+    
+    @FXML
+    private void Handler_btnCreate(){
+        Parent root;
+        try {
+            root = FXMLLoader.load(getClass().getResource("/clothesstore_view/FXML_DoiTra_Create.fxml"));
+            Scene scene = new Scene(root);
+            stageDoiTra_Create = new Stage();
+            stageDoiTra_Create.initModality(Modality.APPLICATION_MODAL);
+            stageDoiTra_Create.initStyle(StageStyle.UNDECORATED);
+            stageDoiTra_Create.setResizable(false);
+            stageDoiTra_Create.setScene(scene);
+            stageDoiTra_Create.show();
+        } catch (IOException ex) {
+            Logger.getLogger(FXML_DoiTraController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }
