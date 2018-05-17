@@ -326,3 +326,54 @@ where ctsp.soluong>=0 and gioitinh=''
 and tensize='' and tenmau='' 
 and tennhomhang='' and tennhasanxuat=''
 and tensanpham ='';
+
+
+
+create table doitra
+(
+madoitra INT NOT NULL PRIMARY KEY auto_increment,
+mahoadon INT(6) unsigned,
+ngaytra datetime,
+lydo nvarchar(300),
+
+FOREIGN KEY (mahoadon)
+REFERENCES hoadon(mahoadon)
+);
+
+create table chitietdoitra
+(
+machitietdoitra INT NOT NULL PRIMARY KEY auto_increment,
+madoitra int,
+machitietsanpham varchar(45),
+soluong int(6),
+
+FOREIGN KEY (machitietsanpham)
+REFERENCES chitietsanpham(machitietsanpham),
+
+FOREIGN KEY (madoitra)
+REFERENCES doitra(madoitra)
+);
+
+create table hoadondoitra
+(
+mahoadondoitra INT NOT NULL PRIMARY KEY auto_increment,
+madoitra INT(6),
+thanhtien int(6),
+FOREIGN KEY (madoitra)
+REFERENCES doitra(madoitra)
+);
+
+create table chitiethoadondoitra
+(
+machitiethoadondoitra INT NOT NULL PRIMARY KEY auto_increment,
+mahoadondoitra INT,
+machitietsanpham varchar(45),
+soluong int(6),
+thanhtien int,
+
+FOREIGN KEY (machitietsanpham)
+REFERENCES chitietsanpham(machitietsanpham),
+
+FOREIGN KEY (mahoadondoitra)
+REFERENCES hoadondoitra(mahoadondoitra)
+)
