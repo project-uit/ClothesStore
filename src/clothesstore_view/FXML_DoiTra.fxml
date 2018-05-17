@@ -40,6 +40,6 @@
       <JFXDatePicker fx:id="dtpFrom" editable="false" layoutX="502.0" layoutY="33.0" onAction="#ChangeDateFrom" prefHeight="25.0" prefWidth="121.0" promptText="Từ ngày" />
       <Label layoutX="628.0" layoutY="37.0" text="-" />
       <TextField fx:id="txtSearch" layoutX="20.0" layoutY="25.0" prefHeight="27.0" prefWidth="162.0" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="25.0" />
-      <JFXButton fx:id="btnCreate" layoutX="760.0" layoutY="659.0" onAction="#Handler_btnCreate" ripplerFill="BLACK" style="-fx-background-color: #4681f5;" text="Tạo mới" textFill="WHITE" wrapText="true" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="20.0" />
+      <JFXButton fx:id="btnCreate" disable="true" layoutX="760.0" layoutY="659.0" onAction="#Handler_btnCreate" ripplerFill="BLACK" style="-fx-background-color: #4681f5;" text="Tạo mới" textFill="WHITE" wrapText="true" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="20.0" />
    </children>
 </AnchorPane>

@@ -5,6 +5,7 @@
  */
 package clothesstore_controller;
 
+import clothesstore_model.ChiTietDoiTra;
 import clothesstore_model.ChiTietHoaDon;
 import clothesstore_model.HoaDon;
 import com.jfoenix.controls.JFXButton;
@@ -58,7 +59,7 @@ public class FXML_DoiTraController implements Initializable {
     @FXML
     private TableView<HoaDon> tblHoaDon;
     @FXML
-    private TableView<ChiTietHoaDon> tblChiTietHoaDon;
+    private TableView<ChiTietDoiTra> tblChiTietHoaDon;
     @FXML
     private TextField txtSearch;
     @FXML
@@ -143,7 +144,6 @@ public class FXML_DoiTraController implements Initializable {
                     HoaDon hd = tblHoaDon.getSelectionModel().getSelectedItem();
                     mahd = hd.getMahoadon().get();
                     initTableChiTietHoaDon(mahd);
-                    
                     btnCreate.setDisable(false);
                 }
                 else
@@ -158,38 +158,38 @@ public class FXML_DoiTraController implements Initializable {
 
     private void initTableChiTietHoaDon(int mahd) {
         //getCTHDfromMaHD
-        clMaCTSP.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ChiTietHoaDon, String>, ObservableValue<String>>() {
+        clMaCTSP.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ChiTietDoiTra, String>, ObservableValue<String>>() {
             @Override
-            public ObservableValue<String> call(TableColumn.CellDataFeatures<ChiTietHoaDon, String> p) {
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<ChiTietDoiTra, String> p) {
                 return p.getValue().getMachitietsanpham();
             }
         });
-        clTenSP.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ChiTietHoaDon, String>, ObservableValue<String>>() {
+        clTenSP.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ChiTietDoiTra, String>, ObservableValue<String>>() {
             @Override
-            public ObservableValue<String> call(TableColumn.CellDataFeatures<ChiTietHoaDon, String> p) {
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<ChiTietDoiTra, String> p) {
                 return p.getValue().getTensanpham();
             }
         });
-        clGiaBan.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ChiTietHoaDon, Integer>, ObservableValue<Integer>>() {
+        clGiaBan.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ChiTietDoiTra, Integer>, ObservableValue<Integer>>() {
             @Override
-            public ObservableValue<Integer> call(TableColumn.CellDataFeatures<ChiTietHoaDon, Integer> p) {
+            public ObservableValue<Integer> call(TableColumn.CellDataFeatures<ChiTietDoiTra, Integer> p) {
                 return new ReadOnlyObjectWrapper(p.getValue().getGiaban().get());
             }
         });
-        clSoLuong.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ChiTietHoaDon, Integer>, ObservableValue<Integer>>() {
+        clSoLuong.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ChiTietDoiTra, Integer>, ObservableValue<Integer>>() {
             @Override
-            public ObservableValue<Integer> call(TableColumn.CellDataFeatures<ChiTietHoaDon, Integer> p) {
+            public ObservableValue<Integer> call(TableColumn.CellDataFeatures<ChiTietDoiTra, Integer> p) {
                 return new ReadOnlyObjectWrapper(p.getValue().getSoluongmua().get());
             }
         });
-        clThanhTien.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ChiTietHoaDon, Integer>, ObservableValue<Integer>>() {
+        clThanhTien.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ChiTietDoiTra, Integer>, ObservableValue<Integer>>() {
             @Override
-            public ObservableValue<Integer> call(TableColumn.CellDataFeatures<ChiTietHoaDon, Integer> p) {
+            public ObservableValue<Integer> call(TableColumn.CellDataFeatures<ChiTietDoiTra, Integer> p) {
                 return new ReadOnlyObjectWrapper(p.getValue().getThanhtien().get());
             }
         });
-        ChiTietHoaDon cthd = new ChiTietHoaDon();
-        ObservableList<ChiTietHoaDon> list = observableArrayList();
+        ChiTietDoiTra cthd = new ChiTietDoiTra();
+        ObservableList<ChiTietDoiTra> list = observableArrayList();
         list = cthd.getCTHDfromMaHD(mahd);
         tblChiTietHoaDon.setItems(list);
     }

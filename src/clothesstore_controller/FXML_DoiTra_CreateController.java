@@ -70,6 +70,7 @@ public class FXML_DoiTra_CreateController implements Initializable {
 
             FXML_ChiTietDoiTraController controller = fxmlLoader.getController();
             controller.setDT(dt);
+            //controller.initTableHangDoiTra(mahd);
             
         } catch (IOException ex) {
             Logger.getLogger(FXML_DoiTra_CreateController.class.getName()).log(Level.SEVERE, null, ex);

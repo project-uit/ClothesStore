@@ -39,6 +39,9 @@ public class ChiTietSanPham {
     private StringProperty tenmau;
     private IntegerProperty gioitinh;
     private IntegerProperty soluong;
+    ///////
+    private StringProperty tensanpham;
+    private IntegerProperty giaban;
 
     public ChiTietSanPham() {
     }
@@ -78,6 +81,12 @@ public class ChiTietSanPham {
         this.soluong = new SimpleIntegerProperty(soluong);
     }
 
+    public ChiTietSanPham(String machitietsanpham, String tensanpham, int giaban) {
+        this.machitietsanpham = new SimpleStringProperty(machitietsanpham);
+        this.tensanpham = new SimpleStringProperty(tensanpham);
+        this.giaban = new SimpleIntegerProperty(giaban);
+    }
+
     public void setMachitietsanpham(StringProperty machitietsanpham) {
         this.machitietsanpham = machitietsanpham;
     }
@@ -104,6 +113,14 @@ public class ChiTietSanPham {
 
     public StringProperty getMachitietsanpham() {
         return machitietsanpham;
+    }
+
+    public StringProperty getTensanpham() {
+        return tensanpham;
+    }
+
+    public IntegerProperty getGiaban() {
+        return giaban;
     }
 
     public StringProperty getMasanpham() {
@@ -305,11 +322,9 @@ public class ChiTietSanPham {
                             public ObservableValue<String> call(TableColumn.CellDataFeatures<ObservableList, String> param) {
                                 if (param.getValue().get(j).equals("1")) {
                                     return new SimpleStringProperty("Nam");
-                                } else if (param.getValue().get(j).equals("0")){
+                                } else if (param.getValue().get(j).equals("0")) {
                                     return new SimpleStringProperty("Nữ");
-                                }
-                                else
-                                {
+                                } else {
                                     return new SimpleStringProperty("Unisex");
                                 }
 
@@ -389,10 +404,10 @@ public class ChiTietSanPham {
         }
         return list;
     }
-   
-     /*true nếu muốn thanh toán và cập nhật lại số lượng của ctsp
+
+    /*true nếu muốn thanh toán và cập nhật lại số lượng của ctsp
     false nếu hủy thanh toán (không lập hóa đơn)
-    */ 
+     */
     public void Update_soluong(boolean bl) {
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
@@ -406,6 +421,5 @@ public class ChiTietSanPham {
         } catch (SQLException ex) {
             Logger.getLogger(ChiTietSanPham.class.getName()).log(Level.SEVERE, null, ex);
         }
-       
     }
 }

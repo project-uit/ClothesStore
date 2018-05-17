@@ -42,12 +42,12 @@ public class DoiTra {
         this.lydo = new SimpleStringProperty(lydo);
     }
 
-        public DoiTra(int mahoadon, Date ngaytra, String lydo) {
+    public DoiTra(int mahoadon, Date ngaytra, String lydo) {
         this.mahoadon = new SimpleIntegerProperty(mahoadon);
         this.ngaytra = ngaytra;
         this.lydo = new SimpleStringProperty(lydo);
     }
-        
+
     public boolean ThemDoiTra() {
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
@@ -82,9 +82,9 @@ public class DoiTra {
                 ResultSet rs = ptm.executeQuery();
                 while (rs.next()) {
                     DoiTra doitra = new DoiTra(rs.getInt("madoitra"),
-                             rs.getInt("mahoadon"),
-                             rs.getDate("ngaytra"),
-                             rs.getString("lydo")
+                            rs.getInt("mahoadon"),
+                            rs.getDate("ngaytra"),
+                            rs.getString("lydo")
                     );
                     list.add(doitra);
                 }
@@ -93,6 +93,25 @@ public class DoiTra {
             }
         }
         return list;
+    }
+
+    public int getLastId() {
+        int id = 0;
+        DBConnection db = new DBConnection();
+        Connection con = db.getConnecttion();
+        String sql = "SELECT madoitra FROM doitra ORDER BY madoitra DESC LIMIT 1;";
+        if (con != null) {
+            try {
+                PreparedStatement ptm = con.prepareStatement(sql);
+                ResultSet rs = ptm.executeQuery();
+                while (rs.next()) {
+                    id = rs.getInt("madoitra");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return id;
     }
 
     public IntegerProperty getMadoitra() {
