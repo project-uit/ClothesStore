@@ -27,17 +27,17 @@ public class DoiTra {
     private IntegerProperty mahoadon;
     private Date ngaytra;
     private StringProperty lydo;
+    private StringProperty tennhanvien;
+    private StringProperty sodienthoai; // sdt khach hang
 
-    public DoiTra(IntegerProperty madoitra, IntegerProperty mahoadon, Date ngaytra, StringProperty lydo) {
-        this.madoitra = madoitra;
-        this.mahoadon = mahoadon;
-        this.ngaytra = ngaytra;
-        this.lydo = lydo;
+    public DoiTra() {
     }
 
-    public DoiTra(int madoitra, int mahoadon, Date ngaytra, String lydo) {
+    public DoiTra(int madoitra, int mahoadon, String tennhanvien, String sodienthoai, Date ngaytra, String lydo) {
         this.madoitra = new SimpleIntegerProperty(madoitra);
         this.mahoadon = new SimpleIntegerProperty(mahoadon);
+        this.tennhanvien = new SimpleStringProperty(tennhanvien);
+        this.sodienthoai = new SimpleStringProperty(sodienthoai);
         this.ngaytra = ngaytra;
         this.lydo = new SimpleStringProperty(lydo);
     }
@@ -75,7 +75,10 @@ public class DoiTra {
         ObservableList<DoiTra> list = FXCollections.observableArrayList();
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
-        String sql = "SELECT * FROM doitra";
+        String sql = "SELECT * FROM doitra, hoadon, nhanvien, chitietkhachhang "
+                + "Where doitra.mahoadon = hoadon.mahoadon "
+                + "and hoadon.manhanvien = nhanvien.manhanvien "
+                + "and chitietkhachhang.mahoadon = hoadon.mahoadon";
         if (con != null) {
             try {
                 PreparedStatement ptm = con.prepareStatement(sql);
@@ -83,6 +86,8 @@ public class DoiTra {
                 while (rs.next()) {
                     DoiTra doitra = new DoiTra(rs.getInt("madoitra"),
                             rs.getInt("mahoadon"),
+                            rs.getString("tennhanvien"),
+                            rs.getString("sodienthoai"),
                             rs.getDate("ngaytra"),
                             rs.getString("lydo")
                     );
@@ -126,6 +131,14 @@ public class DoiTra {
         return ngaytra;
     }
 
+    public StringProperty getTennhanvien() {
+        return tennhanvien;
+    }
+
+    public StringProperty getSodienthoai() {
+        return sodienthoai;
+    }
+
     public StringProperty getLydo() {
         return lydo;
     }
@@ -140,6 +153,14 @@ public class DoiTra {
 
     public void setNgaytra(Date ngaytra) {
         this.ngaytra = ngaytra;
+    }
+
+    public void setTennhanvien(StringProperty tennhanvien) {
+        this.tennhanvien = tennhanvien;
+    }
+
+    public void setSodienthoai(StringProperty sodienthoai) {
+        this.sodienthoai = sodienthoai;
     }
 
     public void setLydo(StringProperty lydo) {

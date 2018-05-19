@@ -15,6 +15,8 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 /**
  *
@@ -47,6 +49,37 @@ public class ChiTietHoaDonDoiTra {
         this.giaban = giaban;
         this.soluongmua = soluongmua;
         this.thanhtien = thanhtien;
+    }
+
+    public ObservableList<ChiTietHoaDonDoiTra> getListcthdDoiTrafromID(int maDoiTra) {
+        ObservableList<ChiTietHoaDonDoiTra> list = FXCollections.observableArrayList();
+        DBConnection db = new DBConnection();
+        Connection con = db.getConnecttion();
+        String sql = "SELECT cthddt.machitietsanpham, sp.tensanpham, sp.giaban, cthddt.soluong, cthddt.thanhtien"
+                + " FROM hoadondoitra hddt, chitiethoadondoitra cthddt, sanpham sp, chitietsanpham ctsp "
+                + "Where sp.masanpham = ctsp.masanpham "
+                + "and cthddt.mahoadondoitra = hddt.mahoadondoitra "
+                + "and cthddt.machitietsanpham = ctsp.machitietsanpham and "
+                + "madoitra = "+maDoiTra+"";
+        if (con != null) {
+            try {
+                PreparedStatement ptm = con.prepareStatement(sql);
+                ResultSet rs = ptm.executeQuery();
+                while (rs.next()) {
+                    ChiTietHoaDonDoiTra cthdDoiTra = new ChiTietHoaDonDoiTra(
+                            new SimpleStringProperty(rs.getString("machitietsanpham")),
+                            new SimpleStringProperty(rs.getString("tensanpham")),
+                            new SimpleIntegerProperty(rs.getInt("giaban")),
+                            new SimpleIntegerProperty(rs.getInt("soluong")),
+                            new SimpleIntegerProperty(rs.getInt("thanhtien"))
+                    );
+                    list.add(cthdDoiTra);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return list;
     }
 
     public ChiTietHoaDonDoiTra getCTSPfromMa(String mactsp) {

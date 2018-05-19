@@ -18,7 +18,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class ChiTietDoiTra {
-    
+
     private IntegerProperty mahoadon;
     private IntegerProperty soluongmua;
     private IntegerProperty thanhtien;
@@ -43,6 +43,13 @@ public class ChiTietDoiTra {
         this.soluongmua = soluongmua;
         this.giaban = giaban;
         this.thanhtien = thanhtien;
+    }
+
+    public ChiTietDoiTra(StringProperty machitietsanpham, StringProperty tensanpham, IntegerProperty soluongmua, IntegerProperty giaban) {
+        this.machitietsanpham = machitietsanpham;
+        this.tensanpham = tensanpham;
+        this.soluongmua = soluongmua;
+        this.giaban = giaban;
     }
 
     public IntegerProperty getMahoadon() {
@@ -93,6 +100,34 @@ public class ChiTietDoiTra {
         this.thanhtien = thanhtien;
     }
 
+    public ObservableList<ChiTietDoiTra> getListChiTietDoiTraFromID(int id) {
+        ObservableList<ChiTietDoiTra> list = FXCollections.observableArrayList();
+        DBConnection db = new DBConnection();
+        Connection con = db.getConnecttion();
+        String sql = "SELECT * FROM chitietdoitra, chitietsanpham, sanpham "
+                + "Where chitietdoitra.machitietsanpham = chitietsanpham.machitietsanpham "
+                + "and sanpham.masanpham = chitietsanpham.masanpham "
+                + "and madoitra = " + id + "";
+        if (con != null) {
+            try {
+                PreparedStatement ptm = con.prepareStatement(sql);
+                ResultSet rs = ptm.executeQuery();
+                while (rs.next()) {
+                    ChiTietDoiTra ctdt = new ChiTietDoiTra(
+                            new SimpleStringProperty(rs.getString("machitietsanpham")),
+                            new SimpleStringProperty(rs.getString("tensanpham")),
+                            new SimpleIntegerProperty(rs.getInt("giaban")),
+                            new SimpleIntegerProperty(rs.getInt("soluong"))
+                    );
+                    list.add(ctdt);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return list;
+    }
+
     public ObservableList getCTHDfromMaHD(int mahd) {
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
@@ -136,6 +171,28 @@ public class ChiTietDoiTra {
                 ptm.setInt(1, madoitra);
                 ptm.setString(2, machitietsanpham.get());
                 ptm.setInt(3, soluongmua.get());
+                ptm.execute();
+
+                ptm.close();
+                con.close();
+
+                return true;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return false;
+    }
+
+    public boolean updateSoLuong(String mactsp, int sl) {
+        DBConnection db = new DBConnection();
+        Connection con = db.getConnecttion();
+        String sql = "UPDATE chitietsanpham set soluong = soluong - ? where machitietsanpham = ?;";
+        if (con != null) {
+            try {
+                PreparedStatement ptm = con.prepareStatement(sql);
+                ptm.setInt(1, sl);
+                ptm.setString(2, mactsp);
                 ptm.execute();
 
                 ptm.close();

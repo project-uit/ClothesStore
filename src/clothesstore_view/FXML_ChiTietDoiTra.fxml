@@ -50,17 +50,17 @@
             <Font size="16.0" />
          </font>
       </JFXButton>
-      <Label layoutX="207.0" layoutY="550.0" text="Tổng tiền hàng đổi trả :  0">
+      <Label fx:id="lb1" layoutX="207.0" layoutY="550.0" text="Tổng tiền hàng đổi trả :    0">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
-      <Label layoutX="207.0" layoutY="585.0" text="Tổng tiền hàng đổi trả : 0">
+      <Label fx:id="lb2" layoutX="207.0" layoutY="585.0" text="Tổng tiền hàng thay thế : 0">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
-      <Label layoutX="298.0" layoutY="649.0" text="Thành tiền : 0">
+      <Label fx:id="lb3" layoutX="209.0" layoutY="649.0" text="Thành tiền : 0">
          <font>
             <Font size="18.0" />
          </font>

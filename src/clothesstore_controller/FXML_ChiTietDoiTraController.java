@@ -7,12 +7,9 @@ package clothesstore_controller;
 
 import static clothesstore_controller.FXML_DoiTraController.mahd;
 import clothesstore_model.ChiTietDoiTra;
-import clothesstore_model.ChiTietHoaDon;
 import clothesstore_model.ChiTietHoaDonDoiTra;
-import clothesstore_model.ChiTietKhoSanPham;
 import clothesstore_model.ChiTietSanPham;
 import clothesstore_model.DoiTra;
-import clothesstore_model.HoaDon;
 import clothesstore_model.HoaDonDoiTra;
 import com.jfoenix.controls.JFXButton;
 import java.net.URL;
@@ -23,11 +20,14 @@ import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
 import static javafx.collections.FXCollections.observableArrayList;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
@@ -57,8 +57,11 @@ public class FXML_ChiTietDoiTraController implements Initializable {
     private JFXButton btnLuu, btnBack, btnAdd;
     @FXML
     private TextField txtSearch;
+    @FXML
+    private Label lb1, lb2, lb3;
     private DoiTra doitra;
-
+    private int total1 = 0, total2 = 0;
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
@@ -133,6 +136,12 @@ public class FXML_ChiTietDoiTraController implements Initializable {
                             int sl = Integer.valueOf(name);
                             row.getItem().setSoluongmua(new SimpleIntegerProperty(sl));
                             row.getItem().setThanhtien(new SimpleIntegerProperty(sl * row.getItem().getGiaban().get()));
+
+                            for (ChiTietDoiTra item : tblHangDoiTra.getItems()) {
+                                total1 += item.getThanhtien().get();
+                            }
+                            lb1.setText("Tổng tiền hàng đổi trả:    " + total1);
+                            lb3.setText("Thành tiền : " + (total1 - total2));
                         } catch (NumberFormatException ex) {
                             row.getItem().setSoluongmua(new SimpleIntegerProperty(0));
                             row.getItem().setThanhtien(new SimpleIntegerProperty(0));
@@ -203,6 +212,12 @@ public class FXML_ChiTietDoiTraController implements Initializable {
 
                             row.getItem().setSoluongmua(new SimpleIntegerProperty(sl));
                             row.getItem().setThanhtien(new SimpleIntegerProperty(sl * row.getItem().getGiaban().get()));
+
+                            for (ChiTietHoaDonDoiTra item : tblHangThayThe.getItems()) {
+                                total2 += item.getThanhtien().get();
+                            }
+                            lb2.setText("Tổng tiền hàng thay thế:   " + total2);
+                            lb3.setText("Thành tiền:                " + (total1 - total2));
                         } catch (NumberFormatException ex) {
                             row.getItem().setSoluongmua(new SimpleIntegerProperty(0));
                             row.getItem().setThanhtien(new SimpleIntegerProperty(0));
@@ -233,32 +248,49 @@ public class FXML_ChiTietDoiTraController implements Initializable {
 
     @FXML
     private void Handler_btnLuu() {
-        if (doitra.ThemDoiTra()) {
-            for (ChiTietDoiTra item : tblHangDoiTra.getItems()) {
-                if (item.getSoluongmua().get() != 0) {
-                    item.ThemChiTietDoiTra(doitra.getLastId());
+        ButtonType yes = new ButtonType("Lưu", ButtonBar.ButtonData.OK_DONE);
+        ButtonType cancel = new ButtonType("Huỷ", ButtonBar.ButtonData.CANCEL_CLOSE);
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
+                "Bạn có chắc chắn muốn lưu",
+                yes,
+                cancel);
+
+        alert.setTitle("Nhắc nhở");
+        alert.setHeaderText(null);
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if (result.isPresent() && result.get() == yes) {
+            if (doitra.ThemDoiTra()) {
+                for (ChiTietDoiTra item : tblHangDoiTra.getItems()) {
+                    if (item.getSoluongmua().get() != 0) {
+                        item.ThemChiTietDoiTra(doitra.getLastId());
+                        item.updateSoLuong(item.getMachitietsanpham().get(), item.getSoluongmua().get());
+                    }
                 }
+            } else {
+                System.out.println("Thêm Đổi Trả thất bại");
             }
-        } else {
-            System.out.println("Thêm Đổi Trả thất bại");
-        }
-        
-        int thanhtien = 0;
-        thanhtien = tblHangThayThe.getItems().stream().map((item) -> item.getThanhtien().get()).reduce(thanhtien, Integer::sum);
-        
-        if (new HoaDonDoiTra().ThemHoaDonDoiTra(doitra.getLastId(), thanhtien)) {
-            for (ChiTietHoaDonDoiTra item : tblHangThayThe.getItems()) {
-                if (item.getSoluongmua().get() != 0) {
-                    item.ThemChiTietHoaDonDoiTra(new HoaDonDoiTra().getLastId());
+
+            int thanhtien = 0;
+            thanhtien = tblHangThayThe.getItems().stream().map((item) -> item.getThanhtien().get()).reduce(thanhtien, Integer::sum);
+
+            if (new HoaDonDoiTra().ThemHoaDonDoiTra(doitra.getLastId(), thanhtien)) {
+                for (ChiTietHoaDonDoiTra item : tblHangThayThe.getItems()) {
+                    if (item.getSoluongmua().get() != 0) {
+                        item.ThemChiTietHoaDonDoiTra(new HoaDonDoiTra().getLastId());
+                    }
                 }
+            } else {
+                System.out.println("Thêm Hóa Đơn Đổi Trả thất bại");
             }
-        } else {
-            System.out.println("Thêm Hóa Đơn Đổi Trả thất bại");
+
+            btnLuu.setDisable(true);
         }
+
     }
 
     @FXML
     private void Handler_btnBack() {
-
+        System.out.println("Back");
     }
 }

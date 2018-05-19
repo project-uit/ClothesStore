@@ -6,7 +6,8 @@
 package clothesstore_controller;
 
 import clothesstore_model.ChiTietDoiTra;
-import clothesstore_model.ChiTietHoaDon;
+import clothesstore_model.ChiTietHoaDonDoiTra;
+import clothesstore_model.DoiTra;
 import clothesstore_model.HoaDon;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDatePicker;
@@ -32,9 +33,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TitledPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -55,21 +59,40 @@ public class FXML_DoiTraController implements Initializable {
     private JFXButton btnCreate;
     @FXML
     private TableColumn clMaHoaDon, clTenNV, clSDT, clNgayBan, clTongTien,
-            clMaCTSP, clTenSP, clSoLuong, clGiaBan, clThanhTien;
+            clMaCTSP, clTenSP, clSoLuong, clGiaBan, clThanhTien,
+            _clMaHoaDon, _clTenNV, _clSDT, _clNgayDoiTra, _clLyDo,
+            clMaCTSP1, clTenSP1, clGiaBan1, clSoLuong1, clThanhTien1,
+            clMaCTSP2, clTenSP2, clGiaBan2, clSoLuong2, clThanhTien2;
     @FXML
     private TableView<HoaDon> tblHoaDon;
     @FXML
+    private TableView<DoiTra> tblDoiTra;
+    @FXML
     private TableView<ChiTietDoiTra> tblChiTietHoaDon;
+    @FXML
+    private TableView<ChiTietDoiTra> tblHangDoiTra;
+    @FXML
+    private TableView<ChiTietHoaDonDoiTra> tblHangThayThe;
     @FXML
     private TextField txtSearch;
     @FXML
     private JFXDatePicker dtpFrom, dtpTo;
+    @FXML
+    private TitledPane titledPane;
+    @FXML
+    private Label lb1, lb2, lb3;
+
+    private int total1 = 0, total2 = 0, total = 0;
     public static Stage stageDoiTra_Create;
     public static int mahd;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
         initTableHoaDon();
+        initTableDoiTra();
+        initTableHangDoiTra();
+        initTableHangThayThe();
         initTextFieldSearch();
     }
 
@@ -145,9 +168,9 @@ public class FXML_DoiTraController implements Initializable {
                     mahd = hd.getMahoadon().get();
                     initTableChiTietHoaDon(mahd);
                     btnCreate.setDisable(false);
-                }
-                else
+                } else {
                     btnCreate.setDisable(true);
+                }
             }
         });
         HoaDon hd = new HoaDon();
@@ -192,6 +215,140 @@ public class FXML_DoiTraController implements Initializable {
         ObservableList<ChiTietDoiTra> list = observableArrayList();
         list = cthd.getCTHDfromMaHD(mahd);
         tblChiTietHoaDon.setItems(list);
+    }
+
+    private void initTableDoiTra() {
+        _clMaHoaDon.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<DoiTra, Integer>, ObservableValue<Integer>>() {
+            @Override
+            public ObservableValue<Integer> call(TableColumn.CellDataFeatures<DoiTra, Integer> p) {
+                return new ReadOnlyObjectWrapper(p.getValue().getMahoadon().get());
+            }
+        });
+        _clTenNV.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<DoiTra, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<DoiTra, String> p) {
+                return p.getValue().getTennhanvien();
+            }
+        });
+        _clSDT.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<DoiTra, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<DoiTra, String> p) {
+                return p.getValue().getSodienthoai();
+            }
+        });
+        _clNgayDoiTra.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<DoiTra, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<DoiTra, String> p) {
+                return new ReadOnlyObjectWrapper(p.getValue().getNgaytra());
+            }
+        });
+        _clLyDo.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<DoiTra, Integer>, ObservableValue<Integer>>() {
+            @Override
+            public ObservableValue<Integer> call(TableColumn.CellDataFeatures<DoiTra, Integer> p) {
+                return new ReadOnlyObjectWrapper(p.getValue().getLydo().get());
+            }
+        });
+
+        tblDoiTra.setRowFactory(tv -> {
+            TableRow<DoiTra> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && (!row.isEmpty())) {
+                    titledPane.setExpanded(false);
+                    int maDoiTra = tblDoiTra.getItems().get(row.getIndex()).getMadoitra().get();
+                    ObservableList<ChiTietDoiTra> list1 = observableArrayList();
+                    list1 = new ChiTietDoiTra().getListChiTietDoiTraFromID(maDoiTra);
+                    tblHangDoiTra.setItems(list1);
+
+                    for (ChiTietDoiTra item : tblHangDoiTra.getItems()) {
+                        total1 += item.getGiaban().get() * item.getSoluongmua().get();
+                    }
+                    lb1.setText("Tổng tiền hàng đổi trả:    " + total1);
+
+                    ObservableList<ChiTietHoaDonDoiTra> list2 = observableArrayList();
+                    list2 = new ChiTietHoaDonDoiTra().getListcthdDoiTrafromID(maDoiTra);
+                    tblHangThayThe.setItems(list2);
+
+                    for (ChiTietHoaDonDoiTra item : tblHangThayThe.getItems()) {
+                        total2 += item.getGiaban().get() * item.getSoluongmua().get();
+                    }
+                    lb2.setText("Tổng tiền hàng đổi trả:    " + total1);
+
+                    lb3.setText("Thành tiền:                " + (total1 - total2));
+                }
+            });
+            return row;
+        });
+
+        ObservableList<DoiTra> list = observableArrayList();
+        list = new DoiTra().getListKhoDoiTra();
+        tblDoiTra.setItems(list);
+    }
+
+    public void initTableHangDoiTra() {
+        clMaCTSP1.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ChiTietDoiTra, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<ChiTietDoiTra, String> p) {
+                return p.getValue().getMachitietsanpham();
+            }
+        });
+        clTenSP1.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ChiTietDoiTra, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<ChiTietDoiTra, String> p) {
+                return p.getValue().getTensanpham();
+            }
+        });
+        clGiaBan1.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ChiTietDoiTra, Integer>, ObservableValue<Integer>>() {
+            @Override
+            public ObservableValue<Integer> call(TableColumn.CellDataFeatures<ChiTietDoiTra, Integer> p) {
+                return new ReadOnlyObjectWrapper(p.getValue().getGiaban().get());
+            }
+        });
+        clSoLuong1.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ChiTietDoiTra, Integer>, ObservableValue<Integer>>() {
+            @Override
+            public ObservableValue<Integer> call(TableColumn.CellDataFeatures<ChiTietDoiTra, Integer> p) {
+                return new ReadOnlyObjectWrapper(p.getValue().getSoluongmua().get());
+            }
+        });
+
+        clThanhTien1.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ChiTietDoiTra, Integer>, ObservableValue<Integer>>() {
+            @Override
+            public ObservableValue<Integer> call(TableColumn.CellDataFeatures<ChiTietDoiTra, Integer> p) {
+                return new ReadOnlyObjectWrapper(p.getValue().getSoluongmua().get() * p.getValue().getGiaban().get());
+            }
+        });
+    }
+
+    public void initTableHangThayThe() {
+        clMaCTSP2.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ChiTietHoaDonDoiTra, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<ChiTietHoaDonDoiTra, String> p) {
+                return p.getValue().getMachitietsanpham();
+            }
+        });
+        clTenSP2.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ChiTietHoaDonDoiTra, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<ChiTietHoaDonDoiTra, String> p) {
+                return p.getValue().getTensanpham();
+            }
+        });
+        clGiaBan2.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ChiTietHoaDonDoiTra, Integer>, ObservableValue<Integer>>() {
+            @Override
+            public ObservableValue<Integer> call(TableColumn.CellDataFeatures<ChiTietHoaDonDoiTra, Integer> p) {
+                return new ReadOnlyObjectWrapper(p.getValue().getGiaban().get());
+            }
+        });
+        clSoLuong2.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ChiTietHoaDonDoiTra, Integer>, ObservableValue<Integer>>() {
+            @Override
+            public ObservableValue<Integer> call(TableColumn.CellDataFeatures<ChiTietHoaDonDoiTra, Integer> p) {
+                return new ReadOnlyObjectWrapper(p.getValue().getSoluongmua().get());
+            }
+        });
+        clThanhTien2.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ChiTietHoaDonDoiTra, Integer>, ObservableValue<Integer>>() {
+            @Override
+            public ObservableValue<Integer> call(TableColumn.CellDataFeatures<ChiTietHoaDonDoiTra, Integer> p) {
+                return new ReadOnlyObjectWrapper(p.getValue().getSoluongmua().get() * p.getValue().getGiaban().get());
+            }
+        });
     }
 
     @FXML
@@ -245,9 +402,9 @@ public class FXML_DoiTraController implements Initializable {
         dtpTo.setValue(null);
         initTableHoaDon();
     }
-    
+
     @FXML
-    private void Handler_btnCreate(){
+    private void Handler_btnCreate() {
         Parent root;
         try {
             root = FXMLLoader.load(getClass().getResource("/clothesstore_view/FXML_DoiTra_Create.fxml"));
