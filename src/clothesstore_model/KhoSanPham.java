@@ -133,9 +133,5 @@ public class KhoSanPham {
     public Integer getMaphieunhap() {
         return maphieunhap.getValue();
     }
+}
 
-<<<<<<< HEAD
-}
-=======
-}
->>>>>>> bac2adadb5933e73dd5b710ec065f6dea14216e7

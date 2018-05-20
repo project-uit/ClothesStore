@@ -156,6 +156,7 @@ public class FXML_HoaDonController implements Initializable {
             }
         });
         List<String> arr_mactsp = new ChiTietSanPham().getListMactsp();
+       
         TextFields.bindAutoCompletion(txt_fi_machitietsanpham, arr_mactsp);
 
     }

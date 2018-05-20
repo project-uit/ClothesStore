@@ -8,12 +8,14 @@ package clothesstore_controller;
 import clothesstore_model.MauSac;
 import clothesstore_model.NhaSanXuat;
 import clothesstore_model.NhomHang;
+import clothesstore_model.SanPham;
 import clothesstore_model.Size;
 import clothesstore_model.TraCuu;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ObjectProperty;
@@ -39,6 +41,7 @@ import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.util.StringConverter;
+import org.controlsfx.control.textfield.TextFields;
 
 /**
  * FXML Controller class
@@ -103,13 +106,16 @@ public class FXML_TraCuuController implements Initializable {
             cmb_gioitinh.getSelectionModel().select(0);
         });
         initTextField();
+        
     }
 
     private void initTextField() {
         OnlyNumberInTextField(txt_fi_min_soluong);
         OnlyNumberInTextField(txt_fi_max_soluong);
         OnlyNumberInTextField(txt_fi_min_giaban);
-        OnlyNumberInTextField(txt_fi_max_giaban);
+        OnlyNumberInTextField(txt_fi_max_giaban);      
+        List<String> arr_mactsp = new SanPham().getlist_tensp();       
+        TextFields.bindAutoCompletion(txt_fi_tensanpham, arr_mactsp);
     }
 
     private void OnlyNumberInTextField(JFXTextField textField) {

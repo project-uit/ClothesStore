@@ -7,12 +7,15 @@ package clothesstore_model;
 
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.property.IntegerProperty;
@@ -173,20 +176,16 @@ public class SanPham extends RecursiveTreeObject<SanPham> {
         return giaban;
     }
 
-    
-    private String getvalue_masp()
-    {
+    private String getvalue_masp() {
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
-        String key="";
-        if(con!=null)
-        {
+        String key = "";
+        if (con != null) {
             try {
-                String query="select GenerateLicensePlate()";
+                String query = "select GenerateLicensePlate()";
                 PreparedStatement ptm = con.prepareStatement(query);
-                ResultSet rs= ptm.executeQuery();
-                while(rs.next())
-                {
+                ResultSet rs = ptm.executeQuery();
+                while (rs.next()) {
                     key = rs.getString(1);
                     break;
                 }
@@ -197,6 +196,7 @@ public class SanPham extends RecursiveTreeObject<SanPham> {
         }
         return key;
     }
+
     public boolean insert() {
 
         DBConnection db = new DBConnection();
@@ -425,22 +425,45 @@ public class SanPham extends RecursiveTreeObject<SanPham> {
         return dongia;
     }
 
-    public boolean update_ngayhethan(Date ngaynhaphieu) {
+    public List<String> getlist_tensp() {
+
+        DBConnection db = new DBConnection();
+        Connection con = db.getConnecttion();
+        List<String> arr_tensp = new ArrayList<>();
+
+        if (con != null) {
+            try {
+                String sql = "SELECT tensanpham FROM sanpham ";
+                PreparedStatement ptm = con.prepareStatement(sql);
+                ResultSet rs = ptm.executeQuery();
+                while (rs.next()) {
+                    arr_tensp.add(rs.getString(1));
+                }
+                ptm.close();
+                con.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ChiTietSanPham.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return arr_tensp;
+    }
+
+    public boolean update_ngayhethan(int mapn) {
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
         if (con != null) {
             try {
-                String sql = "update sanpham set ngayhethan=? where masanpham=?";
-                PreparedStatement ptm = con.prepareStatement(sql);
-                ptm.setDate(2, ngaynhaphieu);
-                ptm.setString(2, masanpham.get());
-                int check = ptm.executeUpdate();
-                if (check != 0) {                                    
-                    ptm.close();
+                String sql = "{call update_ngayhethan_sp(?,?)}";
+                CallableStatement stmnt = con.prepareCall(sql);
+                stmnt.setInt(1, mapn);
+                stmnt.setString(2, masanpham.get());
+                int check = stmnt.executeUpdate();
+                if (check != 0) {
+                    stmnt.close();
                     con.close();
                     return true;
                 }
-               
+
             } catch (SQLException ex) {
                 Logger.getLogger(ChiTietSanPham.class.getName()).log(Level.SEVERE, null, ex);
             }

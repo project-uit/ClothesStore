@@ -6,6 +6,7 @@
 package clothesstore_controller;
 
 import clothesstore_model.HoaDon;
+import clothesstore_model.TonKho;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.beans.value.ChangeListener;
@@ -26,19 +27,19 @@ public class FXML_TongQuanController implements Initializable {
      * Initializes the controller class.
      */
     @FXML
-    private Label lbtienbanhang_homnay, lbsodonhang_hanghoa_homnay, lbtonkholau, lbhethang,
-            lbtienbanhang, lbsodonhang, lbsohanghoa, lbhanghoa;
+    private Label lbtienbanhang_homnay, lbsodonhang_hanghoa_homnay,
+            lbtienbanhang, lbsodonhang, lbsohanghoa, lbhanghoa,lb_soluong;
     @FXML
     private ComboBox cmb;
     HoaDon hd = new HoaDon();
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO       
-        lbtienbanhang_homnay.setText("Tiền bán hàng: \n" + String.valueOf(hd.getActivities_TienBanHang("homnay")));
+        lbtienbanhang_homnay.setText("Tiền bán hàng: \n" + FormatTien(hd.getActivities_TienBanHang("homnay")));
         lbsodonhang_hanghoa_homnay.setText("Số đơn hàng: " + String.valueOf(hd.getActivities_TienSoDonHang("homnay"))
                 + "\nSố hàng hóa: " + String.valueOf(hd.getActivities_TienSoHangHoa("homnay")));
-        lbhethang.setText("Hết hàng: " + String.valueOf(hd.getCountHetHang()));
-     
+        
+        lb_soluong.setText(""+TonKho.getsoluongtonkho());
         initCMB();
     }
     public void initCMB() {
@@ -48,22 +49,22 @@ public class FXML_TongQuanController implements Initializable {
             public void changed(ObservableValue ov, String t, String t1) {
                 switch (t1) {
                     case "Tuần này":
-                        lbtienbanhang.setText("Tiền bán hàng: \t" + String.valueOf(hd.getActivities_TienBanHang("tuannay")));
+                        lbtienbanhang.setText("Tiền bán hàng: \t" + FormatTien(hd.getActivities_TienBanHang("tuannay")));
                         lbsodonhang.setText("Số đơn hàng: \t\t" + String.valueOf(hd.getActivities_TienSoDonHang("tuannay")));
                         lbsohanghoa.setText("Số hàng hóa: \t\t" + String.valueOf(hd.getActivities_TienSoHangHoa("tuannay")));
                         break;
                     case "Tuần trước":
-                        lbtienbanhang.setText("Tiền bán hàng: \t" + String.valueOf(hd.getActivities_TienBanHang("tuantruoc")));
+                        lbtienbanhang.setText("Tiền bán hàng: \t" + FormatTien(hd.getActivities_TienBanHang("tuantruoc")));
                         lbsodonhang.setText("Số đơn hàng: \t\t" + String.valueOf(hd.getActivities_TienSoDonHang("tuantruoc")));
                         lbsohanghoa.setText("Số hàng hóa: \t\t" + String.valueOf(hd.getActivities_TienSoHangHoa("tuantruoc")));
                         break;
                     case "Tháng này":
-                        lbtienbanhang.setText("Tiền bán hàng: \t" + String.valueOf(hd.getActivities_TienBanHang("thangnay")));
+                        lbtienbanhang.setText("Tiền bán hàng: \t" + FormatTien(hd.getActivities_TienBanHang("thangnay")));
                         lbsodonhang.setText("Số đơn hàng: \t\t" + String.valueOf(hd.getActivities_TienSoDonHang("thangnay")));
                         lbsohanghoa.setText("Số hàng hóa: \t\t" + String.valueOf(hd.getActivities_TienSoHangHoa("thangnay")));
                         break;
                     case "Tháng trước":
-                        lbtienbanhang.setText("Tiền bán hàng: \t" + String.valueOf(hd.getActivities_TienBanHang("thangtruoc")));
+                        lbtienbanhang.setText("Tiền bán hàng: \t" + FormatTien(hd.getActivities_TienBanHang("thangtruoc")));
                         lbsodonhang.setText("Số đơn hàng: \t\t" + String.valueOf(hd.getActivities_TienSoDonHang("thangtruoc")));
                         lbsohanghoa.setText("Số hàng hóa: \t\t" + String.valueOf(hd.getActivities_TienSoHangHoa("thangtruoc")));
                         break;
@@ -71,5 +72,8 @@ public class FXML_TongQuanController implements Initializable {
             }
         });
         cmb.getSelectionModel().selectFirst();
+    }
+       private String FormatTien(int soTien) {
+        return String.format("%,8d%n", soTien).trim();
     }
 }

@@ -58,12 +58,12 @@
                                     <Font size="23.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="lbtonkholau" alignment="CENTER" prefHeight="4.0" prefWidth="504.0" text="Tồn kho lâu: chưa rõ" wrapText="true">
+                              <Label alignment="CENTER" prefHeight="4.0" prefWidth="504.0" text="Số lượng trong kho" wrapText="true">
                                  <font>
                                     <Font size="20.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="lbhethang" alignment="CENTER" prefHeight="4.0" prefWidth="504.0" text="Hết hàng:" wrapText="true">
+                              <Label fx:id="lb_soluong" alignment="CENTER" prefHeight="4.0" prefWidth="504.0" text="Số lượng" wrapText="true">
                                  <font>
                                     <Font size="20.0" />
                                  </font>

@@ -15,12 +15,14 @@ import clothesstore_model.ChiTietKhoSanPham;
 import clothesstore_model.ChiTietSanPham;
 import clothesstore_model.KhoSanPham;
 import clothesstore_model.MauSac;
+import clothesstore_model.SanPham;
 import com.jfoenix.controls.JFXButton;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.beans.value.ObservableValue;
 import static javafx.collections.FXCollections.observableArrayList;
 import javafx.collections.ObservableList;
@@ -180,7 +182,10 @@ public class FXML_ChiTietKhoSPController implements Initializable {
     @FXML
     private void Handler_btnLuu(ActionEvent event) {
         KhoSanPham ksp = new KhoSanPham(MaNhanVien, MAPN,MaSP);
-        if (ksp.ThemKhoSanPham()) {
+        SanPham sp = new SanPham();
+        StringProperty masp = new SimpleStringProperty(MaSP);
+        sp.setMasanpham(masp);
+        if (ksp.ThemKhoSanPham() && sp.update_ngayhethan(MAPN)) {
             for (Object o : tblchitietkhosp.getItems()) {
                 String MaCTSP = clmachitietsp.getCellData(o).toString();
                 ChiTietSanPham ctsp = new ChiTietSanPham();

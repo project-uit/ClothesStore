@@ -159,11 +159,7 @@ create table khosanpham
 makhosanpham   int(6) unsigned auto_increment  PRIMARY KEY,
 manhanvien int(6) unsigned,
 maphieunhap  INT(6) UNSIGNED,
-<<<<<<< HEAD
-masanpham char(8),
-=======
 masanpham CHAR(8),
->>>>>>> bac2adadb5933e73dd5b710ec065f6dea14216e7
 FOREIGN KEY (maphieunhap)
 REFERENCES phieunhap(maphieunhap),
 FOREIGN KEY (manhanvien)
@@ -401,12 +397,12 @@ from sanpham sp;
 
 elseif chucnang=2 then
 -- hàng tồn ( hàng có trong kho)
-select sp.masanpham,sp.tensanpham,sp.tonkhotoithieu, sum(soluong),
+select sp.masanpham,sp.tensanpham,sp.tonkhotoithieu, sum(soluong) as sl,
 sp.tonkhotoida
 from sanpham sp,chitietsanpham ctsp
 where ctsp.masanpham = sp.masanpham
 group by sp.masanpham
-having sum(soluong)>0;
+having sl>0;
 
 elseif chucnang=3 then
 -- chưa nhập vào kho
@@ -417,30 +413,30 @@ where soluong is null;
 
 elseif chucnang=4 then
 -- hết hàng
-select sp.masanpham,sp.tensanpham,sp.tonkhotoithieu, sum(soluong),
+select sp.masanpham,sp.tensanpham,sp.tonkhotoithieu, sum(soluong) as sl,
 sp.tonkhotoida
 from sanpham sp,chitietsanpham ctsp
 where ctsp.masanpham = sp.masanpham
 group by sp.masanpham
-having sum(soluong)=0;
+having sl=0;
 
 elseif chucnang=5 then
 -- sắp hết hàng
-select sp.masanpham,sp.tensanpham,sp.tonkhotoithieu, sum(soluong),
+select sp.masanpham,sp.tensanpham,sp.tonkhotoithieu, sum(soluong) as sl,
 sp.tonkhotoida
 from sanpham sp,chitietsanpham ctsp
 where ctsp.masanpham = sp.masanpham
 group by sp.masanpham
-having sum(soluong) < sp.tonkhotoithieu and  sum(soluong)>0;
+having sl < sp.tonkhotoithieu and  sl>0;
 
 elseif chucnang=6 then
 -- vượt định mức
-select sp.masanpham,sp.tensanpham,sp.tonkhotoithieu, sum(soluong),
+select sp.masanpham,sp.tensanpham,sp.tonkhotoithieu, sum(soluong) as sl,
 sp.tonkhotoida
 from sanpham sp,chitietsanpham ctsp
 where ctsp.masanpham = sp.masanpham
 group by sp.masanpham
-having sum(soluong) > sp.tonkhotoida;
+having sl > sp.tonkhotoida;
 
 elseif chucnang=7 then
 -- hàng tồn kho lâu
@@ -456,6 +452,20 @@ End if;
 END; $$
 DELIMITER ;
 
+drop PROCEDURE if exists update_ngayhethan_sp;
+DELIMITER $$
+CREATE PROCEDURE update_ngayhethan_sp(in mapn int, in masp char(8) )
+BEGIN
+declare ngay Date;
+declare thoihan int;
+set thoihan = (select thoihan_thang from sanpham where masanpham=masp);
+set ngay = (select Date(ngaynhap) from phieunhap where maphieunhap = mapn);
+update sanpham 
+set ngayhethan=DATE_ADD(ngay, INTERVAL thoihan MONTH) 
+where masanpham=masp;
+END; $$
+DELIMITER ;
+call update_ngayhethan_sp(3,'SPY27INH');
 -- 'SPG7DW6U', 'SPFZA92'
 
 select ctpn.masanpham, ngaynhap, giavon, ctpn.maphieunhap
