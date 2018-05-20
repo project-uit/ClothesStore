@@ -63,6 +63,7 @@ import javafx.animation.SequentialTransition;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ReadOnlyIntegerWrapper;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.scene.control.Spinner;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
@@ -399,6 +400,7 @@ public class FXML_HangHoaController implements Initializable {
         if (sanpham.insert()) {
             viewListTable();
             ShowFXML_ChiTietSanPham(sanpham.getMasanpham().get());
+            
             ShowMessage
                     .showMessageBox(Alert.AlertType.INFORMATION, "Thông báo", null,
                             "Thêm dữ liệu thành công")

@@ -20,7 +20,7 @@
             <Font name="System Bold" size="16.0" />
          </font>
       </Label>
-      <AnchorPane layoutX="14.0" layoutY="43.0" prefHeight="204.0" prefWidth="504.0" style="-fx-border-radius: 5; -fx-border-width: 1; -fx-border-color: #4681f5;">
+      <AnchorPane layoutX="14.0" layoutY="43.0" prefHeight="160.0" prefWidth="504.0" style="-fx-border-radius: 5; -fx-border-width: 1; -fx-border-color: #4681f5;">
          <children>
             <JFXTextField fx:id="txt_fi_machitietsanpham" editable="false" focusColor="#0040ff" layoutX="9.0" layoutY="37.0" prefHeight="25.0" prefWidth="204.0">
                <font>
@@ -54,24 +54,24 @@
             <JFXComboBox fx:id="cmb_mausac" layoutX="270.0" layoutY="40.0" prefHeight="25.0" prefWidth="180.0" />
          </children>
       </AnchorPane>
-      <AnchorPane layoutX="525.0" layoutY="43.0" prefHeight="204.0" prefWidth="314.0" style="-fx-border-radius: 5; -fx-border-width: 1; -fx-border-color: #4681f5;">
+      <AnchorPane layoutX="306.0" layoutY="206.0" prefHeight="60.0" prefWidth="212.0" style="-fx-border-radius: 5; -fx-border-width: 1;">
          <children>
-            <JFXButton fx:id="btnThem" layoutX="55.0" layoutY="44.0" onAction="#ClickEvent" prefHeight="39.0" prefWidth="80.0" style="-fx-background-color: #4681f5;" text="Thêm" textFill="WHITE">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </JFXButton>
-            <JFXButton fx:id="btnXoa" disable="true" layoutX="55.0" layoutY="117.0" onAction="#ClickEvent" prefHeight="39.0" prefWidth="80.0" style="-fx-background-color: #4681f5;" text="Xóa" textFill="WHITE">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </JFXButton>
-            <JFXButton fx:id="btnDongy" layoutX="193.0" layoutY="44.0" onAction="#Dongy_huy_clickvent" prefHeight="39.0" prefWidth="80.0" style="-fx-background-color: #4681f5;" text="Đồng ý" textFill="WHITE" />
-            <JFXButton fx:id="btnHuy" layoutX="193.0" layoutY="117.0" onAction="#Dongy_huy_clickvent" prefHeight="39.0" prefWidth="80.0" style="-fx-background-color: #4681f5;" text="Hủy" textFill="WHITE" />
+            <JFXButton fx:id="btnDongy" layoutX="14.0" layoutY="14.0" onAction="#Dongy_huy_clickvent" prefHeight="30.0" prefWidth="80.0" style="-fx-background-color: #4681f5;" text="Đồng ý" textFill="WHITE" />
+            <JFXButton fx:id="btnHuy" layoutX="118.0" layoutY="14.0" onAction="#Dongy_huy_clickvent" prefHeight="30.0" prefWidth="80.0" style="-fx-background-color: #4681f5;" text="Hủy" textFill="WHITE" />
          </children>
       </AnchorPane>
       <TableView fx:id="table_view" layoutX="13.0" layoutY="279.0" prefHeight="421.0" prefWidth="832.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="13.0" AnchorPane.rightAnchor="0.0" />
       <JFXButton fx:id="btnBack" layoutX="14.0" layoutY="3.0" prefHeight="30.0" prefWidth="51.0" style="-fx-background-color: #4681f5;" text="Back" textFill="WHITE">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </JFXButton>
+      <JFXButton fx:id="btnThem" layoutX="14.0" layoutY="206.0" onAction="#ClickEvent" prefHeight="30.0" prefWidth="64.0" style="-fx-background-color: #4681f5;" text="Thêm" textFill="WHITE">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </JFXButton>
+      <JFXButton fx:id="btnXoa" disable="true" layoutX="87.0" layoutY="206.0" onAction="#ClickEvent" prefHeight="30.0" prefWidth="64.0" style="-fx-background-color: #4681f5;" text="Xóa" textFill="WHITE">
          <font>
             <Font size="14.0" />
          </font>

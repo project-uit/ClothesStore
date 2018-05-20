@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableView?>
@@ -58,6 +57,5 @@
             </Label>
          </children>
       </AnchorPane>
-      <JFXButton layoutX="762.0" layoutY="1.0" prefHeight="25.0" prefWidth="69.0" text="Qui định" AnchorPane.rightAnchor="14.0" />
    </children>
 </AnchorPane>

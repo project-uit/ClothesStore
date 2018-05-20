@@ -173,7 +173,7 @@ public class FXML_NhapKhoController implements Initializable {
     private boolean checkPhieuNhap(String masp) {
         KhoSanPham ksp = new KhoSanPham();
         List listSPDaNhapKho = new ArrayList();
-        listSPDaNhapKho = ksp.getListMaSPDaNhapKho(MAPN);
+        //listSPDaNhapKho = ksp.getListMaSPDaNhapKho(MAPN);
 
         for (Object SPDaNhapKho : listSPDaNhapKho) {
             if (masp.equals(SPDaNhapKho.toString())) {

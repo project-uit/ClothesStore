@@ -23,7 +23,6 @@ import javafx.scene.control.TableView;
  * @author quochung
  */
 public class FXML_TonKhoController implements Initializable {
-
     /**
      * Initializes the controller class.
      */
@@ -42,7 +41,6 @@ public class FXML_TonKhoController implements Initializable {
         initLabel();
         viewListTable();
     }
-
     private void initLabel() {        
         lb_vontonkho.setText(FormatTien(TonKho.getvontonkho()));
         lb_giatritonkho.setText(FormatTien(TonKho.getgiatritonkho()));
@@ -87,5 +85,4 @@ public class FXML_TonKhoController implements Initializable {
             viewListTable();
         });
     }
-
 }

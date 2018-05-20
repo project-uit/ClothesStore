@@ -94,11 +94,12 @@ public class FXML_ThongKeController implements Initializable {
                 }
             }
         });
+        try {
+            cmbYear.getSelectionModel().select("" + Collections.max(cmbYear.getItems()));
+        } catch (Exception e) {
+        }
 
-        cmbYear.getSelectionModel().select("" + Collections.max(cmbYear.getItems()));
     }
-
-
 
     private void initChartDoanhThu(Integer year) {
         HoaDon hd = new HoaDon();
@@ -119,7 +120,6 @@ public class FXML_ThongKeController implements Initializable {
         data.getData().add(new XYChart.Data<>("Tháng 11", (Number) dt.get(10)));
         data.getData().add(new XYChart.Data<>("Tháng 12", (Number) dt.get(11)));
         chartDoanhThu.getData().setAll(data);
-
     }
     @FXML
     private PieChart piechart_thongkesp_banchay;
@@ -139,6 +139,9 @@ public class FXML_ThongKeController implements Initializable {
         }
         Integer nam = cmb_nam.getSelectionModel().getSelectedItem();
         Integer quy = cmb_quy.getSelectionModel().getSelectedItem();
+        if (nam == null) {
+            return;
+        }
         HashMap<String, Integer> hm_sp = ThongKe.thongke_sp_banchay(quy, nam);
         Integer tongsl = ThongKe.tongsp_daban(quy, nam);
         Set set = hm_sp.entrySet();
@@ -183,7 +186,6 @@ public class FXML_ThongKeController implements Initializable {
             } catch (IOException ex) {
                 Logger.getLogger(FXML_HangHoaController.class.getName()).log(Level.SEVERE, null, ex);
             }
-
         }
     }
 
@@ -207,6 +209,7 @@ public class FXML_ThongKeController implements Initializable {
                     return "Quý 4";
                 }
             }
+
             @Override
             public Integer fromString(String string) {
                 throw new UnsupportedOperationException("Not supported yet.");

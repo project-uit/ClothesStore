@@ -173,23 +173,50 @@ public class SanPham extends RecursiveTreeObject<SanPham> {
         return giaban;
     }
 
+    
+    private String getvalue_masp()
+    {
+        DBConnection db = new DBConnection();
+        Connection con = db.getConnecttion();
+        String key="";
+        if(con!=null)
+        {
+            try {
+                String query="select GenerateLicensePlate()";
+                PreparedStatement ptm = con.prepareStatement(query);
+                ResultSet rs= ptm.executeQuery();
+                while(rs.next())
+                {
+                    key = rs.getString(1);
+                    break;
+                }
+                ptm.close();
+                con.close();
+            } catch (Exception e) {
+            }
+        }
+        return key;
+    }
     public boolean insert() {
 
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
+        masanpham.set(getvalue_masp());
         if (con != null) {
             try {
 
                 String query = "insert into sanpham(masanpham,tensanpham,tennhasanxuat,tennhomhang,"
                         + "ghichu,tonkhotoithieu,tonkhotoida,thoihan_thang)"
-                        + " values(GenerateLicensePlate(),?,?,?,?,?,?,?)";
+                        + " values(?,?,?,?,?,?,?,?)";
                 PreparedStatement ptm = con.prepareStatement(query);
-                ptm.setString(1, tensanpham.get());
-                ptm.setString(2, tennhasanxuat.get());
-                ptm.setString(3, tennhomhang.get());
-                ptm.setString(4, ghichu.get());
-                ptm.setInt(5, tonkhotoithieu.get());
-                ptm.setInt(6, tonkhotoida.get());
+                ptm.setString(1, masanpham.get());
+                ptm.setString(2, tensanpham.get());
+                ptm.setString(3, tennhasanxuat.get());
+                ptm.setString(4, tennhomhang.get());
+                ptm.setString(5, ghichu.get());
+                ptm.setInt(6, tonkhotoithieu.get());
+                ptm.setInt(7, tonkhotoida.get());
+                ptm.setInt(8, thoihan_thang.get());
                 int check = ptm.executeUpdate();
                 if (check != 0) {
                     ptm.close();

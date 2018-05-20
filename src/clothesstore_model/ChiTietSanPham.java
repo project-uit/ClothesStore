@@ -170,6 +170,7 @@ public class ChiTietSanPham {
                 }
 
             } catch (MySQLIntegrityConstraintViolationException ex) {
+                System.out.println(""+ex);
                 return 2;
             } catch (SQLException ex) {
                 System.out.println("" + ex);

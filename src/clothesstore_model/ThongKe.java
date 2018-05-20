@@ -22,7 +22,8 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  * @author quochung
  */
 public class ThongKe {
-      public static XSSFWorkbook export_thongkesp_banchay_trongquy(int quy, int nam) {
+
+    public static XSSFWorkbook export_thongkesp_banchay_trongquy(int quy, int nam) {
 
         XSSFWorkbook wb = new XSSFWorkbook();
         XSSFSheet sheet = wb.createSheet("Danh sách 5 sản phẩm bán chạy");
@@ -30,8 +31,8 @@ public class ThongKe {
 
         header.createCell(0).setCellValue("Mã sản phẩm");
         header.createCell(1).setCellValue("Tên sản phẩm");
-        header.createCell(2).setCellValue("Số lượng đã bán");       
-        header.createCell(3).setCellValue("Doanh thu");    
+        header.createCell(2).setCellValue("Số lượng đã bán");
+        header.createCell(3).setCellValue("Doanh thu");
         header.createCell(4).setCellValue("Tỷ lệ số lượng");
         sheet.autoSizeColumn(0);
         sheet.autoSizeColumn(1);
@@ -45,19 +46,19 @@ public class ThongKe {
         int index = 1;
         if (con != null) {
             try {
-                String call = "{call soluongban_theoquy(?,?)}";                
+                String call = "{call soluongban_theoquy(?,?)}";
                 CallableStatement stmt = con.prepareCall(call);
                 stmt.setInt(1, quy);
                 stmt.setInt(2, nam);
                 ResultSet rs = stmt.executeQuery();
-                Integer tongsl =tongsp_daban(quy,nam);
+                Integer tongsl = tongsp_daban(quy, nam);
                 while (rs.next()) {
                     XSSFRow row = sheet.createRow(index);
                     row.createCell(0).setCellValue(rs.getString(1));
                     row.createCell(1).setCellValue(rs.getString(2));
                     row.createCell(2).setCellValue(rs.getInt(3));
-                    row.createCell(3).setCellValue(rs.getInt(4)); 
-                    row.createCell(4).setCellValue(((float)rs.getInt(3)/tongsl*100)); 
+                    row.createCell(3).setCellValue(rs.getInt(4));
+                    row.createCell(4).setCellValue(((float) rs.getInt(3) / tongsl * 100));
                     index++;
                 }
                 XSSFRow row = sheet.createRow(index);
@@ -71,6 +72,7 @@ public class ThongKe {
         }
         return wb;
     }
+
     public static HashMap<String, Integer> thongke_sp_banchay(int quy, int nam) {
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
@@ -82,7 +84,9 @@ public class ThongKe {
                 stmt.setInt(1, quy);
                 stmt.setInt(2, nam);
                 ResultSet rs = stmt.executeQuery();
+
                 while (rs.next()) {
+
                     value.put(rs.getString(1), rs.getInt(3));
                 }
 
