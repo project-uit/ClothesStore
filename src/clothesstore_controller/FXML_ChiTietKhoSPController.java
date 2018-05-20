@@ -179,7 +179,7 @@ public class FXML_ChiTietKhoSPController implements Initializable {
 
     @FXML
     private void Handler_btnLuu(ActionEvent event) {
-        KhoSanPham ksp = new KhoSanPham(MaNhanVien, MAPN, MaSP);
+        KhoSanPham ksp = new KhoSanPham(MaNhanVien, MAPN,MaSP);
         if (ksp.ThemKhoSanPham()) {
             for (Object o : tblchitietkhosp.getItems()) {
                 String MaCTSP = clmachitietsp.getCellData(o).toString();
