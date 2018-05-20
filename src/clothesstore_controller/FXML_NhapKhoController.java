@@ -153,7 +153,7 @@ public class FXML_NhapKhoController implements Initializable {
             row.setOnMouseClicked(event -> {
                 if (event.getClickCount() == 2 && (!row.isEmpty())) {
                     ChiTietPhieuNhap selectedRow = (ChiTietPhieuNhap) tableviewchitietphieunhap.getSelectionModel().getSelectedItem();
-                    if (checkPhieuNhap(selectedRow.getMaphieunhap()) == false) {
+                    if (checkPhieuNhap(selectedRow.getMasanpham()) == true) {
                         ChiTietPhieuNhap rowData = row.getItem();
                         MaSP = rowData.getMasanpham();
                         TenSP = rowData.getTensanpham();
@@ -161,7 +161,7 @@ public class FXML_NhapKhoController implements Initializable {
                         DisplayChitiet();
                     } else {
                         ShowMessage
-                                .showMessageBox(Alert.AlertType.WARNING, "Thông báo", null, "Phiếu nhập này đã được nhập kho trước đó")
+                                .showMessageBox(Alert.AlertType.WARNING, "Thông báo", null, "Sản phẩm này đã được nhập kho trước đó")
                                 .showAndWait();
                     }
                 }
@@ -170,13 +170,13 @@ public class FXML_NhapKhoController implements Initializable {
         });
     }
 
-    private boolean checkPhieuNhap(int mapn) {
+    private boolean checkPhieuNhap(String masp) {
         KhoSanPham ksp = new KhoSanPham();
-        List listPNChuaNhapKho = new ArrayList();
-        listPNChuaNhapKho = ksp.getListMaPNChuaNhapKho();
+        List listSPDaNhapKho = new ArrayList();
+        listSPDaNhapKho = ksp.getListMaSPDaNhapKho(MAPN);
 
-        for (Object PNChuaNhapKho : listPNChuaNhapKho) {
-            if (mapn == Integer.valueOf(PNChuaNhapKho.toString())) {
+        for (Object SPDaNhapKho : listSPDaNhapKho) {
+            if (masp.equals(SPDaNhapKho.toString())) {
                 return false;
             }
         }

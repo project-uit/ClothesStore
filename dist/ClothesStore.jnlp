@@ -8,7 +8,11 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
+<<<<<<< HEAD
     <jar href="ClothesStore.jar" size="658765" download="eager" />
+=======
+    <jar href="ClothesStore.jar" size="692677" download="eager" />
+>>>>>>> 05b4a829fce613f5e63a47e4037bed1aaef3a2d2
     <jar href="lib\apache-commons.jar" size="857029" download="eager" />
     <jar href="lib\commons-collections4-4.1.jar" size="751238" download="eager" />
     <jar href="lib\commons-digester-2.1.jar" size="196768" download="eager" />

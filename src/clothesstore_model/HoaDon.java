@@ -495,9 +495,9 @@ public class HoaDon {
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
         if (con != null) {
-            String query = "select mahoadon, tennhanvien, sodienthoai, ngayban,"
-                    + " tongtien from hoadon, nhanvien "
-                    + "where hoadon.manhanvien = nhanvien.manhanvien;";
+            String query = "select hd.mahoadon, tennhanvien, sodienthoai, ngayban,"
+                    + " tongtien from hoadon hd, nhanvien nv, chitietkhachhang ctkh "
+                    + "where hd.manhanvien = nv.manhanvien and hd.mahoadon = ctkh.mahoadon;";
             try {
                 PreparedStatement ptm = con.prepareStatement(query);
                 ResultSet rs = ptm.executeQuery();
@@ -511,7 +511,7 @@ public class HoaDon {
                     list.add(hd);
                 }
             } catch (SQLException ex) {
-                System.out.println("" + ex);
+                Logger.getLogger(HoaDon.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return list;
@@ -522,8 +522,9 @@ public class HoaDon {
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
         if (con != null) {
-            String query = "select mahoadon, tennhanvien, sodienthoai, ngayban, tongtien from hoadon, nhanvien\n"
-                    + "where hoadon.manhanvien = nhanvien.manhanvien\n"
+            String query = "select hd.mahoadon, tennhanvien, sodienthoai, ngayban, "
+                    + "tongtien from hoadon hd, nhanvien nv, chitietkhachhang ctkh "
+                    + "where hd.manhanvien = nv.manhanvien and hd.mahoadon = ctkh.mahoadon "
                     + "and DATE(ngayban) BETWEEN ? AND ?;";
             try {
                 PreparedStatement ptm = con.prepareStatement(query);
@@ -540,7 +541,7 @@ public class HoaDon {
                     list.add(hd);
                 }
             } catch (SQLException ex) {
-                System.out.println("" + ex);
+                Logger.getLogger(HoaDon.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return list;
@@ -551,9 +552,9 @@ public class HoaDon {
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
         if (con != null) {
-            String query = "select mahoadon, tennhanvien, sodienthoai, ngayban, tongtien "
-                    + "from hoadon, nhanvien "
-                    + "where hoadon.manhanvien = nhanvien.manhanvien and mahoadon = ?;";
+            String query = "select hd.mahoadon, tennhanvien, sodienthoai, ngayban, "
+                    + "tongtien from hoadon hd, nhanvien nv, chitietkhachhang ctkh "
+                    + "where hd.manhanvien = nv.manhanvien and hd.mahoadon = ctkh.mahoadon and hd.mahoadon = ?;";
             try {
                 PreparedStatement ptm = con.prepareStatement(query);
                 ptm.setInt(1, mahd);
@@ -567,7 +568,7 @@ public class HoaDon {
                     hd = new HoaDon(mhd, tnv, sdt, nb, tt);
                 }
             } catch (SQLException ex) {
-                System.out.println("" + ex);
+                Logger.getLogger(HoaDon.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return hd;

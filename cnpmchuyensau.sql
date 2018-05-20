@@ -358,6 +358,7 @@ elseif chucnang=3 then
 -- chưa nhập vào kho
 select sp.masanpham,sp.tensanpham,sp.tonkhotoithieu,soluong,sp.tonkhotoida
 from sanpham sp
+<<<<<<< HEAD
 left join  chitietsanpham ctsp on ctsp.masanpham=sp.masanpham
 where soluong is null;
 
@@ -423,3 +424,61 @@ from  sanpham sp, chitietphieunhap ctpn,phieunhap pn
 where ctpn.masanpham = sp.masanpham and ctpn.maphieunhap = pn.maphieunhap
 group by sp.masanpham;
 
+=======
+join chitietsanpham ctsp on sp.masanpham = ctsp.masanpham
+where ctsp.soluong>=0 and gioitinh='' 
+and tensize='' and tenmau='' 
+and tennhomhang='' and tennhasanxuat=''
+and tensanpham ='';
+
+
+
+create table doitra
+(
+madoitra INT NOT NULL PRIMARY KEY auto_increment,
+mahoadon INT(6) unsigned,
+ngaytra datetime,
+lydo nvarchar(300),
+
+FOREIGN KEY (mahoadon)
+REFERENCES hoadon(mahoadon)
+);
+
+create table chitietdoitra
+(
+machitietdoitra INT NOT NULL PRIMARY KEY auto_increment,
+madoitra int,
+machitietsanpham varchar(45),
+soluong int(6),
+
+FOREIGN KEY (machitietsanpham)
+REFERENCES chitietsanpham(machitietsanpham),
+
+FOREIGN KEY (madoitra)
+REFERENCES doitra(madoitra)
+);
+
+create table hoadondoitra
+(
+mahoadondoitra INT NOT NULL PRIMARY KEY auto_increment,
+madoitra INT(6),
+thanhtien int(6),
+FOREIGN KEY (madoitra)
+REFERENCES doitra(madoitra)
+);
+
+create table chitiethoadondoitra
+(
+machitiethoadondoitra INT NOT NULL PRIMARY KEY auto_increment,
+mahoadondoitra INT,
+machitietsanpham varchar(45),
+soluong int(6),
+thanhtien int,
+
+FOREIGN KEY (machitietsanpham)
+REFERENCES chitietsanpham(machitietsanpham),
+
+FOREIGN KEY (mahoadondoitra)
+REFERENCES hoadondoitra(mahoadondoitra)
+)
+>>>>>>> 05b4a829fce613f5e63a47e4037bed1aaef3a2d2

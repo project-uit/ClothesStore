@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" prefHeight="720.0" prefWidth="845.0" style="-fx-background-color: #deeeef;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clothesstore_controller.FXML_ChiTietDoiTraController">
+   <children>
+      <TableView fx:id="tblHangDoiTra" layoutX="18.0" layoutY="67.0" prefHeight="202.0" prefWidth="810.0">
+         <columns>
+            <TableColumn fx:id="clMaCTSP" prefWidth="75.0" text="Mã chi tiết sản phẩm" />
+            <TableColumn fx:id="clTenSP" prefWidth="75.0" text="Tên sản phẩm" />
+            <TableColumn fx:id="clGiaBan" prefWidth="75.0" text="Giá bán" />
+            <TableColumn fx:id="clSoLuong" prefWidth="75.0" text="Số lượng" />
+            <TableColumn fx:id="clThanhTien" prefWidth="75.0" text="Thành tiền" />
+         </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
+      </TableView>
+      <TableView fx:id="tblHangThayThe" layoutX="18.0" layoutY="328.0" prefHeight="196.0" prefWidth="810.0">
+         <columns>
+            <TableColumn fx:id="_clMaCTSP" prefWidth="75.0" text="Mã chi tiết sản phẩm" />
+            <TableColumn fx:id="_clTenSP" prefWidth="75.0" text="Tên sản phẩm" />
+            <TableColumn fx:id="_clGiaBan" prefWidth="75.0" text="Giá bán" />
+            <TableColumn fx:id="_clSoLuong" prefWidth="75.0" text="Số lượng" />
+            <TableColumn fx:id="_clThanhTien" prefWidth="75.0" text="Thành tiền" />
+         </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
+      </TableView>
+      <Label layoutX="19.0" layoutY="27.0" text="Hàng đổi trả">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="19.0" layoutY="289.0" text="Hàng thay thế">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <JFXButton fx:id="btnLuu" layoutX="746.0" layoutY="670.0" onAction="#Handler_btnLuu" prefHeight="37.0" prefWidth="82.0" ripplerFill="BLACK" style="-fx-background-color: #4681f5;" text="Lưu" textFill="WHITE" wrapText="true" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="20.0">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </JFXButton>
+      <Label fx:id="lb1" layoutX="207.0" layoutY="550.0" text="Tổng tiền hàng đổi trả :    0">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="lb2" layoutX="207.0" layoutY="585.0" text="Tổng tiền hàng thay thế : 0">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="lb3" layoutX="209.0" layoutY="649.0" text="Thành tiền : 0">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Line endX="250.0" layoutX="307.0" layoutY="629.0" startX="-100.0" />
+      <JFXButton fx:id="btnBack" layoutX="26.0" layoutY="663.0" onAction="#Handler_btnBack" prefHeight="37.0" prefWidth="82.0" ripplerFill="BLACK" style="-fx-background-color: #4681f5;" text="Quay về" textFill="WHITE" wrapText="true" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </JFXButton>
+      <TextField fx:id="txtSearch" layoutX="152.0" layoutY="292.0" prefHeight="25.0" prefWidth="163.0" promptText="Nhập mã chi tiết sản phẩm" />
+      <JFXButton fx:id="btnAdd" layoutX="328.0" layoutY="290.0" onAction="#Handler_btnAdd" prefHeight="27.0" prefWidth="33.0" ripplerFill="BLACK" style="-fx-background-color: #4681f5;" text="+" textFill="WHITE" wrapText="true">
+         <font>
+            <Font size="13.0" />
+         </font>
+      </JFXButton>
+   </children>
+</AnchorPane>
