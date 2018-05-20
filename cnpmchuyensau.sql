@@ -159,6 +159,7 @@ create table khosanpham
 makhosanpham   int(6) unsigned auto_increment  PRIMARY KEY,
 manhanvien int(6) unsigned,
 maphieunhap  INT(6) UNSIGNED,
+masanpham CHAR(8),
 FOREIGN KEY (maphieunhap)
 REFERENCES phieunhap(maphieunhap),
 FOREIGN KEY (manhanvien)
@@ -462,5 +463,3 @@ WHERE  ctpn1.maphieunhap = pn1.maphieunhap  and ctpn1.masanpham = ctpn.masanpham
 ORDER BY ctpn1.maphieunhap DESC
 LIMIT 1)
 ;
-
-
