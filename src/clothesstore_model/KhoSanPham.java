@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -20,90 +22,94 @@ import javafx.collections.ObservableList;
  * @author dieunguyen
  */
 public class KhoSanPham {
+
     private IntegerProperty makhosanpham;
     private IntegerProperty manhanvien;
     private IntegerProperty maphieunhap;
+    private StringProperty masanpham;
 
-    public KhoSanPham(){}
-            
+    public KhoSanPham() {
+    }
+
     public KhoSanPham(IntegerProperty manhanvien, IntegerProperty maphieunhap) {
         this.manhanvien = manhanvien;
         this.maphieunhap = maphieunhap;
     }
 
-    public KhoSanPham(int manhanvien, int maphieunhap) {      
+    public KhoSanPham(int manhanvien, int maphieunhap, String masanpham) {
         this.manhanvien = new SimpleIntegerProperty(manhanvien);
         this.maphieunhap = new SimpleIntegerProperty(maphieunhap);
+        this.masanpham = new SimpleStringProperty(masanpham);
     }
-    
-    public boolean ThemKhoSanPham(){
+
+    public boolean ThemKhoSanPham() {
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
-        String sql = "INSERT INTO khosanpham(manhanvien, maphieunhap) VALUES(?, ?);";
-        if(con!=null){
-            try{
+        String sql = "INSERT INTO khosanpham(manhanvien, maphieunhap, masanpham) VALUES(?, ?, ?);";
+        if (con != null) {
+            try {
                 PreparedStatement ptm = con.prepareStatement(sql);
                 ptm.setInt(1, manhanvien.getValue());
                 ptm.setInt(2, maphieunhap.getValue());
+                ptm.setString(3, masanpham.getValue());
                 ptm.execute();
-                
+
                 ptm.close();
-                con.close();  
-                
+                con.close();
+
                 return true;
-            }
-            catch(Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
-            } 
+            }
         }
-        return false; 
+        return false;
     }
-    
-    public List getListMaPNChuaNhapKho(){      
+
+    public List getListMaSPDaNhapKho(int mapn) {
         List list = new ArrayList();
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
-        String sql = "SELECT pn.maphieunhap FROM phieunhap pn "
-                + "LEFT JOIN khosanpham ksp ON pn.maphieunhap = ksp.maphieunhap "
-                + "where ksp.makhosanpham is null";
-        if(con!=null){
-            try{
+        String sql = "SELECT ksp.masanpham \n"
+                + "FROM phieunhap pn, khosanpham ksp\n"
+                + "where pn.maphieunhap = ksp.maphieunhap \n"
+                + "and ksp.maphieunhap = '"+mapn+"';";
+        if (con != null) {
+            try {
                 PreparedStatement ptm = con.prepareStatement(sql);
                 ResultSet rs = ptm.executeQuery();
                 while (rs.next()) {
-                    list.add(rs.getInt("maphieunhap"));
+                    list.add(rs.getString("masanpham"));
                 }
-            }
-            catch(Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
-            }  
+            }
         }
         return list;
     }
-    
-    public ObservableList<KhoSanPham> getListKhoSanPham(){      
-        ObservableList<KhoSanPham> list = FXCollections.observableArrayList(); 
+
+    public ObservableList<KhoSanPham> getListKhoSanPham() {
+        ObservableList<KhoSanPham> list = FXCollections.observableArrayList();
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
         String sql = "SELECT * FROM khosanpham";
-        if(con!=null){
-            try{
+        if (con != null) {
+            try {
                 PreparedStatement ptm = con.prepareStatement(sql);
                 ResultSet rs = ptm.executeQuery();
                 while (rs.next()) {
-                    KhoSanPham ksp = new KhoSanPham(rs.getInt("manhanvien")
-                            , rs.getInt("maphieunhap")
-                            );
+                    KhoSanPham ksp = new KhoSanPham(rs.getInt("manhanvien"),
+                             rs.getInt("maphieunhap"),
+                             rs.getString("masanpham")
+                    );
                     list.add(ksp);
                 }
-            }
-            catch(Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
-            }  
+            }
         }
         return list;
     }
-    
+
     public void setMakhosanpham(IntegerProperty makhosanpham) {
         this.makhosanpham = makhosanpham;
     }
@@ -127,5 +133,5 @@ public class KhoSanPham {
     public Integer getMaphieunhap() {
         return maphieunhap.getValue();
     }
-    
+
 }
