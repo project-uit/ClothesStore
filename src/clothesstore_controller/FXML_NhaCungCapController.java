@@ -124,7 +124,7 @@ public class FXML_NhaCungCapController implements Initializable {
 
         TextField txtmanhacungcap = new TextField();
         txtmanhacungcap.setPromptText("Mã nhà cung cấp");
-        
+        txtmanhacungcap.setEditable(false);
         TextField txttennhacungcap = new TextField();
         txttennhacungcap.setPromptText("Tên nhà cung cấp");
         
@@ -158,19 +158,19 @@ public class FXML_NhaCungCapController implements Initializable {
         dialog.setResultConverter(dialogButton -> {
             if (dialogButton == btnSave) {
                 int manhacungcap=0;
-                try{
-                    manhacungcap = Integer.parseInt(txtmanhacungcap.getText().toString());
-                }catch(Exception ex){
-                    System.out.println(ex);
-                }
-                String tennhacungcap=null;
+//                try{
+//                    manhacungcap = Integer.parseInt(txtmanhacungcap.getText().toString());
+//                }catch(Exception ex){
+//                    System.out.println(ex);
+//                }
+                String tennhacungcap="";
                 try{
                     tennhacungcap = txttennhacungcap.getText();
                 }catch(Exception ex){
                     System.out.println(ex);
                 }
                 
-                if(tennhacungcap.equals("") || manhacungcap==0){
+                if(tennhacungcap.equals("")){
                 
             ButtonType cancel = new ButtonType("OK", ButtonBar.ButtonData.CANCEL_CLOSE);
             Alert alert = new Alert(Alert.AlertType.WARNING,
@@ -182,7 +182,7 @@ public class FXML_NhaCungCapController implements Initializable {
             Optional<ButtonType> result = alert.showAndWait(); 
             }
             else{
-                return new NhaCungCap(manhacungcap, tennhacungcap,txtdiachi.getText(),txtemail.getText(),txtghichu.getText());
+                return new NhaCungCap(tennhacungcap,txtdiachi.getText(),txtemail.getText(),txtghichu.getText());
             }}
             return null;
         });
@@ -218,7 +218,7 @@ public class FXML_NhaCungCapController implements Initializable {
         TextField txtmanhacungcap = new TextField();
         txtmanhacungcap.setPromptText("Mã nhà cung cấp");
         txtmanhacungcap.setText(Integer.toString(ncctemp.getManhacungcap()));
-        
+        txtmanhacungcap.setEditable(false);
         TextField txttennhacungcap = new TextField();
         txttennhacungcap.setPromptText("Tên nhà cung cấp");
         txttennhacungcap.setText(ncctemp.getTencungcap());

@@ -164,8 +164,8 @@ public class SidePanelContentController implements Initializable {
                     _rootDangNhap.getChildren().removeAll();
                     _rootDangNhap.getChildren().setAll(pane);
                     stageDangNhap.show();
-                    break;
                 }
+                break;
             case "btnLoiNhuan":
                 AnchorPane tracuu = FXMLLoader.load(getClass().getResource("/clothesstore_view/FXML_TraCuu.fxml"));
                 FXML_ClothesStoreController.rootP.getChildren().setAll(tracuu);
@@ -173,6 +173,14 @@ public class SidePanelContentController implements Initializable {
                 rootP.setRightAnchor(tracuu, 0.0);
                 rootP.setTopAnchor(tracuu, 0.0);
                 rootP.setBottomAnchor(tracuu, 0.0);
+                break;
+            case "btnTonKho":
+                AnchorPane tonkho = FXMLLoader.load(getClass().getResource("/clothesstore_view/FXML_TonKho.fxml"));
+                FXML_ClothesStoreController.rootP.getChildren().setAll(tonkho);
+                rootP.setLeftAnchor(tonkho, 0.0);
+                rootP.setRightAnchor(tonkho, 0.0);
+                rootP.setTopAnchor(tonkho, 0.0);
+                rootP.setBottomAnchor(tonkho, 0.0);
                 break;
         }
     }

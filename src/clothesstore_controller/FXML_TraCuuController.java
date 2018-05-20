@@ -33,8 +33,11 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
+import javafx.event.EventHandler;
 import javafx.event.EventType;
 import javafx.scene.control.SpinnerValueFactory;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.util.StringConverter;
 
 /**
@@ -78,6 +81,7 @@ public class FXML_TraCuuController implements Initializable {
         TraCuu tracuu = new TraCuu();
         query = tracuu.getquery();
         viewListTable();
+
         table_view.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         btn_search.setOnAction(e -> {
             btn_search_click();
@@ -86,11 +90,22 @@ public class FXML_TraCuuController implements Initializable {
             TraCuu tra_cuu = new TraCuu();
             query = tra_cuu.getquery();
             viewListTable();
+            txt_fi_min_soluong.clear();
+            txt_fi_max_soluong.clear();
+            txt_fi_min_giaban.clear();
+            txt_fi_max_giaban.clear();
+            txt_fi_tensanpham.clear();
+
+            cmb_mausac.getSelectionModel().select(0);
+            cmb_nhasanxuat.getSelectionModel().select(0);
+            cmb_nhomhang.getSelectionModel().select(0);
+            cmb_size.getSelectionModel().select(0);
+            cmb_gioitinh.getSelectionModel().select(0);
         });
         initTextField();
     }
 
-    private void initTextField() {      
+    private void initTextField() {
         OnlyNumberInTextField(txt_fi_min_soluong);
         OnlyNumberInTextField(txt_fi_max_soluong);
         OnlyNumberInTextField(txt_fi_min_giaban);
@@ -113,7 +128,6 @@ public class FXML_TraCuuController implements Initializable {
         //truy vấn theo tên sản phẩm
         if (query.contains(tensanpham)) {
             query = query.replace(tensanpham, "");
-
         }
         tensanpham = "and tensanpham like ";
         if (!txt_fi_tensanpham.getText().isEmpty()) {
@@ -194,11 +208,12 @@ public class FXML_TraCuuController implements Initializable {
             }
 
         });
+        //add list giới tính
         ObservableList<Integer> list = FXCollections.observableArrayList();
-        list.add(3);
-        list.add(0);
-        list.add(1);
-        list.add(2);
+        list.add(3);//tất cả
+        list.add(0);//nữ
+        list.add(1);//nam
+        list.add(2);//unicef
         cmb_gioitinh.setItems(list);
         cmb_gioitinh.getSelectionModel().selectFirst();
         cmb_gioitinh.setConverter(new StringConverter<Integer>() {
@@ -216,7 +231,7 @@ public class FXML_TraCuuController implements Initializable {
 
             @Override
             public Integer fromString(String string) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                throw new UnsupportedOperationException("Not supported yet.");
             }
 
         });
@@ -353,7 +368,7 @@ public class FXML_TraCuuController implements Initializable {
         table_view.getColumns().get(6).setText("Size");
         table_view.getColumns().get(7).setText("Số lượng");
         table_view.getColumns().get(8).setText("Giá bán");
-
+        
     }
 
 }

@@ -14,6 +14,7 @@ import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXNodesList;
 import java.io.IOException;
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -149,20 +150,21 @@ public class FXML_HoaDonController implements Initializable {
                             = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 0);
                     spin_soluong.setValueFactory(valueFactory);
                     txt_fi_dongia.clear();
-                    
-                    txt_fi_thanhtien.setText(""+0);
+
+                    txt_fi_thanhtien.setText("" + 0);
                 }
             }
         });
         List<String> arr_mactsp = new ChiTietSanPham().getListMactsp();
         TextFields.bindAutoCompletion(txt_fi_machitietsanpham, arr_mactsp);
+
     }
 
     private void getDonGia(String mactsp) {
         SanPham sp = new SanPham();
         dongia = sp.getDongia(mactsp);
         if (dongia != -1) {
-            txt_fi_dongia.setText("" + dongia);
+            txt_fi_dongia.setText("" + FormatTien(dongia));
         }
     }
 
@@ -180,7 +182,7 @@ public class FXML_HoaDonController implements Initializable {
                 -> {
             soluongmua = newValue;
             int thanhtien = soluongmua * dongia;
-            txt_fi_thanhtien.setText("" + thanhtien);
+            txt_fi_thanhtien.setText("" + FormatTien(thanhtien));
         }
         );
     }
@@ -230,8 +232,8 @@ public class FXML_HoaDonController implements Initializable {
         checkLaphoadon = true;
         stateBtnLuu = false;
         txt_fi_tongtien.setText("0");
-        txt_fi_machitietsanpham.setText("");        
-        tongtien=0;
+        txt_fi_machitietsanpham.setText("");
+        tongtien = 0;
         viewListTable();
         if (FXML_ClothesStoreController.rootP.getChildren().size() == 2) {
             FXML_ClothesStoreController.rootP.getChildren().remove(1);
@@ -278,7 +280,7 @@ public class FXML_HoaDonController implements Initializable {
             if (FXML_ClothesStoreController.rootP.getChildren().size() == 2) {
                 FXML_ClothesStoreController.rootP.getChildren().remove(1);
             }
-            tongtien=0;
+            tongtien = 0;
             ShowMessage
                     .showMessageBox(Alert.AlertType.INFORMATION, "Thông báo", null, "Hủy hóa đơn thành công")
                     .showAndWait();
@@ -296,7 +298,8 @@ public class FXML_HoaDonController implements Initializable {
         if (spin_soluong.getValue() != null) {
             slmua = spin_soluong.getValue();
         }
-        int thanhtien = Integer.parseInt(txt_fi_thanhtien.getText());
+        String money = txt_fi_thanhtien.getText();     
+        int thanhtien = Integer.parseInt(money.replaceAll(",", ""));
         ChiTietHoaDon cthd = new ChiTietHoaDon(new SimpleIntegerProperty(mahoadon),
                 new SimpleStringProperty(txt_fi_machitietsanpham.getText()),
                 new SimpleIntegerProperty(slmua),
@@ -314,7 +317,8 @@ public class FXML_HoaDonController implements Initializable {
             viewListTable();
             HoaDon hd = new HoaDon();
             tongtien = hd.tongtien(mahoadon);
-            txt_fi_tongtien.setText("" + tongtien);
+
+            txt_fi_tongtien.setText("" + FormatTien(tongtien));
         } else {
             ShowMessage
                     .showMessageBox(Alert.AlertType.ERROR, "Thông báo", null, "Thêm dữ liệu thất bại")
@@ -332,7 +336,7 @@ public class FXML_HoaDonController implements Initializable {
             viewListTable();
             HoaDon hd = new HoaDon();
             tongtien = hd.tongtien(mahoadon);
-            txt_fi_tongtien.setText("" + tongtien);
+            txt_fi_tongtien.setText("" + FormatTien(tongtien));
         } else {
             ShowMessage
                     .showMessageBox(Alert.AlertType.ERROR, "Thông báo", null, "Xóa dữ liệu thất bại")
@@ -416,5 +420,9 @@ public class FXML_HoaDonController implements Initializable {
         } catch (IOException ex) {
             Logger.getLogger(FXML_HoaDonController.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    private String FormatTien(int soTien) {
+        return String.format("%,8d%n", soTien).trim();
     }
 }

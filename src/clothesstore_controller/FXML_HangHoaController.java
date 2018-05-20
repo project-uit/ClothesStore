@@ -60,6 +60,9 @@ import javafx.stage.WindowEvent;
 import javafx.util.Callback;
 import javafx.util.Duration;
 import javafx.animation.SequentialTransition;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.ReadOnlyIntegerWrapper;
+import javafx.beans.property.SimpleIntegerProperty;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
@@ -93,7 +96,8 @@ public class FXML_HangHoaController implements Initializable {
     @FXML
     private JFXButton btnExportExcel;
     @FXML
-    private JFXTextField txt_fi_tensanpham;
+    private JFXTextField txt_fi_tensanpham,
+            txt_fi_tonkhotoithieu, txt_fi_tonkhotoida, txt_fi_thoihantonkho;
     @FXML
     private JFXTextField txt_fi_masanpham;
     @FXML
@@ -105,6 +109,9 @@ public class FXML_HangHoaController implements Initializable {
     private JFXTreeTableColumn<SanPham, String> col_nhasanxuat = new JFXTreeTableColumn<>("Tên nhà sản xuất");
     private JFXTreeTableColumn<SanPham, String> col_nhomhang = new JFXTreeTableColumn<>("Tên nhóm hàng");
     private JFXTreeTableColumn<SanPham, String> col_ghichu = new JFXTreeTableColumn<>("Ghi chú");
+    private JFXTreeTableColumn<SanPham, Number> col_tonkhotoithieu = new JFXTreeTableColumn<>("Tồn kho tối thiểu");
+    private JFXTreeTableColumn<SanPham, Number> col_tonkhotoida = new JFXTreeTableColumn<>("Tồn kho tối đa");
+    private JFXTreeTableColumn<SanPham, Number> col_thoihan = new JFXTreeTableColumn<>("Thời hạn");
     private int flag = 0;
     static List<SanPham> listspvuanhap = new ArrayList<>();
     private boolean StateNhomHang = true;
@@ -126,6 +133,7 @@ public class FXML_HangHoaController implements Initializable {
             txt_fi_masanpham.setText("");
             txt_fi_tensanpham.setText("");
             txt_area_ghichu.setText("");
+            txt_fi_masanpham.setEditable(false);
             btnXoa.setDisable(true);
             btnThem.setDisable(true);
             btnSua.setDisable(true);
@@ -168,7 +176,7 @@ public class FXML_HangHoaController implements Initializable {
 
     @FXML
     private void OnMouseClick_clearSelectTable(MouseEvent evt) {
-        // tree_table_vi.getSelectionModel().clearSelection();
+        tree_table_vi.getSelectionModel().clearSelection();
     }
 
     private void btnDongy_process() {
@@ -191,6 +199,7 @@ public class FXML_HangHoaController implements Initializable {
         btnSua.setDisable(true);
         tree_table_vi.getSelectionModel().clearSelection();
         tree_table_vi.setDisable(false);
+        txt_fi_masanpham.setEditable(true);
     }
 
     private void exportExcel() {
@@ -217,6 +226,18 @@ public class FXML_HangHoaController implements Initializable {
             }
 
         }
+    }
+
+    private void OnlyNumberInTextField(JFXTextField textField) {
+        textField.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue,
+                    String newValue) {
+                if (!newValue.matches("\\d*")) {
+                    textField.setText(newValue.replaceAll("[^\\d]", ""));
+                }
+            }
+        });
     }
 
     private void ShowFXML_NhaSanXuat() {
@@ -352,31 +373,49 @@ public class FXML_HangHoaController implements Initializable {
         StringProperty tennsx = new SimpleStringProperty(cmb_nhasanxuat.getValue());
         StringProperty tennhomhang = new SimpleStringProperty(cmb_nhomhang.getValue());
         StringProperty ghichu = new SimpleStringProperty(txt_area_ghichu.getText());
-
         SanPham sanpham = new SanPham(masp, tensp, tennsx, tennhomhang, ghichu);
-
-        if (sanpham.isEmpty()) {
+        if (sanpham.isEmpty() || txt_fi_tonkhotoithieu.getText().isEmpty()
+                || txt_fi_tonkhotoida.getText().isEmpty() || txt_fi_thoihantonkho.getText().isEmpty()) {
             ShowMessage
-                    .showMessageBox(Alert.AlertType.WARNING, "Thông báo", null, "Bạn phải điền đẩy đủ thông tin bắt buộc")
+                    .showMessageBox(Alert.AlertType.WARNING, "Thông báo", null,
+                            "Bạn phải điền đẩy đủ thông tin bắt buộc")
                     .showAndWait();
             return;
         }
+        IntegerProperty tonkhotoithieu = new SimpleIntegerProperty(Integer.valueOf(txt_fi_tonkhotoithieu.getText()));
+        IntegerProperty tonkhotoida = new SimpleIntegerProperty(Integer.valueOf(txt_fi_tonkhotoida.getText()));
+        if (tonkhotoithieu.get() > tonkhotoida.get()) {
+            ShowMessage
+                    .showMessageBox(Alert.AlertType.WARNING, "Thông báo", null,
+                            "Tồn kho tối thiểu phải nhỏ hơn tồn kho tối đa")
+                    .showAndWait();
+            return;
+        }
+        sanpham.setTonkhotoithieu(tonkhotoithieu);
+        sanpham.setTonkhotoida(tonkhotoida);
+        sanpham.setThoihan_thang(new SimpleIntegerProperty
+            (Integer.valueOf(txt_fi_thoihantonkho.getText())));
+               
         if (sanpham.insert()) {
+            viewListTable();
             ShowFXML_ChiTietSanPham(sanpham.getMasanpham().get());
             ShowMessage
-                    .showMessageBox(Alert.AlertType.INFORMATION, "Thông báo", null, "Thêm dữ liệu thành công")
+                    .showMessageBox(Alert.AlertType.INFORMATION, "Thông báo", null,
+                            "Thêm dữ liệu thành công")
                     .showAndWait();
+            
         } else {
             ShowMessage
-                    .showMessageBox(Alert.AlertType.ERROR, "Thông báo", null, "Thêm dữ liệu thất bại")
+                    .showMessageBox(Alert.AlertType.ERROR, "Thông báo", null,
+                            "Thêm dữ liệu thất bại")
                     .showAndWait();
         }
     }
 
     private void DeleteSanPham() {
         StringProperty masp = new SimpleStringProperty(txt_fi_masanpham.getText());
-        SanPham sanpham = new SanPham(masp);
-        if (sanpham.delete() == 1) {
+        SanPham sanpham = new SanPham(masp);      
+        if (sanpham.delete() == 1 ) {
             viewListTable();
             ShowMessage
                     .showMessageBox(Alert.AlertType.INFORMATION, "Thông báo", null, "Xóa dữ liệu thành công")
@@ -399,8 +438,11 @@ public class FXML_HangHoaController implements Initializable {
         StringProperty tennsx = new SimpleStringProperty(cmb_nhasanxuat.getValue());
         StringProperty tennhomhang = new SimpleStringProperty(cmb_nhomhang.getValue());
         StringProperty ghichu = new SimpleStringProperty(txt_area_ghichu.getText());
-        SanPham sanpham = new SanPham(masp, tensp, tennsx, tennhomhang, ghichu);
-
+        IntegerProperty tonkhotoithieu = new SimpleIntegerProperty(Integer.valueOf(txt_fi_tonkhotoithieu.getText()));
+        IntegerProperty tonkhotoida = new SimpleIntegerProperty(Integer.valueOf(txt_fi_tonkhotoida.getText()));
+        SanPham sanpham = new SanPham(masp, tensp, tennsx, tennhomhang, ghichu, tonkhotoithieu, tonkhotoida);
+        IntegerProperty thoihan_thang = new SimpleIntegerProperty (Integer.valueOf(txt_fi_thoihantonkho.getText()));
+        sanpham.setThoihan_thang(thoihan_thang);
         if (sanpham.update()) {
             viewListTable();
             ShowMessage
@@ -487,7 +529,27 @@ public class FXML_HangHoaController implements Initializable {
                 return param.getValue().getValue().getGhichu();
             }
         });
-        tree_table_vi.getColumns().setAll(col_masanpham, col_tensanpham, col_nhasanxuat, col_nhomhang, col_ghichu);
+
+        col_tonkhotoithieu.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<SanPham, Number>, ObservableValue<Number>>() {
+            @Override
+            public ObservableValue<Number> call(TreeTableColumn.CellDataFeatures<SanPham, Number> param) {
+                return param.getValue().getValue().getTonkhotoithieu();
+            }
+        });
+        col_tonkhotoida.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<SanPham, Number>, ObservableValue<Number>>() {
+            @Override
+            public ObservableValue<Number> call(TreeTableColumn.CellDataFeatures<SanPham, Number> param) {
+                return param.getValue().getValue().getTonkhotoida();
+            }
+        });
+        col_thoihan.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<SanPham, Number>, ObservableValue<Number>>() {
+            @Override
+            public ObservableValue<Number> call(TreeTableColumn.CellDataFeatures<SanPham, Number> param) {
+                return param.getValue().getValue().getThoihan_thang();
+            }
+        });
+        tree_table_vi.getColumns().setAll(col_masanpham, col_tensanpham, col_nhasanxuat, col_nhomhang,
+                col_ghichu, col_tonkhotoithieu, col_tonkhotoida, col_thoihan);
         tree_table_vi.setColumnResizePolicy(TreeTableView.CONSTRAINED_RESIZE_POLICY);
         tree_table_vi.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
             @Override
@@ -503,6 +565,9 @@ public class FXML_HangHoaController implements Initializable {
                     txt_area_ghichu.setText("" + sanphamItem.getValue().getGhichu().get());
                     cmb_nhasanxuat.getSelectionModel().select(sanphamItem.getValue().getTennhasanxuat().get());
                     cmb_nhomhang.getSelectionModel().select(sanphamItem.getValue().getTennhomhang().get());
+                    txt_fi_tonkhotoithieu.setText("" + sanphamItem.getValue().getTonkhotoithieu().get());
+                    txt_fi_tonkhotoida.setText("" + sanphamItem.getValue().getTonkhotoida().get());
+                    txt_fi_thoihantonkho.setText("" + sanphamItem.getValue().getThoihan_thang().get());
                 }
             }
         });
@@ -523,6 +588,9 @@ public class FXML_HangHoaController implements Initializable {
         btnDongy.setVisible(false);
         cmb_nhasanxuat.getSelectionModel().selectFirst();
         cmb_nhomhang.getSelectionModel().selectFirst();
+        OnlyNumberInTextField(txt_fi_tonkhotoida);
+        OnlyNumberInTextField(txt_fi_tonkhotoithieu);
+        OnlyNumberInTextField(txt_fi_thoihantonkho);
     }
 
 }

@@ -15,6 +15,7 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -22,6 +23,10 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
@@ -113,6 +118,7 @@ public class FXML_ClothesStoreController implements Initializable {
         box_minimized.setVisible(false);
         InitDrawer();
         //Roottemp = new AnchorPane();
+
         try {
             AnchorPane tongquan = FXMLLoader.load(getClass().getResource("/clothesstore_view/FXML_TongQuan.fxml"));
             root.setLeftAnchor(tongquan, 0.0);
@@ -122,8 +128,24 @@ public class FXML_ClothesStoreController implements Initializable {
             FXML_ClothesStoreController.rootP.getChildren().setAll(tongquan);
 
             AnchorPane box = FXMLLoader.load(getClass().getResource("/clothesstore_view/SidePanelContent.fxml"));
+            KeyCombination keyCombination = new KeyCodeCombination(KeyCode.Q, KeyCodeCombination.ALT_DOWN);
             drawer.setSidePane(box);
-
+            box.setOnKeyPressed(new EventHandler<KeyEvent>() {
+                @Override
+                public void handle(KeyEvent event) {
+                    if (keyCombination.match(event)) {
+                        if (drawer.isShown()) {
+                            drawer.close();
+                            rootm.setLeftAnchor(root, 230.0);
+                            box_minimized.setVisible(false);
+                        } else {
+                            drawer.open();
+                            rootm.setLeftAnchor(root, 52.0);
+                            box_minimized.setVisible(true);
+                        }
+                    }
+                }
+            });
             rootm.widthProperty().addListener((observable, oldValue, newValue) -> box.setPrefWidth(newValue.doubleValue()));
             rootm.heightProperty().addListener((observable, oldValue, newValue) -> box.setPrefHeight(newValue.doubleValue()));
 
@@ -159,5 +181,6 @@ public class FXML_ClothesStoreController implements Initializable {
                 box_minimized.setVisible(true);
             }
         });
+
     }
 }

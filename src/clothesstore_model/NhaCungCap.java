@@ -20,6 +20,7 @@ import javafx.collections.ObservableList;
  * @author 15520
  */
 public class NhaCungCap {
+
     private IntegerProperty manhacungcap;
     private StringProperty tencungcap;
     private StringProperty diachi;
@@ -28,19 +29,27 @@ public class NhaCungCap {
     private IntegerProperty trangthai;
 
     public NhaCungCap(int manhacungcap, String tencungcap, String diachi, String email, String ghichu, int trangthai) {
-        this.manhacungcap =new SimpleIntegerProperty (manhacungcap);
-        this.tencungcap =new SimpleStringProperty ( tencungcap);
-        this.diachi =new SimpleStringProperty ( diachi);
-        this.email =new SimpleStringProperty ( email);
-        this.ghichu =new SimpleStringProperty ( ghichu);
-        this.trangthai =new SimpleIntegerProperty (trangthai);
+        this.manhacungcap = new SimpleIntegerProperty(manhacungcap);
+        this.tencungcap = new SimpleStringProperty(tencungcap);
+        this.diachi = new SimpleStringProperty(diachi);
+        this.email = new SimpleStringProperty(email);
+        this.ghichu = new SimpleStringProperty(ghichu);
+        this.trangthai = new SimpleIntegerProperty(trangthai);
     }
+
+    public NhaCungCap(String tencungcap, String diachi, String email, String ghichu) {
+        this.tencungcap = new SimpleStringProperty(tencungcap);
+        this.diachi = new SimpleStringProperty(diachi);
+        this.email = new SimpleStringProperty(email);
+        this.ghichu = new SimpleStringProperty(ghichu);
+    }
+
     public NhaCungCap(int manhacungcap, String tencungcap, String diachi, String email, String ghichu) {
-        this.manhacungcap =new SimpleIntegerProperty (manhacungcap);
-        this.tencungcap =new SimpleStringProperty ( tencungcap);
-        this.diachi =new SimpleStringProperty ( diachi);
-        this.email =new SimpleStringProperty ( email);
-        this.ghichu =new SimpleStringProperty ( ghichu);
+        this.manhacungcap = new SimpleIntegerProperty(manhacungcap);
+        this.tencungcap = new SimpleStringProperty(tencungcap);
+        this.diachi = new SimpleStringProperty(diachi);
+        this.email = new SimpleStringProperty(email);
+        this.ghichu = new SimpleStringProperty(ghichu);
     }
 
     public int getManhacungcap() {
@@ -62,9 +71,11 @@ public class NhaCungCap {
     public String getGhichu() {
         return ghichu.getValue();
     }
+
     public int getTrangthai() {
         return trangthai.getValue();
     }
+
     public void setManhacungcap(IntegerProperty manhacungcap) {
         this.manhacungcap = manhacungcap;
     }
@@ -84,42 +95,42 @@ public class NhaCungCap {
     public void setGhichu(StringProperty ghichu) {
         this.ghichu = ghichu;
     }
+
     public void setTrangthai(IntegerProperty trangthai) {
         this.trangthai = trangthai;
     }
-    
-    public ObservableList<NhaCungCap> getTableNhaCungCap(){      
-        ObservableList<NhaCungCap> list = FXCollections.observableArrayList(); 
+
+    public ObservableList<NhaCungCap> getTableNhaCungCap() {
+        ObservableList<NhaCungCap> list = FXCollections.observableArrayList();
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
         String sql = "SELECT * FROM nhacungcap";
-        if(con!=null){
-            try{
+        if (con != null) {
+            try {
                 PreparedStatement ptm = con.prepareStatement(sql);
                 ResultSet rs = ptm.executeQuery();
                 while (rs.next()) {
-                    NhaCungCap cnn = new NhaCungCap(rs.getInt("manhacungcap")
-                        , rs.getString("tencungcap")
-                            ,rs.getString("diachi")
-                            ,rs.getString("email")
-                            ,rs.getString("ghichu")
-                            ,rs.getInt("trangthai"));
+                    NhaCungCap cnn = new NhaCungCap(rs.getInt("manhacungcap"),
+                             rs.getString("tencungcap"),
+                             rs.getString("diachi"),
+                             rs.getString("email"),
+                             rs.getString("ghichu"),
+                             rs.getInt("trangthai"));
                     list.add(cnn);
                 }
-            }
-            catch(Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
-            }  
+            }
         }
         return list;
     }
-    
-    public boolean CapNhatNhaCungCap(){
+
+    public boolean CapNhatNhaCungCap() {
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
         String sql = "update nhacungcap set manhacungcap = ?, tencungcap = ?,diachi = ?,email = ?, ghichu = ?,trangthai=? WHERE manhacungcap = ?;";
-        if(con!=null){
-            try{
+        if (con != null) {
+            try {
                 PreparedStatement ptm = con.prepareStatement(sql);
                 ptm.setInt(1, manhacungcap.getValue());
                 ptm.setString(2, tencungcap.getValue());
@@ -128,59 +139,55 @@ public class NhaCungCap {
                 ptm.setString(5, ghichu.getValue());
                 ptm.setInt(6, trangthai.getValue());
                 ptm.setInt(7, manhacungcap.getValue());
-                ptm.execute();  
-            }
-            catch(Exception e){
+                ptm.execute();
+            } catch (Exception e) {
                 e.printStackTrace();
-                return false; 
-            } 
+                return false;
+            }
         }
-        return true; 
+        return true;
     }
 
     public NhaCungCap() {
     }
-    
-    public boolean ThemNhaCungCap(){
+
+    public boolean ThemNhaCungCap() {
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
-        String sql = "insert into nhacungcap(manhacungcap, tencungcap,diachi,email,ghichu, trangthai)  values (?, ?, ?, ?, ?,1);";
-        if(con!=null){
-            try{
+        String sql = "insert into nhacungcap(tencungcap,diachi,email,ghichu, trangthai) "
+                + "values (?, ?, ?, ?,1);";
+        if (con != null) {
+            try {
                 PreparedStatement ptm = con.prepareStatement(sql);
-                ptm.setInt(1, this.manhacungcap.getValue());
-                ptm.setString(2, this.tencungcap.getValue());
-                ptm.setString(3, this.diachi.getValue());
-                ptm.setString(4, this.email.getValue());
-                ptm.setString(5, this.ghichu.getValue());
-                ptm.execute();  
-            }
-            catch(Exception e){
+
+                ptm.setString(1, this.tencungcap.getValue());
+                ptm.setString(2, this.diachi.getValue());
+                ptm.setString(3, this.email.getValue());
+                ptm.setString(4, this.ghichu.getValue());
+                ptm.execute();
+            } catch (Exception e) {
                 e.printStackTrace();
-                return false; 
-            } 
+                return false;
+            }
         }
-        return true; 
-    }   
-    
-    public boolean XoaNhaCungCap(String tencungcap){
+        return true;
+    }
+
+    public boolean XoaNhaCungCap(String tencungcap) {
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
         String sql = "delete from nhacungcap where tencungcap = ?;";
-        if(con!=null){
-            try{
+        if (con != null) {
+            try {
                 PreparedStatement ptm = con.prepareStatement(sql);
                 ptm.setString(1, tencungcap);
-                ptm.execute();  
-            }
-            catch(Exception e){
+                ptm.execute();
+            } catch (Exception e) {
                 e.printStackTrace();
-                return false; 
-            } 
+                return false;
+            }
         }
-        return true; 
-    }   
-    
-    
-     
+        return true;
+    }
+
 }

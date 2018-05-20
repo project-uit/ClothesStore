@@ -35,6 +35,7 @@ cmnd varchar(13),
 trangthai int,
 luong int 
 );
+
 insert into nhanvien(tennhanvien,diachi,gioitinh,ngaysinh,cmnd,trangthai,luong)
 values('ccc', 'le hong phong',1,'1995-01-19','123456',1,50000);
 create table nhomhang
@@ -53,7 +54,11 @@ tensanpham nvarchar(30) not null,
 tennhasanxuat nvarchar(50),
 tennhomhang nvarchar(30),
 ghichu nvarchar(50),
-giaban INT
+giaban INT,
+tonkhotoithieu int,
+tonkhotoida int,
+thoihan_thang int,
+ngayhethan date
 );
 
 DELIMITER $$
@@ -210,6 +215,7 @@ REFERENCES nhanvien(manhanvien)
 );
 insert into dangnhap(tentaikhoan, matkhau,phanquyen,manhanvien)
 values ('admin','123',1,1);
+
 --  thống kê theo masanpham theo 1 tháng 
 DROP TRIGGER IF EXISTS before_nhanvien_delete;
 
@@ -233,6 +239,8 @@ before delete ON sanpham
 for each row
 	delete from chitietsanpham 
     where chitietsanpham.masanpham=old.masanpham and old.giaban is null;
+
+
 
 
 DROP TRIGGER IF EXISTS before_hoadon_delete;
@@ -318,11 +326,100 @@ CREATE FUNCTION getTongsoluong_quy(quy int, nam int)
     END$$
 DELIMITER ;
 
-select  sp.masanpham,sp.tensanpham,sp.tennhomhang,sp.tennhasanxuat,
-ctsp.tenmau,ctsp.gioitinh, ctsp.tensize,ctsp.soluong,sp.giaban
+drop PROCEDURE if exists tonkholau;
+DELIMITER $$
+CREATE PROCEDURE tonkholau()
+BEGIN
+
+END; $$
+DELIMITER ;
+
+drop procedure if exists tonkho_hangton;
+DELIMITER $$
+CREATE PROCEDURE tonkho_hangton(in chucnang int)
+BEGIN
+if chucnang=1 then
+-- tất cả
+select sp.masanpham,sp.tensanpham,sp.tonkhotoithieu,
+(select sum(soluong) from chitietsanpham ctsp where ctsp.masanpham=sp.masanpham),
+sp.tonkhotoida
+from sanpham sp;
+
+elseif chucnang=2 then
+-- hàng tồn ( hàng có trong kho)
+select sp.masanpham,sp.tensanpham,sp.tonkhotoithieu, sum(soluong),
+sp.tonkhotoida
+from sanpham sp,chitietsanpham ctsp
+where ctsp.masanpham = sp.masanpham
+group by sp.masanpham
+having sum(soluong)>0;
+
+elseif chucnang=3 then
+-- chưa nhập vào kho
+select sp.masanpham,sp.tensanpham,sp.tonkhotoithieu,soluong,sp.tonkhotoida
 from sanpham sp
-join chitietsanpham ctsp on sp.masanpham = ctsp.masanpham
-where ctsp.soluong>=0 and gioitinh='' 
-and tensize='' and tenmau='' 
-and tennhomhang='' and tennhasanxuat=''
-and tensanpham ='';
+left join  chitietsanpham ctsp on ctsp.masanpham=sp.masanpham
+where soluong is null;
+
+elseif chucnang=3 then
+-- hết hàng
+select sp.masanpham,sp.tensanpham,sp.tonkhotoithieu, sum(soluong),
+sp.tonkhotoida
+from sanpham sp,chitietsanpham ctsp
+where ctsp.masanpham = sp.masanpham
+group by sp.masanpham
+having sum(soluong)=0;
+
+elseif chucnang=4 then
+-- sắp hết hàng
+select sp.masanpham,sp.tensanpham,sp.tonkhotoithieu, sum(soluong),
+sp.tonkhotoida
+from sanpham sp,chitietsanpham ctsp
+where ctsp.masanpham = sp.masanpham
+group by sp.masanpham
+having sum(soluong) < sp.tonkhotoithieu and  sum(soluong)>0;
+
+elseif chucnang=5 then
+-- vượt định mức
+select sp.masanpham,sp.tensanpham,sp.tonkhotoithieu, sum(soluong),
+sp.tonkhotoida
+from sanpham sp,chitietsanpham ctsp
+where ctsp.masanpham = sp.masanpham
+group by sp.masanpham
+having sum(soluong) > sp.tonkhotoida;
+
+elseif chucnang=6 then
+-- hàng tồn kho lâu
+select sp.masanpham,sp.tensanpham,sp.tonkhotoithieu,
+(select sum(soluong) from chitietsanpham ctsp where ctsp.masanpham=sp.masanpham) as sl,
+sp.tonkhotoida, max(date_format(pn.ngaynhap,'%d/%m/%y')) as ngaynhap,sp.ngayhethan
+from sanpham sp, chitietphieunhap ctpn, phieunhap pn
+where ctpn.masanpham = sp.masanpham and pn.maphieunhap=ctpn.maphieunhap
+group by sp.masanpham
+having date(now()) >= ngayhethan and sl > 0;
+
+End if;
+END; $$
+DELIMITER ;
+
+call tonkholau();
+
+-- 'SPG7DW6U', 'SPFZA92'
+
+select ctpn.masanpham, ngaynhap, giavon, ctpn.maphieunhap
+from chitietphieunhap ctpn,phieunhap pn 
+where ctpn.maphieunhap = pn.maphieunhap  and ctpn.maphieunhap =  
+(SELECT ctpn1.maphieunhap 
+FROM chitietphieunhap ctpn1,phieunhap pn1 
+WHERE  ctpn1.maphieunhap = pn1.maphieunhap  and ctpn1.masanpham = ctpn.masanpham            
+ORDER BY ctpn1.maphieunhap DESC
+LIMIT 1)
+;
+
+
+select sp.tensanpham, max(pn.ngaynhap),
+giavon,(ctpn.giavon)* (select sum(soluong) from chitietsanpham ctsp where ctsp.masanpham=sp.masanpham)
+from  sanpham sp, chitietphieunhap ctpn,phieunhap pn
+where ctpn.masanpham = sp.masanpham and ctpn.maphieunhap = pn.maphieunhap
+group by sp.masanpham;
+
