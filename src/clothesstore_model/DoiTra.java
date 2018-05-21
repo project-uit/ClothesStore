@@ -10,6 +10,8 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -71,6 +73,29 @@ public class DoiTra {
         return false;
     }
 
+    public boolean updateTongTienHoaDon(int maHD, int TongTien) {
+        DBConnection db = new DBConnection();
+        Connection con = db.getConnecttion();
+        String sql = "UPDATE hoadon set tongtien = tongtien + ? where mahoadon = ?;";
+        if (con != null) {
+            try {
+                PreparedStatement ptm = con.prepareStatement(sql);
+                ptm.setInt(1, TongTien);
+                ptm.setInt(2, maHD);
+
+                ptm.execute();
+
+                ptm.close();
+                con.close();
+
+                return true;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return false;
+    }
+        
     public ObservableList<DoiTra> getListKhoDoiTra() {
         ObservableList<DoiTra> list = FXCollections.observableArrayList();
         DBConnection db = new DBConnection();

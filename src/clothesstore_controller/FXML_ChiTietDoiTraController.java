@@ -7,17 +7,20 @@ package clothesstore_controller;
 
 import static clothesstore_controller.FXML_DoiTraController.mahd;
 import clothesstore_model.ChiTietDoiTra;
+import clothesstore_model.ChiTietHoaDon;
 import clothesstore_model.ChiTietHoaDonDoiTra;
 import clothesstore_model.ChiTietSanPham;
 import clothesstore_model.DoiTra;
 import clothesstore_model.HoaDonDoiTra;
 import com.jfoenix.controls.JFXButton;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import static javafx.collections.FXCollections.observableArrayList;
@@ -61,7 +64,7 @@ public class FXML_ChiTietDoiTraController implements Initializable {
     private Label lb1, lb2, lb3;
     private DoiTra doitra;
     private int total1 = 0, total2 = 0;
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
@@ -265,6 +268,8 @@ public class FXML_ChiTietDoiTraController implements Initializable {
                     if (item.getSoluongmua().get() != 0) {
                         item.ThemChiTietDoiTra(doitra.getLastId());
                         item.updateSoLuong(item.getMachitietsanpham().get(), item.getSoluongmua().get());
+                        item.updateHDkhiDoiTra1(mahd, item.getMachitietsanpham().get(), 
+                                item.getSoluongmua().get(), item.getThanhtien().get());
                     }
                 }
             } else {
@@ -275,9 +280,22 @@ public class FXML_ChiTietDoiTraController implements Initializable {
             thanhtien = tblHangThayThe.getItems().stream().map((item) -> item.getThanhtien().get()).reduce(thanhtien, Integer::sum);
 
             if (new HoaDonDoiTra().ThemHoaDonDoiTra(doitra.getLastId(), thanhtien)) {
+                List<String> listctsp = new ArrayList();
+                listctsp = new ChiTietDoiTra().getListMaCTSPfromHD(mahd);
                 for (ChiTietHoaDonDoiTra item : tblHangThayThe.getItems()) {
                     if (item.getSoluongmua().get() != 0) {
                         item.ThemChiTietHoaDonDoiTra(new HoaDonDoiTra().getLastId());
+
+                        if (listctsp.contains(item.getMachitietsanpham().get())) {
+                            new ChiTietDoiTra().updateHDkhiDoiTra2(mahd, item.getMachitietsanpham().get(),
+                                    item.getSoluongmua().get(),
+                                    item.getThanhtien().get());
+                        } else {
+                            new ChiTietHoaDon(new SimpleIntegerProperty(mahd),
+                                    item.getMachitietsanpham(),
+                                    item.getSoluongmua(),
+                                    item.getThanhtien()).insert();
+                        }
                     }
                 }
             } else {
@@ -286,7 +304,8 @@ public class FXML_ChiTietDoiTraController implements Initializable {
 
             btnLuu.setDisable(true);
         }
-
+        
+        new DoiTra().updateTongTienHoaDon(mahd, total2 - total1);
     }
 
     @FXML

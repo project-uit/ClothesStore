@@ -11,8 +11,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -39,7 +37,6 @@ public class ChiTietHoaDon {
         this.soluongmua = soluongmua;
         this.thanhtien = thanhtien;
     }
-
 
     public IntegerProperty getMachitiethoadon() {
         return machitiethoadon;
@@ -134,7 +131,7 @@ public class ChiTietHoaDon {
         return false;
     }
 
-    public ObservableList<ObservableList> getListCTHD() {
+    public ObservableList getListCTHD() {
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
         ObservableList<ObservableList> data = FXCollections.observableArrayList();

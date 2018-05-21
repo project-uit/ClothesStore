@@ -10,6 +10,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -27,6 +29,75 @@ public class ChiTietDoiTra {
     private IntegerProperty giaban;
 
     public ChiTietDoiTra() {
+    }
+
+    public List<String> getListMaCTSPfromHD(int MaHD) {
+        List<String> list = new ArrayList();
+        DBConnection db = new DBConnection();
+        Connection con = db.getConnecttion();
+        String sql = "SELECT * FROM chitiethoadon WHERE mahoadon = " + MaHD + "";
+        if (con != null) {
+            try {
+                PreparedStatement ptm = con.prepareStatement(sql);
+                ResultSet rs = ptm.executeQuery();
+                while (rs.next()) {
+                    list.add(rs.getString("machitietsanpham"));
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return list;
+    }
+
+    public boolean updateHDkhiDoiTra1(int mahd, String mactsp, int sl, int tt) {
+        DBConnection db = new DBConnection();
+        Connection con = db.getConnecttion();
+        String sql = "UPDATE chitiethoadon set soluongmua = soluongmua - ?, thanhtien = thanhtien - ? where machitietsanpham = ? and mahoadon = ?;";
+        if (con != null) {
+            try {
+                PreparedStatement ptm = con.prepareStatement(sql);
+                ptm.setInt(1, sl);
+                ptm.setInt(2, tt);
+                ptm.setString(3, mactsp);
+                ptm.setInt(4, mahd);
+
+                ptm.execute();
+
+                ptm.close();
+                con.close();
+
+                return true;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return false;
+    }
+
+    public boolean updateHDkhiDoiTra2(int mahd, String mactsp, int sl, int tt) {
+        DBConnection db = new DBConnection();
+        Connection con = db.getConnecttion();
+        String sql = "UPDATE chitiethoadon set soluongmua = soluongmua + ?, thanhtien = thanhtien + ? where machitietsanpham = ? and mahoadon = ?;";
+        if (con != null) {
+            try {
+                PreparedStatement ptm = con.prepareStatement(sql);
+                ptm.setInt(1, sl);
+                ptm.setInt(2, tt);
+                ptm.setString(3, mactsp);
+                ptm.setInt(4, mahd);
+
+                ptm.execute();
+
+                ptm.close();
+                con.close();
+
+                return true;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return false;
     }
 
     public ChiTietDoiTra(IntegerProperty mahoadon, StringProperty machitietsanpham, IntegerProperty soluongmua, IntegerProperty thanhtien) {

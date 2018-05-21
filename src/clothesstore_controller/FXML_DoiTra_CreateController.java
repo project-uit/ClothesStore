@@ -8,7 +8,6 @@ package clothesstore_controller;
 import static clothesstore_controller.FXML_ClothesStoreController.rootP;
 import static clothesstore_controller.FXML_DoiTraController.mahd;
 import static clothesstore_controller.FXML_DoiTraController.stageDoiTra_Create;
-import static clothesstore_controller.FXML_SearchSanPhamController.listSP;
 import clothesstore_model.DoiTra;
 import com.jfoenix.controls.JFXDatePicker;
 import java.io.IOException;
@@ -23,7 +22,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
 
 /**
  * FXML Controller class
