@@ -17,29 +17,18 @@ import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
-import javafx.beans.binding.Bindings;
-import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyObjectWrapper;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.util.Callback;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
-import javafx.event.EventHandler;
-import javafx.event.EventType;
-import javafx.scene.control.SpinnerValueFactory;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.control.TitledPane;
 import javafx.util.StringConverter;
 import org.controlsfx.control.textfield.TextFields;
 
@@ -54,16 +43,18 @@ public class FXML_TraCuuController implements Initializable {
      * Initializes the controller class.
      */
     @FXML
-    TableView<String> table_view;
+    private TableView<String> table_view;
     @FXML
-    JFXTextField txt_fi_tensanpham, txt_fi_min_soluong, txt_fi_max_soluong,
+    private JFXTextField txt_fi_tensanpham, txt_fi_min_soluong, txt_fi_max_soluong,
             txt_fi_max_giaban, txt_fi_min_giaban;
     @FXML
-    JFXComboBox<String> cmb_mausac, cmb_nhasanxuat, cmb_nhomhang, cmb_size;
+    private JFXComboBox<String> cmb_mausac, cmb_nhasanxuat, cmb_nhomhang, cmb_size;
     @FXML
-    JFXComboBox<Integer> cmb_gioitinh;
+    private JFXComboBox<Integer> cmb_gioitinh;
     @FXML
-    JFXButton btn_search, btn_refresh;
+    private JFXButton btn_search, btn_refresh;
+    @FXML
+    private TitledPane titledPane;
     private String query;
     private String gioitinh = "and gioitinh=",
             tensanpham = "and tensanpham like ",
@@ -79,6 +70,18 @@ public class FXML_TraCuuController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
+        titledPane.setExpanded(false);
+        //titledPane.widthProperty().addListener( ( observable, oldValue, newValue ) -> table_view.setLayoutX(newValue.doubleValue() ) );
+        titledPane.expandedProperty().addListener((observable, oldValue, newValue) -> {
+            if(newValue){
+                table_view.setLayoutY(table_view.getLayoutY() +titledPane.getHeight());
+                System.out.println("newValue");
+            } else {
+                table_view.setLayoutY(table_view.getLayoutY() -titledPane.getHeight());
+                System.out.println("newValu1111");
+            }
+        });
+        
         InitCmb();
         InitTable();
         TraCuu tracuu = new TraCuu();
@@ -106,15 +109,15 @@ public class FXML_TraCuuController implements Initializable {
             cmb_gioitinh.getSelectionModel().select(0);
         });
         initTextField();
-        
+
     }
 
     private void initTextField() {
         OnlyNumberInTextField(txt_fi_min_soluong);
         OnlyNumberInTextField(txt_fi_max_soluong);
         OnlyNumberInTextField(txt_fi_min_giaban);
-        OnlyNumberInTextField(txt_fi_max_giaban);      
-        List<String> arr_mactsp = new SanPham().getlist_tensp();       
+        OnlyNumberInTextField(txt_fi_max_giaban);
+        List<String> arr_mactsp = new SanPham().getlist_tensp();
         TextFields.bindAutoCompletion(txt_fi_tensanpham, arr_mactsp);
     }
 
@@ -374,7 +377,7 @@ public class FXML_TraCuuController implements Initializable {
         table_view.getColumns().get(6).setText("Size");
         table_view.getColumns().get(7).setText("Số lượng");
         table_view.getColumns().get(8).setText("Giá bán");
-        
+
     }
 
 }
