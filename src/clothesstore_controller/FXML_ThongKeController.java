@@ -36,8 +36,14 @@ import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Side;
+import javafx.print.PageLayout;
+import javafx.print.PageOrientation;
+import javafx.print.Paper;
+import javafx.print.Printer;
+import javafx.print.PrinterJob;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.Label;
+import javafx.scene.transform.Scale;
 import javafx.stage.FileChooser;
 import javafx.util.StringConverter;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -57,6 +63,8 @@ public class FXML_ThongKeController implements Initializable {
     NumberAxis y;
     @FXML
     private ComboBox cmbYear;
+    @FXML
+    private JFXButton btnPrint;
 
     /**
      * Initializes the controller class.
@@ -121,6 +129,26 @@ public class FXML_ThongKeController implements Initializable {
         data.getData().add(new XYChart.Data<>("Tháng 12", (Number) dt.get(11)));
         chartDoanhThu.getData().setAll(data);
     }
+
+    @FXML
+    private void Handler_btnPrint() {
+        Printer printer = Printer.getDefaultPrinter();
+        PageLayout pageLayout = printer.createPageLayout(Paper.NA_LETTER, PageOrientation.PORTRAIT, Printer.MarginType.DEFAULT);
+        double scaleX = pageLayout.getPrintableWidth() / chartDoanhThu.getBoundsInParent().getWidth();
+        double scaleY = pageLayout.getPrintableHeight() / chartDoanhThu.getBoundsInParent().getHeight();
+        Scale scale = new Scale(scaleX, scaleY);
+        chartDoanhThu.getTransforms().add(scale);
+
+        PrinterJob job = PrinterJob.createPrinterJob();
+        if (job != null) {
+            boolean success = job.printPage(chartDoanhThu);
+            if (success) {
+                job.endJob();
+                chartDoanhThu.getTransforms().remove(scale);
+            }
+        }
+    }
+
     @FXML
     private PieChart piechart_thongkesp_banchay;
     @FXML
@@ -181,10 +209,14 @@ public class FXML_ThongKeController implements Initializable {
                         + fileChooser.getSelectedExtensionFilter().getExtensions().get(0));
                 wb.write(output);
                 output.close();
+
             } catch (FileNotFoundException ex) {
-                Logger.getLogger(FXML_HangHoaController.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(FXML_HangHoaController.class
+                        .getName()).log(Level.SEVERE, null, ex);
+
             } catch (IOException ex) {
-                Logger.getLogger(FXML_HangHoaController.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(FXML_HangHoaController.class
+                        .getName()).log(Level.SEVERE, null, ex);
             }
         }
     }

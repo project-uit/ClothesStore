@@ -139,12 +139,13 @@ public class FXML_ChiTietDoiTraController implements Initializable {
                             int sl = Integer.valueOf(name);
                             row.getItem().setSoluongmua(new SimpleIntegerProperty(sl));
                             row.getItem().setThanhtien(new SimpleIntegerProperty(sl * row.getItem().getGiaban().get()));
-
+                            
+                            total1=0;
                             for (ChiTietDoiTra item : tblHangDoiTra.getItems()) {
                                 total1 += item.getThanhtien().get();
                             }
                             lb1.setText("Tổng tiền hàng đổi trả:    " + total1);
-                            lb3.setText("Thành tiền : " + (total1 - total2));
+                            lb3.setText("Thành tiền : " + (total2 - total1));
                         } catch (NumberFormatException ex) {
                             row.getItem().setSoluongmua(new SimpleIntegerProperty(0));
                             row.getItem().setThanhtien(new SimpleIntegerProperty(0));
@@ -215,12 +216,13 @@ public class FXML_ChiTietDoiTraController implements Initializable {
 
                             row.getItem().setSoluongmua(new SimpleIntegerProperty(sl));
                             row.getItem().setThanhtien(new SimpleIntegerProperty(sl * row.getItem().getGiaban().get()));
-
+                            
+                            total2 = 0;
                             for (ChiTietHoaDonDoiTra item : tblHangThayThe.getItems()) {
                                 total2 += item.getThanhtien().get();
                             }
                             lb2.setText("Tổng tiền hàng thay thế:   " + total2);
-                            lb3.setText("Thành tiền:                " + (total1 - total2));
+                            lb3.setText("Thành tiền:                " + (total2 - total1));
                         } catch (NumberFormatException ex) {
                             row.getItem().setSoluongmua(new SimpleIntegerProperty(0));
                             row.getItem().setThanhtien(new SimpleIntegerProperty(0));
@@ -267,8 +269,8 @@ public class FXML_ChiTietDoiTraController implements Initializable {
                 for (ChiTietDoiTra item : tblHangDoiTra.getItems()) {
                     if (item.getSoluongmua().get() != 0) {
                         item.ThemChiTietDoiTra(doitra.getLastId());
-                        item.updateSoLuong(item.getMachitietsanpham().get(), item.getSoluongmua().get());
-                        item.updateHDkhiDoiTra1(mahd, item.getMachitietsanpham().get(), 
+                        //item.updateSoLuong(item.getMachitietsanpham().get(), item.getSoluongmua().get());
+                        item.updateHDkhiDoiTra1(mahd, item.getMachitietsanpham().get(),
                                 item.getSoluongmua().get(), item.getThanhtien().get());
                     }
                 }
@@ -295,6 +297,10 @@ public class FXML_ChiTietDoiTraController implements Initializable {
                                     item.getMachitietsanpham(),
                                     item.getSoluongmua(),
                                     item.getThanhtien()).insert();
+                            int sl = (new ChiTietSanPham().getSoLuongFromMaCTSP(item.getMachitietsanpham().get()))
+                                     - item.getSoluongmua().get();
+                            new ChiTietSanPham()
+                                    .updateSoLuongFromMaCTSP(item.getMachitietsanpham().get(),sl);
                         }
                     }
                 }
@@ -304,7 +310,7 @@ public class FXML_ChiTietDoiTraController implements Initializable {
 
             btnLuu.setDisable(true);
         }
-        
+
         new DoiTra().updateTongTienHoaDon(mahd, total2 - total1);
     }
 

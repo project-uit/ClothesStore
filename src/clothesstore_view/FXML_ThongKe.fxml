@@ -22,7 +22,7 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="272.0" prefWidth="333.0">
                      <children>
-                        <BarChart fx:id="chartDoanhThu" layoutX="78.0" layoutY="46.0" prefHeight="611.0" prefWidth="727.0" title="Thống kê doanh thu trong năm " AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
+                        <BarChart fx:id="chartDoanhThu" layoutX="78.0" layoutY="46.0" prefHeight="589.0" prefWidth="785.0" title="Thống kê doanh thu trong năm " AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
                           <xAxis>
                             <CategoryAxis label="Tháng" prefWidth="728.0" side="BOTTOM" fx:id="x" />
                           </xAxis>
@@ -31,6 +31,7 @@
                           </yAxis>
                         </BarChart>
                         <ComboBox fx:id="cmbYear" editable="true" layoutX="687.0" layoutY="20.0" prefHeight="25.0" prefWidth="104.0" />
+                        <JFXButton fx:id="btnPrint" layoutX="640.0" layoutY="20.0" onAction="#Handler_btnPrint" style="-fx-background-color: #4681f5;" text="Print" textFill="#fffdfd" AnchorPane.bottomAnchor="606.0" AnchorPane.rightAnchor="144.0" />
                      </children>
                   </AnchorPane>
             </content>

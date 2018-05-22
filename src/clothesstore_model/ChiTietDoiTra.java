@@ -255,25 +255,25 @@ public class ChiTietDoiTra {
         return false;
     }
 
-    public boolean updateSoLuong(String mactsp, int sl) {
-        DBConnection db = new DBConnection();
-        Connection con = db.getConnecttion();
-        String sql = "UPDATE chitietsanpham set soluong = soluong - ? where machitietsanpham = ?;";
-        if (con != null) {
-            try {
-                PreparedStatement ptm = con.prepareStatement(sql);
-                ptm.setInt(1, sl);
-                ptm.setString(2, mactsp);
-                ptm.execute();
-
-                ptm.close();
-                con.close();
-
-                return true;
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        return false;
-    }
+//    public boolean updateSoLuong(String mactsp, int sl) {
+//        DBConnection db = new DBConnection();
+//        Connection con = db.getConnecttion();
+//        String sql = "UPDATE chitietsanpham set soluong = soluong - ? where machitietsanpham = ?;";
+//        if (con != null) {
+//            try {
+//                PreparedStatement ptm = con.prepareStatement(sql);
+//                ptm.setInt(1, sl);
+//                ptm.setString(2, mactsp);
+//                ptm.execute();
+//
+//                ptm.close();
+//                con.close();
+//
+//                return true;
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
+//        return false;
+//    }
 }
