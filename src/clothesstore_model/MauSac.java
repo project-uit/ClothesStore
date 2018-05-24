@@ -46,8 +46,8 @@ public class MauSac {
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
         if (con != null) {
-            String query = "insert into mausac"
-                    + " values(?)";
+            String query = "insert into mausac "
+                    + "values(?,1)";
             try {
                 PreparedStatement ptm = con.prepareStatement(query);
                 ptm.setString(1, tenmau.get());
@@ -58,9 +58,7 @@ public class MauSac {
                     con.close();
                     return true;
                 }
-
             } catch (SQLException ex) {
-
             }
         }
         return false;
@@ -70,7 +68,7 @@ public class MauSac {
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
         if (con != null) {
-            String query = "delete from mausac "
+            String query = "update mausac set trangthai=0 "
                     + "where tenmau=?";
             try {
                 PreparedStatement ptm = con.prepareStatement(query);
@@ -82,7 +80,6 @@ public class MauSac {
                     con.close();
                     return true;
                 }
-
             } catch (SQLException ex) {
 
             }
@@ -97,7 +94,7 @@ public class MauSac {
         if (con != null) {
             try (
                     Statement stmnt = con.createStatement();
-                    ResultSet rs = stmnt.executeQuery("select * from mausac");) {
+                    ResultSet rs = stmnt.executeQuery("select tenmau from mausac where trangthai=1");) {
                 while (rs.next()) {
                     cmb.getItems().add(rs.getString(1));
                 }
@@ -110,7 +107,7 @@ public class MauSac {
     }
 
     public void LoadTable(TableView tbv) {
-        LoadTableFromDB tb = new LoadTableFromDB("select * from mausac ");
+        LoadTableFromDB tb = new LoadTableFromDB("select tenmau from mausac where trangthai=1");
         tb.LoadTable(tbv);
     }
 

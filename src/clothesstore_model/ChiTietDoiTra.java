@@ -68,7 +68,7 @@ public class ChiTietDoiTra {
                 con.close();
 
                 return true;
-            } catch (Exception e) {
+            } catch (SQLException e) {
                 e.printStackTrace();
             }
         }

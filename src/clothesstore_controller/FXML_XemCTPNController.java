@@ -7,7 +7,7 @@ package clothesstore_controller;
  */
 
 import static clothesstore_controller.FXML_PhieuNhapController.mapn;
-import clothesstore_model.ChiTietPhieuNhap;
+import clothesstore_model.ChiTietHoaDonMuaHang;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -43,8 +43,8 @@ public class FXML_XemCTPNController implements Initializable {
         InitTableCTPN();
     }    
     private void InitTableCTPN() {
-        ObservableList<ChiTietPhieuNhap> list = FXCollections.observableArrayList();
-        ChiTietPhieuNhap ctpn = new ChiTietPhieuNhap();
+        ObservableList<ChiTietHoaDonMuaHang> list = FXCollections.observableArrayList();
+        ChiTietHoaDonMuaHang ctpn = new ChiTietHoaDonMuaHang();
         list = ctpn.getTableChiTietPhieuNhap(mapn);
         clMaSP.setCellValueFactory(new PropertyValueFactory("masanpham"));
         clTenSP.setCellValueFactory(new PropertyValueFactory("tensanpham"));

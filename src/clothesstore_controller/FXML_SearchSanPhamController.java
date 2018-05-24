@@ -14,7 +14,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableView;
-import clothesstore_model.ChiTietPhieuNhap;
+import clothesstore_model.ChiTietHoaDonMuaHang;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -41,8 +41,8 @@ public class FXML_SearchSanPhamController implements Initializable {
     private TableColumn clMaSP0, clTenSP0, clCheck0,
             clMaSP1, clTenSP1, clCheck1;
 
-    ObservableList<ChiTietPhieuNhap> dataTableSPDaNhap, dataTableSPChuaNhap;
-    public static ObservableList<ChiTietPhieuNhap> listSP;
+    ObservableList<ChiTietHoaDonMuaHang> dataTableSPDaNhap, dataTableSPChuaNhap;
+    public static ObservableList<ChiTietHoaDonMuaHang> listSP;
 
     /**
      * Initializes the controller class.
@@ -55,7 +55,7 @@ public class FXML_SearchSanPhamController implements Initializable {
         InitTableSPDaNhap();
         InitTableSPChuaNhap();
 
-        ChiTietPhieuNhap ctpn = new ChiTietPhieuNhap();
+        ChiTietHoaDonMuaHang ctpn = new ChiTietHoaDonMuaHang();
         dataTableSPDaNhap = ctpn.LoadSanPhamDaNhap(mapn);
         dataTableSPChuaNhap = ctpn.LoadSanPhamChuaNhap(mapn);
 
@@ -88,7 +88,7 @@ public class FXML_SearchSanPhamController implements Initializable {
         }
     }
 
-    public void setListSP(ObservableList<ChiTietPhieuNhap> list) {
+    public void setListSP(ObservableList<ChiTietHoaDonMuaHang> list) {
         listSP = list;
         System.out.println(listSP.size());
     }

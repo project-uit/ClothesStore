@@ -42,8 +42,8 @@ public class Size {
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
         if (con != null) {
-            String query = "insert into size(tensize)"
-                    + " values(?) ";
+            String query = "insert into size "
+                    + "values(?,1) ";
 
             try {
                 PreparedStatement ptm = con.prepareStatement(query);
@@ -67,7 +67,7 @@ public class Size {
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
         if (con != null) {
-            String query = "delete from size where tensize =? ";
+            String query = "update size set trangthai=0 where tensize = ?";
 
             try {
                 PreparedStatement ptm = con.prepareStatement(query);
@@ -88,7 +88,7 @@ public class Size {
     }
 
     public void LoadTable(TableView tbv) {
-        LoadTableFromDB tb = new LoadTableFromDB("select * from size");
+        LoadTableFromDB tb = new LoadTableFromDB("select tensize from size where trangthai=1");
         tb.LoadTable(tbv);
     }
 
@@ -98,7 +98,7 @@ public class Size {
         if (con != null) {
             try (
                     Statement stmnt = con.createStatement();
-                    ResultSet rs = stmnt.executeQuery("select * from size");) {
+                    ResultSet rs = stmnt.executeQuery("select tensize from size where trangthai=1");) {
                 while (rs.next()) {
                     StringProperty _tensize = new SimpleStringProperty(rs.getString("tensize"));
                     Size size = new Size(_tensize);
@@ -118,10 +118,8 @@ public class Size {
         if (con != null) {
             try (
                     Statement stmnt = con.createStatement();
-                    ResultSet rs = stmnt.executeQuery("select * from size");) {
+                    ResultSet rs = stmnt.executeQuery("select tensize from size where trangthai=1");) {
                 while (rs.next()) {
-                    
-                   
                     cmb.getItems().add(rs.getString("tensize"));
                 }
 

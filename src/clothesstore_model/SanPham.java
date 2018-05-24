@@ -447,6 +447,28 @@ public class SanPham extends RecursiveTreeObject<SanPham> {
         }
         return arr_tensp;
     }
+     public List<String> getlist_masp() {
+
+        DBConnection db = new DBConnection();
+        Connection con = db.getConnecttion();
+        List<String> arr_tensp = new ArrayList<>();
+
+        if (con != null) {
+            try {
+                String sql = "SELECT masanpham FROM sanpham ";
+                PreparedStatement ptm = con.prepareStatement(sql);
+                ResultSet rs = ptm.executeQuery();
+                while (rs.next()) {
+                    arr_tensp.add(rs.getString(1));
+                }
+                ptm.close();
+                con.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ChiTietSanPham.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return arr_tensp;
+    }
 
     public boolean update_ngayhethan(int mapn) {
         DBConnection db = new DBConnection();

@@ -6,7 +6,6 @@
 package clothesstore_controller;
 
 import clothesstore_model.HoaDon;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -16,7 +15,6 @@ import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import clothesstore_model.ThongKe;
 import com.jfoenix.controls.JFXButton;
@@ -83,23 +81,15 @@ public class FXML_ThongKeController implements Initializable {
     }
 
     private void initCbbYear() {
-        LocalDate today = LocalDate.now();
         HoaDon hd = new HoaDon();
         hd.load_cmb_year_(cmbYear);
-        //Collections.sort(listYear);
         cmbYear.valueProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue ov, String t, String t1) {
-                try {
-                    int y = Integer.valueOf(t1);
-                    chartDoanhThu.setTitle("Thống kê doanh thu trong năm " + t1);
-                    chartDoanhThu.getData().clear();
-                    initChartDoanhThu(y);
-                } catch (NumberFormatException ex) {
-                    ShowMessage
-                            .showMessageBox(Alert.AlertType.ERROR, "Thông báo", null, "Nhập năm không đúng")
-                            .showAndWait();
-                }
+                int y = Integer.valueOf(t1);
+                chartDoanhThu.setTitle("Thống kê doanh thu trong năm " + t1);
+                chartDoanhThu.getData().clear();
+                initChartDoanhThu(y);
             }
         });
         try {

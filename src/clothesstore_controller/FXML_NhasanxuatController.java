@@ -1,7 +1,4 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
  */
 package clothesstore_controller;
 
@@ -30,7 +27,6 @@ import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableView;
 import javafx.scene.input.MouseEvent;
 import javafx.util.Callback;
-
 /**
  * FXML Controller class
  *
@@ -43,7 +39,7 @@ public class FXML_NhasanxuatController implements Initializable {
 
     @FXML
     private JFXButton btnXoa;
-
+    
     @FXML
     private JFXTextField txt_fi_tennhasanxuat;
     @FXML
@@ -71,7 +67,6 @@ public class FXML_NhasanxuatController implements Initializable {
                     .showAndWait();
             return;
         }
-
         if (nsx.insert()) {
             viewListTable();
             ShowMessage

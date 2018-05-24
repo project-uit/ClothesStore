@@ -271,9 +271,9 @@ public class FXML_DoiTraController implements Initializable {
                     for (ChiTietHoaDonDoiTra item : tblHangThayThe.getItems()) {
                         total2 += item.getGiaban().get() * item.getSoluongmua().get();
                     }
-                    lb2.setText("Tổng tiền hàng đổi trả:    " + total1);
+                    lb2.setText("Tổng tiền hàng đổi trả:    " + total2);
 
-                    lb3.setText("Thành tiền:                " + (total1 - total2));
+                    lb3.setText("Thành tiền:                " + (total2 - total1));
                 }
             });
             return row;

@@ -16,8 +16,10 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -28,6 +30,11 @@ import javafx.util.Callback;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.TitledPane;
 import javafx.util.StringConverter;
 import org.controlsfx.control.textfield.TextFields;
@@ -46,7 +53,7 @@ public class FXML_TraCuuController implements Initializable {
     private TableView<String> table_view;
     @FXML
     private JFXTextField txt_fi_tensanpham, txt_fi_min_soluong, txt_fi_max_soluong,
-            txt_fi_max_giaban, txt_fi_min_giaban;
+            txt_fi_max_giaban, txt_fi_min_giaban, txt_fi_masanpham;
     @FXML
     private JFXComboBox<String> cmb_mausac, cmb_nhasanxuat, cmb_nhomhang, cmb_size;
     @FXML
@@ -65,29 +72,39 @@ public class FXML_TraCuuController implements Initializable {
             soluong_min = "0",
             soluong_max = "and ctsp.soluong<=",
             giaban_min = "and sp.giaban>=",
-            giaban_max = "and sp.giaban<=";
+            giaban_max = "and sp.giaban<=",
+            masanpham = "and sp.masanpham=";
+    private String masp;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
+
         titledPane.setExpanded(false);
         //titledPane.widthProperty().addListener( ( observable, oldValue, newValue ) -> table_view.setLayoutX(newValue.doubleValue() ) );
         titledPane.expandedProperty().addListener((observable, oldValue, newValue) -> {
-            if(newValue){
-                table_view.setLayoutY(table_view.getLayoutY() +titledPane.getHeight());
+            if (newValue) {
+                table_view.setLayoutY(table_view.getLayoutY() + titledPane.getHeight());
                 System.out.println("newValue");
             } else {
-                table_view.setLayoutY(table_view.getLayoutY() -titledPane.getHeight());
+                table_view.setLayoutY(table_view.getLayoutY() - titledPane.getHeight());
                 System.out.println("newValu1111");
             }
         });
-        
+
         InitCmb();
         InitTable();
         TraCuu tracuu = new TraCuu();
         query = tracuu.getquery();
         viewListTable();
-
+        table_view.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
+            @Override
+            public void changed(ObservableValue observableValue, Object oldValue, Object newValue) {
+                if (table_view.getSelectionModel().getSelectedItem() != null) {
+                    masp = newValue.toString().split(",")[0].substring(1).trim();
+                }
+            }
+        });
         table_view.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         btn_search.setOnAction(e -> {
             btn_search_click();
@@ -101,7 +118,7 @@ public class FXML_TraCuuController implements Initializable {
             txt_fi_min_giaban.clear();
             txt_fi_max_giaban.clear();
             txt_fi_tensanpham.clear();
-
+            txt_fi_masanpham.clear();
             cmb_mausac.getSelectionModel().select(0);
             cmb_nhasanxuat.getSelectionModel().select(0);
             cmb_nhomhang.getSelectionModel().select(0);
@@ -109,7 +126,37 @@ public class FXML_TraCuuController implements Initializable {
             cmb_gioitinh.getSelectionModel().select(0);
         });
         initTextField();
+        ContextMenu();
+    }
 
+    private void ContextMenu() {
+        ContextMenu context = new ContextMenu();
+        MenuItem itemGiaBan = new MenuItem("Sửa giá bán");
+        itemGiaBan.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                TextInputDialog dialog = new TextInputDialog("0");
+                dialog.setTitle("Sửa giá bán");
+                dialog.setHeaderText("Mã sản phẩm " + masp);
+                dialog.setContentText("Giá bán: ");
+                Optional<String> result = dialog.showAndWait();
+                result.ifPresent(num -> {
+                    try {
+                        SanPham sp = new SanPham();
+                        sp.setMasanpham(new SimpleStringProperty(masp));
+                        sp.setGiaban(new SimpleIntegerProperty(Integer.valueOf(num)));
+                        if (sp.updateGiaban()) {
+                            viewListTable();
+                        }
+                    } catch (NumberFormatException ex) {
+
+                    }
+
+                });
+            }
+        });
+        context.getItems().addAll(itemGiaBan);
+        table_view.setContextMenu(context);
     }
 
     private void initTextField() {
@@ -117,8 +164,10 @@ public class FXML_TraCuuController implements Initializable {
         OnlyNumberInTextField(txt_fi_max_soluong);
         OnlyNumberInTextField(txt_fi_min_giaban);
         OnlyNumberInTextField(txt_fi_max_giaban);
-        List<String> arr_mactsp = new SanPham().getlist_tensp();
-        TextFields.bindAutoCompletion(txt_fi_tensanpham, arr_mactsp);
+        List<String> arr_tensp = new SanPham().getlist_tensp();
+        TextFields.bindAutoCompletion(txt_fi_tensanpham, arr_tensp);
+        List<String> arr_masp = new SanPham().getlist_masp();
+        TextFields.bindAutoCompletion(txt_fi_masanpham, arr_masp);
     }
 
     private void OnlyNumberInTextField(JFXTextField textField) {
@@ -143,7 +192,15 @@ public class FXML_TraCuuController implements Initializable {
             tensanpham += "'" + txt_fi_tensanpham.getText().trim() + "%' ";
             query += tensanpham;
         }
-
+        //truy vấn theo mã sản phẩm
+        if (query.contains(masanpham)) {
+            query = query.replace(masanpham, "");
+        }
+        masanpham = "and sp.masanpham= ";
+        if (!txt_fi_masanpham.getText().isEmpty()) {
+            masanpham += "'" + txt_fi_masanpham.getText().trim() + "' ";
+            query += masanpham;
+        }
         //truy vấn theo số lượng
         // số lượng min        
         if (txt_fi_min_soluong.getText().isEmpty()) {
@@ -341,6 +398,10 @@ public class FXML_TraCuuController implements Initializable {
         });
     }
 
+    private String FormatTien(int soTien) {
+        return String.format("%,8d%n", soTien).trim();
+    }
+
     private void InitTable() {
         for (int i = 0; i < 9; i++) {
             final int j = i;
@@ -355,6 +416,12 @@ public class FXML_TraCuuController implements Initializable {
                         } else {
                             return new SimpleStringProperty("Unisex");
                         }
+                    }
+                });
+            } else if (i == 8) {
+                col.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
+                    public ObservableValue<String> call(TableColumn.CellDataFeatures<ObservableList, String> param) {
+                        return new ReadOnlyObjectWrapper(FormatTien(Integer.valueOf(param.getValue().get(j).toString())));
                     }
                 });
             } else {

@@ -6,20 +6,18 @@
 package clothesstore_controller;
 
 import clothesstore_model.ChiTietHoaDon;
+import clothesstore_model.ChiTietKhachHang;
 import clothesstore_model.ChiTietSanPham;
 import clothesstore_model.HoaDon;
+import clothesstore_model.KhachHang;
 import clothesstore_model.SanPham;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXNodesList;
 import java.io.IOException;
 import java.net.URL;
-import java.text.DecimalFormat;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.animation.FadeTransition;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -40,9 +38,8 @@ import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TableView;
 import javafx.scene.control.Tooltip;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 import org.controlsfx.control.textfield.TextFields;
 
 /**
@@ -57,11 +54,13 @@ public class FXML_HoaDonController implements Initializable {
      */
     @FXML
     private JFXButton btnThem, btnXoa, btnLapHoaDon, btnThanhToan,
-            btnInHoaDon, btnThemthongtinkhachhang, btnchucnang, btncaidat;
+            btnInHoaDon, btnchucnang, btncaidat;
     @FXML
     private JFXNodesList nodelistbtn;
     @FXML
-    private JFXTextField txt_fi_tongtien, txt_fi_machitietsanpham, txt_fi_dongia, txt_fi_thanhtien;
+    private JFXTextField txt_fi_tongtien, txt_fi_machitietsanpham, txt_fi_dongia,
+            txt_fi_thanhtien, txt_fi_tenkhachhang, txt_fi_sodienthoai;
+    ;
     @FXML
     private Spinner<Integer> spin_soluong;
     @FXML
@@ -70,7 +69,6 @@ public class FXML_HoaDonController implements Initializable {
     private Integer soluongmua, mahoadon, machitiethoadon, tongtien = 0;
     private int dongia;
     private boolean checkLaphoadon = true;
-    private boolean stateKhachHang = true;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -78,17 +76,14 @@ public class FXML_HoaDonController implements Initializable {
 
         InitTextField();
         mahoadon = 0;
-
-        Tooltip tiptext = new Tooltip("Lập hóa đơn\nIn hóa đơn\nThêm thông tin khách hàng");
+        Tooltip tiptext = new Tooltip("Lập hóa đơn\nIn hóa đơn");
         btncaidat.setTooltip(new Tooltip("Thay đổi thông tin hóa đơn"));
         btnchucnang.setTooltip(tiptext);
         nodelistbtn.addAnimatedNode(btnchucnang);
         nodelistbtn.addAnimatedNode(btnLapHoaDon);
         nodelistbtn.addAnimatedNode(btnInHoaDon);
-        nodelistbtn.addAnimatedNode(btnThemthongtinkhachhang);
         nodelistbtn.addAnimatedNode(btncaidat);
         nodelistbtn.setSpacing(5);
-
         table_view.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
             @Override
             public void changed(ObservableValue observableValue, Object oldValue, Object newValue) {
@@ -102,6 +97,7 @@ public class FXML_HoaDonController implements Initializable {
                 }
             }
         });
+
         viewListTable();
         ContextMenuTable();
     }
@@ -132,6 +128,7 @@ public class FXML_HoaDonController implements Initializable {
                 btnXoa_click();
             }
         });
+      
         context.getItems().addAll(itemXoa);
         table_view.setContextMenu(context);
     }
@@ -156,9 +153,32 @@ public class FXML_HoaDonController implements Initializable {
             }
         });
         List<String> arr_mactsp = new ChiTietSanPham().getListMactsp();
-       
-        TextFields.bindAutoCompletion(txt_fi_machitietsanpham, arr_mactsp);
 
+        TextFields.bindAutoCompletion(txt_fi_machitietsanpham, arr_mactsp);
+        List<String> arr_sdt = new KhachHang().getListSDT();
+        TextFields.bindAutoCompletion(txt_fi_sodienthoai, arr_sdt);
+        txt_fi_sodienthoai.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue,
+                    String newValue) {
+                if (!newValue.matches("\\d*")) {
+                    txt_fi_sodienthoai.setText(newValue.replaceAll("[^\\d]", ""));
+                }
+            }
+        });
+        txt_fi_sodienthoai.setOnKeyTyped(event -> {
+            int maxCharacters = 13;
+            if (txt_fi_sodienthoai.getText().length() > maxCharacters - 1) {
+                event.consume();
+            }
+        });
+        txt_fi_sodienthoai.setOnKeyReleased(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                KhachHang kh = new KhachHang();
+                String tenkh = kh.getTenkhachhang(txt_fi_sodienthoai.getText());
+                txt_fi_tenkhachhang.setText(tenkh);
+            }
+        });
     }
 
     private void getDonGia(String mactsp) {
@@ -211,8 +231,7 @@ public class FXML_HoaDonController implements Initializable {
             btnthem_click();
         } else if (btn == btnThanhToan) {
             btnthanhtoan_click();
-        } else if (btn == btnThemthongtinkhachhang) {
-            btnThemthongtinkhachhang_click();
+
         } else if (btn == btnXoa) {
             btnXoa_click();
         } else if (btn == btnInHoaDon) {
@@ -229,9 +248,9 @@ public class FXML_HoaDonController implements Initializable {
         btnThem.setDisable(true);
         btnXoa.setDisable(true);
         btnInHoaDon.setDisable(true);
-        btnThemthongtinkhachhang.setDisable(true);
+
         checkLaphoadon = true;
-        stateBtnLuu = false;
+
         txt_fi_tongtien.setText("0");
         txt_fi_machitietsanpham.setText("");
         tongtien = 0;
@@ -239,7 +258,7 @@ public class FXML_HoaDonController implements Initializable {
         if (FXML_ClothesStoreController.rootP.getChildren().size() == 2) {
             FXML_ClothesStoreController.rootP.getChildren().remove(1);
         }
-        stateKhachHang = true;
+        
     }
 
     private void laphoadon_click() {
@@ -269,9 +288,9 @@ public class FXML_HoaDonController implements Initializable {
         btnThem.setDisable(true);
         btnXoa.setDisable(true);
         btnInHoaDon.setDisable(true);
-        btnThemthongtinkhachhang.setDisable(true);
+
         checkLaphoadon = true;
-        stateBtnLuu = false;
+
         txt_fi_machitietsanpham.setText("");
         txt_fi_tongtien.setText("0");
         HoaDon hoadon = new HoaDon(new SimpleIntegerProperty(mahoadon));
@@ -285,7 +304,7 @@ public class FXML_HoaDonController implements Initializable {
             ShowMessage
                     .showMessageBox(Alert.AlertType.INFORMATION, "Thông báo", null, "Hủy hóa đơn thành công")
                     .showAndWait();
-            stateKhachHang = true;
+           
         } else {
             ShowMessage
                     .showMessageBox(Alert.AlertType.ERROR, "Thông báo", null, "Hủy hóa đơn thất bại")
@@ -299,7 +318,7 @@ public class FXML_HoaDonController implements Initializable {
         if (spin_soluong.getValue() != null) {
             slmua = spin_soluong.getValue();
         }
-        String money = txt_fi_thanhtien.getText();     
+        String money = txt_fi_thanhtien.getText();
         int thanhtien = Integer.parseInt(money.replaceAll(",", ""));
         ChiTietHoaDon cthd = new ChiTietHoaDon(new SimpleIntegerProperty(mahoadon),
                 new SimpleStringProperty(txt_fi_machitietsanpham.getText()),
@@ -354,13 +373,36 @@ public class FXML_HoaDonController implements Initializable {
                     .showAndWait();
             return;
         }
-
+        if (!txt_fi_sodienthoai.getText().isEmpty()) {
+            KhachHang kh = new KhachHang(new SimpleStringProperty(txt_fi_tenkhachhang.getText()),
+                    new SimpleStringProperty(txt_fi_sodienthoai.getText()));
+            ChiTietKhachHang ctkh = new ChiTietKhachHang();
+            ctkh.setSodienthoai(new SimpleStringProperty(txt_fi_sodienthoai.getText()));
+            ctkh.setMahoadon(new SimpleIntegerProperty(mahoadon));
+            int flag = -1;
+            if (ctkh.insert()) {
+                flag = 0;
+            } else {
+                if (kh.insert()) {
+                    if (ctkh.insert()) {
+                        flag = 1;
+                    }
+                }
+            }
+            if (flag == 0) {
+                System.out.println("Lưu thành công thông tin kh cũ");
+            } else if (flag == 1) {
+                System.out.println("Lưu thành công thông tin kh mới");
+            } else {
+                System.out.println("Lưu thất bại thông tin kh");
+            }
+        }
         if (hd.UpdateTongtien()) {
             btnInHoaDon.setDisable(false);
             btnThem.setDisable(true);
             btnXoa.setDisable(true);
             btnThanhToan.setDisable(true);
-            btnThemthongtinkhachhang.setDisable(false);
+
             update_sl_ctsp(true);
             ShowMessage
                     .showMessageBox(Alert.AlertType.INFORMATION, "Thông báo", null, "Thanh toán thành công")
@@ -381,45 +423,6 @@ public class FXML_HoaDonController implements Initializable {
             ChiTietSanPham ctsp = new ChiTietSanPham(new SimpleStringProperty(mactsp),
                     new SimpleIntegerProperty(soluong));
             ctsp.Update_soluong(function);
-        }
-    }
-    private boolean stateBtnLuu = false;
-
-    private void btnThemthongtinkhachhang_click() {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass()
-                    .getResource("/clothesstore_view/FXML_KhachHang.fxml"));
-            AnchorPane KhachHangAnchor = fxmlLoader.load();
-            if (stateKhachHang) {
-                KhachHangAnchor.setLayoutX(0);
-                KhachHangAnchor.setLayoutY(572);
-                KhachHangAnchor.setPrefWidth(444);
-                FadeTransition ft = new FadeTransition(Duration.millis(500), KhachHangAnchor);
-                ft.setFromValue(0.0);
-                ft.setToValue(1.0);
-                ft.play();
-                FXML_ClothesStoreController.rootP.getChildren().add(KhachHangAnchor);
-                FXML_KhachHangController kh_controller = fxmlLoader.getController();
-                kh_controller.setMahoadon(mahoadon);
-                if (stateBtnLuu) {
-                    kh_controller.getbtnLuu().setMouseTransparent(true);
-                }
-                kh_controller.getbtnLuu().setOnAction(e -> {
-                    kh_controller.btnluu_click();
-                    stateBtnLuu = true;
-                });
-                stateKhachHang = false;
-            } else {
-                FadeTransition ft = new FadeTransition(Duration.millis(500),
-                        FXML_ClothesStoreController.rootP.getChildren().get(1));
-                ft.setFromValue(1.0);
-                ft.setToValue(0.0);
-                ft.setOnFinished(e -> FXML_ClothesStoreController.rootP.getChildren().remove(1));
-                ft.play();
-                stateKhachHang = true;
-            }
-        } catch (IOException ex) {
-            Logger.getLogger(FXML_HoaDonController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

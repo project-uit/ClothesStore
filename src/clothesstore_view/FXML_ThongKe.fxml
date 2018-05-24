@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="700.0" prefWidth="845.0" style="-fx-background-color: #deeeef;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clothesstore_controller.FXML_ThongKeController">
+<AnchorPane id="AnchorPane" prefHeight="720.0" prefWidth="845.0" style="-fx-background-color: #deeeef;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clothesstore_controller.FXML_ThongKeController">
    <children>
       <TabPane layoutX="6.0" layoutY="9.0" prefHeight="681.0" prefWidth="823.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
         <tabs>
@@ -30,8 +30,8 @@
                             <NumberAxis fx:id="y" label="Doanh thu" side="LEFT" />
                           </yAxis>
                         </BarChart>
-                        <ComboBox fx:id="cmbYear" editable="true" layoutX="687.0" layoutY="20.0" prefHeight="25.0" prefWidth="104.0" />
-                        <JFXButton fx:id="btnPrint" layoutX="640.0" layoutY="20.0" onAction="#Handler_btnPrint" style="-fx-background-color: #4681f5;" text="Print" textFill="#fffdfd" AnchorPane.bottomAnchor="606.0" AnchorPane.rightAnchor="144.0" />
+                        <ComboBox fx:id="cmbYear" layoutX="629.0" layoutY="21.0" prefHeight="25.0" prefWidth="104.0" promptText="Năm" />
+                        <JFXButton fx:id="btnPrint" layoutX="745.0" layoutY="21.0" onAction="#Handler_btnPrint" style="-fx-background-color: #4681f5;" text="Print" textFill="#fffdfd" AnchorPane.bottomAnchor="619.0" AnchorPane.rightAnchor="33.0" />
                      </children>
                   </AnchorPane>
             </content>

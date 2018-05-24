@@ -2,8 +2,6 @@ drop database if exists clothesshop;
 create database ClothesShop;
 use ClothesShop;
 
-
-
 create table cuahang
 (
 id int primary key,
@@ -39,21 +37,29 @@ luong int
 
 insert into nhanvien(tennhanvien,diachi,gioitinh,ngaysinh,cmnd,trangthai,luong)
 values('ccc', 'le hong phong',1,'1995-01-19','123456',1,50000);
+
 create table nhomhang
 (
-tennhomhang nvarchar(30) PRIMARY KEY COLLATE utf8_unicode_ci
-)ENGINE=INNODB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+tennhomhang nvarchar(30) COLLATE utf8_unicode_ci primary key,
+trangthai int
+);
+
 create table nhasanxuat
 (
-tennhasanxuat nvarchar(50)  PRIMARY KEY COLLATE utf8_unicode_ci
-)ENGINE=INNODB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+tennhasanxuat nvarchar(50) COLLATE utf8_unicode_ci primary key,
+trangthai int
+);
 -- tạo sản phẩm và chi tiết sản phẩm trước khi lập phiếu nhập, ko nhập giaban, ko nhập số lượng
 create table sanpham
 (
 masanpham char(8) primary key,
-tensanpham nvarchar(30) not null,
-tennhasanxuat nvarchar(50),
-tennhomhang nvarchar(30),
+tensanpham nvarchar(30),
+tennhasanxuat nvarchar(50) COLLATE utf8_unicode_ci,
+tennhomhang nvarchar(30) COLLATE utf8_unicode_ci,
+FOREIGN KEY (tennhasanxuat)
+REFERENCES nhasanxuat(tennhasanxuat),
+FOREIGN KEY (tennhomhang)
+REFERENCES nhomhang(tennhomhang),
 ghichu nvarchar(50),
 giaban INT,
 tonkhotoithieu int,
@@ -65,7 +71,6 @@ ngayhethan date
 DELIMITER $$
 CREATE FUNCTION GenerateLicensePlate()
     RETURNS CHAR(8)
- 
     BEGIN
     DECLARE plate CHAR(8) DEFAULT "" ;
     WHILE LENGTH(plate) = 0 DO
@@ -93,27 +98,15 @@ DELIMITER ;
 
 create table mausac
 (
-tenmau nvarchar(30)  PRIMARY KEY Collate utf8_unicode_ci
+tenmau nvarchar(30) Collate utf8_unicode_ci primary key,
+trangthai int
 );
-
-insert into mausac
-values('Đỏ');
-insert into mausac
-values('Xanh dương');
-insert into mausac
-values('Xanh lá');
 
 create table size
 (
-tensize char(5) primary key
+tensize char(5) primary key,
+trangthai int
 );
-
-insert into size
-values('S');
-insert into size
-values('M');
-insert into size
-values('L');
 
 create table chitietsanpham
 (
@@ -122,50 +115,61 @@ masanpham char(8),
 FOREIGN KEY (masanpham)
 REFERENCES sanpham(masanpham),
 tensize char(5),
-tenmau nvarchar(30),
+tenmau nvarchar(30)  Collate utf8_unicode_ci,
+FOREIGN KEY (tensize)
+REFERENCES size(tensize),
+FOREIGN KEY (tenmau)
+REFERENCES mausac(tenmau),
 gioitinh int,
 soluong int
 );
 
 -- phiếu nhập đc lập bởi quản lý(admin) 
-create table phieunhap
+create table hoadonmuahang
 (
-maphieunhap  INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+mahoadonmuahang INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 ngaynhap datetime,
 manhacungcap INT(6) UNSIGNED,
 FOREIGN KEY (manhacungcap)
 REFERENCES nhacungcap(manhacungcap),
 tongtien int
 );
--- khi nhập chitietphieunhap, đồng thời nhập giá bán nhưng lưu lại ở trên bảng chitietsanpham
-create table chitietphieunhap
+-- khi nhập chitiethoadonmuahang, đồng thời nhập giá bán nhưng lưu lại ở trên bảng chitietsanpham
+create table chitiethoadonmuahang
 (
-machitietphieunhap  INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+machitiethoadonmuahang INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 masanpham char(8),
 FOREIGN KEY (masanpham)
 REFERENCES sanpham(masanpham),
 soluongsanphamnhap int,
 giavon int,
 thanhtien int,
-maphieunhap  INT(6) UNSIGNED,
-FOREIGN KEY (maphieunhap)
-REFERENCES phieunhap(maphieunhap)
+mahoadonmuahang  INT(6) UNSIGNED,
+FOREIGN KEY (mahoadonmuahang)
+REFERENCES hoadonmuahang(mahoadonmuahang)
 );
 
 -- kho đc nhập bởi nhân viên, mỗi nhân viên click vào phiếu nhập đc lập vào ngày hiện tại để nhập kho
 -- Khi nhập số lượng mới chỉ việc cộng dồn lại trên bảng chitietsanpham
-create table khosanpham 
+create table nhapkho 
 (
 makhosanpham   int(6) unsigned auto_increment  PRIMARY KEY,
 manhanvien int(6) unsigned,
-maphieunhap  INT(6) UNSIGNED,
-masanpham CHAR(8),
-FOREIGN KEY (maphieunhap)
-REFERENCES phieunhap(maphieunhap),
+mahoadonmuahang  INT(6) UNSIGNED,
+FOREIGN KEY (mahoadonmuahang)
+REFERENCES hoadonmuahang(mahoadonmuahang),
 FOREIGN KEY (manhanvien)
 REFERENCES nhanvien(manhanvien)
 );
-
+-- cháu Diệu thêm vào 
+create table chitietnhapkho
+(
+machitietnhapkho int (6) unsigned auto_increment  PRIMARY KEY,
+machitietsanpham varchar(45),
+soluong int ,
+FOREIGN KEY (machitietsanpham)
+REFERENCES chitietsanpham(machitietsanpham)
+);
 create table hoadon
 (
 mahoadon   INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -193,10 +197,12 @@ create table khachhang
 sodienthoai char(15) PRIMARY KEY,
 tenkhachhang nvarchar(50)
 );
+
 insert into khachhang
 values ('0909478','Hope');
 insert into khachhang
 values ('0905678','Hand');
+
 create table chitietkhachhang
 (
 machitietkhachhang  INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -207,6 +213,7 @@ mahoadon   INT(6) UNSIGNED,
 FOREIGN KEY (mahoadon)
 REFERENCES hoadon(mahoadon)
 );
+
 CREATE TABLE dangnhap(
 tentaikhoan varchar(55) not null primary key,
 matkhau varchar(55) not null,
@@ -215,6 +222,7 @@ manhanvien INT(6) UNSIGNED,
 FOREIGN KEY (manhanvien)
 REFERENCES nhanvien(manhanvien)
 );
+
 insert into dangnhap(tentaikhoan, matkhau,phanquyen,manhanvien)
 values ('admin','123',1,1);
 
@@ -224,7 +232,6 @@ madoitra INT NOT NULL PRIMARY KEY auto_increment,
 mahoadon INT(6) unsigned,
 ngaytra datetime,
 lydo nvarchar(300),
-
 FOREIGN KEY (mahoadon)
 REFERENCES hoadon(mahoadon)
 );
@@ -235,10 +242,8 @@ machitietdoitra INT NOT NULL PRIMARY KEY auto_increment,
 madoitra int,
 machitietsanpham varchar(45),
 soluong int(6),
-
 FOREIGN KEY (machitietsanpham)
 REFERENCES chitietsanpham(machitietsanpham),
-
 FOREIGN KEY (madoitra)
 REFERENCES doitra(madoitra)
 );
@@ -259,10 +264,8 @@ mahoadondoitra INT,
 machitietsanpham varchar(45),
 soluong int(6),
 thanhtien int,
-
 FOREIGN KEY (machitietsanpham)
 REFERENCES chitietsanpham(machitietsanpham),
-
 FOREIGN KEY (mahoadondoitra)
 REFERENCES hoadondoitra(mahoadondoitra)
 );
@@ -275,13 +278,13 @@ for each row
 	delete from dangnhap 
     	where dangnhap.manhanvien = old.manhanvien;
         
-DROP TRIGGER IF EXISTS before_phieunhap_delete;
+DROP TRIGGER IF EXISTS before_hoadonmuahang_delete;
 
-create trigger before_phieunhap_delete 
-before delete ON phieunhap
+create trigger before_hoadonmuahang_delete 
+before delete ON hoadonmuahang
 for each row
-	delete from chitietphieunhap 
-    where chitietphieunhap.maphieunhap=old.maphieunhap;
+	delete from chitiethoadonmuahang 
+    where chitiethoadonmuahang.mahoadonmuahang=old.mahoadonmuahang;
 
 DROP TRIGGER IF EXISTS before_sanpham_delete;
 create trigger before_sanpham_delete 
@@ -289,9 +292,6 @@ before delete ON sanpham
 for each row
 	delete from chitietsanpham 
     where chitietsanpham.masanpham=old.masanpham and old.giaban is null;
-
-
-
 
 DROP TRIGGER IF EXISTS before_hoadon_delete;
 DELIMITER $$
@@ -443,8 +443,8 @@ elseif chucnang=7 then
 select sp.masanpham,sp.tensanpham,sp.tonkhotoithieu,
 (select sum(soluong) from chitietsanpham ctsp where ctsp.masanpham=sp.masanpham) as sl,
 sp.tonkhotoida, max(date_format(pn.ngaynhap,'%d/%m/%y')) as ngaynhap,sp.ngayhethan
-from sanpham sp, chitietphieunhap ctpn, phieunhap pn
-where ctpn.masanpham = sp.masanpham and pn.maphieunhap=ctpn.maphieunhap
+from sanpham sp, chitiethoadonmuahang ctpn, hoadonmuahang pn
+where ctpn.masanpham = sp.masanpham and pn.mahoadonmuahang=ctpn.mahoadonmuahang
 group by sp.masanpham
 having date(now()) >= ngayhethan and sl > 0;
 
@@ -459,7 +459,7 @@ BEGIN
 declare ngay Date;
 declare thoihan int;
 set thoihan = (select thoihan_thang from sanpham where masanpham=masp);
-set ngay = (select Date(ngaynhap) from phieunhap where maphieunhap = mapn);
+set ngay = (select Date(ngaynhap) from hoadonmuahang where mahoadonmuahang = mapn);
 update sanpham 
 set ngayhethan=DATE_ADD(ngay, INTERVAL thoihan MONTH) 
 where masanpham=masp;
@@ -468,12 +468,17 @@ DELIMITER ;
 call update_ngayhethan_sp(3,'SPY27INH');
 -- 'SPG7DW6U', 'SPFZA92'
 
-select ctpn.masanpham, ngaynhap, giavon, ctpn.maphieunhap
-from chitietphieunhap ctpn,phieunhap pn 
-where ctpn.maphieunhap = pn.maphieunhap  and ctpn.maphieunhap =  
-(SELECT ctpn1.maphieunhap 
-FROM chitietphieunhap ctpn1,phieunhap pn1 
-WHERE  ctpn1.maphieunhap = pn1.maphieunhap  and ctpn1.masanpham = ctpn.masanpham            
-ORDER BY ctpn1.maphieunhap DESC
+select ctpn.masanpham, ngaynhap, giavon, ctpn.mahoadonmuahang
+from chitiethoadonmuahang ctpn,hoadonmuahang pn 
+where ctpn.mahoadonmuahang = pn.mahoadonmuahang  and ctpn.mahoadonmuahang =  
+(SELECT ctpn1.mahoadonmuahang 
+FROM chitiethoadonmuahang ctpn1,hoadonmuahang pn1 
+WHERE  ctpn1.mahoadonmuahang = pn1.mahoadonmuahang  and ctpn1.masanpham = ctpn.masanpham            
+ORDER BY ctpn1.mahoadonmuahang DESC
 LIMIT 1)
 ;
+select  sp.masanpham,sp.tensanpham,sp.tennhomhang,sp.tennhasanxuat,
+ctsp.tenmau,ctsp.gioitinh, ctsp.tensize,ctsp.soluong,sp.giaban 
+from sanpham sp 
+join chitietsanpham ctsp on sp.masanpham = ctsp.masanpham 
+where ctsp.soluong >=0;

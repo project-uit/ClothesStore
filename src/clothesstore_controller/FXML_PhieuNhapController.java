@@ -34,7 +34,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.StringConverter;
 import clothesstore_model.NhaCungCap;
-import clothesstore_model.PhieuNhap;
+import clothesstore_model.HoaDonMuaHang;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.scene.control.Label;
@@ -56,7 +56,7 @@ public class FXML_PhieuNhapController implements Initializable {
     @FXML
     private TableColumn clmaphieunhap, clnhacungcap, clngaynhap, cltongtien;
     @FXML
-    private TableView<PhieuNhap> tableviewphieunhap;
+    private TableView<HoaDonMuaHang> tableviewphieunhap;
     @FXML
     private JFXButton btnluuphieunhap, btnhuyphieunhap, btnthemphieu;
     @FXML
@@ -69,7 +69,7 @@ public class FXML_PhieuNhapController implements Initializable {
     private ChangeListener<NhaCungCap> listenerNCC;
     public int getmaphieunhap;
     private int manhacungcap;
-    private PhieuNhap phieunhap;
+    private HoaDonMuaHang phieunhap;
     /**
      * Initializes the controller class.
      */
@@ -148,7 +148,7 @@ public class FXML_PhieuNhapController implements Initializable {
             alert.setHeaderText(null);
             Optional<ButtonType> result = alert.showAndWait();
         } else {
-            PhieuNhap pn = new PhieuNhap(nhacc, ngaynhap, tongtien);
+            HoaDonMuaHang pn = new HoaDonMuaHang(nhacc, ngaynhap, tongtien);
             pn.ThemPhieuNhap();
             InitTableViewPhieuNhap();
         }
@@ -156,7 +156,7 @@ public class FXML_PhieuNhapController implements Initializable {
 
     @FXML
     private void handler_xoaphieunhap(ActionEvent event) {
-        PhieuNhap selectedForDeletion = tableviewphieunhap.getSelectionModel().getSelectedItem();
+        HoaDonMuaHang selectedForDeletion = tableviewphieunhap.getSelectionModel().getSelectedItem();
         if (selectedForDeletion == null) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
                     "Mời chọn phiếu nhập");
@@ -167,11 +167,11 @@ public class FXML_PhieuNhapController implements Initializable {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Nhắc nhở");
         alert.setHeaderText(null);
-        alert.setContentText("Bạn có muốn xóa phiếu nhập mã " + selectedForDeletion.getMaphieunhap() + " ?");
+        alert.setContentText("Bạn có muốn xóa phiếu nhập mã " + selectedForDeletion.getMahoadonmuahang() + " ?");
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK) {
-            PhieuNhap pn = new PhieuNhap();
-            pn.XoaPhieuNhap(selectedForDeletion.getMaphieunhap());
+            HoaDonMuaHang pn = new HoaDonMuaHang();
+            pn.XoaPhieuNhap(selectedForDeletion.getMahoadonmuahang());
             InitTableViewPhieuNhap();
             System.out.println("Xoa Thanh Cong");
         } else {
@@ -182,7 +182,7 @@ public class FXML_PhieuNhapController implements Initializable {
 
     @FXML
     private void handler_xemchitietphieunhap(ActionEvent event) {
-        PhieuNhap selectedForViewing = tableviewphieunhap.getSelectionModel().getSelectedItem();
+        HoaDonMuaHang selectedForViewing = tableviewphieunhap.getSelectionModel().getSelectedItem();
         if (selectedForViewing == null) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
                     "Mời chọn phiếu nhập");
@@ -191,8 +191,8 @@ public class FXML_PhieuNhapController implements Initializable {
             return;
         }
 
-        PhieuNhap getSelectedRow = tableviewphieunhap.getSelectionModel().getSelectedItem();
-        mapn = getSelectedRow.getMaphieunhap();
+        HoaDonMuaHang getSelectedRow = tableviewphieunhap.getSelectionModel().getSelectedItem();
+        mapn = getSelectedRow.getMahoadonmuahang();
         try {
             Parent parent = FXMLLoader.load(getClass().getResource("/clothesstore_view/FXML_XemCTPN.fxml"));
             Stage stage = new Stage();
@@ -206,7 +206,7 @@ public class FXML_PhieuNhapController implements Initializable {
 
     @FXML
     private void handler_themchitietphieunhap(ActionEvent event) {
-        PhieuNhap selectedForDeletion = tableviewphieunhap.getSelectionModel().getSelectedItem();
+        HoaDonMuaHang selectedForDeletion = tableviewphieunhap.getSelectionModel().getSelectedItem();
         if (selectedForDeletion == null) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
                     "Mời chọn phiếu nhập");
@@ -215,8 +215,8 @@ public class FXML_PhieuNhapController implements Initializable {
             return;
         }
 
-        PhieuNhap getSelectedRow = tableviewphieunhap.getSelectionModel().getSelectedItem();
-        mapn = getSelectedRow.getMaphieunhap();
+        HoaDonMuaHang getSelectedRow = tableviewphieunhap.getSelectionModel().getSelectedItem();
+        mapn = getSelectedRow.getMahoadonmuahang();
         try {
             rootCTPN = FXMLLoader.load(getClass().getResource("/clothesstore_view/FXML_SearchSanPham.fxml"));
         } catch (IOException ex) {
@@ -236,8 +236,8 @@ public class FXML_PhieuNhapController implements Initializable {
 
     @FXML
     private void handler_suaphieunhap(ActionEvent event) {
-        PhieuNhap selectedForDeletion = tableviewphieunhap.getSelectionModel().getSelectedItem();
-        phieunhap = (PhieuNhap) tableviewphieunhap.getSelectionModel().getSelectedItem();
+        HoaDonMuaHang selectedForDeletion = tableviewphieunhap.getSelectionModel().getSelectedItem();
+        phieunhap = (HoaDonMuaHang) tableviewphieunhap.getSelectionModel().getSelectedItem();
         datengaynhap.setValue(selectedForDeletion.getNgaynhap().toLocalDate());
         if (selectedForDeletion == null) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
@@ -277,7 +277,7 @@ public class FXML_PhieuNhapController implements Initializable {
             alert.setHeaderText(null);
             Optional<ButtonType> result = alert.showAndWait();
         } else {
-            PhieuNhap pn = new PhieuNhap(phieunhap.getMaphieunhap(), nhacc, ngaynhap);
+            HoaDonMuaHang pn = new HoaDonMuaHang(phieunhap.getMahoadonmuahang(), nhacc, ngaynhap);
             pn.CapNhatPhieuNhap();
             InitTableViewPhieuNhap();
             btnluuphieunhap.setDisable(true);
@@ -327,9 +327,9 @@ public class FXML_PhieuNhapController implements Initializable {
     }
     
     public void InitTableViewPhieuNhap() {
-        PhieuNhap pn = new PhieuNhap();
-        ObservableList<PhieuNhap> list = pn.getListPhieuNhap();
-        clmaphieunhap.setCellValueFactory(new PropertyValueFactory("maphieunhap"));
+        HoaDonMuaHang pn = new HoaDonMuaHang();
+        ObservableList<HoaDonMuaHang> list = pn.getListPhieuNhap();
+        clmaphieunhap.setCellValueFactory(new PropertyValueFactory("mahoadonmuahang"));
         clngaynhap.setCellValueFactory(new PropertyValueFactory("ngaynhap"));
         clnhacungcap.setCellValueFactory(new PropertyValueFactory("tencungcap"));
         cltongtien.setCellValueFactory(new PropertyValueFactory("tongtien"));

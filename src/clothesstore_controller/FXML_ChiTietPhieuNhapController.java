@@ -16,7 +16,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import static clothesstore_controller.FXML_PhieuNhapController.mapn;
 import static clothesstore_controller.FXML_PhieuNhapController.rootCTPN;
-import clothesstore_model.ChiTietPhieuNhap;
+import clothesstore_model.ChiTietHoaDonMuaHang;
 import com.jfoenix.controls.JFXTextField;
 import java.io.IOException;
 import java.util.Optional;
@@ -52,7 +52,7 @@ public class FXML_ChiTietPhieuNhapController implements Initializable {
     private JFXButton btnBack, btnSave;
     @FXML
     private JFXTextField txtmaphieunhap;
-    public static ObservableList<ChiTietPhieuNhap> _listSP;
+    public static ObservableList<ChiTietHoaDonMuaHang> _listSP;
 
     /**
      * Initializes the controller class.
@@ -64,7 +64,7 @@ public class FXML_ChiTietPhieuNhapController implements Initializable {
         txtmaphieunhap.setText(Integer.toString(mapn));
     }
 
-    public void _setListSP(ObservableList<ChiTietPhieuNhap> list) {
+    public void _setListSP(ObservableList<ChiTietHoaDonMuaHang> list) {
         _listSP = list;
     }
 
@@ -73,98 +73,94 @@ public class FXML_ChiTietPhieuNhapController implements Initializable {
         clTenSP.setCellValueFactory(new PropertyValueFactory("tensanpham"));
         clThanhTien.setCellValueFactory(new PropertyValueFactory("thanhtien"));
 
-        clSoLuong.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ChiTietPhieuNhap, String>, ObservableValue<String>>() {
+        clSoLuong.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ChiTietHoaDonMuaHang, String>, ObservableValue<String>>() {
             @Override
-            public ObservableValue<String> call(TableColumn.CellDataFeatures<ChiTietPhieuNhap, String> p) {
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<ChiTietHoaDonMuaHang, String> p) {
                 return p.getValue().getString_soluongsanphamnhap();
             }
         });
-        clSoLuong.setCellFactory(new Callback<TableColumn<ChiTietPhieuNhap, String>, TableCell<ChiTietPhieuNhap, String>>() {
+        clSoLuong.setCellFactory(new Callback<TableColumn<ChiTietHoaDonMuaHang, String>, TableCell<ChiTietHoaDonMuaHang, String>>() {
             @Override
-            public TableCell<ChiTietPhieuNhap, String> call(TableColumn<ChiTietPhieuNhap, String> p) {
+            public TableCell<ChiTietHoaDonMuaHang, String> call(TableColumn<ChiTietHoaDonMuaHang, String> p) {
                 return new TextFieldTableCell();
             }
         });
         clSoLuong.setCellFactory(TextFieldTableCell.forTableColumn());
-        clSoLuong.setOnEditStart(
-                new EventHandler<TableColumn.CellEditEvent<ChiTietPhieuNhap, String>>() {
+        clSoLuong.setOnEditStart(new EventHandler<TableColumn.CellEditEvent<ChiTietHoaDonMuaHang, String>>() {
             @Override
-            public void handle(TableColumn.CellEditEvent<ChiTietPhieuNhap, String> t) {
+            public void handle(TableColumn.CellEditEvent<ChiTietHoaDonMuaHang, String> t) {
                 btnSave.setDisable(true);
             }
         });
 
-        clGiaVon.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ChiTietPhieuNhap, String>, ObservableValue<String>>() {
+        clGiaVon.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ChiTietHoaDonMuaHang, String>, ObservableValue<String>>() {
             @Override
-            public ObservableValue<String> call(TableColumn.CellDataFeatures<ChiTietPhieuNhap, String> p) {
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<ChiTietHoaDonMuaHang, String> p) {
                 return p.getValue().getString_giavon();
             }
         });
 
-        clGiaVon.setCellFactory(new Callback<TableColumn<ChiTietPhieuNhap, String>, TableCell<ChiTietPhieuNhap, String>>() {
+        clGiaVon.setCellFactory(new Callback<TableColumn<ChiTietHoaDonMuaHang, String>, TableCell<ChiTietHoaDonMuaHang, String>>() {
             @Override
-            public TableCell<ChiTietPhieuNhap, String> call(TableColumn<ChiTietPhieuNhap, String> p) {
+            public TableCell<ChiTietHoaDonMuaHang, String> call(TableColumn<ChiTietHoaDonMuaHang, String> p) {
                 return new TextFieldTableCell();
             }
         });
         clGiaVon.setCellFactory(TextFieldTableCell.forTableColumn());
-        clGiaVon.setOnEditStart(
-                new EventHandler<TableColumn.CellEditEvent<ChiTietPhieuNhap, String>>() {
+        clGiaVon.setOnEditStart(new EventHandler<TableColumn.CellEditEvent<ChiTietHoaDonMuaHang, String>>() {
             @Override
-            public void handle(TableColumn.CellEditEvent<ChiTietPhieuNhap, String> t) {
+            public void handle(TableColumn.CellEditEvent<ChiTietHoaDonMuaHang, String> t) {
                 btnSave.setDisable(true);
             }
         });
-        clGiaBan.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ChiTietPhieuNhap, String>, ObservableValue<String>>() {
+        clGiaBan.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ChiTietHoaDonMuaHang, String>, ObservableValue<String>>() {
             @Override
-            public ObservableValue<String> call(TableColumn.CellDataFeatures<ChiTietPhieuNhap, String> p) {
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<ChiTietHoaDonMuaHang, String> p) {
                 return p.getValue().getGiaban();
             }
         });
-        clGiaBan.setCellFactory(new Callback<TableColumn<ChiTietPhieuNhap, String>, TableCell<ChiTietPhieuNhap, String>>() {
+        clGiaBan.setCellFactory(new Callback<TableColumn<ChiTietHoaDonMuaHang, String>, TableCell<ChiTietHoaDonMuaHang, String>>() {
             @Override
-            public TableCell<ChiTietPhieuNhap, String> call(TableColumn<ChiTietPhieuNhap, String> p) {
+            public TableCell<ChiTietHoaDonMuaHang, String> call(TableColumn<ChiTietHoaDonMuaHang, String> p) {
                 return new TextFieldTableCell();
             }
         });
         clGiaBan.setCellFactory(TextFieldTableCell.forTableColumn());
-        clGiaBan.setOnEditStart(
-                new EventHandler<TableColumn.CellEditEvent<ChiTietPhieuNhap, String>>() {
+        clGiaBan.setOnEditStart(new EventHandler<TableColumn.CellEditEvent<ChiTietHoaDonMuaHang, String>>() {
             @Override
-            public void handle(TableColumn.CellEditEvent<ChiTietPhieuNhap, String> t) {
+            public void handle(TableColumn.CellEditEvent<ChiTietHoaDonMuaHang, String> t) {
                 btnSave.setDisable(true);
             }
         });
         tblCTPN.setRowFactory(tv -> {
-            TableRow<ChiTietPhieuNhap> row = new TableRow<>();
+            TableRow<ChiTietHoaDonMuaHang> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
                 if (event.getClickCount() == 1 && (!row.isEmpty())) {
-                    clGiaVon.setOnEditCommit(
-                            new EventHandler<TableColumn.CellEditEvent<ChiTietPhieuNhap, String>>() {
+                    clGiaVon.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<ChiTietHoaDonMuaHang, String>>() {
                         @Override
-                        public void handle(TableColumn.CellEditEvent<ChiTietPhieuNhap, String> t) {
+                        public void handle(TableColumn.CellEditEvent<ChiTietHoaDonMuaHang, String> t) {
                             btnSave.setDisable(false);
                             try {
-                                ((ChiTietPhieuNhap) t.getTableView().getItems().get(
+                                ((ChiTietHoaDonMuaHang) t.getTableView().getItems().get(
                                         t.getTablePosition().getRow())).setString_giavon(
                                         new SimpleStringProperty(t.getNewValue().trim()));
 
-                                int sl = ((ChiTietPhieuNhap) t.getTableView().getItems().get(
+                                int sl = ((ChiTietHoaDonMuaHang) t.getTableView().getItems().get(
                                         t.getTablePosition().getRow())).getSoluongsanphamnhap();
-                                int gv = ((ChiTietPhieuNhap) t.getTableView().getItems().get(
+                                int gv = ((ChiTietHoaDonMuaHang) t.getTableView().getItems().get(
                                         t.getTablePosition().getRow())).getGiavon();
                                 int tt = sl * gv;
-                                ((ChiTietPhieuNhap) t.getTableView().getItems().get(
+                                ((ChiTietHoaDonMuaHang) t.getTableView().getItems().get(
                                         t.getTablePosition().getRow())).setThanhtien(
                                         new SimpleIntegerProperty(tt));
-                                row.setItem(((ChiTietPhieuNhap) t.getTableView().getItems().get(
+                                row.setItem(((ChiTietHoaDonMuaHang) t.getTableView().getItems().get(
                                         t.getTablePosition().getRow())));
                                 tblCTPN.refresh();
                             } catch (NumberFormatException ex) {
-                                ((ChiTietPhieuNhap) t.getTableView().getItems().get(
+                                ((ChiTietHoaDonMuaHang) t.getTableView().getItems().get(
                                         t.getTablePosition().getRow())).setGiavon(
                                         new SimpleIntegerProperty(0));
-                                ((ChiTietPhieuNhap) t.getTableView().getItems().get(
+                                ((ChiTietHoaDonMuaHang) t.getTableView().getItems().get(
                                         t.getTablePosition().getRow())).setThanhtien(
                                         new SimpleIntegerProperty(0));
                                 //row.setStyle("-fx-background-color: red");
@@ -175,32 +171,31 @@ public class FXML_ChiTietPhieuNhapController implements Initializable {
                             }
                         }
                     });
-                    clSoLuong.setOnEditCommit(
-                            new EventHandler<TableColumn.CellEditEvent<ChiTietPhieuNhap, String>>() {
+                    clSoLuong.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<ChiTietHoaDonMuaHang, String>>() {
                         @Override
-                        public void handle(TableColumn.CellEditEvent<ChiTietPhieuNhap, String> t) {
+                        public void handle(TableColumn.CellEditEvent<ChiTietHoaDonMuaHang, String> t) {
                             btnSave.setDisable(false);
                             try {
-                                ((ChiTietPhieuNhap) t.getTableView().getItems().get(
+                                ((ChiTietHoaDonMuaHang) t.getTableView().getItems().get(
                                         t.getTablePosition().getRow())).setString_soluongsanphamnhap(
                                         new SimpleStringProperty(t.getNewValue().trim()));
-                                int sl = ((ChiTietPhieuNhap) t.getTableView().getItems().get(
+                                int sl = ((ChiTietHoaDonMuaHang) t.getTableView().getItems().get(
                                         t.getTablePosition().getRow())).getSoluongsanphamnhap();
-                                int gv = ((ChiTietPhieuNhap) t.getTableView().getItems().get(
+                                int gv = ((ChiTietHoaDonMuaHang) t.getTableView().getItems().get(
                                         t.getTablePosition().getRow())).getGiavon();
                                 int tt = sl * gv;
 
-                                ((ChiTietPhieuNhap) t.getTableView().getItems().get(
+                                ((ChiTietHoaDonMuaHang) t.getTableView().getItems().get(
                                         t.getTablePosition().getRow())).setThanhtien(
                                         new SimpleIntegerProperty(tt));
-                                row.setItem(((ChiTietPhieuNhap) t.getTableView().getItems().get(
+                                row.setItem(((ChiTietHoaDonMuaHang) t.getTableView().getItems().get(
                                         t.getTablePosition().getRow())));
                                 tblCTPN.refresh();
                             } catch (NumberFormatException ex) {
-                                ((ChiTietPhieuNhap) t.getTableView().getItems().get(
+                                ((ChiTietHoaDonMuaHang) t.getTableView().getItems().get(
                                         t.getTablePosition().getRow())).setSoluongsanphamnhap(
                                         new SimpleIntegerProperty(0));
-                                ((ChiTietPhieuNhap) t.getTableView().getItems().get(
+                                ((ChiTietHoaDonMuaHang) t.getTableView().getItems().get(
                                         t.getTablePosition().getRow())).setThanhtien(
                                         new SimpleIntegerProperty(0));
                                 //row.setStyle("-fx-background-color: red");
@@ -211,13 +206,12 @@ public class FXML_ChiTietPhieuNhapController implements Initializable {
                             }
                         }
                     });
-                    clGiaBan.setOnEditCommit(
-                            new EventHandler<TableColumn.CellEditEvent<ChiTietPhieuNhap, String>>() {
+                    clGiaBan.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<ChiTietHoaDonMuaHang, String>>() {
                         @Override
-                        public void handle(TableColumn.CellEditEvent<ChiTietPhieuNhap, String> t) {
+                        public void handle(TableColumn.CellEditEvent<ChiTietHoaDonMuaHang, String> t) {
                             btnSave.setDisable(false);
                             try {
-                                ((ChiTietPhieuNhap) t.getTableView().getItems().get(
+                                ((ChiTietHoaDonMuaHang) t.getTableView().getItems().get(
                                         t.getTablePosition().getRow())).setGiaban(
                                         new SimpleStringProperty(t.getNewValue().trim()));
                                 Integer.valueOf(row.getItem().getGiaban().get());
@@ -288,7 +282,7 @@ public class FXML_ChiTietPhieuNhapController implements Initializable {
                     int gv = Integer.valueOf(clGiaVon.getCellData(i).toString());
                     int tt = Integer.valueOf(clThanhTien.getCellData(i).toString());
                     int gb = Integer.valueOf(clGiaBan.getCellData(i).toString());
-                    ChiTietPhieuNhap ctpn = new ChiTietPhieuNhap(msp, mapn, sl, gv, tt);
+                    ChiTietHoaDonMuaHang ctpn = new ChiTietHoaDonMuaHang(msp, mapn, sl, gv, tt);
                     if (ctpn.ThemChiTietPhieuNhap()) {
                         ctpn.CapNhatGiaBanSanPham(msp, gb);
                         btnSave.setDisable(true);
@@ -298,7 +292,7 @@ public class FXML_ChiTietPhieuNhapController implements Initializable {
                         System.out.println("Luu that bai");
                     }
                 }
-                ChiTietPhieuNhap ctpn = new ChiTietPhieuNhap();
+                ChiTietHoaDonMuaHang ctpn = new ChiTietHoaDonMuaHang();
                 ctpn.CapNhatTongTienPhieuNhap(mapn);
             }
         }

@@ -12,10 +12,10 @@
 <AnchorPane id="AnchorPane" prefHeight="700.0" prefWidth="845.0" style="-fx-background-color: #deeeef;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clothesstore_controller.FXML_TraCuuController">
    <children>
       <TableView fx:id="table_view" layoutX="7.0" layoutY="141.0" prefHeight="708.0" prefWidth="829.0" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="8.0" />
-      <JFXTextField fx:id="txt_fi_tensanpham" layoutX="16.0" layoutY="71.0" prefHeight="25.0" prefWidth="181.0" />
+      <JFXTextField fx:id="txt_fi_tensanpham" layoutX="262.0" layoutY="74.0" prefHeight="25.0" prefWidth="181.0" />
       <JFXButton fx:id="btn_refresh" layoutX="725.0" layoutY="75.0" prefHeight="25.0" prefWidth="99.0" style="-fx-background-color: #4681f5;" text="Refresh" textFill="WHITE" AnchorPane.rightAnchor="21.0" AnchorPane.topAnchor="75.0" />
-      <JFXButton fx:id="btn_search" defaultButton="true" layoutX="214.0" layoutY="72.0" prefHeight="25.0" prefWidth="99.0" style="-fx-background-color: #4681f5;" text="Search" textFill="WHITE" />
-      <Label layoutX="14.0" layoutY="47.0" prefHeight="20.0" prefWidth="92.0" text="Tên sản phẩm">
+      <JFXButton fx:id="btn_search" defaultButton="true" layoutX="460.0" layoutY="75.0" prefHeight="25.0" prefWidth="99.0" style="-fx-background-color: #4681f5;" text="Search" textFill="WHITE" />
+      <Label layoutX="260.0" layoutY="50.0" prefHeight="20.0" prefWidth="92.0" text="Tên sản phẩm">
          <font>
             <Font size="14.0" />
          </font>
@@ -25,7 +25,7 @@
             <Font name="System Bold" size="20.0" />
          </font>
       </Label>
-      <TitledPane fx:id="titledPane" layoutX="9.0" layoutY="109.0" prefHeight="170.0" prefWidth="829.0" text="Tra cứu nâng cao">
+      <TitledPane fx:id="titledPane" layoutX="9.0" layoutY="109.0" pickOnBounds="false" prefHeight="170.0" prefWidth="829.0" text="Tra cứu nâng cao">
          <content>
             <AnchorPane style="-fx-background-color: #deeeef;">
                <children>
@@ -79,5 +79,11 @@
             </AnchorPane>
          </content>
       </TitledPane>
+      <JFXTextField fx:id="txt_fi_masanpham" layoutX="8.0" layoutY="75.0" prefHeight="25.0" prefWidth="181.0" />
+      <Label layoutX="8.0" layoutY="50.0" prefHeight="20.0" prefWidth="92.0" text="Mã sản phẩm">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

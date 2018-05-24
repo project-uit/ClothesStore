@@ -5,9 +5,9 @@
  */
 package clothesstore_controller;
 
-import clothesstore_model.ChiTietPhieuNhap;
+import clothesstore_model.ChiTietHoaDonMuaHang;
 import clothesstore_model.KhoSanPham;
-import clothesstore_model.PhieuNhap;
+import clothesstore_model.HoaDonMuaHang;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXDatePicker;
 import java.io.IOException;
@@ -50,7 +50,7 @@ public class FXML_NhapKhoController implements Initializable {
     @FXML
     private TableView tableviewphieunhap;
     @FXML
-    private TableView<ChiTietPhieuNhap> tableviewchitietphieunhap;
+    private TableView<ChiTietHoaDonMuaHang> tableviewchitietphieunhap;
     @FXML
     private TableColumn clmaphieunhap, _clmaphieunhap, clgiavon, clthanhtien,
             clsoluong, clsanpham, cltensanpham, clmachitiet, cltongtien, clngaynhap, clnhacungcap;
@@ -73,8 +73,8 @@ public class FXML_NhapKhoController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-        PhieuNhap pn = new PhieuNhap();
-        ObservableList<PhieuNhap> list = pn.getListPhieuNhap();
+        HoaDonMuaHang pn = new HoaDonMuaHang();
+        ObservableList<HoaDonMuaHang> list = pn.getListPhieuNhap();
         InitTableViewPhieuNhap(list);
         InitCMB();
         tableviewchitietphieunhap.setPlaceholder(new Label("Chọn vào phiếu nhập ở bảng trên để nhập kho"));
@@ -85,8 +85,8 @@ public class FXML_NhapKhoController implements Initializable {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
                 if (newValue) {
-                    PhieuNhap pn = new PhieuNhap();
-                    ObservableList<PhieuNhap> list = FXCollections.observableArrayList();
+                    HoaDonMuaHang pn = new HoaDonMuaHang();
+                    ObservableList<HoaDonMuaHang> list = FXCollections.observableArrayList();
                     if (flag) {
                         list = pn.getListPhieuNhapChuaNhapKhoTheoNgay(selectedDate);
                     } else {
@@ -94,8 +94,8 @@ public class FXML_NhapKhoController implements Initializable {
                     }
                     InitTableViewPhieuNhap(list);
                 } else {
-                    PhieuNhap pn = new PhieuNhap();
-                    ObservableList<PhieuNhap> list = FXCollections.observableArrayList();
+                    HoaDonMuaHang pn = new HoaDonMuaHang();
+                    ObservableList<HoaDonMuaHang> list = FXCollections.observableArrayList();
                     if (flag) {
                         list = pn.getListPhieuNhapTheoNgay(selectedDate);
                     } else {
@@ -107,7 +107,7 @@ public class FXML_NhapKhoController implements Initializable {
         });
     }
 
-    private void InitTableViewPhieuNhap(ObservableList<PhieuNhap> list) {
+    private void InitTableViewPhieuNhap(ObservableList<HoaDonMuaHang> list) {
         clmaphieunhap.setCellValueFactory(new PropertyValueFactory("maphieunhap"));
         clngaynhap.setCellValueFactory(new PropertyValueFactory("ngaynhap"));
         clnhacungcap.setCellValueFactory(new PropertyValueFactory("tencungcap"));
@@ -116,12 +116,12 @@ public class FXML_NhapKhoController implements Initializable {
         tableviewphieunhap.setItems(list);
 
         tableviewphieunhap.setRowFactory(tv -> {
-            TableRow<PhieuNhap> row = new TableRow<>();
+            TableRow<HoaDonMuaHang> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
                 if (event.getClickCount() == 1 && (!row.isEmpty())) {
-                    PhieuNhap rowData = row.getItem();
-                    InitTableViewChiTietPhieuNhap(rowData.getMaphieunhap());
-                    MAPN = row.getItem().getMaphieunhap();
+                    HoaDonMuaHang rowData = row.getItem();
+                    InitTableViewChiTietPhieuNhap(rowData.getMahoadonmuahang());
+                    MAPN = row.getItem().getMahoadonmuahang();
                 }
             });
             return row;
@@ -137,8 +137,8 @@ public class FXML_NhapKhoController implements Initializable {
     }
 
     private void InitTableViewChiTietPhieuNhap(int maphieunhap) {
-        ChiTietPhieuNhap ctpn = new ChiTietPhieuNhap();
-        ObservableList<ChiTietPhieuNhap> list = ctpn.getTableChiTietPhieuNhap(maphieunhap);
+        ChiTietHoaDonMuaHang ctpn = new ChiTietHoaDonMuaHang();
+        ObservableList<ChiTietHoaDonMuaHang> list = ctpn.getTableChiTietPhieuNhap(maphieunhap);
 
         clmachitiet.setCellValueFactory(new PropertyValueFactory("machitietphieunhap"));
         _clmaphieunhap.setCellValueFactory(new PropertyValueFactory("maphieunhap"));
@@ -149,12 +149,12 @@ public class FXML_NhapKhoController implements Initializable {
         clthanhtien.setCellValueFactory(new PropertyValueFactory("thanhtien"));
         tableviewchitietphieunhap.setItems(list);
         tableviewchitietphieunhap.setRowFactory(tv -> {
-            TableRow<ChiTietPhieuNhap> row = new TableRow<>();
+            TableRow<ChiTietHoaDonMuaHang> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
                 if (event.getClickCount() == 2 && (!row.isEmpty())) {
-                    ChiTietPhieuNhap selectedRow = (ChiTietPhieuNhap) tableviewchitietphieunhap.getSelectionModel().getSelectedItem();
+                    ChiTietHoaDonMuaHang selectedRow = (ChiTietHoaDonMuaHang) tableviewchitietphieunhap.getSelectionModel().getSelectedItem();
                     if (checkPhieuNhap(selectedRow.getMasanpham()) == true) {
-                        ChiTietPhieuNhap rowData = row.getItem();
+                        ChiTietHoaDonMuaHang rowData = row.getItem();
                         MaSP = rowData.getMasanpham();
                         TenSP = rowData.getTensanpham();
                         SLSP = rowData.getSoluongsanphamnhap();
@@ -195,12 +195,12 @@ public class FXML_NhapKhoController implements Initializable {
             stageCTKSP.setScene(scene);
             stageCTKSP.setOnHidden((WindowEvent event) -> {
                 if (checkboxFilter.isSelected()) {
-                    PhieuNhap pn = new PhieuNhap();
-                    ObservableList<PhieuNhap> list = pn.getListPhieuNhapChuaNhapKho();
+                    HoaDonMuaHang pn = new HoaDonMuaHang();
+                    ObservableList<HoaDonMuaHang> list = pn.getListPhieuNhapChuaNhapKho();
                     InitTableViewPhieuNhap(list);
                 } else {
-                    PhieuNhap pn = new PhieuNhap();
-                    ObservableList<PhieuNhap> list = pn.getListPhieuNhap();
+                    HoaDonMuaHang pn = new HoaDonMuaHang();
+                    ObservableList<HoaDonMuaHang> list = pn.getListPhieuNhap();
                     InitTableViewPhieuNhap(list);
                 }
             });
@@ -215,12 +215,12 @@ public class FXML_NhapKhoController implements Initializable {
         flag = false;
         dtpFilter.setValue(null);
         if (checkboxFilter.isSelected()) {
-            PhieuNhap pn = new PhieuNhap();
-            ObservableList<PhieuNhap> list = pn.getListPhieuNhapChuaNhapKho();
+            HoaDonMuaHang pn = new HoaDonMuaHang();
+            ObservableList<HoaDonMuaHang> list = pn.getListPhieuNhapChuaNhapKho();
             InitTableViewPhieuNhap(list);
         } else {
-            PhieuNhap pn = new PhieuNhap();
-            ObservableList<PhieuNhap> list = pn.getListPhieuNhap();
+            HoaDonMuaHang pn = new HoaDonMuaHang();
+            ObservableList<HoaDonMuaHang> list = pn.getListPhieuNhap();
             InitTableViewPhieuNhap(list);
         }
     }
@@ -230,8 +230,8 @@ public class FXML_NhapKhoController implements Initializable {
         flag = true;
         try {
             selectedDate = java.sql.Date.valueOf(dtpFilter.getValue());
-            PhieuNhap pn = new PhieuNhap();
-            ObservableList<PhieuNhap> list;
+            HoaDonMuaHang pn = new HoaDonMuaHang();
+            ObservableList<HoaDonMuaHang> list;
             if (checkboxFilter.isSelected()) {
                 list = pn.getListPhieuNhapChuaNhapKhoTheoNgay(selectedDate);
                 InitTableViewPhieuNhap(list);

@@ -51,11 +51,8 @@ public class FXML_MauSacController implements Initializable {
         table_view.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
             @Override
             public void changed(ObservableValue observableValue, Object oldValue, Object newValue) {
-
-                if (table_view.getSelectionModel().getSelectedItem() != null) {
-                    
-                    tenmau = newValue.toString().split(",")[0].substring(1).trim();
-                    System.out.println("" + tenmau);
+                if (table_view.getSelectionModel().getSelectedItem() != null) {                   
+                    tenmau = newValue.toString().split("]")[0].substring(1).trim();                
                 }
             }
         });

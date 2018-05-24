@@ -51,9 +51,7 @@ public class NhomHang extends RecursiveTreeObject<NhomHang> {
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
         if (con != null) {
-
-            String query = "insert into nhomhang values(?)";
-
+            String query = "insert into nhomhang values(?,1)";
             try {
                 PreparedStatement ptm = con.prepareStatement(query);
 
@@ -76,17 +74,13 @@ public class NhomHang extends RecursiveTreeObject<NhomHang> {
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
         if (con != null) {
-
-            String query = "delete from nhomhang where tennhomhang = ?";
+            String query = "update nhomhang set trangthai = 0 where tennhomhang= ?";
 
             try {
                 PreparedStatement ptm = con.prepareStatement(query);
-
                 ptm.setString(1, tennhomhang.get());
-
                 int check = ptm.executeUpdate();
                 if (check != 0) {
-
                     ptm.close();
                     con.close();
                     return true;
@@ -107,7 +101,7 @@ public class NhomHang extends RecursiveTreeObject<NhomHang> {
         if (con != null) {
             try (
                     Statement stmnt = con.createStatement();
-                    ResultSet rs = stmnt.executeQuery("select * from nhomhang");) {
+                    ResultSet rs = stmnt.executeQuery("select tennhomhang from nhomhang where trangthai=1");) {
                 while (rs.next()) {
                     StringProperty tennh;
                     String ten_nhomhang = rs.getString("tennhomhang");
@@ -133,7 +127,7 @@ public class NhomHang extends RecursiveTreeObject<NhomHang> {
         if (con != null) {
             try (
                     Statement stmnt = con.createStatement();
-                    ResultSet rs = stmnt.executeQuery("select * from nhomhang");) {
+                    ResultSet rs = stmnt.executeQuery("select tennhomhang from nhomhang where trangthai=1");) {
                 while (rs.next()) {
                     String ten_nhomhang = rs.getString("tennhomhang");
                     cmb.getItems().add(ten_nhomhang);

@@ -20,39 +20,38 @@ import javafx.collections.ObservableList;
  *
  * @author 15520
  */
-public class PhieuNhap {
-
-    private IntegerProperty maphieunhap;
+public class HoaDonMuaHang {
+    private IntegerProperty mahoadonmuahang;
     private IntegerProperty tongtien;
     private IntegerProperty manhacungcap;
     private Date ngaynhap;
 
     private StringProperty tencungcap;
 
-    public PhieuNhap(int maphieunhap, int tongtien, String tencungcap, Date ngaynhap) {
-        this.maphieunhap = new SimpleIntegerProperty(maphieunhap);
+    public HoaDonMuaHang(int mahoadonmuahang, int tongtien, String tencungcap, Date ngaynhap) {
+        this.mahoadonmuahang = new SimpleIntegerProperty(mahoadonmuahang);
         this.tongtien = new SimpleIntegerProperty(tongtien);
         this.tencungcap = new SimpleStringProperty(tencungcap);
         this.ngaynhap = ngaynhap;
     }
 
-    public PhieuNhap(int manhacungcap, Date ngaynhap, int tongtien) {
+    public HoaDonMuaHang(int manhacungcap, Date ngaynhap, int tongtien) {
         this.tongtien = new SimpleIntegerProperty(tongtien);
         this.manhacungcap = new SimpleIntegerProperty(manhacungcap);
         this.ngaynhap = ngaynhap;
     }
 
-    public PhieuNhap(int maphieunhap, int manhacungcap, Date ngaynhap) {
-        this.maphieunhap = new SimpleIntegerProperty(maphieunhap);
+    public HoaDonMuaHang(int mahoadonmuahang, int manhacungcap, Date ngaynhap) {
+        this.mahoadonmuahang = new SimpleIntegerProperty(mahoadonmuahang);
         this.manhacungcap = new SimpleIntegerProperty(manhacungcap);
         this.ngaynhap = ngaynhap;
     }
 
-    public PhieuNhap() {
+    public HoaDonMuaHang() {
     }
 
-    public int getMaphieunhap() {
-        return maphieunhap.getValue();
+    public int getMahoadonmuahang() {
+        return mahoadonmuahang.getValue();
     }
 
     public Integer getTongtien() {
@@ -67,8 +66,8 @@ public class PhieuNhap {
         return ngaynhap;
     }
 
-    public void setMaphieunhap(IntegerProperty maphieunhap) {
-        this.maphieunhap = maphieunhap;
+    public void setMahoadonmuahang(IntegerProperty mahoadonmuahang) {
+        this.mahoadonmuahang = mahoadonmuahang;
     }
 
     public void setTongtien(IntegerProperty tongtien) {
@@ -91,23 +90,23 @@ public class PhieuNhap {
         this.tencungcap = tencungcap;
     }
 
-    public ObservableList<PhieuNhap> getListPhieuNhap() {
-        ObservableList<PhieuNhap> list = FXCollections.observableArrayList();
+    public ObservableList<HoaDonMuaHang> getListPhieuNhap() {
+        ObservableList<HoaDonMuaHang> list = FXCollections.observableArrayList();
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
-        String sql = "SELECT * FROM phieunhap, nhacungcap WHERE phieunhap.manhacungcap = nhacungcap.manhacungcap";
+        String sql = "SELECT * FROM hoadonmuahang, nhacungcap WHERE hoadonmuahang.manhacungcap = nhacungcap.manhacungcap";
         if (con != null) {
             try {
                 PreparedStatement ptm = con.prepareStatement(sql);
                 ResultSet rs = ptm.executeQuery();
                 while (rs.next()) {
 
-                    PhieuNhap phieunhap = new PhieuNhap(rs.getInt("maphieunhap"),
+                    HoaDonMuaHang hoadonmuahang = new HoaDonMuaHang(rs.getInt("mahoadonmuahang"),
                             rs.getInt("tongtien"),
                             rs.getString("tencungcap"),
                             rs.getDate("ngaynhap"));
 
-                    list.add(phieunhap);
+                    list.add(hoadonmuahang);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -116,15 +115,15 @@ public class PhieuNhap {
         return list;
     }
 
-    public ObservableList<PhieuNhap> getListPhieuNhapChuaNhapKho() {
-        ObservableList<PhieuNhap> list = FXCollections.observableArrayList();
+    public ObservableList<HoaDonMuaHang> getListPhieuNhapChuaNhapKho() {
+        ObservableList<HoaDonMuaHang> list = FXCollections.observableArrayList();
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
-        String sql = "SELECT maphieunhap, tongtien, ngaynhap, tencungcap\n"
+        String sql = "SELECT mahoadonmuahang, tongtien, ngaynhap, tencungcap\n"
                 + "FROM(\n"
-                + "	select pn.maphieunhap, pn.tongtien, pn.ngaynhap, pn.manhacungcap\n"
-                + "	from phieunhap pn\n"
-                + "	left join khosanpham ksp on pn.maphieunhap = ksp.maphieunhap \n"
+                + "	select pn.mahoadonmuahang, pn.tongtien, pn.ngaynhap, pn.manhacungcap\n"
+                + "	from hoadonmuahang pn\n"
+                + "	left join khosanpham ksp on pn.mahoadonmuahang = ksp.mahoadonmuahang \n"
                 + "	where ksp.makhosanpham is null) PN, nhacungcap NCC\n"
                 + "WHERE PN.manhacungcap = NCC.manhacungcap";
         if (con != null) {
@@ -133,12 +132,12 @@ public class PhieuNhap {
                 ResultSet rs = ptm.executeQuery();
                 while (rs.next()) {
 
-                    PhieuNhap phieunhap = new PhieuNhap(rs.getInt("maphieunhap"),
+                    HoaDonMuaHang hoadonmuahang = new HoaDonMuaHang(rs.getInt("mahoadonmuahang"),
                             rs.getInt("tongtien"),
                             rs.getString("tencungcap"),
                             rs.getDate("ngaynhap"));
 
-                    list.add(phieunhap);
+                    list.add(hoadonmuahang);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -147,29 +146,29 @@ public class PhieuNhap {
         return list;
     }
 
-    public ObservableList<PhieuNhap> getListPhieuNhapChuaNhapKhoTheoNgay(Date date) {
-        ObservableList<PhieuNhap> list = FXCollections.observableArrayList();
+    public ObservableList<HoaDonMuaHang> getListPhieuNhapChuaNhapKhoTheoNgay(Date date) {
+        ObservableList<HoaDonMuaHang> list = FXCollections.observableArrayList();
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
-        String sql = "SELECT maphieunhap, tongtien, ngaynhap, tencungcap\n"
+        String sql = "SELECT mahoadonmuahang, tongtien, ngaynhap, tencungcap\n"
                 + "FROM(\n"
-                + "	select pn.maphieunhap, pn.tongtien, pn.ngaynhap, pn.manhacungcap\n"
-                + "	from phieunhap pn\n"
-                + "	left join khosanpham ksp on pn.maphieunhap = ksp.maphieunhap \n"
+                + "	select pn.mahoadonmuahang, pn.tongtien, pn.ngaynhap, pn.manhacungcap\n"
+                + "	from hoadonmuahang pn\n"
+                + "	left join khosanpham ksp on pn.mahoadonmuahang = ksp.mahoadonmuahang \n"
                 + "	where ksp.makhosanpham is null) PN, nhacungcap NCC\n"
-                + "WHERE PN.maphieunhap = NCC.manhacungcap and PN.ngaynhap = '" + date + "'";
+                + "WHERE PN.mahoadonmuahang = NCC.manhacungcap and PN.ngaynhap = '" + date + "'";
         if (con != null) {
             try {
                 PreparedStatement ptm = con.prepareStatement(sql);
                 ResultSet rs = ptm.executeQuery();
                 while (rs.next()) {
 
-                    PhieuNhap phieunhap = new PhieuNhap(rs.getInt("maphieunhap"),
+                    HoaDonMuaHang hoadonmuahang = new HoaDonMuaHang(rs.getInt("mahoadonmuahang"),
                             rs.getInt("tongtien"),
                             rs.getString("tencungcap"),
                             rs.getDate("ngaynhap"));
 
-                    list.add(phieunhap);
+                    list.add(hoadonmuahang);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -178,22 +177,22 @@ public class PhieuNhap {
         return list;
     }
 
-    public ObservableList<PhieuNhap> getListPhieuNhapTheoNgay(Date ngay) {
-        ObservableList<PhieuNhap> list = FXCollections.observableArrayList();
+    public ObservableList<HoaDonMuaHang> getListPhieuNhapTheoNgay(Date ngay) {
+        ObservableList<HoaDonMuaHang> list = FXCollections.observableArrayList();
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
-        String sql = "SELECT * FROM phieunhap pn, nhacungcap ncc "
+        String sql = "SELECT * FROM hoadonmuahang pn, nhacungcap ncc "
                 + "WHERE pn.manhacungcap = ncc.manhacungcap and ngaynhap = '" + ngay + "'";
         if (con != null) {
             try {
                 PreparedStatement ptm = con.prepareStatement(sql);
                 ResultSet rs = ptm.executeQuery();
                 while (rs.next()) {
-                    PhieuNhap phieunhap = new PhieuNhap(rs.getInt("maphieunhap"),
+                    HoaDonMuaHang hoadonmuahang = new HoaDonMuaHang(rs.getInt("mahoadonmuahang"),
                             rs.getInt("tongtien"),
                             rs.getString("tencungcap"),
                             rs.getDate("ngaynhap"));
-                    list.add(phieunhap);
+                    list.add(hoadonmuahang);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -205,7 +204,7 @@ public class PhieuNhap {
     public boolean ThemPhieuNhap() {
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
-        String sql = "INSERT INTO phieunhap(  manhacungcap, ngaynhap,tongtien) VALUES( ?, ?,?);";
+        String sql = "INSERT INTO hoadonmuahang(  manhacungcap, ngaynhap,tongtien) VALUES( ?, ?,?);";
         if (con != null) {
             try {
                 PreparedStatement ptm = con.prepareStatement(sql);
@@ -224,13 +223,13 @@ public class PhieuNhap {
     public boolean CapNhatPhieuNhap() {
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
-        String sql = "update phieunhap set  manhacungcap = ?,ngaynhap = ?  WHERE maphieunhap = ?;";
+        String sql = "update hoadonmuahang set  manhacungcap = ?,ngaynhap = ?  WHERE mahoadonmuahang = ?;";
         if (con != null) {
             try {
                 PreparedStatement ptm = con.prepareStatement(sql);
                 ptm.setInt(1, this.manhacungcap.getValue());
                 ptm.setDate(2, this.ngaynhap);
-                ptm.setInt(3, maphieunhap.getValue());
+                ptm.setInt(3, mahoadonmuahang.getValue());
                 ptm.execute();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -240,14 +239,14 @@ public class PhieuNhap {
         return true;
     }
 
-    public boolean XoaPhieuNhap(int maphieunhap) {
+    public boolean XoaPhieuNhap(int mahoadonmuahang) {
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
-        String sql = " delete from phieunhap where maphieunhap =?;";
+        String sql = " delete from hoadonmuahang where mahoadonmuahang =?;";
         if (con != null) {
             try {
                 PreparedStatement ptm = con.prepareStatement(sql);
-                ptm.setInt(1, maphieunhap);
+                ptm.setInt(1, mahoadonmuahang);
                 ptm.execute();
             } catch (Exception e) {
                 e.printStackTrace();
