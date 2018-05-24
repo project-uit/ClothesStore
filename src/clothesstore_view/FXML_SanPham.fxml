@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="700.0" prefWidth="845.0" style="-fx-background-color: #deeeef;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clothesstore_controller.FXML_HangHoaController">
+<AnchorPane id="AnchorPane" prefHeight="700.0" prefWidth="845.0" style="-fx-background-color: #deeeef;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clothesstore_controller.FXML_SanPhamController">
    <children>
       <Label layoutX="14.0" opacity="0.4" prefHeight="25.0" prefWidth="137.0" text="Sản phẩm" textFill="#021bf5" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="0.0">
          <font>

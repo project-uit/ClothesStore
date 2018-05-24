@@ -6,7 +6,7 @@ package clothesstore_controller;
  * and open the template in the editor.
  */
 
-import static clothesstore_controller.FXML_PhieuNhapController.mapn;
+import static clothesstore_controller.FXML_HoaDonMuaHangController.mapn;
 import clothesstore_model.ChiTietHoaDonMuaHang;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;

@@ -5,8 +5,8 @@
  */
 package clothesstore_controller;
 
-import static clothesstore_controller.FXML_PhieuNhapController.mapn;
-import static clothesstore_controller.FXML_PhieuNhapController.rootCTPN;
+import static clothesstore_controller.FXML_HoaDonMuaHangController.mapn;
+import static clothesstore_controller.FXML_HoaDonMuaHangController.rootCTPN;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.beans.value.ObservableValue;

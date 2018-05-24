@@ -209,7 +209,7 @@ public class FXML_ChiTietSanPhamController implements Initializable {
             stage.showAndWait();
 
         } catch (IOException ex) {
-            Logger.getLogger(FXML_HangHoaController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FXML_SanPhamController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -233,7 +233,7 @@ public class FXML_ChiTietSanPhamController implements Initializable {
             stage.showAndWait();
 
         } catch (IOException ex) {
-            Logger.getLogger(FXML_HangHoaController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FXML_SanPhamController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

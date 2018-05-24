@@ -71,7 +71,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  *
  * @author dieunguyen
  */
-public class FXML_HangHoaController implements Initializable {
+public class FXML_SanPhamController implements Initializable {
 
     /**
      * Initializes the controller class.
@@ -221,9 +221,9 @@ public class FXML_HangHoaController implements Initializable {
                 wb.write(output);
                 output.close();
             } catch (FileNotFoundException ex) {
-                Logger.getLogger(FXML_HangHoaController.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(FXML_SanPhamController.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IOException ex) {
-                Logger.getLogger(FXML_HangHoaController.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(FXML_SanPhamController.class.getName()).log(Level.SEVERE, null, ex);
             }
 
         }
@@ -274,7 +274,7 @@ public class FXML_HangHoaController implements Initializable {
             }
 
         } catch (IOException ex) {
-            Logger.getLogger(FXML_HangHoaController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FXML_SanPhamController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -310,7 +310,7 @@ public class FXML_HangHoaController implements Initializable {
                 StateNhomHang = true;
             }
         } catch (IOException ex) {
-            Logger.getLogger(FXML_HangHoaController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FXML_SanPhamController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -364,7 +364,7 @@ public class FXML_HangHoaController implements Initializable {
             FXML_ClothesStoreController.rootP.setTopAnchor(chitietsanpham, 0.0);
             FXML_ClothesStoreController.rootP.setBottomAnchor(chitietsanpham, 0.0);
         } catch (IOException ex) {
-            Logger.getLogger(FXML_HangHoaController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FXML_SanPhamController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

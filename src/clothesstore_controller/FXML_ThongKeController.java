@@ -201,11 +201,11 @@ public class FXML_ThongKeController implements Initializable {
                 output.close();
 
             } catch (FileNotFoundException ex) {
-                Logger.getLogger(FXML_HangHoaController.class
+                Logger.getLogger(FXML_SanPhamController.class
                         .getName()).log(Level.SEVERE, null, ex);
 
             } catch (IOException ex) {
-                Logger.getLogger(FXML_HangHoaController.class
+                Logger.getLogger(FXML_SanPhamController.class
                         .getName()).log(Level.SEVERE, null, ex);
             }
         }

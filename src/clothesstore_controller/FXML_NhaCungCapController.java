@@ -27,7 +27,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import clothesstore_model.NhaCungCap;
-import static clothesstore_controller.FXML_PhieuNhapController.stageQuanLyNCC;
+import static clothesstore_controller.FXML_HoaDonMuaHangController.stageQuanLyNCC;
 import clothesstore_model.NhanVien;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.control.Alert;

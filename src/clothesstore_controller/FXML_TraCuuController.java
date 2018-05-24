@@ -84,11 +84,10 @@ public class FXML_TraCuuController implements Initializable {
         //titledPane.widthProperty().addListener( ( observable, oldValue, newValue ) -> table_view.setLayoutX(newValue.doubleValue() ) );
         titledPane.expandedProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue) {
-                table_view.setLayoutY(table_view.getLayoutY() + titledPane.getHeight());
-                System.out.println("newValue");
+                table_view.setLayoutY(table_view.getLayoutY() + titledPane.getHeight()-10);
+                         
             } else {
-                table_view.setLayoutY(table_view.getLayoutY() - titledPane.getHeight());
-                System.out.println("newValu1111");
+                table_view.setLayoutY(table_view.getLayoutY() - titledPane.getHeight()+10);                             
             }
         });
 

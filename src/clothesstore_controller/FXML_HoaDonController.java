@@ -60,7 +60,7 @@ public class FXML_HoaDonController implements Initializable {
     @FXML
     private JFXTextField txt_fi_tongtien, txt_fi_machitietsanpham, txt_fi_dongia,
             txt_fi_thanhtien, txt_fi_tenkhachhang, txt_fi_sodienthoai;
-    ;
+    
     @FXML
     private Spinner<Integer> spin_soluong;
     @FXML

@@ -45,7 +45,7 @@
                   </ImageView>
                </graphic>
             </JFXButton>
-            <JFXButton fx:id="btnHangHoa" alignment="BASELINE_LEFT" graphicTextGap="60.0" onAction="#changeTab" prefHeight="43.0" prefWidth="235.0" ripplerFill="#1451d9" text="Hàng Hóa">
+            <JFXButton fx:id="btnHangHoa" alignment="BASELINE_LEFT" graphicTextGap="60.0" onAction="#changeTab" prefHeight="43.0" prefWidth="235.0" ripplerFill="#1451d9" text="Sản phẩm">
                <graphic>
                   <ImageView fitHeight="30.0" fitWidth="41.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -54,7 +54,7 @@
                   </ImageView>
                </graphic>
             </JFXButton>
-            <JFXButton fx:id="btnPhieuNhap" alignment="BASELINE_LEFT" graphicTextGap="60.0" onAction="#changeTab" prefHeight="43.0" prefWidth="235.0" ripplerFill="#1451d9" text="Phiếu nhập">
+            <JFXButton fx:id="btnPhieuNhap" alignment="BASELINE_LEFT" graphicTextGap="60.0" onAction="#changeTab" prefHeight="43.0" prefWidth="235.0" ripplerFill="#1451d9" text="Hóa đơn mua hàng">
                <graphic>
                   <ImageView fitHeight="30.0" fitWidth="41.0" pickOnBounds="true" preserveRatio="true">
                      <image>
