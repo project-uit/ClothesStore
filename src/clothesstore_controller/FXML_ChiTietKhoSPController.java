@@ -12,8 +12,9 @@ import static clothesstore_controller.FXML_NhapKhoController.SLSP;
 import static clothesstore_controller.FXML_NhapKhoController.TenSP;
 import static clothesstore_controller.FXML_NhapKhoController.stageCTKSP;
 import clothesstore_model.ChiTietKhoSanPham;
+import clothesstore_model.ChiTietNhapKho;
 import clothesstore_model.ChiTietSanPham;
-import clothesstore_model.KhoSanPham;
+import clothesstore_model.NhapKho;
 import clothesstore_model.MauSac;
 import clothesstore_model.SanPham;
 import com.jfoenix.controls.JFXButton;
@@ -83,7 +84,7 @@ public class FXML_ChiTietKhoSPController implements Initializable {
             }
             MauSac ms = new MauSac();
 
-            String ten = _ctsp.getSize().get() + "_" + _ctsp.getMausac().get()  + "_" + gioitinh;
+            String ten = _ctsp.getSize().get() + "_" + _ctsp.getMausac().get() + "_" + gioitinh;
             String maCTSP = _ctsp.getMachitietsanpham().get();
             String soluong = "0";
             ChiTietKhoSanPham ctksp = new ChiTietKhoSanPham(maCTSP, ten, soluong);
@@ -181,11 +182,14 @@ public class FXML_ChiTietKhoSPController implements Initializable {
 
     @FXML
     private void Handler_btnLuu(ActionEvent event) {
-        KhoSanPham ksp = new KhoSanPham(MaNhanVien, MAPN,MaSP);
+        NhapKho nk = new NhapKho(MaNhanVien, MAPN);
         SanPham sp = new SanPham();
         StringProperty masp = new SimpleStringProperty(MaSP);
         sp.setMasanpham(masp);
-        if (ksp.ThemKhoSanPham() && sp.update_ngayhethan(MAPN)) {
+        if (!nk.checkExist(MAPN)) {
+            nk.ThemNhapKho();
+        }
+        if (sp.update_ngayhethan(MAPN)) {
             for (Object o : tblchitietkhosp.getItems()) {
                 String MaCTSP = clmachitietsp.getCellData(o).toString();
                 ChiTietSanPham ctsp = new ChiTietSanPham();
@@ -193,6 +197,8 @@ public class FXML_ChiTietKhoSPController implements Initializable {
                 int soluongnhap = Integer.valueOf(clsoluong.getCellData(o).toString());
                 int soluongmoi = soluongcu + soluongnhap;
                 ctsp.updateSoLuongFromMaCTSP(MaCTSP, soluongmoi);
+                new ChiTietNhapKho(nk.getMaNhapKhoFromMaPN(MAPN),
+                        MaCTSP,soluongnhap).ThemChiTietNhapKho();
             }
             btnLuu.setDisable(true);
             ShowMessage

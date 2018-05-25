@@ -32,7 +32,7 @@
                           </yAxis>
                         </BarChart>
                         <ComboBox fx:id="cmbYear" layoutX="629.0" layoutY="21.0" prefHeight="25.0" prefWidth="104.0" promptText="Năm" />
-                        <JFXButton fx:id="btnPrint" layoutX="745.0" layoutY="21.0" onAction="#Handler_btnPrint" style="-fx-background-color: #4681f5;" text="Print" textFill="#fffdfd" AnchorPane.bottomAnchor="619.0" AnchorPane.rightAnchor="33.0" />
+                        <JFXButton fx:id="btnPrint" layoutX="751.0" layoutY="21.0" onAction="#Handler_btnPrint" style="-fx-background-color: #4681f5;" text="Print" textFill="#fffdfd" AnchorPane.bottomAnchor="625.0" AnchorPane.rightAnchor="33.0" />
                      </children>
                   </AnchorPane>
             </content>

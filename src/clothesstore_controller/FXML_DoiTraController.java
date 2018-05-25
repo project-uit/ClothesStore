@@ -74,9 +74,9 @@ public class FXML_DoiTraController implements Initializable {
     @FXML
     private TableView<ChiTietHoaDonDoiTra> tblHangThayThe;
     @FXML
-    private TextField txtSearch;
+    private TextField txtSearch, txtMaHD;
     @FXML
-    private JFXDatePicker dtpFrom, dtpTo;
+    private JFXDatePicker dtpFrom, dtpTo, dtpNgay;
     @FXML
     private TitledPane titledPane;
     @FXML
@@ -96,13 +96,36 @@ public class FXML_DoiTraController implements Initializable {
         initTextFieldSearch();
     }
 
-    private Date selectedDateFrom, selectedDateTo;
+    private Date selectedDateFrom, selectedDateTo, selectedDate;
 
     private void initTextFieldSearch() {
         List<HoaDon> listHD = new HoaDon().getListHoaDon();
         List<Integer> arr_maHD = new ArrayList();
         listHD.forEach(item -> arr_maHD.add(item.getMahoadon().get()));
         TextFields.bindAutoCompletion(txtSearch, arr_maHD);
+        TextFields.bindAutoCompletion(txtMaHD, arr_maHD);
+        txtMaHD.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue,
+                    String newValue) {
+                if (newValue.length() != 0) {
+                    ObservableList<DoiTra> list = observableArrayList();
+                    list = new DoiTra().getListKhoDoiTraFromMaHD(Integer.valueOf(newValue.trim()));
+                    if (list.isEmpty()) {
+                        tblDoiTra.getItems().clear();
+                    } else {
+                        tblDoiTra.getItems().clear();
+                        tblDoiTra.setItems(list);
+                    }
+                } else if (newValue.length() == 0) {
+                    ObservableList<DoiTra> list = observableArrayList();
+                    list = new DoiTra().getListKhoDoiTra();
+                    tblDoiTra.getItems().clear();
+                    tblDoiTra.setItems(list);
+                }
+            }
+        });
+
         txtSearch.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue,
@@ -349,6 +372,15 @@ public class FXML_DoiTraController implements Initializable {
                 return new ReadOnlyObjectWrapper(p.getValue().getSoluongmua().get() * p.getValue().getGiaban().get());
             }
         });
+    }
+
+    @FXML
+    private void ChangeDate() {
+        selectedDate = java.sql.Date.valueOf(dtpNgay.getValue());
+        ObservableList<DoiTra> list = observableArrayList();
+        list = new DoiTra().getListKhoDoiTraFromMaDate(selectedDate);
+        tblDoiTra.setItems(list);
+        txtMaHD.clear();
     }
 
     @FXML

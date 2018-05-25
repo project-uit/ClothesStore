@@ -6,7 +6,7 @@
 package clothesstore_controller;
 
 import clothesstore_model.ChiTietHoaDonMuaHang;
-import clothesstore_model.KhoSanPham;
+import clothesstore_model.NhapKho;
 import clothesstore_model.HoaDonMuaHang;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXDatePicker;
@@ -108,7 +108,7 @@ public class FXML_NhapKhoController implements Initializable {
     }
 
     private void InitTableViewPhieuNhap(ObservableList<HoaDonMuaHang> list) {
-        clmaphieunhap.setCellValueFactory(new PropertyValueFactory("maphieunhap"));
+        clmaphieunhap.setCellValueFactory(new PropertyValueFactory("mahoadonmuahang"));
         clngaynhap.setCellValueFactory(new PropertyValueFactory("ngaynhap"));
         clnhacungcap.setCellValueFactory(new PropertyValueFactory("tencungcap"));
         cltongtien.setCellValueFactory(new PropertyValueFactory("tongtien"));
@@ -171,10 +171,9 @@ public class FXML_NhapKhoController implements Initializable {
     }
 
     private boolean checkPhieuNhap(String masp) {
-        KhoSanPham ksp = new KhoSanPham();
+        NhapKho nk = new NhapKho();
         List listSPDaNhapKho = new ArrayList();
-        listSPDaNhapKho = ksp.getListMaSPDaNhapKho(MAPN);
-
+        listSPDaNhapKho = nk.getListMaSPDaNhapKho(MAPN);
         for (Object SPDaNhapKho : listSPDaNhapKho) {
             if (masp.equals(SPDaNhapKho.toString())) {
                 return false;

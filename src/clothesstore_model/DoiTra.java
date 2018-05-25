@@ -10,8 +10,6 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -95,7 +93,7 @@ public class DoiTra {
         }
         return false;
     }
-        
+
     public ObservableList<DoiTra> getListKhoDoiTra() {
         ObservableList<DoiTra> list = FXCollections.observableArrayList();
         DBConnection db = new DBConnection();
@@ -104,6 +102,64 @@ public class DoiTra {
                 + "Where doitra.mahoadon = hoadon.mahoadon "
                 + "and hoadon.manhanvien = nhanvien.manhanvien "
                 + "and chitietkhachhang.mahoadon = hoadon.mahoadon";
+        if (con != null) {
+            try {
+                PreparedStatement ptm = con.prepareStatement(sql);
+                ResultSet rs = ptm.executeQuery();
+                while (rs.next()) {
+                    DoiTra doitra = new DoiTra(rs.getInt("madoitra"),
+                            rs.getInt("mahoadon"),
+                            rs.getString("tennhanvien"),
+                            rs.getString("sodienthoai"),
+                            rs.getDate("ngaytra"),
+                            rs.getString("lydo")
+                    );
+                    list.add(doitra);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return list;
+    }
+
+    public ObservableList<DoiTra> getListKhoDoiTraFromMaHD(int mhd) {
+        ObservableList<DoiTra> list = FXCollections.observableArrayList();
+        DBConnection db = new DBConnection();
+        Connection con = db.getConnecttion();
+        String sql = "SELECT * FROM doitra, hoadon, nhanvien, chitietkhachhang "
+                + "Where doitra.mahoadon = hoadon.mahoadon "
+                + "and hoadon.manhanvien = nhanvien.manhanvien "
+                + "and chitietkhachhang.mahoadon = hoadon.mahoadon and doitra.mahoadon = " + mhd + "";
+        if (con != null) {
+            try {
+                PreparedStatement ptm = con.prepareStatement(sql);
+                ResultSet rs = ptm.executeQuery();
+                while (rs.next()) {
+                    DoiTra doitra = new DoiTra(rs.getInt("madoitra"),
+                            rs.getInt("mahoadon"),
+                            rs.getString("tennhanvien"),
+                            rs.getString("sodienthoai"),
+                            rs.getDate("ngaytra"),
+                            rs.getString("lydo")
+                    );
+                    list.add(doitra);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return list;
+    }
+
+    public ObservableList<DoiTra> getListKhoDoiTraFromMaDate(Date date) {
+        ObservableList<DoiTra> list = FXCollections.observableArrayList();
+        DBConnection db = new DBConnection();
+        Connection con = db.getConnecttion();
+        String sql = "SELECT * FROM doitra, hoadon, nhanvien, chitietkhachhang "
+                + "Where doitra.mahoadon = hoadon.mahoadon "
+                + "and hoadon.manhanvien = nhanvien.manhanvien "
+                + "and chitietkhachhang.mahoadon = hoadon.mahoadon and doitra.ngaytra = '"+date+"'";
         if (con != null) {
             try {
                 PreparedStatement ptm = con.prepareStatement(sql);

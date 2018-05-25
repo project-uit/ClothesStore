@@ -77,5 +77,10 @@
             <Font size="13.0" />
          </font>
       </JFXButton>
+      <JFXButton fx:id="btnPrint" disable="true" layoutX="647.0" layoutY="663.0" onAction="#Handler_btnPrint" prefHeight="37.0" prefWidth="82.0" ripplerFill="BLACK" style="-fx-background-color: #4681f5;" text="Print" textFill="WHITE" wrapText="true">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </JFXButton>
    </children>
 </AnchorPane>
