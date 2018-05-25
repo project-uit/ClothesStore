@@ -5,6 +5,7 @@
  */
 package clothesstore_controller;
 
+import static clothesstore_controller.FXML_ClothesStoreController.rootP;
 import static clothesstore_controller.FXML_DoiTraController.mahd;
 import clothesstore_model.ChiTietDoiTra;
 import clothesstore_model.ChiTietHoaDon;
@@ -26,6 +27,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 import com.jfoenix.controls.JFXButton;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URL;
 import java.text.SimpleDateFormat;
@@ -34,6 +36,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ChangeListener;
@@ -41,6 +45,7 @@ import javafx.beans.value.ObservableValue;
 import static javafx.collections.FXCollections.observableArrayList;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonBar;
@@ -51,6 +56,7 @@ import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.util.Callback;
 import org.controlsfx.control.textfield.TextFields;
@@ -483,6 +489,22 @@ public class FXML_ChiTietDoiTraController implements Initializable {
 
     @FXML
     private void Handler_btnBack() {
-        System.out.println("Back");
+        AnchorPane DoiTra;
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/clothesstore_view/FXML_DoiTra.fxml"));
+            DoiTra = fxmlLoader.load();
+            SildingWindowAnimation silde = new SildingWindowAnimation();
+            int last = rootP.getChildren().size() - 1;
+            silde.SildeBack(rootP, (AnchorPane) rootP.getChildren().get(last),
+                    SildingWindowAnimation.Direction.SildeRight);
+            DoiTra.requestFocus();
+            rootP.setLeftAnchor(DoiTra, 0.0);
+            rootP.setRightAnchor(DoiTra, 0.0);
+            rootP.setTopAnchor(DoiTra, 0.0);
+            rootP.setBottomAnchor(DoiTra, 0.0);
+        } catch (IOException ex) {
+            Logger.getLogger(FXML_SearchSanPhamController.class
+                    .getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }
