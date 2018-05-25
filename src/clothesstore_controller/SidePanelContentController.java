@@ -103,7 +103,7 @@ public class SidePanelContentController implements Initializable {
                 rootP.setBottomAnchor(DoiTra, 0.0);
                 break;
             case "btnHangHoa":
-                AnchorPane hanghoa = FXMLLoader.load(getClass().getResource("/clothesstore_view/FXML_HangHoa.fxml"));
+                AnchorPane hanghoa = FXMLLoader.load(getClass().getResource("/clothesstore_view/FXML_SanPham.fxml"));
                 FXML_ClothesStoreController.rootP.getChildren().setAll(hanghoa);
                 rootP.setLeftAnchor(hanghoa, 0.0);
                 rootP.setRightAnchor(hanghoa, 0.0);
@@ -111,7 +111,7 @@ public class SidePanelContentController implements Initializable {
                 rootP.setBottomAnchor(hanghoa, 0.0);
                 break;
             case "btnPhieuNhap":
-                AnchorPane phieunhap = FXMLLoader.load(getClass().getResource("/clothesstore_view/FXML_PhieuNhap.fxml"));
+                AnchorPane phieunhap = FXMLLoader.load(getClass().getResource("/clothesstore_view/FXML_HoaDonMuaHang.fxml"));
                 FXML_ClothesStoreController.rootP.getChildren().setAll(phieunhap);
                 rootP.setLeftAnchor(phieunhap, 0.0);
                 rootP.setRightAnchor(phieunhap, 0.0);

@@ -5,7 +5,6 @@
  */
 package clothesstore_controller;
 
-import static clothesstore_controller.FXML_ClothesStoreController.rootP;
 import clothesstore_model.NhaSanXuat;
 import clothesstore_model.NhomHang;
 import clothesstore_model.SanPham;
@@ -39,8 +38,6 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ContextMenu;
@@ -55,15 +52,10 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 import javafx.util.Callback;
 import javafx.util.Duration;
-import javafx.animation.SequentialTransition;
 import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.ReadOnlyIntegerWrapper;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.scene.control.Spinner;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
@@ -394,18 +386,17 @@ public class FXML_SanPhamController implements Initializable {
         }
         sanpham.setTonkhotoithieu(tonkhotoithieu);
         sanpham.setTonkhotoida(tonkhotoida);
-        sanpham.setThoihan_thang(new SimpleIntegerProperty
-            (Integer.valueOf(txt_fi_thoihantonkho.getText())));
-               
+        sanpham.setThoihan_thang(new SimpleIntegerProperty(Integer.valueOf(txt_fi_thoihantonkho.getText())));
+
         if (sanpham.insert()) {
             viewListTable();
             ShowFXML_ChiTietSanPham(sanpham.getMasanpham().get());
-            
+
             ShowMessage
                     .showMessageBox(Alert.AlertType.INFORMATION, "Thông báo", null,
                             "Thêm dữ liệu thành công")
                     .showAndWait();
-            
+
         } else {
             ShowMessage
                     .showMessageBox(Alert.AlertType.ERROR, "Thông báo", null,
@@ -416,8 +407,8 @@ public class FXML_SanPhamController implements Initializable {
 
     private void DeleteSanPham() {
         StringProperty masp = new SimpleStringProperty(txt_fi_masanpham.getText());
-        SanPham sanpham = new SanPham(masp);      
-        if (sanpham.delete() == 1 ) {
+        SanPham sanpham = new SanPham(masp);
+        if (sanpham.delete() == 1) {
             viewListTable();
             ShowMessage
                     .showMessageBox(Alert.AlertType.INFORMATION, "Thông báo", null, "Xóa dữ liệu thành công")
@@ -443,7 +434,7 @@ public class FXML_SanPhamController implements Initializable {
         IntegerProperty tonkhotoithieu = new SimpleIntegerProperty(Integer.valueOf(txt_fi_tonkhotoithieu.getText()));
         IntegerProperty tonkhotoida = new SimpleIntegerProperty(Integer.valueOf(txt_fi_tonkhotoida.getText()));
         SanPham sanpham = new SanPham(masp, tensp, tennsx, tennhomhang, ghichu, tonkhotoithieu, tonkhotoida);
-        IntegerProperty thoihan_thang = new SimpleIntegerProperty (Integer.valueOf(txt_fi_thoihantonkho.getText()));
+        IntegerProperty thoihan_thang = new SimpleIntegerProperty(Integer.valueOf(txt_fi_thoihantonkho.getText()));
         sanpham.setThoihan_thang(thoihan_thang);
         if (sanpham.update()) {
             viewListTable();

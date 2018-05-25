@@ -84,10 +84,10 @@ public class FXML_TraCuuController implements Initializable {
         //titledPane.widthProperty().addListener( ( observable, oldValue, newValue ) -> table_view.setLayoutX(newValue.doubleValue() ) );
         titledPane.expandedProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue) {
-                table_view.setLayoutY(table_view.getLayoutY() + titledPane.getHeight()-10);
-                         
+                table_view.setLayoutY(table_view.getLayoutY() + titledPane.getHeight() - 10);
+
             } else {
-                table_view.setLayoutY(table_view.getLayoutY() - titledPane.getHeight()+10);                             
+                table_view.setLayoutY(table_view.getLayoutY() - titledPane.getHeight() + 10);
             }
         });
 
@@ -126,7 +126,23 @@ public class FXML_TraCuuController implements Initializable {
         });
         initTextField();
         ContextMenu();
+//        Pagination pagination = new Pagination
+//        ((tracuu.filterList_sanpham(query.trim()).size() / rowsPerPage + 1), 0);
+//        pagination.setPageFactory(this::createPage);
+
     }
+//    private final static int dataSize = 10_023;
+//    private final static int rowsPerPage = 1000;
+//
+//    private Node createPage(int pageIndex) {
+//
+//        TraCuu tracuu = new TraCuu();
+//
+//        int fromIndex = pageIndex * rowsPerPage;
+//        int toIndex = Math.min(fromIndex + rowsPerPage, tracuu.filterList_sanpham(query.trim()).size());
+//        table_view.setItems(FXCollections.observableArrayList(tracuu.filterList_sanpham(query.trim()).subList(fromIndex, toIndex)));
+//        return new BorderPane(table_view);
+//    }
 
     private void ContextMenu() {
         ContextMenu context = new ContextMenu();
@@ -278,7 +294,7 @@ public class FXML_TraCuuController implements Initializable {
         list.add(3);//tất cả
         list.add(0);//nữ
         list.add(1);//nam
-        list.add(2);//unicef
+        list.add(2);//unisex
         cmb_gioitinh.setItems(list);
         cmb_gioitinh.getSelectionModel().selectFirst();
         cmb_gioitinh.setConverter(new StringConverter<Integer>() {

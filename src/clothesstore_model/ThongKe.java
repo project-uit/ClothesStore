@@ -80,16 +80,13 @@ public class ThongKe {
         HashMap<String, Integer> value = new HashMap<>();
         if (con != null) {
             try (CallableStatement stmt = con.prepareCall(call)) {
-
                 stmt.setInt(1, quy);
                 stmt.setInt(2, nam);
                 ResultSet rs = stmt.executeQuery();
-
                 while (rs.next()) {
 
                     value.put(rs.getString(1), rs.getInt(3));
                 }
-
                 stmt.close();
                 con.close();
             } catch (SQLException ex) {
