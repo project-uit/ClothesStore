@@ -18,7 +18,9 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.ComboBox;
 import clothesstore_model.ThongKe;
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXTextField;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -31,6 +33,8 @@ import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Side;
@@ -41,6 +45,7 @@ import javafx.print.Printer;
 import javafx.print.PrinterJob;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.transform.Scale;
 import javafx.stage.FileChooser;
 import javafx.util.StringConverter;
@@ -63,6 +68,26 @@ public class FXML_ThongKeController implements Initializable {
     private ComboBox cmbYear;
     @FXML
     private JFXButton btnPrint;
+    @FXML
+    private AnchorPane APchart_nhomhang;
+    @FXML
+    private BarChart<String, Number> chartnhomhang;
+    @FXML
+    private NumberAxis NAxis;
+    @FXML
+    private CategoryAxis CAxis;
+    @FXML
+    private JFXTextField year;
+    @FXML
+    private Label lblthang;
+    @FXML
+    private JFXComboBox<Integer> cmb_month;
+    @FXML
+    private JFXButton btnrefresh;
+    @FXML
+    private JFXCheckBox checkboxyear;
+    @FXML
+    private JFXCheckBox checkboxmonth;
 
     /**
      * Initializes the controller class.
@@ -257,5 +282,152 @@ public class FXML_ThongKeController implements Initializable {
         cmb_quy.setOnAction(e -> {
             piechart_thongkesp_banchay_load();
         });
+    }
+
+    @FXML
+    private void handler_refresh(ActionEvent event) {
+        if (checkboxyear.isSelected() == true) {
+            setChartYear(Integer.valueOf(year.getText()));
+        } else if (checkboxmonth.isSelected() == true) {
+            setChartMonth(Integer.valueOf(year.getText()), Integer.valueOf(cmb_month.getValue()));
+        }
+    }
+
+    @FXML
+    private void handler_checkboxyear(ActionEvent event) {
+        boolean isSelectedyear = checkboxyear.isSelected();
+        if (isSelectedyear == true) {
+            checkboxmonth.setSelected(false);
+            lblthang.setVisible(false);
+            cmb_month.setVisible(false);
+
+        } else {
+            checkboxmonth.setSelected(true);
+            lblthang.setVisible(true);
+            cmb_month.setVisible(true);
+        }
+    }
+
+    @FXML
+    private void handler_checkboxmonth(ActionEvent event) {
+        boolean isSelectedmonth = checkboxmonth.isSelected();
+        if (isSelectedmonth == true) {
+            checkboxyear.setSelected(false);
+            lblthang.setVisible(true);
+            cmb_month.setVisible(true);
+        } else {
+            checkboxyear.setSelected(true);
+            lblthang.setVisible(false);
+            cmb_month.setVisible(false);
+        }
+    }
+
+    private void setMaxBarWidth(double maxBarWidth, double minCategoryGap) {
+        double barWidth = 0;
+        do {
+            double catSpace = CAxis.getCategorySpacing();
+            double avilableBarSpace = catSpace - (chartnhomhang.getCategoryGap() + chartnhomhang.getBarGap());
+            barWidth = (avilableBarSpace / chartnhomhang.getData().size()) - chartnhomhang.getBarGap();
+            if (barWidth > maxBarWidth) {
+                avilableBarSpace = (maxBarWidth + chartnhomhang.getBarGap()) * chartnhomhang.getData().size();
+                chartnhomhang.setCategoryGap(catSpace - avilableBarSpace - chartnhomhang.getBarGap());
+            }
+        } while (barWidth > maxBarWidth);
+
+        do {
+            double catSpace = CAxis.getCategorySpacing();
+            double avilableBarSpace = catSpace - (minCategoryGap + chartnhomhang.getBarGap());
+            barWidth = Math.min(maxBarWidth,
+                    (avilableBarSpace / chartnhomhang.getData().size()) - chartnhomhang.getBarGap());
+            avilableBarSpace = (barWidth + chartnhomhang.getBarGap()) * chartnhomhang.getData().size();
+            chartnhomhang.setCategoryGap(catSpace - avilableBarSpace - chartnhomhang.getBarGap());
+        } while (barWidth < maxBarWidth && chartnhomhang.getCategoryGap() > minCategoryGap);
+    }
+
+    private void Init_cmbMonth() {
+        cmb_month.getItems().add(1);
+        cmb_month.getItems().add(2);
+        cmb_month.getItems().add(3);
+        cmb_month.getItems().add(4);
+        cmb_month.getItems().add(5);
+        cmb_month.getItems().add(6);
+        cmb_month.getItems().add(7);
+        cmb_month.getItems().add(8);
+        cmb_month.getItems().add(9);
+        cmb_month.getItems().add(10);
+        cmb_month.getItems().add(11);
+        cmb_month.getItems().add(12);
+        cmb_month.setConverter(new StringConverter<Integer>() {
+            @Override
+            public String toString(Integer object) {
+                if (object == 1) {
+                    return "Tháng 1";
+                } else if (object == 2) {
+                    return "Tháng 2";
+                } else if (object == 3) {
+                    return "Tháng 3";
+                } else if (object == 4) {
+                    return "Tháng 4";
+                } else if (object == 5) {
+                    return "Tháng 5";
+                } else if (object == 6) {
+                    return "Tháng 6";
+                } else if (object == 7) {
+                    return "Tháng 7";
+                } else if (object == 8) {
+                    return "Tháng 8";
+                } else if (object == 9) {
+                    return "Tháng 9";
+                } else if (object == 10) {
+                    return "Tháng 10";
+                } else if (object == 11) {
+                    return "Tháng 11";
+                } else {
+                    return "Tháng 12";
+                }
+            }
+
+            @Override
+            public Integer fromString(String string) {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+        });
+        cmb_month.getSelectionModel().selectFirst();
+    }
+
+    private void setChartYear(Integer year) {
+        chartnhomhang.getData().clear();
+        XYChart.Series<String, Number> data = new XYChart.Series<>();
+        data.setName("Doanh thu nhóm hàng theo năm");
+        HashMap<String, Integer> hm_sp = ThongKe.thongke_nhomhang_year(year);
+        Set set = hm_sp.entrySet();
+        Iterator i = set.iterator();
+            while (i.hasNext()) {
+                Map.Entry<String, Integer> me = (Map.Entry) i.next();
+                data.getData().add(new XYChart.Data<>(me.getKey(),me.getValue()));
+            }
+        chartnhomhang.getData().addAll(data);
+        setMaxBarWidth(40, 10);
+        chartnhomhang.widthProperty().addListener((obs,b,b1)->{
+        Platform.runLater(()->setMaxBarWidth(40, 10));
+    });
+    }
+    
+    private void setChartMonth(Integer year, Integer month) {
+        chartnhomhang.getData().clear();
+        XYChart.Series<String, Number> data = new XYChart.Series<>();
+        data.setName("Doanh thu nhóm hàng theo tháng");
+        HashMap<String, Integer> hm_sp = ThongKe.thongke_nhomhang_month(month, year);
+        Set set = hm_sp.entrySet();
+        Iterator i = set.iterator();
+            while (i.hasNext()) {
+                Map.Entry<String, Integer> me = (Map.Entry) i.next();
+                data.getData().add(new XYChart.Data<>(me.getKey(),me.getValue()));
+            }
+        chartnhomhang.getData().addAll(data);
+        setMaxBarWidth(40, 10);
+        chartnhomhang.widthProperty().addListener((obs,b,b1)->{
+        Platform.runLater(()->setMaxBarWidth(40, 10));
+    });
     }
 }

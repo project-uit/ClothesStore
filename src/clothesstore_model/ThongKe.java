@@ -116,4 +116,61 @@ public class ThongKe {
         }
         return tongsl;
     }
+    public static HashMap<String, Integer> thongke_nhomhang_month(int thang, int nam) {
+        DBConnection db = new DBConnection();
+        Connection con = db.getConnecttion();
+        String call = "select tennhomhang, count(tennhomhang) as tong "
+                + "from sanpham sp, chitiethoadon cthd, chitietsanpham ctsp, hoadon hd "
+                + "where cthd.machitietsanpham=ctsp.machitietsanpham and sp.masanpham = ctsp.masanpham "
+                + "and cthd.mahoadon = hd.mahoadon  and MONTH(hd.ngayban) = ? "
+                + "and YEAR(hd.ngayban)= ? "
+                + "group by tennhomhang";
+        HashMap<String, Integer> value = new HashMap<>();
+        if (con != null) {
+            try (CallableStatement stmt = con.prepareCall(call)) {
+
+                stmt.setInt(1, thang);
+                stmt.setInt(2, nam);
+                ResultSet rs = stmt.executeQuery();
+
+                while (rs.next()) {
+
+                    value.put(rs.getString(1), rs.getInt(2));
+                }
+                stmt.close();
+                con.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ChiTietSanPham.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return value;
+    }
+
+    public static HashMap<String, Integer> thongke_nhomhang_year(int nam) {
+        DBConnection db = new DBConnection();
+        Connection con = db.getConnecttion();
+        String call = "select tennhomhang, count(tennhomhang) as tong "
+                + "from sanpham sp, chitiethoadon cthd, chitietsanpham ctsp, hoadon hd "
+                + "where cthd.machitietsanpham=ctsp.machitietsanpham "
+                + "and sp.masanpham = ctsp.masanpham and cthd.mahoadon = hd.mahoadon  "
+                + "and YEAR(hd.ngayban)= ? "
+                + "group by tennhomhang";
+        HashMap<String, Integer> value = new HashMap<>();
+        if (con != null) {
+            try (CallableStatement stmt = con.prepareCall(call)) {
+                stmt.setInt(1, nam);
+                ResultSet rs = stmt.executeQuery();
+
+                while (rs.next()) {
+
+                    value.put(rs.getString(1), rs.getInt(2));
+                }
+                stmt.close();
+                con.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ChiTietSanPham.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return value;
+    }
 }

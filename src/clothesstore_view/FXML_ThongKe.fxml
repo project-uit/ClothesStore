@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXCheckBox?>
 <?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.scene.chart.BarChart?>
 <?import javafx.scene.chart.CategoryAxis?>
-<?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.chart.PieChart?>
 <?import javafx.scene.control.ComboBox?>
@@ -37,25 +38,27 @@
             </content>
           </Tab>
           <Tab text="Thống kê nhóm hàng">
-            <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <content>
+                  <AnchorPane id="AnchorPane" fx:id="APchart_nhomhang" prefHeight="700.0" prefWidth="824.0" style="-fx-background-color: #deeeef;">
                      <children>
-                        <LineChart layoutX="118.0" layoutY="32.0" prefHeight="484.0" prefWidth="614.0" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
-                          <xAxis>
-                            <CategoryAxis side="BOTTOM" />
-                          </xAxis>
-                          <yAxis>
-                            <NumberAxis side="LEFT" />
-                          </yAxis>
-                        </LineChart>
-                        <Label layoutX="225.0" layoutY="584.0" prefHeight="28.0" prefWidth="376.0" text="Thống kê nhóm hàng trong năm" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="225.0" AnchorPane.rightAnchor="225.0">
-                           <font>
-                              <Font size="23.0" />
-                           </font>
-                        </Label>
+                        <BarChart fx:id="chartnhomhang" layoutY="125.0" prefHeight="514.0" prefWidth="814.0" title="Thống kê doanh thu theo nhóm hàng">
+                           <xAxis>
+                              <CategoryAxis fx:id="CAxis" side="BOTTOM" />
+                           </xAxis>
+                           <yAxis>
+                              <NumberAxis fx:id="NAxis" side="LEFT" />
+                           </yAxis>
+                        </BarChart>
+                        <JFXTextField fx:id="year" layoutX="479.0" layoutY="72.0" prefHeight="25.0" prefWidth="82.0" />
+                        <Label layoutX="434.0" layoutY="84.0" text="Năm:" />
+                        <Label fx:id="lblthang" layoutX="575.0" layoutY="84.0" text="Tháng:" />
+                        <JFXComboBox fx:id="cmb_month" layoutX="628.0" layoutY="72.0" prefHeight="25.0" prefWidth="126.0" />
+                        <JFXButton fx:id="btnrefresh" layoutX="758.0" layoutY="80.0" onAction="#handler_refresh" text="Refresh" />
+                        <JFXCheckBox fx:id="checkboxyear" layoutX="434.0" layoutY="31.0" onAction="#handler_checkboxyear" text="Theo Năm" />
+                        <JFXCheckBox fx:id="checkboxmonth" layoutX="567.0" layoutY="31.0" onAction="#handler_checkboxmonth" text="Theo Tháng" />
                      </children>
                   </AnchorPane>
-            </content>
+               </content>
           </Tab>
             <Tab text="Thống kê sản phẩm bán chạy">
               <content>
