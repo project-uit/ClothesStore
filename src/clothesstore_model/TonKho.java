@@ -49,16 +49,16 @@ public class TonKho {
         int giatritonkho = 0;
         if (con != null) {
             String query = "select giavon*(select sum(soluong) from chitietsanpham ctsp "
-                    + "where ctsp.masanpham=sp.masanpham), ctpn.maphieunhap "
-                    + "from chitietphieunhap ctpn,phieunhap pn, sanpham sp "
-                    + "where ctpn.maphieunhap = pn.maphieunhap "
+                    + "where ctsp.masanpham=sp.masanpham), ctpn.mahoadonmuahang "
+                    + "from chitiethoadonmuahang ctpn,hoadonmuahang pn, sanpham sp "
+                    + "where ctpn.mahoadonmuahang = pn.mahoadonmuahang "
                     + "and sp.masanpham=ctpn.masanpham "
-                    + "and ctpn.maphieunhap = "
-                    + "(SELECT ctpn1.maphieunhap "
-                    + "FROM chitietphieunhap ctpn1,phieunhap pn1 "
-                    + "WHERE  ctpn1.maphieunhap = pn1.maphieunhap  and ctpn1.masanpham = ctpn.masanpham            \n"
-                    + "ORDER BY ctpn1.maphieunhap DESC "
-                    + "LIMIT 1);";
+                    + "and ctpn.mahoadonmuahang = "
+                    + "(SELECT ctpn1.mahoadonmuahang "
+                    + "FROM chitiethoadonmuahang ctpn1,hoadonmuahang pn1 "
+                    + "WHERE  ctpn1.mahoadonmuahang = pn1.mahoadonmuahang  and ctpn1.masanpham = ctpn.masanpham            \n"
+                    + "ORDER BY ctpn1.mahoadonmuahang DESC "
+                    + "LIMIT 1)";
             try (
                     Statement stmnt = con.createStatement();
                     ResultSet rs = stmnt.executeQuery(query);) {

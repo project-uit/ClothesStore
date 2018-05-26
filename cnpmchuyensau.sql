@@ -101,13 +101,23 @@ create table mausac
 tenmau nvarchar(30) Collate utf8_unicode_ci primary key,
 trangthai int
 );
-
+insert into mausac
+values ('Xanh dương',1);
+insert into mausac
+values ('Xanh lá',1);
+insert into mausac
+values ('Đỏ',1);
 create table size
 (
 tensize char(5) primary key,
 trangthai int
 );
-
+insert into size
+values ('S',1);
+insert into size
+values ('L',1);
+insert into size
+values ('M',1);
 create table chitietsanpham
 (
 machitietsanpham varchar(45)  PRIMARY KEY,
@@ -153,7 +163,7 @@ REFERENCES hoadonmuahang(mahoadonmuahang)
 -- Khi nhập số lượng mới chỉ việc cộng dồn lại trên bảng chitietsanpham
 create table nhapkho 
 (
-makhosanpham   int(6) unsigned auto_increment  PRIMARY KEY,
+manhapkho   int(6) unsigned auto_increment  PRIMARY KEY,
 manhanvien int(6) unsigned,
 mahoadonmuahang  INT(6) UNSIGNED,
 FOREIGN KEY (mahoadonmuahang)
@@ -166,9 +176,12 @@ create table chitietnhapkho
 (
 machitietnhapkho int (6) unsigned auto_increment  PRIMARY KEY,
 machitietsanpham varchar(45),
-soluong int ,
+manhapkho  int(6) unsigned,
+soluong int,
 FOREIGN KEY (machitietsanpham)
-REFERENCES chitietsanpham(machitietsanpham)
+REFERENCES chitietsanpham(machitietsanpham),
+FOREIGN KEY (manhapkho)
+REFERENCES nhapkho(manhapkho)
 );
 create table hoadon
 (
@@ -465,6 +478,7 @@ set ngayhethan=DATE_ADD(ngay, INTERVAL thoihan MONTH)
 where masanpham=masp;
 END; $$
 DELIMITER ;
+
 call update_ngayhethan_sp(3,'SPY27INH');
 -- 'SPG7DW6U', 'SPFZA92'
 
@@ -475,10 +489,12 @@ where ctpn.mahoadonmuahang = pn.mahoadonmuahang  and ctpn.mahoadonmuahang =
 FROM chitiethoadonmuahang ctpn1,hoadonmuahang pn1 
 WHERE  ctpn1.mahoadonmuahang = pn1.mahoadonmuahang  and ctpn1.masanpham = ctpn.masanpham            
 ORDER BY ctpn1.mahoadonmuahang DESC
-LIMIT 1)
-;
+LIMIT 1);
+
 select  sp.masanpham,sp.tensanpham,sp.tennhomhang,sp.tennhasanxuat,
 ctsp.tenmau,ctsp.gioitinh, ctsp.tensize,ctsp.soluong,sp.giaban 
 from sanpham sp 
 join chitietsanpham ctsp on sp.masanpham = ctsp.masanpham 
 where ctsp.soluong >=0;
+
+

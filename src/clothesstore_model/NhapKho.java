@@ -62,10 +62,10 @@ public class NhapKho {
         List list = new ArrayList();
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
-        String sql = "SELECT sp.masanpham\n"
-                + "FROM nhapkho nk, chitietnhapkho ctnk, sanpham sp, chitietsanpham ctsp\n"
+        String sql = "SELECT sp.masanpham "
+                + "FROM nhapkho nk, chitietnhapkho ctnk, sanpham sp, chitietsanpham ctsp "
                 + "where nk.manhapkho = ctnk.manhapkho and ctnk.machitietsanpham = ctsp.machitietsanpham "
-                + "and sp.masanpham = ctsp.masanpham\n"
+                + "and sp.masanpham = ctsp.masanpham "
                 + "and nk.mahoadonmuahang = "+mapn+"";
         if (con != null) {
             try {

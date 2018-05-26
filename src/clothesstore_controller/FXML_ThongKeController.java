@@ -43,7 +43,9 @@ import javafx.print.PageOrientation;
 import javafx.print.Paper;
 import javafx.print.Printer;
 import javafx.print.PrinterJob;
+import javafx.scene.chart.Chart;
 import javafx.scene.chart.PieChart;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.transform.Scale;
@@ -99,10 +101,15 @@ public class FXML_ThongKeController implements Initializable {
         InitCmb_thongkesp_banchay();
         piechart_thongkesp_banchay_load();
         btn_xuatbaocao.setOnAction(e -> {
-            exportExcel_thongkesp_banchay();
+            // exportExcel_thongkesp_banchay();
+            Integer nam = cmb_nam.getSelectionModel().getSelectedItem();
+            Integer quy = cmb_quy.getSelectionModel().getSelectedItem();
+            ThongKe.pdf_thongkesp_banchay_trongquy(piechart_thongkesp_banchay,
+                    "Thống kê 5 sản phẩm bán chạy trong quý " + quy + " năm " + nam, quy, nam);
         });
         lb_ten_pie.setText(tenbd + "Năm " + cmb_nam.getSelectionModel().getSelectedItem()
                 + " Quý " + cmb_quy.getSelectionModel().getSelectedItem());
+        Init_cmbMonth();
     }
 
     private void initCbbYear() {
@@ -147,21 +154,23 @@ public class FXML_ThongKeController implements Initializable {
 
     @FXML
     private void Handler_btnPrint() {
-        Printer printer = Printer.getDefaultPrinter();
-        PageLayout pageLayout = printer.createPageLayout(Paper.NA_LETTER, PageOrientation.PORTRAIT, Printer.MarginType.DEFAULT);
-        double scaleX = pageLayout.getPrintableWidth() / chartDoanhThu.getBoundsInParent().getWidth();
-        double scaleY = pageLayout.getPrintableHeight() / chartDoanhThu.getBoundsInParent().getHeight();
-        Scale scale = new Scale(scaleX, scaleY);
-        chartDoanhThu.getTransforms().add(scale);
-
-        PrinterJob job = PrinterJob.createPrinterJob();
-        if (job != null) {
-            boolean success = job.printPage(chartDoanhThu);
-            if (success) {
-                job.endJob();
-                chartDoanhThu.getTransforms().remove(scale);
-            }
-        }
+//        Printer printer = Printer.getDefaultPrinter();
+//        PageLayout pageLayout = printer.createPageLayout(Paper.NA_LETTER, PageOrientation.PORTRAIT, Printer.MarginType.DEFAULT);
+//        double scaleX = pageLayout.getPrintableWidth() / chartDoanhThu.getBoundsInParent().getWidth();
+//        double scaleY = pageLayout.getPrintableHeight() / chartDoanhThu.getBoundsInParent().getHeight();
+//        Scale scale = new Scale(scaleX, scaleY);
+//        chartDoanhThu.getTransforms().add(scale);
+//
+//        PrinterJob job = PrinterJob.createPrinterJob();
+//        if (job != null) {
+//            boolean success = job.printPage(chartDoanhThu);
+//            if (success) {
+//                job.endJob();
+//                chartDoanhThu.getTransforms().remove(scale);
+//            }
+//        }
+        Object nam = cmbYear.getSelectionModel().getSelectedItem();
+        ThongKe.pdf_thongke_doanhthu(chartDoanhThu, "Thống kê doanh thu trong năm "+nam, Integer.valueOf(nam+""));
     }
 
     @FXML
@@ -180,6 +189,7 @@ public class FXML_ThongKeController implements Initializable {
         if (!piechart_thongkesp_banchay.getData().isEmpty()) {
             piechart_thongkesp_banchay.getData().clear();
         }
+
         Integer nam = cmb_nam.getSelectionModel().getSelectedItem();
         Integer quy = cmb_quy.getSelectionModel().getSelectedItem();
         if (nam == null) {
@@ -205,35 +215,6 @@ public class FXML_ThongKeController implements Initializable {
         }
         lb_ten_pie.setText(tenbd + "Năm " + cmb_nam.getSelectionModel().getSelectedItem()
                 + " Quý " + cmb_quy.getSelectionModel().getSelectedItem());
-    }
-
-    private void exportExcel_thongkesp_banchay() {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Excel file 2003(.xls)", ".xls"),
-                new FileChooser.ExtensionFilter("Excel file 2007(.xlsx)", ".xlsx")
-        );
-        File file = fileChooser.showSaveDialog(null);
-        if (file != null) {
-            try {
-                Integer nam = cmb_nam.getSelectionModel().getSelectedItem();
-                Integer quy = cmb_quy.getSelectionModel().getSelectedItem();
-                XSSFWorkbook wb = ThongKe.export_thongkesp_banchay_trongquy(quy, nam);
-                String path_name_File = file.getPath();
-                FileOutputStream output = new FileOutputStream(path_name_File
-                        + fileChooser.getSelectedExtensionFilter().getExtensions().get(0));
-                wb.write(output);
-                output.close();
-
-            } catch (FileNotFoundException ex) {
-                Logger.getLogger(FXML_SanPhamController.class
-                        .getName()).log(Level.SEVERE, null, ex);
-
-            } catch (IOException ex) {
-                Logger.getLogger(FXML_SanPhamController.class
-                        .getName()).log(Level.SEVERE, null, ex);
-            }
-        }
     }
 
     private void InitCmb_thongkesp_banchay() {
@@ -286,6 +267,12 @@ public class FXML_ThongKeController implements Initializable {
 
     @FXML
     private void handler_refresh(ActionEvent event) {
+        if (year.getText().isEmpty()) {
+            ShowMessage
+                    .showMessageBox(Alert.AlertType.WARNING, "Thông báo", null, "Bạn phải nhập năm")
+                    .showAndWait();
+            return;
+        }
         if (checkboxyear.isSelected() == true) {
             setChartYear(Integer.valueOf(year.getText()));
         } else if (checkboxmonth.isSelected() == true) {
@@ -398,36 +385,37 @@ public class FXML_ThongKeController implements Initializable {
     private void setChartYear(Integer year) {
         chartnhomhang.getData().clear();
         XYChart.Series<String, Number> data = new XYChart.Series<>();
-        data.setName("Doanh thu nhóm hàng theo năm");
+        data.setName("Số lượng từng nhóm hàng theo năm");
         HashMap<String, Integer> hm_sp = ThongKe.thongke_nhomhang_year(year);
         Set set = hm_sp.entrySet();
         Iterator i = set.iterator();
-            while (i.hasNext()) {
-                Map.Entry<String, Integer> me = (Map.Entry) i.next();
-                data.getData().add(new XYChart.Data<>(me.getKey(),me.getValue()));
-            }
+        while (i.hasNext()) {
+            Map.Entry<String, Integer> me = (Map.Entry) i.next();
+            data.getData().add(new XYChart.Data<>(me.getKey(), me.getValue()));
+        }
         chartnhomhang.getData().addAll(data);
         setMaxBarWidth(40, 10);
-        chartnhomhang.widthProperty().addListener((obs,b,b1)->{
-        Platform.runLater(()->setMaxBarWidth(40, 10));
-    });
+        chartnhomhang.widthProperty().addListener((obs, b, b1) -> {
+            Platform.runLater(() -> setMaxBarWidth(40, 10));
+        });
     }
-    
+
     private void setChartMonth(Integer year, Integer month) {
         chartnhomhang.getData().clear();
+
         XYChart.Series<String, Number> data = new XYChart.Series<>();
-        data.setName("Doanh thu nhóm hàng theo tháng");
+        data.setName("Số lượng từng nhóm hàng theo tháng");
         HashMap<String, Integer> hm_sp = ThongKe.thongke_nhomhang_month(month, year);
         Set set = hm_sp.entrySet();
         Iterator i = set.iterator();
-            while (i.hasNext()) {
-                Map.Entry<String, Integer> me = (Map.Entry) i.next();
-                data.getData().add(new XYChart.Data<>(me.getKey(),me.getValue()));
-            }
+        while (i.hasNext()) {
+            Map.Entry<String, Integer> me = (Map.Entry) i.next();
+            data.getData().add(new XYChart.Data<>(me.getKey(), me.getValue()));
+        }
         chartnhomhang.getData().addAll(data);
         setMaxBarWidth(40, 10);
-        chartnhomhang.widthProperty().addListener((obs,b,b1)->{
-        Platform.runLater(()->setMaxBarWidth(40, 10));
-    });
+        chartnhomhang.widthProperty().addListener((obs, b, b1) -> {
+            Platform.runLater(() -> setMaxBarWidth(40, 10));
+        });
     }
 }
