@@ -161,12 +161,15 @@ REFERENCES hoadonmuahang(mahoadonmuahang),
 FOREIGN KEY (manhanvien)
 REFERENCES nhanvien(manhanvien)
 );
--- cháu Diệu thêm vào 
+
 create table chitietnhapkho
 (
 machitietnhapkho int (6) unsigned auto_increment  PRIMARY KEY,
+manhapkho  int(6) unsigned,
 machitietsanpham varchar(45),
 soluong int ,
+FOREIGN KEY (manhapkho)
+REFERENCES nhapkho(manhapkho),
 FOREIGN KEY (machitietsanpham)
 REFERENCES chitietsanpham(machitietsanpham)
 );
