@@ -21,37 +21,22 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Side;
-import javafx.print.PageLayout;
-import javafx.print.PageOrientation;
-import javafx.print.Paper;
-import javafx.print.Printer;
-import javafx.print.PrinterJob;
-import javafx.scene.chart.Chart;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.transform.Scale;
-import javafx.stage.FileChooser;
 import javafx.util.StringConverter;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
  * FXML Controller class
@@ -71,25 +56,11 @@ public class FXML_ThongKeController implements Initializable {
     @FXML
     private JFXButton btnPrint;
     @FXML
-    private AnchorPane APchart_nhomhang;
-    @FXML
-    private BarChart<String, Number> chartnhomhang;
-    @FXML
-    private NumberAxis NAxis;
-    @FXML
-    private CategoryAxis CAxis;
-    @FXML
     private JFXTextField year;
     @FXML
     private Label lblthang;
     @FXML
     private JFXComboBox<Integer> cmb_month;
-    @FXML
-    private JFXButton btnrefresh;
-    @FXML
-    private JFXCheckBox checkboxyear;
-    @FXML
-    private JFXCheckBox checkboxmonth;
 
     /**
      * Initializes the controller class.
@@ -101,7 +72,7 @@ public class FXML_ThongKeController implements Initializable {
         InitCmb_thongkesp_banchay();
         piechart_thongkesp_banchay_load();
         btn_xuatbaocao.setOnAction(e -> {
-            // exportExcel_thongkesp_banchay();
+
             Integer nam = cmb_nam.getSelectionModel().getSelectedItem();
             Integer quy = cmb_quy.getSelectionModel().getSelectedItem();
             ThongKe.pdf_thongkesp_banchay_trongquy(piechart_thongkesp_banchay,
@@ -110,6 +81,7 @@ public class FXML_ThongKeController implements Initializable {
         lb_ten_pie.setText(tenbd + "Năm " + cmb_nam.getSelectionModel().getSelectedItem()
                 + " Quý " + cmb_quy.getSelectionModel().getSelectedItem());
         Init_cmbMonth();
+
     }
 
     private void initCbbYear() {
@@ -137,18 +109,21 @@ public class FXML_ThongKeController implements Initializable {
         dt = hd.getDoanhThu12months(year);
         XYChart.Series<String, Number> data = new XYChart.Series<>();
         data.setName("Doanh thu");
-        data.getData().add(new XYChart.Data<>("Tháng 1", (Number) dt.get(0)));
-        data.getData().add(new XYChart.Data<>("Tháng 2", (Number) dt.get(1)));
-        data.getData().add(new XYChart.Data<>("Tháng 3", (Number) dt.get(2)));
-        data.getData().add(new XYChart.Data<>("Tháng 4", (Number) dt.get(3)));
-        data.getData().add(new XYChart.Data<>("Tháng 5", (Number) dt.get(4)));
-        data.getData().add(new XYChart.Data<>("Tháng 6", (Number) dt.get(5)));
-        data.getData().add(new XYChart.Data<>("Tháng 7", (Number) dt.get(6)));
-        data.getData().add(new XYChart.Data<>("Tháng 8", (Number) dt.get(7)));
-        data.getData().add(new XYChart.Data<>("Tháng 9", (Number) dt.get(8)));
-        data.getData().add(new XYChart.Data<>("Tháng 10", (Number) dt.get(9)));
-        data.getData().add(new XYChart.Data<>("Tháng 11", (Number) dt.get(10)));
-        data.getData().add(new XYChart.Data<>("Tháng 12", (Number) dt.get(11)));
+        for (int i = 0; i < 12; i++) {
+            data.getData().add(new XYChart.Data<>("Tháng " + (i + 1), (Number) dt.get(i)));
+        }
+//        data.getData().add(new XYChart.Data<>("Tháng 1", (Number) dt.get(0)));
+//        data.getData().add(new XYChart.Data<>("Tháng 2", (Number) dt.get(1)));
+//        data.getData().add(new XYChart.Data<>("Tháng 3", (Number) dt.get(2)));
+//        data.getData().add(new XYChart.Data<>("Tháng 4", (Number) dt.get(3)));
+//        data.getData().add(new XYChart.Data<>("Tháng 5", (Number) dt.get(4)));
+//        data.getData().add(new XYChart.Data<>("Tháng 6", (Number) dt.get(5)));
+//        data.getData().add(new XYChart.Data<>("Tháng 7", (Number) dt.get(6)));
+//        data.getData().add(new XYChart.Data<>("Tháng 8", (Number) dt.get(7)));
+//        data.getData().add(new XYChart.Data<>("Tháng 9", (Number) dt.get(8)));
+//        data.getData().add(new XYChart.Data<>("Tháng 10", (Number) dt.get(9)));
+//        data.getData().add(new XYChart.Data<>("Tháng 11", (Number) dt.get(10)));
+//        data.getData().add(new XYChart.Data<>("Tháng 12", (Number) dt.get(11)));
         chartDoanhThu.getData().setAll(data);
     }
 
@@ -170,7 +145,7 @@ public class FXML_ThongKeController implements Initializable {
 //            }
 //        }
         Object nam = cmbYear.getSelectionModel().getSelectedItem();
-        ThongKe.pdf_thongke_doanhthu(chartDoanhThu, "Thống kê doanh thu trong năm "+nam, Integer.valueOf(nam+""));
+        ThongKe.pdf_thongke_doanhthu(chartDoanhThu, "Thống kê doanh thu trong năm " + nam, Integer.valueOf(nam + ""));
     }
 
     @FXML
@@ -227,15 +202,7 @@ public class FXML_ThongKeController implements Initializable {
         cmb_quy.setConverter(new StringConverter<Integer>() {
             @Override
             public String toString(Integer object) {
-                if (object == 1) {
-                    return "Quý 1";
-                } else if (object == 2) {
-                    return "Quý 2";
-                } else if (object == 3) {
-                    return "Quý 3";
-                } else {
-                    return "Quý 4";
-                }
+                return "Quý " + object;
             }
 
             @Override
@@ -264,50 +231,16 @@ public class FXML_ThongKeController implements Initializable {
             piechart_thongkesp_banchay_load();
         });
     }
-
     @FXML
-    private void handler_refresh(ActionEvent event) {
-        if (year.getText().isEmpty()) {
-            ShowMessage
-                    .showMessageBox(Alert.AlertType.WARNING, "Thông báo", null, "Bạn phải nhập năm")
-                    .showAndWait();
-            return;
-        }
-        if (checkboxyear.isSelected() == true) {
-            setChartYear(Integer.valueOf(year.getText()));
-        } else if (checkboxmonth.isSelected() == true) {
-            setChartMonth(Integer.valueOf(year.getText()), Integer.valueOf(cmb_month.getValue()));
-        }
-    }
-
+    private NumberAxis NAxis;
     @FXML
-    private void handler_checkboxyear(ActionEvent event) {
-        boolean isSelectedyear = checkboxyear.isSelected();
-        if (isSelectedyear == true) {
-            checkboxmonth.setSelected(false);
-            lblthang.setVisible(false);
-            cmb_month.setVisible(false);
-
-        } else {
-            checkboxmonth.setSelected(true);
-            lblthang.setVisible(true);
-            cmb_month.setVisible(true);
-        }
-    }
-
+    private CategoryAxis CAxis;
     @FXML
-    private void handler_checkboxmonth(ActionEvent event) {
-        boolean isSelectedmonth = checkboxmonth.isSelected();
-        if (isSelectedmonth == true) {
-            checkboxyear.setSelected(false);
-            lblthang.setVisible(true);
-            cmb_month.setVisible(true);
-        } else {
-            checkboxyear.setSelected(true);
-            lblthang.setVisible(false);
-            cmb_month.setVisible(false);
-        }
-    }
+    private JFXComboBox<Integer> Cmb_year;
+    @FXML
+    private AnchorPane APchart_nhomhang;
+    @FXML
+    private BarChart<String, Number> chartnhomhang;
 
     private void setMaxBarWidth(double maxBarWidth, double minCategoryGap) {
         double barWidth = 0;
@@ -329,49 +262,20 @@ public class FXML_ThongKeController implements Initializable {
             avilableBarSpace = (barWidth + chartnhomhang.getBarGap()) * chartnhomhang.getData().size();
             chartnhomhang.setCategoryGap(catSpace - avilableBarSpace - chartnhomhang.getBarGap());
         } while (barWidth < maxBarWidth && chartnhomhang.getCategoryGap() > minCategoryGap);
+
     }
 
     private void Init_cmbMonth() {
-        cmb_month.getItems().add(1);
-        cmb_month.getItems().add(2);
-        cmb_month.getItems().add(3);
-        cmb_month.getItems().add(4);
-        cmb_month.getItems().add(5);
-        cmb_month.getItems().add(6);
-        cmb_month.getItems().add(7);
-        cmb_month.getItems().add(8);
-        cmb_month.getItems().add(9);
-        cmb_month.getItems().add(10);
-        cmb_month.getItems().add(11);
-        cmb_month.getItems().add(12);
+        for (int i = 0; i <= 12; i++) {
+            cmb_month.getItems().add(i);
+        }
         cmb_month.setConverter(new StringConverter<Integer>() {
             @Override
             public String toString(Integer object) {
-                if (object == 1) {
-                    return "Tháng 1";
-                } else if (object == 2) {
-                    return "Tháng 2";
-                } else if (object == 3) {
-                    return "Tháng 3";
-                } else if (object == 4) {
-                    return "Tháng 4";
-                } else if (object == 5) {
-                    return "Tháng 5";
-                } else if (object == 6) {
-                    return "Tháng 6";
-                } else if (object == 7) {
-                    return "Tháng 7";
-                } else if (object == 8) {
-                    return "Tháng 8";
-                } else if (object == 9) {
-                    return "Tháng 9";
-                } else if (object == 10) {
-                    return "Tháng 10";
-                } else if (object == 11) {
-                    return "Tháng 11";
-                } else {
-                    return "Tháng 12";
+                if (object == 0) {
+                    return "Tất cả";
                 }
+                return "Tháng " + object;
             }
 
             @Override
@@ -380,9 +284,54 @@ public class FXML_ThongKeController implements Initializable {
             }
         });
         cmb_month.getSelectionModel().selectFirst();
+        HoaDon hd = new HoaDon();
+        hd.load_cmb_year(Cmb_year);
+        Cmb_year.setConverter(new StringConverter<Integer>() {
+            @Override
+            public String toString(Integer object) {
+                return "Năm " + object.toString();
+            }
+
+            @Override
+            public Integer fromString(String string) {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+        });
+        Cmb_year.getSelectionModel().selectFirst();
+        Cmb_year.setOnAction(e -> {
+            Integer _year = Cmb_year.getSelectionModel().getSelectedItem();
+            if (cmb_month.getSelectionModel().getSelectedItem() == 0) {
+                setChartYear(_year);
+            } else {
+                Integer month = cmb_month.getSelectionModel().getSelectedItem();
+                setChartMonth(_year, month);
+            }
+            setMaxBarWidth(30, 10);
+        });
+        cmb_month.setOnAction(e -> {
+            Integer _year = Cmb_year.getSelectionModel().getSelectedItem();
+            if (cmb_month.getSelectionModel().getSelectedItem() == 0) {
+                setChartYear(_year);
+
+            } else {
+                Integer month = cmb_month.getSelectionModel().getSelectedItem();
+                setChartMonth(_year, month);
+
+            }
+
+        });
+        setMaxBarWidth(40, 10);
+        chartnhomhang.widthProperty().addListener((obs, b, b1) -> {
+            Platform.runLater(() -> setMaxBarWidth(40, 10));
+        });
+        CAxis.setLabel("Tên nhóm hàng");
+        NAxis.setLabel("Số lượng");
+        Integer _year = Cmb_year.getSelectionModel().getSelectedItem();
+        setChartYear(_year);
     }
 
     private void setChartYear(Integer year) {
+
         chartnhomhang.getData().clear();
         XYChart.Series<String, Number> data = new XYChart.Series<>();
         data.setName("Số lượng từng nhóm hàng theo năm");
@@ -395,14 +344,11 @@ public class FXML_ThongKeController implements Initializable {
         }
         chartnhomhang.getData().addAll(data);
         setMaxBarWidth(40, 10);
-        chartnhomhang.widthProperty().addListener((obs, b, b1) -> {
-            Platform.runLater(() -> setMaxBarWidth(40, 10));
-        });
     }
 
     private void setChartMonth(Integer year, Integer month) {
-        chartnhomhang.getData().clear();
 
+        chartnhomhang.getData().clear();
         XYChart.Series<String, Number> data = new XYChart.Series<>();
         data.setName("Số lượng từng nhóm hàng theo tháng");
         HashMap<String, Integer> hm_sp = ThongKe.thongke_nhomhang_month(month, year);
@@ -414,8 +360,5 @@ public class FXML_ThongKeController implements Initializable {
         }
         chartnhomhang.getData().addAll(data);
         setMaxBarWidth(40, 10);
-        chartnhomhang.widthProperty().addListener((obs, b, b1) -> {
-            Platform.runLater(() -> setMaxBarWidth(40, 10));
-        });
     }
 }
