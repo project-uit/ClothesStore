@@ -33,7 +33,10 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.embed.swing.SwingFXUtils;
@@ -41,6 +44,7 @@ import javafx.geometry.Bounds;
 import javafx.scene.Node;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.chart.Chart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.image.WritableImage;
 import javafx.scene.transform.Scale;
 import javafx.stage.FileChooser;
@@ -72,7 +76,8 @@ public class ThongKe {
 
             PdfWriter.getInstance(document, file);
             document.open();
-            BaseFont unicode_font = BaseFont.createFont("times.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+            BaseFont unicode_font = BaseFont.createFont("times.ttf",
+                    BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
             Font font = new Font(unicode_font, 14, Font.NORMAL);
             Paragraph paragraph;
             //title
@@ -140,7 +145,7 @@ public class ThongKe {
                         pdfTable.addCell(rs.getString(1));
                         pdfTable.addCell(rs.getString(2));
                         pdfTable.addCell(rs.getString(3));
-                        String tien =String.format("%,8d%n", rs.getInt(4)).trim();
+                        String tien = String.format("%,8d%n", rs.getInt(4)).trim();
                         pdfTable.addCell(tien);
                         pdfTable.addCell(((float) rs.getInt(3) / tongsl * 100) + "");
                     }
@@ -180,7 +185,8 @@ public class ThongKe {
 
             PdfWriter.getInstance(document, file);
             document.open();
-            BaseFont unicode_font = BaseFont.createFont("times.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+            BaseFont unicode_font = BaseFont.createFont("times.ttf",
+                    BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
             Font font = new Font(unicode_font, 14, Font.NORMAL);
             Paragraph paragraph;
             //title
@@ -203,8 +209,9 @@ public class ThongKe {
 
             //Create Paragraph
             document.add(new Paragraph(" "));
-            paragraph = new Paragraph("Doanh thu từng tháng trong năm " + nam, new Font(unicode_font, 14,
-                    Font.BOLD));
+            paragraph = new Paragraph("Doanh thu từng tháng trong năm " + nam,
+                    new Font(unicode_font, 14,
+                            Font.BOLD));
             paragraph.add(new Paragraph(" "));
             document.add(paragraph);
             //Create a table in PDF
@@ -220,13 +227,91 @@ public class ThongKe {
             pdfTable.setHeaderRows(1);
             HoaDon hd = new HoaDon();
             List<Integer> doanhthu12months = hd.getDoanhThu12months(nam);
-            int i=1;
-            for( Integer temp : doanhthu12months)
-            {
-                pdfTable.addCell(""+i);
-                String tien =String.format("%,8d%n", temp).trim();
+            int i = 1;
+            for (Integer temp : doanhthu12months) {
+                pdfTable.addCell("" + i);
+                String tien = String.format("%,8d%n", temp).trim();
                 pdfTable.addCell(tien);
                 i++;
+            }
+
+            document.add(pdfTable);
+            document.close();
+            file.close();
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+        }
+    }
+
+    public static void pdf_thongke_nhomhang(Chart chart, String title, Integer nam, Integer thang) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("PDF file", ".pdf")
+        );
+
+        File filepdf = fileChooser.showSaveDialog(null);
+        try {
+            OutputStream file = new FileOutputStream(filepdf);
+            // set size cho page
+            Rectangle pageSize = new Rectangle(216, 720);
+            Document document = new Document(); // new Document(pageSize);
+            // set size cho page
+            document.setPageSize(PageSize.A4);
+
+            PdfWriter.getInstance(document, file);
+            document.open();
+            BaseFont unicode_font = BaseFont.createFont("times.ttf",
+                    BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+            Font font = new Font(unicode_font, 14, Font.NORMAL);
+            Paragraph paragraph;
+            //title
+            paragraph = new Paragraph(title, new Font(unicode_font, 18, Font.BOLD));
+            paragraph.setAlignment(Element.ALIGN_CENTER);
+
+            document.add(paragraph);
+            SimpleDateFormat dt = new SimpleDateFormat("dd/MM/yyyy");
+            //Ngày in báo cáo
+            paragraph = new Paragraph("Ngày: " + dt.format(new Date()));
+            document.add(paragraph);
+            //add biểu đồ
+            SnapshotParameters snapshotParameters = new SnapshotParameters();
+            WritableImage image = chart.snapshot(snapshotParameters, null);
+            ByteArrayOutputStream byteOutput = new ByteArrayOutputStream();
+            ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", byteOutput);
+            Image img = Image.getInstance(byteOutput.toByteArray());
+            img.scaleToFit(500, 500);
+            document.add(img);
+
+            //Create Paragraph
+            document.add(new Paragraph(" "));
+            paragraph = new Paragraph("Danh sách nhóm hàng ", new Font(unicode_font, 14,
+                    Font.BOLD));
+            paragraph.add(new Paragraph(" "));
+            document.add(paragraph);
+            //Create a table in PDF
+            PdfPTable pdfTable = new PdfPTable(2); // 5 cột
+            // khởi tạo cột
+            PdfPCell cell1 = new PdfPCell(new Phrase("Tên nhóm hàng", font));
+            cell1.setHorizontalAlignment(Element.ALIGN_CENTER);
+            pdfTable.addCell(cell1);
+            cell1 = new PdfPCell(new Phrase("Số lượng", font));
+            cell1.setHorizontalAlignment(Element.ALIGN_CENTER);
+            pdfTable.addCell(cell1);
+            pdfTable.setHeaderRows(1);
+            HashMap<String, Integer> hm_sp;
+            if (thang == 0) {
+                hm_sp = thongke_nhomhang_year(nam);
+            } else {
+                hm_sp = thongke_nhomhang_month(thang, nam);
+            }
+            Set set = hm_sp.entrySet();
+            Iterator i = set.iterator();
+            while (i.hasNext()) {
+                Map.Entry<String, Integer> me = (Map.Entry) i.next();
+                pdfTable.addCell(me.getKey());
+                pdfTable.addCell(me.getValue() + "");
             }
 
             document.add(pdfTable);
@@ -298,9 +383,7 @@ public class ThongKe {
                 stmt.setInt(1, thang);
                 stmt.setInt(2, nam);
                 ResultSet rs = stmt.executeQuery();
-
                 while (rs.next()) {
-
                     value.put(rs.getString(1), rs.getInt(2));
                 }
                 stmt.close();
@@ -326,9 +409,7 @@ public class ThongKe {
             try (CallableStatement stmt = con.prepareCall(call)) {
                 stmt.setInt(1, nam);
                 ResultSet rs = stmt.executeQuery();
-
                 while (rs.next()) {
-
                     value.put(rs.getString(1), rs.getInt(2));
                 }
                 stmt.close();

@@ -57,10 +57,7 @@ public class FXML_ThongKeController implements Initializable {
     private JFXButton btnPrint;
     @FXML
     private JFXTextField year;
-    @FXML
-    private Label lblthang;
-    @FXML
-    private JFXComboBox<Integer> cmb_month;
+
 
     /**
      * Initializes the controller class.
@@ -77,11 +74,8 @@ public class FXML_ThongKeController implements Initializable {
             Integer quy = cmb_quy.getSelectionModel().getSelectedItem();
             ThongKe.pdf_thongkesp_banchay_trongquy(piechart_thongkesp_banchay,
                     "Thống kê 5 sản phẩm bán chạy trong quý " + quy + " năm " + nam, quy, nam);
-        });
-        lb_ten_pie.setText(tenbd + "Năm " + cmb_nam.getSelectionModel().getSelectedItem()
-                + " Quý " + cmb_quy.getSelectionModel().getSelectedItem());
+        });       
         Init_cmbMonth();
-
     }
 
     private void initCbbYear() {
@@ -156,15 +150,15 @@ public class FXML_ThongKeController implements Initializable {
     private JFXComboBox<Integer> cmb_quy;
     @FXML
     private JFXButton btn_xuatbaocao;
-    @FXML
-    private Label lb_ten_pie;
-    private String tenbd = "Biểu đồ tròn thống kê năm sản phẩm bán chạy nhất trong ";
+    
+    private String tenbd = "Thống kê năm sản phẩm bán chạy nhất trong ";
 
     private void piechart_thongkesp_banchay_load() {
         if (!piechart_thongkesp_banchay.getData().isEmpty()) {
             piechart_thongkesp_banchay.getData().clear();
         }
-
+        piechart_thongkesp_banchay.setTitle(tenbd + "Năm " + cmb_nam.getSelectionModel().getSelectedItem()
+                + " Quý " + cmb_quy.getSelectionModel().getSelectedItem());
         Integer nam = cmb_nam.getSelectionModel().getSelectedItem();
         Integer quy = cmb_quy.getSelectionModel().getSelectedItem();
         if (nam == null) {
@@ -188,8 +182,7 @@ public class FXML_ThongKeController implements Initializable {
             }
             piechart_thongkesp_banchay.setLegendSide(Side.LEFT);
         }
-        lb_ten_pie.setText(tenbd + "Năm " + cmb_nam.getSelectionModel().getSelectedItem()
-                + " Quý " + cmb_quy.getSelectionModel().getSelectedItem());
+        
     }
 
     private void InitCmb_thongkesp_banchay() {
@@ -241,6 +234,8 @@ public class FXML_ThongKeController implements Initializable {
     private AnchorPane APchart_nhomhang;
     @FXML
     private BarChart<String, Number> chartnhomhang;
+    @FXML
+    private JFXComboBox<Integer> cmb_month;
 
     private void setMaxBarWidth(double maxBarWidth, double minCategoryGap) {
         double barWidth = 0;
@@ -265,6 +260,13 @@ public class FXML_ThongKeController implements Initializable {
 
     }
 
+    @FXML
+    private void Handler_XuatThongkeNhomHang(ActionEvent event) {
+        Integer nam = Cmb_year.getSelectionModel().getSelectedItem();
+        Integer thang = cmb_month.getSelectionModel().getSelectedItem();
+        ThongKe.pdf_thongke_nhomhang(chartnhomhang, "Thống kê số lượng của từng nhóm hàng", nam, thang);
+    }
+
     private void Init_cmbMonth() {
         for (int i = 0; i <= 12; i++) {
             cmb_month.getItems().add(i);
@@ -277,7 +279,6 @@ public class FXML_ThongKeController implements Initializable {
                 }
                 return "Tháng " + object;
             }
-
             @Override
             public Integer fromString(String string) {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -316,18 +317,19 @@ public class FXML_ThongKeController implements Initializable {
             } else {
                 Integer month = cmb_month.getSelectionModel().getSelectedItem();
                 setChartMonth(_year, month);
-
             }
 
         });
         setMaxBarWidth(40, 10);
         chartnhomhang.widthProperty().addListener((obs, b, b1) -> {
+            setMaxBarWidth(40, 10);
             Platform.runLater(() -> setMaxBarWidth(40, 10));
         });
         CAxis.setLabel("Tên nhóm hàng");
         NAxis.setLabel("Số lượng");
         Integer _year = Cmb_year.getSelectionModel().getSelectedItem();
         setChartYear(_year);
+        
     }
 
     private void setChartYear(Integer year) {
@@ -347,7 +349,6 @@ public class FXML_ThongKeController implements Initializable {
     }
 
     private void setChartMonth(Integer year, Integer month) {
-
         chartnhomhang.getData().clear();
         XYChart.Series<String, Number> data = new XYChart.Series<>();
         data.setName("Số lượng từng nhóm hàng theo tháng");
