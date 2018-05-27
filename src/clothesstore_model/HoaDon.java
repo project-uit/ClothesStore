@@ -495,9 +495,15 @@ public class HoaDon {
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
         if (con != null) {
-            String query = "select hd.mahoadon, tennhanvien, sodienthoai, ngayban,"
-                    + " tongtien from hoadon hd, nhanvien nv, chitietkhachhang ctkh "
-                    + "where hd.manhanvien = nv.manhanvien and hd.mahoadon = ctkh.mahoadon;";
+            String query = "SELECT _hd.mahoadon, nv.tennhanvien, _hd.sodienthoai, _hd.ngayban, _hd.tongtien \n"
+                    + "FROM nhanvien nv,\n"
+                    + "	(\n"
+                    + "        SELECT hd.mahoadon, sodienthoai, ngayban, tongtien, manhanvien \n"
+                    + "		FROM hoadon hd\n"
+                    + "		LEFT JOIN chitietkhachhang ctkh ON hd.mahoadon = ctkh.mahoadon\n"
+                    + "		where hd.mahoadon is not null\n"
+                    + "	) _hd\n"
+                    + "where nv.manhanvien = _hd.manhanvien;";
             try {
                 PreparedStatement ptm = con.prepareStatement(query);
                 ResultSet rs = ptm.executeQuery();
@@ -522,10 +528,15 @@ public class HoaDon {
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
         if (con != null) {
-            String query = "select hd.mahoadon, tennhanvien, sodienthoai, ngayban, "
-                    + "tongtien from hoadon hd, nhanvien nv, chitietkhachhang ctkh "
-                    + "where hd.manhanvien = nv.manhanvien and hd.mahoadon = ctkh.mahoadon "
-                    + "and DATE(ngayban) BETWEEN ? AND ?;";
+            String query = "SELECT _hd.mahoadon, nv.tennhanvien, _hd.sodienthoai, _hd.ngayban, _hd.tongtien \n"
+                    + "FROM nhanvien nv,\n"
+                    + "	(\n"
+                    + "        SELECT hd.mahoadon, sodienthoai, ngayban, tongtien, manhanvien \n"
+                    + "		FROM hoadon hd\n"
+                    + "		LEFT JOIN chitietkhachhang ctkh ON hd.mahoadon = ctkh.mahoadon\n"
+                    + "		where hd.mahoadon is not null\n"
+                    + "	) _hd\n"
+                    + "where nv.manhanvien = _hd.manhanvien and DATE(_hd.ngayban) BETWEEN ? AND ?;";
             try {
                 PreparedStatement ptm = con.prepareStatement(query);
                 ptm.setDate(1, (java.sql.Date) from);
@@ -552,9 +563,15 @@ public class HoaDon {
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
         if (con != null) {
-            String query = "select hd.mahoadon, tennhanvien, sodienthoai, ngayban, "
-                    + "tongtien from hoadon hd, nhanvien nv, chitietkhachhang ctkh "
-                    + "where hd.manhanvien = nv.manhanvien and hd.mahoadon = ctkh.mahoadon and hd.mahoadon = ?;";
+            String query = "SELECT _hd.mahoadon, nv.tennhanvien, _hd.sodienthoai, _hd.ngayban, _hd.tongtien \n"
+                    + "FROM nhanvien nv,\n"
+                    + "	(\n"
+                    + "        SELECT hd.mahoadon, sodienthoai, ngayban, tongtien, manhanvien \n"
+                    + "		FROM hoadon hd\n"
+                    + "		LEFT JOIN chitietkhachhang ctkh ON hd.mahoadon = ctkh.mahoadon\n"
+                    + "		where hd.mahoadon is not null\n"
+                    + "	) _hd\n"
+                    + "where nv.manhanvien = _hd.manhanvien and _hd.mahoadon = ?;";
             try {
                 PreparedStatement ptm = con.prepareStatement(query);
                 ptm.setInt(1, mahd);

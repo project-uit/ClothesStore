@@ -98,10 +98,13 @@ public class DoiTra {
         ObservableList<DoiTra> list = FXCollections.observableArrayList();
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
-        String sql = "SELECT * FROM doitra, hoadon, nhanvien, chitietkhachhang "
-                + "Where doitra.mahoadon = hoadon.mahoadon "
-                + "and hoadon.manhanvien = nhanvien.manhanvien "
-                + "and chitietkhachhang.mahoadon = hoadon.mahoadon";
+        String sql = "SELECT madoitra, _dt.mahoadon, nv.tennhanvien, _dt.sodienthoai, _dt.ngaytra, _dt.lydo\n"
+                + "FROM nhanvien nv, hoadon hd,\n"
+                + "	(SELECT madoitra, dt.mahoadon, sodienthoai, ngaytra, lydo\n"
+                + "	FROM doitra dt\n"
+                + "	LEFT JOIN chitietkhachhang ctkh ON dt.mahoadon = ctkh.mahoadon\n"
+                + "	where dt.mahoadon is not null) _dt\n"
+                + "where hd.mahoadon = _dt.mahoadon and hd.manhanvien = nv.manhanvien;";
         if (con != null) {
             try {
                 PreparedStatement ptm = con.prepareStatement(sql);
@@ -127,10 +130,13 @@ public class DoiTra {
         ObservableList<DoiTra> list = FXCollections.observableArrayList();
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
-        String sql = "SELECT * FROM doitra, hoadon, nhanvien, chitietkhachhang "
-                + "Where doitra.mahoadon = hoadon.mahoadon "
-                + "and hoadon.manhanvien = nhanvien.manhanvien "
-                + "and chitietkhachhang.mahoadon = hoadon.mahoadon and doitra.mahoadon = " + mhd + "";
+        String sql = "SELECT madoitra, _dt.mahoadon, nv.tennhanvien, _dt.sodienthoai, _dt.ngaytra, _dt.lydo\n"
+                + "FROM nhanvien nv, hoadon hd,\n"
+                + "	(SELECT madoitra, dt.mahoadon, sodienthoai, ngaytra, lydo\n"
+                + "	FROM doitra dt\n"
+                + "	LEFT JOIN chitietkhachhang ctkh ON dt.mahoadon = ctkh.mahoadon\n"
+                + "	where dt.mahoadon is not null) _dt\n"
+                + "where hd.mahoadon = _dt.mahoadon and hd.manhanvien = nv.manhanvien and _dt.mahoadon = " + mhd + ";";
         if (con != null) {
             try {
                 PreparedStatement ptm = con.prepareStatement(sql);
@@ -156,10 +162,13 @@ public class DoiTra {
         ObservableList<DoiTra> list = FXCollections.observableArrayList();
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
-        String sql = "SELECT * FROM doitra, hoadon, nhanvien, chitietkhachhang "
-                + "Where doitra.mahoadon = hoadon.mahoadon "
-                + "and hoadon.manhanvien = nhanvien.manhanvien "
-                + "and chitietkhachhang.mahoadon = hoadon.mahoadon and doitra.ngaytra = '"+date+"'";
+        String sql = "SELECT madoitra, _dt.mahoadon, nv.tennhanvien, _dt.sodienthoai, _dt.ngaytra, _dt.lydo\n"
+                + "FROM nhanvien nv, hoadon hd,\n"
+                + "	(SELECT madoitra, dt.mahoadon, sodienthoai, ngaytra, lydo\n"
+                + "	FROM doitra dt\n"
+                + "	LEFT JOIN chitietkhachhang ctkh ON dt.mahoadon = ctkh.mahoadon\n"
+                + "	where dt.mahoadon is not null) _dt\n"
+                + "where hd.mahoadon = _dt.mahoadon and hd.manhanvien = nv.manhanvien and _dt.ngaytra = '"+date+"';";
         if (con != null) {
             try {
                 PreparedStatement ptm = con.prepareStatement(sql);
