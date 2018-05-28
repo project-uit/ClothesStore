@@ -177,14 +177,8 @@ create table chitietnhapkho
 machitietnhapkho int (6) unsigned auto_increment  PRIMARY KEY,
 manhapkho  int(6) unsigned,
 machitietsanpham varchar(45),
-<<<<<<< HEAD
-manhapkho  int(6) unsigned,
 soluong int,
-=======
-soluong int ,
-FOREIGN KEY (manhapkho)
-REFERENCES nhapkho(manhapkho),
->>>>>>> e0ab98ce6973159421f5e6fb93442186bffe7152
+
 FOREIGN KEY (machitietsanpham)
 REFERENCES chitietsanpham(machitietsanpham),
 FOREIGN KEY (manhapkho)
@@ -503,5 +497,3 @@ ctsp.tenmau,ctsp.gioitinh, ctsp.tensize,ctsp.soluong,sp.giaban
 from sanpham sp 
 join chitietsanpham ctsp on sp.masanpham = ctsp.masanpham 
 where ctsp.soluong >=0;
-
-
