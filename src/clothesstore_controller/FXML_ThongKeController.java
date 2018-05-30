@@ -333,7 +333,8 @@ public class FXML_ThongKeController implements Initializable {
     }
 
     private void setChartYear(Integer year) {
-
+        if(year==null)
+            return;
         chartnhomhang.getData().clear();
         XYChart.Series<String, Number> data = new XYChart.Series<>();
         data.setName("Số lượng từng nhóm hàng theo năm");
@@ -349,6 +350,8 @@ public class FXML_ThongKeController implements Initializable {
     }
 
     private void setChartMonth(Integer year, Integer month) {
+        if(year==null || month==null)
+            return;
         chartnhomhang.getData().clear();
         XYChart.Series<String, Number> data = new XYChart.Series<>();
         data.setName("Số lượng từng nhóm hàng theo tháng");

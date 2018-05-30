@@ -123,8 +123,8 @@ public class HoaDonMuaHang {
                 + "FROM(\n"
                 + "	select pn.mahoadonmuahang, pn.tongtien, pn.ngaynhap, pn.manhacungcap\n"
                 + "	from hoadonmuahang pn\n"
-                + "	left join khosanpham ksp on pn.mahoadonmuahang = ksp.mahoadonmuahang \n"
-                + "	where ksp.makhosanpham is null) PN, nhacungcap NCC\n"
+                + "	left join nhapkho nk on pn.mahoadonmuahang = nk.mahoadonmuahang \n"
+                + "	where nk.manhapkho is null) PN, nhacungcap NCC\n"
                 + "WHERE PN.manhacungcap = NCC.manhacungcap";
         if (con != null) {
             try {
@@ -154,8 +154,8 @@ public class HoaDonMuaHang {
                 + "FROM(\n"
                 + "	select pn.mahoadonmuahang, pn.tongtien, pn.ngaynhap, pn.manhacungcap\n"
                 + "	from hoadonmuahang pn\n"
-                + "	left join khosanpham ksp on pn.mahoadonmuahang = ksp.mahoadonmuahang \n"
-                + "	where ksp.makhosanpham is null) PN, nhacungcap NCC\n"
+                + "	left join nhapkho ksp on pn.mahoadonmuahang = ksp.mahoadonmuahang \n"
+                + "	where ksp.manhapkho is null) PN, nhacungcap NCC\n"
                 + "WHERE PN.mahoadonmuahang = NCC.manhacungcap and PN.ngaynhap = '" + date + "'";
         if (con != null) {
             try {

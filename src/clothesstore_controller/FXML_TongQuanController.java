@@ -28,20 +28,22 @@ public class FXML_TongQuanController implements Initializable {
      */
     @FXML
     private Label lbtienbanhang_homnay, lbsodonhang_hanghoa_homnay,
-            lbtienbanhang, lbsodonhang, lbsohanghoa, lbhanghoa,lb_soluong;
+            lbtienbanhang, lbsodonhang, lbsohanghoa, lbhanghoa, lb_soluong;
     @FXML
     private ComboBox cmb;
     HoaDon hd = new HoaDon();
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO       
         lbtienbanhang_homnay.setText("Tiền bán hàng: \n" + FormatTien(hd.getActivities_TienBanHang("homnay")));
         lbsodonhang_hanghoa_homnay.setText("Số đơn hàng: " + String.valueOf(hd.getActivities_TienSoDonHang("homnay"))
                 + "\nSố hàng hóa: " + String.valueOf(hd.getActivities_TienSoHangHoa("homnay")));
-        
-        lb_soluong.setText(""+TonKho.getsoluongtonkho());
+
+        lb_soluong.setText("" + TonKho.getsoluongtonkho());
         initCMB();
     }
+
     public void initCMB() {
         cmb.getItems().addAll("Tuần này", "Tuần trước", "Tháng này", "Tháng trước");
         cmb.valueProperty().addListener(new ChangeListener<String>() {
@@ -73,7 +75,8 @@ public class FXML_TongQuanController implements Initializable {
         });
         cmb.getSelectionModel().selectFirst();
     }
-       private String FormatTien(int soTien) {
+
+    private String FormatTien(int soTien) {
         return String.format("%,8d%n", soTien).trim();
     }
 }

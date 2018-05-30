@@ -91,7 +91,7 @@
             <Font size="14.0" />
          </font>
       </JFXButton>
-      <AnchorPane layoutX="14.0" layoutY="595.0" prefHeight="112.0" prefWidth="366.0" style="-fx-border-radius: 5; -fx-border-width: 1; -fx-border-color: #4681f5;">
+      <AnchorPane layoutX="14.0" layoutY="595.0" prefHeight="112.0" prefWidth="366.0" style="-fx-border-radius: 5; -fx-border-width: 1; -fx-border-color: #4681f5;" AnchorPane.bottomAnchor="13.0" AnchorPane.leftAnchor="14.0">
          <children>
             <Label layoutX="22.0" layoutY="27.0" text="Số điện thoại">
                <font>
