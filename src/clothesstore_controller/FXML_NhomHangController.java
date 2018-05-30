@@ -30,6 +30,9 @@ import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableView;
 import javafx.scene.input.MouseEvent;
 import javafx.util.Callback;
+import javafx.util.Duration;
+import tray.notification.NotificationType;
+import tray.notification.TrayNotification;
 
 /**
  * FXML Controller class
@@ -111,21 +114,22 @@ public class FXML_NhomHangController implements Initializable {
         StringProperty tennh = new SimpleStringProperty(txt_fi_tennhomhang.getText());
         NhomHang nhomhang = new NhomHang(tennh);
         if (nhomhang.isEmpty()) {
-            ShowMessage
-                    .showMessageBox(Alert.AlertType.WARNING, "Thông báo", null, "Bạn không được để tên nhóm hàng trống")
-                    .showAndWait();
+            TrayNotification tray = new TrayNotification("Thông báo",
+                    "Bạn không được để tên nhóm hàng trống", NotificationType.WARNING);
+            tray.showAndDismiss(Duration.seconds(1.5));
             return;
         }
         if (nhomhang.insert()) {
             viewListTable();
-            ShowMessage
-                    .showMessageBox(Alert.AlertType.INFORMATION, "Thông báo", null, "Thêm dữ liệu thành công")
-                    .showAndWait();
+            TrayNotification tray = new TrayNotification("Thông báo",
+                    "Thêm dữ liệu thành công", NotificationType.SUCCESS);
+            tray.showAndDismiss(Duration.seconds(1));
 
         } else {
-            ShowMessage
-                    .showMessageBox(Alert.AlertType.ERROR, "Thông báo", null, "Thêm dữ liệu thất bại")
-                    .showAndWait();
+
+            TrayNotification tray = new TrayNotification("Thông báo",
+                    "Thêm dữ liệu thất bại", NotificationType.ERROR);
+            tray.showAndDismiss(Duration.seconds(1));
         }
 
     }
@@ -135,13 +139,15 @@ public class FXML_NhomHangController implements Initializable {
         NhomHang nhomhang = new NhomHang(tennh);
         if (nhomhang.delete()) {
             viewListTable();
-            ShowMessage
-                    .showMessageBox(Alert.AlertType.INFORMATION, "Thông báo", null, "Xóa dữ liệu thành công")
-                    .showAndWait();
+            TrayNotification tray = new TrayNotification("Thông báo",
+                    "Xóa dữ liệu thành công", NotificationType.SUCCESS);
+            tray.showAndDismiss(Duration.seconds(1));
+
         } else {
-            ShowMessage
-                    .showMessageBox(Alert.AlertType.ERROR, "Thông báo", null, "Xóa dữ liệu thất bại")
-                    .showAndWait();
+
+            TrayNotification tray = new TrayNotification("Thông báo",
+                    "Xóa dữ liệu thất bại", NotificationType.ERROR);
+            tray.showAndDismiss(Duration.seconds(1));
         }
     }
 

@@ -27,6 +27,10 @@ import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableView;
 import javafx.scene.input.MouseEvent;
 import javafx.util.Callback;
+import javafx.util.Duration;
+import tray.notification.NotificationType;
+import tray.notification.TrayNotification;
+
 /**
  * FXML Controller class
  *
@@ -39,7 +43,7 @@ public class FXML_NhasanxuatController implements Initializable {
 
     @FXML
     private JFXButton btnXoa;
-    
+
     @FXML
     private JFXTextField txt_fi_tennhasanxuat;
     @FXML
@@ -62,20 +66,22 @@ public class FXML_NhasanxuatController implements Initializable {
         StringProperty tennsx = new SimpleStringProperty(txt_fi_tennhasanxuat.getText());
         NhaSanXuat nsx = new NhaSanXuat(tennsx);
         if (nsx.isEmpty()) {
-            ShowMessage
-                    .showMessageBox(Alert.AlertType.WARNING, "Thông báo", null, "Bạn không được để tên nhà sản xuất trống")
-                    .showAndWait();
+            TrayNotification tray = new TrayNotification("Thông báo",
+                    "Bạn không được để tên nhà sản xuất trống", NotificationType.WARNING);
+            tray.showAndDismiss(Duration.seconds(1.5));
             return;
         }
         if (nsx.insert()) {
             viewListTable();
-            ShowMessage
-                    .showMessageBox(Alert.AlertType.INFORMATION, "Thông báo", null, "Thêm dữ liệu thành công")
-                    .showAndWait();
+
+            TrayNotification tray = new TrayNotification("Thông báo",
+                    "Thêm dữ liệu thành công", NotificationType.SUCCESS);
+            tray.showAndDismiss(Duration.seconds(1));
         } else {
-            ShowMessage
-                    .showMessageBox(Alert.AlertType.ERROR, "Thông báo", null, "Thêm dữ liệu thất bại")
-                    .showAndWait();
+
+            TrayNotification tray = new TrayNotification("Thông báo",
+                    "Thêm dữ liệu thất bại", NotificationType.ERROR);
+            tray.showAndDismiss(Duration.seconds(1));
         }
     }
 
@@ -92,13 +98,14 @@ public class FXML_NhasanxuatController implements Initializable {
         NhaSanXuat nsx = new NhaSanXuat(tennsx);
         if (nsx.delete()) {
             viewListTable();
-            ShowMessage
-                    .showMessageBox(Alert.AlertType.INFORMATION, "Thông báo", null, "Xóa dữ liệu thành công")
-                    .showAndWait();
+            TrayNotification tray = new TrayNotification("Thông báo",
+                    "Xóa dữ liệu thành công", NotificationType.SUCCESS);
+            tray.showAndDismiss(Duration.seconds(1));
+
         } else {
-            ShowMessage
-                    .showMessageBox(Alert.AlertType.ERROR, "Thông báo", null, "Xóa dữ liệu thất bại")
-                    .showAndWait();
+            TrayNotification tray = new TrayNotification("Thông báo",
+                    "Xóa dữ liệu thất bại", NotificationType.ERROR);
+            tray.showAndDismiss(Duration.seconds(1));
         }
     }
 

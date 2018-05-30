@@ -375,7 +375,7 @@ public class FXML_SanPhamController implements Initializable {
                 || txt_fi_tonkhotoida.getText().isEmpty() || txt_fi_thoihantonkho.getText().isEmpty()) {
             TrayNotification tray = new TrayNotification("Thông báo",
                     "Bạn phải điền đẩy đủ thông tin bắt buộc", NotificationType.WARNING);
-            tray.showAndDismiss(Duration.seconds(2));
+            tray.showAndDismiss(Duration.seconds(1.5));
             return;
         }
         IntegerProperty tonkhotoithieu = new SimpleIntegerProperty(Integer.valueOf(txt_fi_tonkhotoithieu.getText()));
@@ -384,7 +384,7 @@ public class FXML_SanPhamController implements Initializable {
 
             TrayNotification tray = new TrayNotification("Thông báo",
                     "Tồn kho tối thiểu phải nhỏ hơn tồn kho tối đa", NotificationType.WARNING);
-            tray.showAndDismiss(Duration.seconds(2));
+            tray.showAndDismiss(Duration.seconds(1.5));
             return;
         }
         sanpham.setTonkhotoithieu(tonkhotoithieu);
@@ -397,12 +397,11 @@ public class FXML_SanPhamController implements Initializable {
 
             TrayNotification tray = new TrayNotification("Thông báo",
                     "Thêm dữ liệu thành công", NotificationType.SUCCESS);
-            tray.showAndWait();
-
+            tray.showAndDismiss(Duration.seconds(1.5));
         } else {
             TrayNotification tray = new TrayNotification("Thông báo",
                     "Thêm dữ liệu thất bại", NotificationType.ERROR);
-            tray.showAndWait();
+            tray.showAndDismiss(Duration.seconds(1.5));
         }
     }
 
@@ -414,17 +413,17 @@ public class FXML_SanPhamController implements Initializable {
 
             TrayNotification tray = new TrayNotification("Thông báo",
                     "Xóa dữ liệu thành công", NotificationType.SUCCESS);
-            tray.showAndWait();
+            tray.showAndDismiss(Duration.seconds(1.5));
 
         } else if (sanpham.delete() == 2) {
 
             TrayNotification tray = new TrayNotification("Thông báo",
                     "Sản phẩm đã nhập vào kho.\n Bạn không thể xóa!", NotificationType.WARNING);
-            tray.showAndWait();
+            tray.showAndDismiss(Duration.seconds(1.5));
         } else {
             TrayNotification tray = new TrayNotification("Thông báo",
                     "Xóa dữ liệu thất bại", NotificationType.ERROR);
-            tray.showAndWait();
+            tray.showAndDismiss(Duration.seconds(1.5));
         }
     }
 
@@ -443,12 +442,11 @@ public class FXML_SanPhamController implements Initializable {
             viewListTable();
             TrayNotification tray = new TrayNotification("Thông báo",
                     "Cập nhật dữ liệu thành công", NotificationType.SUCCESS);
-            tray.showAndWait();
-
+            tray.showAndDismiss(Duration.seconds(1.5));
         } else {
             TrayNotification tray = new TrayNotification("Thông báo",
                     "Cập nhật dữ liệu thất bại", NotificationType.ERROR);
-            tray.showAndWait();
+            tray.showAndDismiss(Duration.seconds(1.5));
         }
     }
 

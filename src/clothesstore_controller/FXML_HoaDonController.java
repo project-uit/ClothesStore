@@ -40,7 +40,10 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import org.controlsfx.control.textfield.TextFields;
+import tray.notification.NotificationType;
+import tray.notification.TrayNotification;
 
 /**
  * FXML Controller class
@@ -60,7 +63,7 @@ public class FXML_HoaDonController implements Initializable {
     @FXML
     private JFXTextField txt_fi_tongtien, txt_fi_machitietsanpham, txt_fi_dongia,
             txt_fi_thanhtien, txt_fi_tenkhachhang, txt_fi_sodienthoai;
-    
+
     @FXML
     private Spinner<Integer> spin_soluong;
     @FXML
@@ -128,7 +131,7 @@ public class FXML_HoaDonController implements Initializable {
                 btnXoa_click();
             }
         });
-      
+
         context.getItems().addAll(itemXoa);
         table_view.setContextMenu(context);
     }
@@ -248,9 +251,7 @@ public class FXML_HoaDonController implements Initializable {
         btnThem.setDisable(true);
         btnXoa.setDisable(true);
         btnInHoaDon.setDisable(true);
-
         checkLaphoadon = true;
-
         txt_fi_tongtien.setText("0");
         txt_fi_machitietsanpham.setText("");
         tongtien = 0;
@@ -258,7 +259,7 @@ public class FXML_HoaDonController implements Initializable {
         if (FXML_ClothesStoreController.rootP.getChildren().size() == 2) {
             FXML_ClothesStoreController.rootP.getChildren().remove(1);
         }
-        
+
     }
 
     private void laphoadon_click() {
@@ -275,9 +276,10 @@ public class FXML_HoaDonController implements Initializable {
             mahoadon = hoadon.getMaHD();
             System.out.println("" + mahoadon.toString());
         } else {
-            ShowMessage
-                    .showMessageBox(Alert.AlertType.ERROR, "Thông báo", null, "Lập hóa đơn thất bại")
-                    .showAndWait();
+
+            TrayNotification tray = new TrayNotification("Thông báo",
+                    "Lập hóa đơn thất bại", NotificationType.ERROR);
+            tray.showAndDismiss(Duration.seconds(1));
         }
     }
 
@@ -301,14 +303,14 @@ public class FXML_HoaDonController implements Initializable {
                 FXML_ClothesStoreController.rootP.getChildren().remove(1);
             }
             tongtien = 0;
-            ShowMessage
-                    .showMessageBox(Alert.AlertType.INFORMATION, "Thông báo", null, "Hủy hóa đơn thành công")
-                    .showAndWait();
-           
+            TrayNotification tray = new TrayNotification("Thông báo",
+                    "Hủy hóa đơn thành công", NotificationType.SUCCESS);
+            tray.showAndDismiss(Duration.seconds(1));
+
         } else {
-            ShowMessage
-                    .showMessageBox(Alert.AlertType.ERROR, "Thông báo", null, "Hủy hóa đơn thất bại")
-                    .showAndWait();
+            TrayNotification tray = new TrayNotification("Thông báo",
+                    "Hủy hóa đơn thất bại", NotificationType.ERROR);
+            tray.showAndDismiss(Duration.seconds(1));
         }
     }
 
@@ -331,18 +333,15 @@ public class FXML_HoaDonController implements Initializable {
             return;
         }
         if (cthd.insert()) {
-            ShowMessage
-                    .showMessageBox(Alert.AlertType.INFORMATION, "Thông báo", null, "Thêm dữ liệu thành công")
-                    .showAndWait();
             viewListTable();
             HoaDon hd = new HoaDon();
             tongtien = hd.tongtien(mahoadon);
-
             txt_fi_tongtien.setText("" + FormatTien(tongtien));
         } else {
-            ShowMessage
-                    .showMessageBox(Alert.AlertType.ERROR, "Thông báo", null, "Thêm dữ liệu thất bại")
-                    .showAndWait();
+
+            TrayNotification tray = new TrayNotification("Thông báo",
+                    "Thêm dữ liệu thất bại", NotificationType.ERROR);
+            tray.showAndDismiss(Duration.seconds(1));
         }
     }
 
@@ -350,17 +349,14 @@ public class FXML_HoaDonController implements Initializable {
         ChiTietHoaDon cthd = new ChiTietHoaDon();
         cthd.setMachitiethoadon(new SimpleIntegerProperty(machitiethoadon));
         if (cthd.delete()) {
-            ShowMessage
-                    .showMessageBox(Alert.AlertType.INFORMATION, "Thông báo", null, "Xóa dữ liệu thành công")
-                    .showAndWait();
             viewListTable();
             HoaDon hd = new HoaDon();
             tongtien = hd.tongtien(mahoadon);
             txt_fi_tongtien.setText("" + FormatTien(tongtien));
         } else {
-            ShowMessage
-                    .showMessageBox(Alert.AlertType.ERROR, "Thông báo", null, "Xóa dữ liệu thất bại")
-                    .showAndWait();
+            TrayNotification tray = new TrayNotification("Thông báo",
+                    "Xóa dữ liệu thất bại", NotificationType.ERROR);
+            tray.showAndDismiss(Duration.seconds(1));
         }
     }
 
@@ -368,9 +364,10 @@ public class FXML_HoaDonController implements Initializable {
 
         HoaDon hd = new HoaDon(new SimpleIntegerProperty(mahoadon), new SimpleIntegerProperty(tongtien));
         if (hd.checktongtien()) {
-            ShowMessage
-                    .showMessageBox(Alert.AlertType.WARNING, "Thông báo", null, "Bạn không thể thanh toán\nkhi tổng tiền bằng 0")
-                    .showAndWait();
+
+            TrayNotification tray = new TrayNotification("Thông báo",
+                    "Bạn không thể thanh toán\nkhi tổng tiền bằng 0", NotificationType.WARNING);
+            tray.showAndDismiss(Duration.seconds(1));
             return;
         }
         if (!txt_fi_sodienthoai.getText().isEmpty()) {
@@ -404,13 +401,13 @@ public class FXML_HoaDonController implements Initializable {
             btnThanhToan.setDisable(true);
 
             update_sl_ctsp(true);
-            ShowMessage
-                    .showMessageBox(Alert.AlertType.INFORMATION, "Thông báo", null, "Thanh toán thành công")
-                    .showAndWait();
+            TrayNotification tray = new TrayNotification("Thông báo",
+                    "Thanh toán thành công", NotificationType.SUCCESS);
+            tray.showAndDismiss(Duration.seconds(1));
         } else {
-            ShowMessage
-                    .showMessageBox(Alert.AlertType.INFORMATION, "Thông báo", null, "Thanh toán thất bại")
-                    .showAndWait();
+            TrayNotification tray = new TrayNotification("Thông báo",
+                    "Thanh toán thất bại", NotificationType.ERROR);
+            tray.showAndDismiss(Duration.seconds(1));
         }
 
     }
