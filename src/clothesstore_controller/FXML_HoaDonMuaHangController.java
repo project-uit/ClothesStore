@@ -24,7 +24,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -38,12 +37,14 @@ import clothesstore_model.HoaDonMuaHang;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.property.ReadOnlyObjectWrapper;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Callback;
+import javafx.util.Duration;
+import tray.notification.NotificationType;
+import tray.notification.TrayNotification;
 
 /**
  * FXML Controller class
@@ -142,15 +143,9 @@ public class FXML_HoaDonMuaHangController implements Initializable {
         }
         int tongtien = 0;
         if (nhacc == 0 || _ngaynhap == null) {
-
-            ButtonType cancel = new ButtonType("OK", ButtonBar.ButtonData.CANCEL_CLOSE);
-            Alert alert = new Alert(Alert.AlertType.WARNING,
-                    "Vui lòng điền đầy đủ thông tin",
-                    cancel);
-
-            alert.setTitle("Nhắc nhở");
-            alert.setHeaderText(null);
-            Optional<ButtonType> result = alert.showAndWait();
+            TrayNotification tray = new TrayNotification("Thông báo",
+                    "Vui lòng điền đầy đủ thông tin", NotificationType.ERROR);
+            tray.showAndDismiss(Duration.seconds(2));
         } else {
             HoaDonMuaHang pn = new HoaDonMuaHang(nhacc, ngaynhap, tongtien);
             pn.ThemPhieuNhap();
@@ -177,7 +172,9 @@ public class FXML_HoaDonMuaHangController implements Initializable {
             HoaDonMuaHang pn = new HoaDonMuaHang();
             pn.XoaPhieuNhap(selectedForDeletion.getMahoadonmuahang());
             InitTableViewPhieuNhap();
-            System.out.println("Xoa Thanh Cong");
+            TrayNotification tray = new TrayNotification("Thông báo",
+                    "Xoá hoá đơn mua hàng thành công", NotificationType.SUCCESS);
+            tray.showAndDismiss(Duration.seconds(2));
         } else {
             System.out.println("Xoa That Bai");
         }
@@ -271,18 +268,15 @@ public class FXML_HoaDonMuaHangController implements Initializable {
         }
 
         if (nhacc == 0 || ngaynhap == null) {
-
-            ButtonType cancel = new ButtonType("OK", ButtonBar.ButtonData.CANCEL_CLOSE);
-            Alert alert = new Alert(Alert.AlertType.WARNING,
-                    "Vui lòng điền đầy đủ thông tin",
-                    cancel);
-
-            alert.setTitle("Nhắc nhở");
-            alert.setHeaderText(null);
-            Optional<ButtonType> result = alert.showAndWait();
+            TrayNotification tray = new TrayNotification("Thông báo",
+                    "Vui lòng điền đầy đủ thông tin", NotificationType.ERROR);
+            tray.showAndDismiss(Duration.seconds(2));
         } else {
             HoaDonMuaHang pn = new HoaDonMuaHang(hdmuahang.getMahoadonmuahang(), nhacc, ngaynhap);
             pn.CapNhatPhieuNhap();
+            TrayNotification tray = new TrayNotification("Thông báo",
+                    "Lưu thành công", NotificationType.SUCCESS);
+            tray.showAndDismiss(Duration.seconds(2));
             InitTableViewPhieuNhap();
             btnluuphieunhap.setDisable(true);
             btnthemphieu.setDisable(false);
