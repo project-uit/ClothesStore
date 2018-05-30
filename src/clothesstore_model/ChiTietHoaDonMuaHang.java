@@ -35,17 +35,16 @@ public class ChiTietHoaDonMuaHang {
     /* */
     private StringProperty tensanpham;
     private BooleanProperty checked;
-    private StringProperty giaban;
-    private StringProperty string_soluongsanphamnhap;
-    private StringProperty string_giavon;
+    private IntegerProperty giaban;
 
-    public ChiTietHoaDonMuaHang(int mpn, String masanpham, String tensanpham, String giaban) {
+
+    public ChiTietHoaDonMuaHang(int mpn, String masanpham, String tensanpham, int giaban) {
         this.mahoadonmuahang = new SimpleIntegerProperty(mpn);
         this.masanpham = new SimpleStringProperty(masanpham);
         this.tensanpham = new SimpleStringProperty(tensanpham);
         this.soluongsanphamnhap = new SimpleIntegerProperty(0);
         this.giavon = new SimpleIntegerProperty(0);
-        this.giaban = new SimpleStringProperty(giaban);
+        this.giaban = new SimpleIntegerProperty(giaban);
         this.thanhtien = new SimpleIntegerProperty(0);
         this.checked = new SimpleBooleanProperty(false);
     }
@@ -105,19 +104,11 @@ public class ChiTietHoaDonMuaHang {
         return tensanpham.getValue();
     }
 
-    public StringProperty getString_soluongsanphamnhap() {
-        return string_soluongsanphamnhap;
-    }
-
-    public StringProperty getString_giavon() {
-        return string_giavon;
-    }
-
-    public StringProperty getGiaban() {
+    public IntegerProperty getGiaban() {
         return giaban;
     }
 
-    public void setGiaban(StringProperty giaban) {
+    public void setGiaban(IntegerProperty giaban) {
         this.giaban = giaban;
     }
 
@@ -147,16 +138,6 @@ public class ChiTietHoaDonMuaHang {
 
     public void setTensanpham(StringProperty tensanpham) {
         this.tensanpham = tensanpham;
-    }
-
-    public void setString_soluongsanphamnhap(StringProperty string_soluongsanphamnhap) {
-        this.string_soluongsanphamnhap = string_soluongsanphamnhap;
-        this.soluongsanphamnhap = new SimpleIntegerProperty(Integer.valueOf(string_soluongsanphamnhap.get()));
-    }
-
-    public void setString_giavon(StringProperty string_giavon) {
-        this.string_giavon = string_giavon;
-        this.giavon = new SimpleIntegerProperty(Integer.valueOf(string_giavon.get()));
     }
 
     public boolean isChecked() {
@@ -283,7 +264,7 @@ public class ChiTietHoaDonMuaHang {
                     ChiTietHoaDonMuaHang ctpn = new ChiTietHoaDonMuaHang(mpn,
                             rs.getString("masanpham"),
                             rs.getString("tensanpham"),
-                            String.valueOf(rs.getInt("giaban")));
+                            rs.getInt("giaban"));
                     list.add(ctpn);
                 }
             } catch (SQLException ex) {
@@ -305,7 +286,7 @@ public class ChiTietHoaDonMuaHang {
                     ChiTietHoaDonMuaHang ctpn = new ChiTietHoaDonMuaHang(mpn,
                             rs.getString("masanpham"),
                             rs.getString("tensanpham"),
-                            String.valueOf(rs.getInt("giaban")));
+                            rs.getInt("giaban"));
                     list.add(ctpn);
                 }
             } catch (SQLException ex) {

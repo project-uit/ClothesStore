@@ -50,6 +50,26 @@ public class ChiTietDoiTra {
         return list;
     }
 
+    public int getMAXctsp(int MaHD, String MaCTSP) {
+        int max=0;
+        DBConnection db = new DBConnection();
+        Connection con = db.getConnecttion();
+        String sql = "SELECT soluongmua FROM chitiethoadon "
+                + "WHERE mahoadon = " + MaHD + " and machitietsanpham = '"+MaCTSP+"'";
+        if (con != null) {
+            try {
+                PreparedStatement ptm = con.prepareStatement(sql);
+                ResultSet rs = ptm.executeQuery();
+                while (rs.next()) {
+                    max = rs.getInt("soluongmua");
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return max;
+    }
+
     public boolean updateHDkhiDoiTra1(int mahd, String mactsp, int sl, int tt) {
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
@@ -86,6 +106,28 @@ public class ChiTietDoiTra {
                 ptm.setInt(2, tt);
                 ptm.setString(3, mactsp);
                 ptm.setInt(4, mahd);
+
+                ptm.execute();
+
+                ptm.close();
+                con.close();
+
+                return true;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return false;
+    }
+
+    public boolean updateHDkhiDoiTra_removeSL0(int mahd) {
+        DBConnection db = new DBConnection();
+        Connection con = db.getConnecttion();
+        String sql = "DELETE chitiethoadon where soluongmua = 0 and mahoadon = ?;";
+        if (con != null) {
+            try {
+                PreparedStatement ptm = con.prepareStatement(sql);
+                ptm.setInt(1, mahd);
 
                 ptm.execute();
 

@@ -98,6 +98,10 @@ public class FXML_DoiTraController implements Initializable {
 
     private Date selectedDateFrom, selectedDateTo, selectedDate;
 
+    private String FormatTien(int soTien) {
+        return String.format("%,8d%n", soTien).trim();
+    }
+
     private void initTextFieldSearch() {
         List<HoaDon> listHD = new HoaDon().getListHoaDon();
         List<Integer> arr_maHD = new ArrayList();
@@ -179,7 +183,7 @@ public class FXML_DoiTraController implements Initializable {
         clTongTien.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<HoaDon, Integer>, ObservableValue<Integer>>() {
             @Override
             public ObservableValue<Integer> call(TableColumn.CellDataFeatures<HoaDon, Integer> p) {
-                return new ReadOnlyObjectWrapper(p.getValue().getTongtien().get());
+                return new ReadOnlyObjectWrapper(FormatTien(p.getValue().getTongtien().get()));
             }
         });
 
@@ -219,7 +223,7 @@ public class FXML_DoiTraController implements Initializable {
         clGiaBan.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ChiTietDoiTra, Integer>, ObservableValue<Integer>>() {
             @Override
             public ObservableValue<Integer> call(TableColumn.CellDataFeatures<ChiTietDoiTra, Integer> p) {
-                return new ReadOnlyObjectWrapper(p.getValue().getGiaban().get());
+                return new ReadOnlyObjectWrapper(FormatTien(p.getValue().getGiaban().get()));
             }
         });
         clSoLuong.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ChiTietDoiTra, Integer>, ObservableValue<Integer>>() {
@@ -231,7 +235,7 @@ public class FXML_DoiTraController implements Initializable {
         clThanhTien.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ChiTietDoiTra, Integer>, ObservableValue<Integer>>() {
             @Override
             public ObservableValue<Integer> call(TableColumn.CellDataFeatures<ChiTietDoiTra, Integer> p) {
-                return new ReadOnlyObjectWrapper(p.getValue().getThanhtien().get());
+                return new ReadOnlyObjectWrapper(FormatTien(p.getValue().getThanhtien().get()));
             }
         });
         ChiTietDoiTra cthd = new ChiTietDoiTra();
@@ -323,7 +327,7 @@ public class FXML_DoiTraController implements Initializable {
         clGiaBan1.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ChiTietDoiTra, Integer>, ObservableValue<Integer>>() {
             @Override
             public ObservableValue<Integer> call(TableColumn.CellDataFeatures<ChiTietDoiTra, Integer> p) {
-                return new ReadOnlyObjectWrapper(p.getValue().getGiaban().get());
+                return new ReadOnlyObjectWrapper(FormatTien(p.getValue().getGiaban().get()));
             }
         });
         clSoLuong1.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ChiTietDoiTra, Integer>, ObservableValue<Integer>>() {
@@ -336,7 +340,7 @@ public class FXML_DoiTraController implements Initializable {
         clThanhTien1.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ChiTietDoiTra, Integer>, ObservableValue<Integer>>() {
             @Override
             public ObservableValue<Integer> call(TableColumn.CellDataFeatures<ChiTietDoiTra, Integer> p) {
-                return new ReadOnlyObjectWrapper(p.getValue().getSoluongmua().get() * p.getValue().getGiaban().get());
+                return new ReadOnlyObjectWrapper(FormatTien(p.getValue().getSoluongmua().get() * p.getValue().getGiaban().get()));
             }
         });
     }
@@ -357,7 +361,7 @@ public class FXML_DoiTraController implements Initializable {
         clGiaBan2.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ChiTietHoaDonDoiTra, Integer>, ObservableValue<Integer>>() {
             @Override
             public ObservableValue<Integer> call(TableColumn.CellDataFeatures<ChiTietHoaDonDoiTra, Integer> p) {
-                return new ReadOnlyObjectWrapper(p.getValue().getGiaban().get());
+                return new ReadOnlyObjectWrapper(FormatTien(p.getValue().getGiaban().get()));
             }
         });
         clSoLuong2.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ChiTietHoaDonDoiTra, Integer>, ObservableValue<Integer>>() {
@@ -369,7 +373,7 @@ public class FXML_DoiTraController implements Initializable {
         clThanhTien2.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ChiTietHoaDonDoiTra, Integer>, ObservableValue<Integer>>() {
             @Override
             public ObservableValue<Integer> call(TableColumn.CellDataFeatures<ChiTietHoaDonDoiTra, Integer> p) {
-                return new ReadOnlyObjectWrapper(p.getValue().getSoluongmua().get() * p.getValue().getGiaban().get());
+                return new ReadOnlyObjectWrapper(FormatTien(p.getValue().getSoluongmua().get() * p.getValue().getGiaban().get()));
             }
         });
     }

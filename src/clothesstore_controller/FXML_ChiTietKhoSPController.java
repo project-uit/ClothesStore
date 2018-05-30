@@ -68,7 +68,7 @@ public class FXML_ChiTietKhoSPController implements Initializable {
         lbTenSP.setText(TenSP);
         lbSoLuongYC.setText("Số lượng yêu cầu: " + SLSP);
     }
-
+    
     private void InitTableCTSP() {
         ChiTietSanPham ctsp = new ChiTietSanPham();
         List<ChiTietSanPham> listCTSP = new ArrayList();

@@ -6,6 +6,7 @@
 package clothesstore_controller;
 
 import clothesstore_model.ChiTietHoaDonMuaHang;
+import clothesstore_model.HoaDon;
 import clothesstore_model.NhapKho;
 import clothesstore_model.HoaDonMuaHang;
 import com.jfoenix.controls.JFXCheckBox;
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -39,6 +41,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
+import javafx.util.Callback;
 
 /**
  * FXML Controller class
@@ -80,6 +83,10 @@ public class FXML_NhapKhoController implements Initializable {
         tableviewchitietphieunhap.setPlaceholder(new Label("Chọn vào phiếu nhập ở bảng trên để nhập kho"));
     }
 
+    private String FormatTien(int soTien) {
+        return String.format("%,8d%n", soTien).trim();
+    }
+
     private void InitCMB() {
         checkboxFilter.selectedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
@@ -111,7 +118,13 @@ public class FXML_NhapKhoController implements Initializable {
         clmaphieunhap.setCellValueFactory(new PropertyValueFactory("mahoadonmuahang"));
         clngaynhap.setCellValueFactory(new PropertyValueFactory("ngaynhap"));
         clnhacungcap.setCellValueFactory(new PropertyValueFactory("tencungcap"));
-        cltongtien.setCellValueFactory(new PropertyValueFactory("tongtien"));
+        //cltongtien.setCellValueFactory(new PropertyValueFactory("tongtien"));
+        cltongtien.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<HoaDonMuaHang, Integer>, ObservableValue<Integer>>() {
+            @Override
+            public ObservableValue<Integer> call(TableColumn.CellDataFeatures<HoaDonMuaHang, Integer> p) {
+                return new ReadOnlyObjectWrapper(FormatTien(p.getValue().getTongtien()));
+            }
+        });
         tableviewphieunhap.setPlaceholder(new Label("Tất cả các phiếu nhập đã được nhập "));
         tableviewphieunhap.setItems(list);
 
@@ -126,14 +139,6 @@ public class FXML_NhapKhoController implements Initializable {
             });
             return row;
         });
-//        tableviewphieunhap.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
-//            @Override
-//            public void changed(ObservableValue observableValue, Object oldValue, Object newValue) {
-//                if (tableviewphieunhap.getSelectionModel().getSelectedItem() == null) {
-//                    tableviewchitietphieunhap.getItems().clear();
-//                }
-//            }
-//        });
     }
 
     private void InitTableViewChiTietPhieuNhap(int maphieunhap) {

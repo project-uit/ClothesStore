@@ -59,6 +59,7 @@ import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.util.Callback;
+import org.controlsfx.control.Notifications;
 import org.controlsfx.control.textfield.TextFields;
 
 /**
@@ -99,6 +100,10 @@ public class FXML_ChiTietDoiTraController implements Initializable {
         doitra = dt;
     }
 
+    private String FormatTien(int soTien) {
+        return String.format("%,8d%n", soTien).trim();
+    }
+
     public void initTextSearch() {
         List<String> listCTSP = new ChiTietSanPham().getListMactsp();
         TextFields.bindAutoCompletion(txtSearch, listCTSP);
@@ -135,7 +140,7 @@ public class FXML_ChiTietDoiTraController implements Initializable {
         clGiaBan.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ChiTietDoiTra, Integer>, ObservableValue<Integer>>() {
             @Override
             public ObservableValue<Integer> call(TableColumn.CellDataFeatures<ChiTietDoiTra, Integer> p) {
-                return new ReadOnlyObjectWrapper(p.getValue().getGiaban().get());
+                return new ReadOnlyObjectWrapper(FormatTien(p.getValue().getGiaban().get()));
             }
         });
         clSoLuong.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ChiTietDoiTra, Integer>, ObservableValue<Integer>>() {
@@ -148,29 +153,40 @@ public class FXML_ChiTietDoiTraController implements Initializable {
             TableRow<ChiTietDoiTra> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
                 if (event.getClickCount() == 2 && (!row.isEmpty())) {
+                    int max = new ChiTietDoiTra().getMAXctsp(mahd, row.getItem().getMachitietsanpham().get());
                     TextInputDialog dialog = new TextInputDialog("0");
-
                     dialog.setTitle(null);
-                    dialog.setHeaderText(null);
+                    dialog.setHeaderText("Nhập tối đa " + max + " sản phẩm");
                     dialog.setContentText("Số lượng: ");
-
                     Optional<String> result = dialog.showAndWait();
 
                     result.ifPresent(name -> {
                         try {
                             int sl = Integer.valueOf(name);
+
+                            if (sl > max) {
+                                sl = 0;
+                                Notifications.create()
+                                        .title("Thông báo")
+                                        .text("Số lượng nhập không phù hợp")
+                                        .showError();
+
+                            }
                             row.getItem().setSoluongmua(new SimpleIntegerProperty(sl));
                             row.getItem().setThanhtien(new SimpleIntegerProperty(sl * row.getItem().getGiaban().get()));
-
                             total1 = 0;
                             for (ChiTietDoiTra item : tblHangDoiTra.getItems()) {
                                 total1 += item.getThanhtien().get();
                             }
-                            lb1.setText("Tổng tiền hàng đổi trả:    " + total1);
-                            lb3.setText("Thành tiền : " + (total2 - total1));
+                            lb1.setText("Tổng tiền hàng đổi trả:    " + FormatTien(total1));
+                            lb3.setText("Thành tiền : " + FormatTien((total2 - total1)));
                         } catch (NumberFormatException ex) {
                             row.getItem().setSoluongmua(new SimpleIntegerProperty(0));
                             row.getItem().setThanhtien(new SimpleIntegerProperty(0));
+                            Notifications.create()
+                                    .title("Thông báo")
+                                    .text("Số lượng nhập không phù hợp")
+                                    .showError();
                         }
                         tblHangDoiTra.refresh();
                     });
@@ -181,7 +197,7 @@ public class FXML_ChiTietDoiTraController implements Initializable {
         clThanhTien.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ChiTietDoiTra, Integer>, ObservableValue<Integer>>() {
             @Override
             public ObservableValue<Integer> call(TableColumn.CellDataFeatures<ChiTietDoiTra, Integer> p) {
-                return new ReadOnlyObjectWrapper(p.getValue().getThanhtien().get());
+                return new ReadOnlyObjectWrapper(FormatTien(p.getValue().getThanhtien().get()));
             }
         });
         ChiTietDoiTra cthd = new ChiTietDoiTra();
@@ -211,7 +227,7 @@ public class FXML_ChiTietDoiTraController implements Initializable {
         _clGiaBan.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ChiTietHoaDonDoiTra, Integer>, ObservableValue<Integer>>() {
             @Override
             public ObservableValue<Integer> call(TableColumn.CellDataFeatures<ChiTietHoaDonDoiTra, Integer> p) {
-                return new ReadOnlyObjectWrapper(p.getValue().getGiaban().get());
+                return new ReadOnlyObjectWrapper(FormatTien(p.getValue().getGiaban().get()));
             }
         });
         _clSoLuong.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ChiTietHoaDonDoiTra, Integer>, ObservableValue<Integer>>() {
@@ -225,7 +241,6 @@ public class FXML_ChiTietDoiTraController implements Initializable {
             row.setOnMouseClicked(event -> {
                 if (event.getClickCount() == 2 && (!row.isEmpty())) {
                     TextInputDialog dialog = new TextInputDialog("0");
-
                     dialog.setTitle(null);
                     dialog.setHeaderText(null);
                     dialog.setContentText("Số lượng: ");
@@ -243,8 +258,8 @@ public class FXML_ChiTietDoiTraController implements Initializable {
                             for (ChiTietHoaDonDoiTra item : tblHangThayThe.getItems()) {
                                 total2 += item.getThanhtien().get();
                             }
-                            lb2.setText("Tổng tiền hàng thay thế:   " + total2);
-                            lb3.setText("Thành tiền:                " + (total2 - total1));
+                            lb2.setText("Tổng tiền hàng thay thế:   " + FormatTien(total2));
+                            lb3.setText("Thành tiền:                " + FormatTien((total2 - total1)));
                         } catch (NumberFormatException ex) {
                             row.getItem().setSoluongmua(new SimpleIntegerProperty(0));
                             row.getItem().setThanhtien(new SimpleIntegerProperty(0));
@@ -258,7 +273,7 @@ public class FXML_ChiTietDoiTraController implements Initializable {
         _clThanhTien.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ChiTietHoaDonDoiTra, Integer>, ObservableValue<Integer>>() {
             @Override
             public ObservableValue<Integer> call(TableColumn.CellDataFeatures<ChiTietHoaDonDoiTra, Integer> p) {
-                return new ReadOnlyObjectWrapper(p.getValue().getThanhtien().get());
+                return new ReadOnlyObjectWrapper(FormatTien(p.getValue().getThanhtien().get()));
             }
         });
     }
@@ -291,7 +306,6 @@ public class FXML_ChiTietDoiTraController implements Initializable {
                 for (ChiTietDoiTra item : tblHangDoiTra.getItems()) {
                     if (item.getSoluongmua().get() != 0) {
                         item.ThemChiTietDoiTra(doitra.getLastId());
-                        //item.updateSoLuong(item.getMachitietsanpham().get(), item.getSoluongmua().get());
                         item.updateHDkhiDoiTra1(mahd, item.getMachitietsanpham().get(),
                                 item.getSoluongmua().get(), item.getThanhtien().get());
                     }
@@ -323,6 +337,7 @@ public class FXML_ChiTietDoiTraController implements Initializable {
                                     - item.getSoluongmua().get();
                             new ChiTietSanPham()
                                     .updateSoLuongFromMaCTSP(item.getMachitietsanpham().get(), sl);
+                            new ChiTietDoiTra().updateHDkhiDoiTra_removeSL0(mahd);
                         }
                     }
                 }
