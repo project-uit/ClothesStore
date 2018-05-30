@@ -19,25 +19,24 @@ import static clothesstore_controller.FXML_HoaDonMuaHangController.rootCTPN;
 import clothesstore_model.ChiTietHoaDonMuaHang;
 import com.jfoenix.controls.JFXTextField;
 import java.io.IOException;
-import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonBar;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Callback;
+import javafx.util.Duration;
 import org.controlsfx.control.Notifications;
+import tray.notification.NotificationType;
+import tray.notification.TrayNotification;
 
 /**
  * FXML Controller class
@@ -192,10 +191,9 @@ public class FXML_ChiTietPhieuNhapController implements Initializable {
                                 ((ChiTietHoaDonMuaHang) t.getTableView().getItems().get(
                                         t.getTablePosition().getRow())).setThanhtien(
                                         new SimpleIntegerProperty(0));
-                                //row.setStyle("-fx-background-color: red");
-                                ShowMessage
-                                        .showMessageBox(Alert.AlertType.ERROR, "Thông báo", null, "Giá vốn chỉ được nhập số")
-                                        .showAndWait();
+                                TrayNotification tray = new TrayNotification("Thông báo",
+                                        "Giá vốn không phù hợp", NotificationType.ERROR);
+                                tray.showAndDismiss(Duration.seconds(2));
                                 tblCTPN.refresh();
                             }
                         }
@@ -228,9 +226,9 @@ public class FXML_ChiTietPhieuNhapController implements Initializable {
                                         t.getTablePosition().getRow())).setThanhtien(
                                         new SimpleIntegerProperty(0));
                                 //row.setStyle("-fx-background-color: red");
-                                ShowMessage
-                                        .showMessageBox(Alert.AlertType.ERROR, "Thông báo", null, "Số lượng chỉ được nhập số")
-                                        .showAndWait();
+                                TrayNotification tray = new TrayNotification("Thông báo",
+                                        "Số lượng không phù hợp", NotificationType.ERROR);
+                                tray.showAndDismiss(Duration.seconds(2));
                                 tblCTPN.refresh();
                             }
                         }
@@ -243,12 +241,16 @@ public class FXML_ChiTietPhieuNhapController implements Initializable {
                                 ((ChiTietHoaDonMuaHang) t.getTableView().getItems().get(
                                         t.getTablePosition().getRow())).setGiaban(
                                         new SimpleIntegerProperty(Integer.valueOf(t.getNewValue().trim())));
-                                row.getItem().getGiaban().get();
                             } catch (NumberFormatException ex) {
-                                //row.setStyle("-fx-background-color: red");                                
-                                ShowMessage
-                                        .showMessageBox(Alert.AlertType.ERROR, "Thông báo", null, "Giá bán chỉ được nhập số")
-                                        .showAndWait();
+                                String msp = ((ChiTietHoaDonMuaHang) t.getTableView().getItems().get(
+                                        t.getTablePosition().getRow())).getMasanpham();
+                                ((ChiTietHoaDonMuaHang) t.getTableView().getItems().get(
+                                        t.getTablePosition().getRow())).setGiaban(
+                                        new SimpleIntegerProperty(new ChiTietHoaDonMuaHang().getGiaBanSP(msp)));
+                                TrayNotification tray = new TrayNotification("Thông báo",
+                                        "Giá bán không phù hợp", NotificationType.ERROR);
+                                tray.showAndDismiss(Duration.seconds(2));
+                                tblCTPN.refresh();
                             }
                         }
                     });
@@ -267,9 +269,9 @@ public class FXML_ChiTietPhieuNhapController implements Initializable {
 
             if (o.getThanhtien() <= 0) {
                 tblCTPN.getSelectionModel().select(o);
-                ShowMessage
-                        .showMessageBox(Alert.AlertType.ERROR, "Thông báo", null, "Số lượng, Giá vốn chỉ được nhập số (Số dương > 0)")
-                        .showAndWait();
+                TrayNotification tray = new TrayNotification("Thông báo",
+                        "Số lượng (Giá vốn) không phù hợp", NotificationType.ERROR);
+                tray.showAndDismiss(Duration.seconds(2));
                 flag = false;
                 break;
             }
@@ -278,17 +280,17 @@ public class FXML_ChiTietPhieuNhapController implements Initializable {
                 if (gb <= 0) {
                     flag = false;
                     tblCTPN.getSelectionModel().select(o);
-                    ShowMessage
-                            .showMessageBox(Alert.AlertType.ERROR, "Thông báo", null, "Giá bán chỉ được nhập số (Số dương > 0)")
-                            .showAndWait();
+                    TrayNotification tray = new TrayNotification("Thông báo",
+                            "Giá bán không phù hợp", NotificationType.ERROR);
+                    tray.showAndDismiss(Duration.seconds(2));
                     flag = false;
                     break;
                 }
             } catch (NumberFormatException ex) {
                 tblCTPN.getSelectionModel().select(o);
-                ShowMessage
-                        .showMessageBox(Alert.AlertType.ERROR, "Thông báo", null, "Giá bán chỉ được nhập số (Số dương > 0)")
-                        .showAndWait();
+                TrayNotification tray = new TrayNotification("Thông báo",
+                        "Giá bán không phù hợp", NotificationType.ERROR);
+                tray.showAndDismiss(Duration.seconds(2));
                 flag = false;
                 break;
             }
@@ -312,10 +314,9 @@ public class FXML_ChiTietPhieuNhapController implements Initializable {
             }
             ChiTietHoaDonMuaHang ctpn = new ChiTietHoaDonMuaHang();
             ctpn.CapNhatTongTienPhieuNhap(mapn);
-            Notifications.create()
-                    .title("Thông báo")
-                    .text("Lưu hoá đơn thành công")
-                    .showConfirm();
+            TrayNotification tray = new TrayNotification("Thông báo",
+                    "Thêm hoá đơn thành công", NotificationType.SUCCESS);
+            tray.showAndDismiss(Duration.seconds(2));
         }
     }
 

@@ -6,7 +6,6 @@
 package clothesstore_controller;
 
 import clothesstore_model.ChiTietHoaDonMuaHang;
-import clothesstore_model.HoaDon;
 import clothesstore_model.NhapKho;
 import clothesstore_model.HoaDonMuaHang;
 import com.jfoenix.controls.JFXCheckBox;
@@ -31,7 +30,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
@@ -42,6 +40,9 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 import javafx.util.Callback;
+import javafx.util.Duration;
+import tray.notification.NotificationType;
+import tray.notification.TrayNotification;
 
 /**
  * FXML Controller class
@@ -165,9 +166,9 @@ public class FXML_NhapKhoController implements Initializable {
                         SLSP = rowData.getSoluongsanphamnhap();
                         DisplayChitiet();
                     } else {
-                        ShowMessage
-                                .showMessageBox(Alert.AlertType.WARNING, "Thông báo", null, "Sản phẩm này đã được nhập kho trước đó")
-                                .showAndWait();
+                        TrayNotification tray = new TrayNotification("Thông báo",
+                                "Sản phẩm này đã được nhập kho trước đó", NotificationType.ERROR);
+                        tray.showAndDismiss(Duration.seconds(2));
                     }
                 }
             });

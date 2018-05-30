@@ -39,6 +39,9 @@ import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.util.Callback;
+import javafx.util.Duration;
+import tray.notification.NotificationType;
+import tray.notification.TrayNotification;
 
 /**
  * FXML Controller class
@@ -68,7 +71,7 @@ public class FXML_ChiTietKhoSPController implements Initializable {
         lbTenSP.setText(TenSP);
         lbSoLuongYC.setText("Số lượng yêu cầu: " + SLSP);
     }
-    
+
     private void InitTableCTSP() {
         ChiTietSanPham ctsp = new ChiTietSanPham();
         List<ChiTietSanPham> listCTSP = new ArrayList();
@@ -147,9 +150,9 @@ public class FXML_ChiTietKhoSPController implements Initializable {
                                 row.setStyle("-fx-background-color: green");
                             } catch (NumberFormatException ex) {
                                 row.setStyle("-fx-background-color: red");
-                                ShowMessage
-                                        .showMessageBox(Alert.AlertType.ERROR, "Thông báo", null, "Số lượng chỉ được nhập số")
-                                        .showAndWait();
+                                TrayNotification tray = new TrayNotification("Thông báo",
+                                        "Số lượng nhập không phù hợp", NotificationType.ERROR);
+                                tray.showAndDismiss(Duration.seconds(2));
                                 btnLuu.setDisable(true);
                                 flag = false;
                             }
@@ -198,16 +201,16 @@ public class FXML_ChiTietKhoSPController implements Initializable {
                 int soluongmoi = soluongcu + soluongnhap;
                 ctsp.updateSoLuongFromMaCTSP(MaCTSP, soluongmoi);
                 new ChiTietNhapKho(nk.getMaNhapKhoFromMaPN(MAPN),
-                        MaCTSP,soluongnhap).ThemChiTietNhapKho();
+                        MaCTSP, soluongnhap).ThemChiTietNhapKho();
             }
             btnLuu.setDisable(true);
-            ShowMessage
-                    .showMessageBox(Alert.AlertType.INFORMATION, "Thông báo", null, "Thêm dữ liệu thành công")
-                    .showAndWait();
+            TrayNotification tray = new TrayNotification("Thông báo",
+                    "Thêm dữ liệu thành công", NotificationType.SUCCESS);
+            tray.showAndDismiss(Duration.seconds(2));
         } else {
-            ShowMessage
-                    .showMessageBox(Alert.AlertType.ERROR, "Thông báo", null, "Thêm dữ liệu thất bại")
-                    .showAndWait();
+            TrayNotification tray = new TrayNotification("Thông báo",
+                    "Thêm dữ liệu that bai", NotificationType.ERROR);
+            tray.showAndDismiss(Duration.seconds(2));
         }
     }
 

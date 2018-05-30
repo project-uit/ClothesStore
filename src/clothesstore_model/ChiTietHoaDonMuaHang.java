@@ -31,12 +31,11 @@ public class ChiTietHoaDonMuaHang {
     private IntegerProperty soluongsanphamnhap;
     private IntegerProperty giavon;
     private IntegerProperty thanhtien;
-    
+
     /* */
     private StringProperty tensanpham;
     private BooleanProperty checked;
     private IntegerProperty giaban;
-
 
     public ChiTietHoaDonMuaHang(int mpn, String masanpham, String tensanpham, int giaban) {
         this.mahoadonmuahang = new SimpleIntegerProperty(mpn);
@@ -334,6 +333,23 @@ public class ChiTietHoaDonMuaHang {
             }
         }
         return true;
+    }
+
+    public int getGiaBanSP(String msp) {
+        int gb = 0;
+        DBConnection db = new DBConnection();
+        Connection con = db.getConnecttion();
+        if (con != null) {
+            try {
+                Statement stmnt = con.createStatement();
+                ResultSet rs = stmnt.executeQuery("select giaban from sanpham where masanpham = '" + msp + "'");
+                while (rs.next()) {
+                    gb = rs.getInt("giaban");
+                }
+            } catch (SQLException ex) {
+            }
+        }
+        return gb;
     }
 
 }

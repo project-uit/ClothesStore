@@ -47,9 +47,6 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonBar;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
@@ -59,8 +56,10 @@ import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.util.Callback;
-import org.controlsfx.control.Notifications;
+import javafx.util.Duration;
 import org.controlsfx.control.textfield.TextFields;
+import tray.notification.NotificationType;
+import tray.notification.TrayNotification;
 
 /**
  * FXML Controller class
@@ -166,11 +165,9 @@ public class FXML_ChiTietDoiTraController implements Initializable {
 
                             if (sl > max) {
                                 sl = 0;
-                                Notifications.create()
-                                        .title("Thông báo")
-                                        .text("Số lượng nhập không phù hợp")
-                                        .showError();
-
+                                TrayNotification tray = new TrayNotification("Thông báo",
+                                        "Số lượng nhập không phù hợp", NotificationType.ERROR);
+                                tray.showAndDismiss(Duration.seconds(2));
                             }
                             row.getItem().setSoluongmua(new SimpleIntegerProperty(sl));
                             row.getItem().setThanhtien(new SimpleIntegerProperty(sl * row.getItem().getGiaban().get()));
@@ -183,10 +180,9 @@ public class FXML_ChiTietDoiTraController implements Initializable {
                         } catch (NumberFormatException ex) {
                             row.getItem().setSoluongmua(new SimpleIntegerProperty(0));
                             row.getItem().setThanhtien(new SimpleIntegerProperty(0));
-                            Notifications.create()
-                                    .title("Thông báo")
-                                    .text("Số lượng nhập không phù hợp")
-                                    .showError();
+                            TrayNotification tray = new TrayNotification("Thông báo",
+                                    "Số lượng nhập không phù hợp", NotificationType.ERROR);
+                            tray.showAndDismiss(Duration.seconds(2));
                         }
                         tblHangDoiTra.refresh();
                     });
@@ -240,9 +236,10 @@ public class FXML_ChiTietDoiTraController implements Initializable {
             TableRow<ChiTietHoaDonDoiTra> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
                 if (event.getClickCount() == 2 && (!row.isEmpty())) {
+                    int max = new ChiTietSanPham().getSoLuongFromMaCTSP(row.getItem().getMachitietsanpham().get());
                     TextInputDialog dialog = new TextInputDialog("0");
                     dialog.setTitle(null);
-                    dialog.setHeaderText(null);
+                    dialog.setHeaderText("Nhập tối đa " + max + " sản phẩm");
                     dialog.setContentText("Số lượng: ");
 
                     Optional<String> result = dialog.showAndWait();
@@ -250,6 +247,13 @@ public class FXML_ChiTietDoiTraController implements Initializable {
                     result.ifPresent(name -> {
                         try {
                             int sl = Integer.valueOf(name);
+
+                            if (sl > max) {
+                                sl = 0;
+                                TrayNotification tray = new TrayNotification("Thông báo",
+                                        "Số lượng nhập không phù hợp", NotificationType.ERROR);
+                                tray.showAndDismiss(Duration.seconds(2));
+                            }
 
                             row.getItem().setSoluongmua(new SimpleIntegerProperty(sl));
                             row.getItem().setThanhtien(new SimpleIntegerProperty(sl * row.getItem().getGiaban().get()));
@@ -263,6 +267,9 @@ public class FXML_ChiTietDoiTraController implements Initializable {
                         } catch (NumberFormatException ex) {
                             row.getItem().setSoluongmua(new SimpleIntegerProperty(0));
                             row.getItem().setThanhtien(new SimpleIntegerProperty(0));
+                            TrayNotification tray = new TrayNotification("Thông báo",
+                                    "Số lượng nhập không phù hợp", NotificationType.ERROR);
+                            tray.showAndDismiss(Duration.seconds(2));
                         }
                         tblHangThayThe.refresh();
                     });
@@ -276,6 +283,7 @@ public class FXML_ChiTietDoiTraController implements Initializable {
                 return new ReadOnlyObjectWrapper(FormatTien(p.getValue().getThanhtien().get()));
             }
         });
+        tblHangThayThe.setPlaceholder(new Label("Thêm sản phẩm thay thế"));
     }
 
     @FXML
@@ -290,63 +298,70 @@ public class FXML_ChiTietDoiTraController implements Initializable {
 
     @FXML
     private void Handler_btnLuu() {
-        ButtonType yes = new ButtonType("Lưu", ButtonBar.ButtonData.OK_DONE);
-        ButtonType cancel = new ButtonType("Huỷ", ButtonBar.ButtonData.CANCEL_CLOSE);
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
-                "Bạn có chắc chắn muốn lưu",
-                yes,
-                cancel);
-
-        alert.setTitle("Nhắc nhở");
-        alert.setHeaderText(null);
-        Optional<ButtonType> result = alert.showAndWait();
-
-        if (result.isPresent() && result.get() == yes) {
-            if (doitra.ThemDoiTra()) {
-                for (ChiTietDoiTra item : tblHangDoiTra.getItems()) {
-                    if (item.getSoluongmua().get() != 0) {
-                        item.ThemChiTietDoiTra(doitra.getLastId());
-                        item.updateHDkhiDoiTra1(mahd, item.getMachitietsanpham().get(),
-                                item.getSoluongmua().get(), item.getThanhtien().get());
-                    }
-                }
-            } else {
-                System.out.println("Thêm Đổi Trả thất bại");
-            }
-
-            int thanhtien = 0;
-            thanhtien = tblHangThayThe.getItems().stream().map((item) -> item.getThanhtien().get()).reduce(thanhtien, Integer::sum);
-
-            if (new HoaDonDoiTra().ThemHoaDonDoiTra(doitra.getLastId(), thanhtien)) {
-                List<String> listctsp = new ArrayList();
-                listctsp = new ChiTietDoiTra().getListMaCTSPfromHD(mahd);
-                for (ChiTietHoaDonDoiTra item : tblHangThayThe.getItems()) {
-                    if (item.getSoluongmua().get() != 0) {
-                        item.ThemChiTietHoaDonDoiTra(new HoaDonDoiTra().getLastId());
-
-                        if (listctsp.contains(item.getMachitietsanpham().get())) {
-                            new ChiTietDoiTra().updateHDkhiDoiTra2(mahd, item.getMachitietsanpham().get(),
-                                    item.getSoluongmua().get(),
-                                    item.getThanhtien().get());
-                        } else {
-                            new ChiTietHoaDon(new SimpleIntegerProperty(mahd),
-                                    item.getMachitietsanpham(),
-                                    item.getSoluongmua(),
-                                    item.getThanhtien()).insert();
-                            int sl = (new ChiTietSanPham().getSoLuongFromMaCTSP(item.getMachitietsanpham().get()))
-                                    - item.getSoluongmua().get();
-                            new ChiTietSanPham()
-                                    .updateSoLuongFromMaCTSP(item.getMachitietsanpham().get(), sl);
-                            new ChiTietDoiTra().updateHDkhiDoiTra_removeSL0(mahd);
-                        }
-                    }
-                }
-            } else {
-                System.out.println("Thêm Hóa Đơn Đổi Trả thất bại");
-            }
-
-            btnLuu.setDisable(true);
+        int sum1 = 0, sum2 = 0;
+        sum1 = tblHangDoiTra.getItems().stream().map((item) -> item.getSoluongmua().get()).reduce(sum1, Integer::sum);
+        if (sum1 == 0) {
+            TrayNotification tray = new TrayNotification("Thông báo",
+                    "Vui lòng nhập đầy đủ thông tin", NotificationType.ERROR);
+            tray.showAndDismiss(Duration.seconds(2));
+            return;
         }
+
+        sum2 = tblHangThayThe.getItems().stream().map((item) -> item.getSoluongmua().get()).reduce(sum2, Integer::sum);
+        if (sum2 == 0) {
+            TrayNotification tray = new TrayNotification("Thông báo",
+                    "Vui lòng nhập đầy đủ thông tin", NotificationType.ERROR);
+            tray.showAndDismiss(Duration.seconds(2));
+            return;
+        }
+
+        if (doitra.ThemDoiTra()) {
+            for (ChiTietDoiTra item : tblHangDoiTra.getItems()) {
+                if (item.getSoluongmua().get() != 0) {
+                    item.ThemChiTietDoiTra(doitra.getLastId());
+                    item.updateHDkhiDoiTra1(mahd, item.getMachitietsanpham().get(),
+                            item.getSoluongmua().get(), item.getThanhtien().get());
+                }
+            }
+        } else {
+            System.out.println("Thêm Đổi Trả thất bại");
+        }
+
+        int thanhtien = 0;
+        thanhtien = tblHangThayThe.getItems().stream().map((item) -> item.getThanhtien().get()).reduce(thanhtien, Integer::sum);
+
+        if (new HoaDonDoiTra().ThemHoaDonDoiTra(doitra.getLastId(), thanhtien)) {
+            List<String> listctsp = new ArrayList();
+            listctsp = new ChiTietDoiTra().getListMaCTSPfromHD(mahd);
+            for (ChiTietHoaDonDoiTra item : tblHangThayThe.getItems()) {
+                if (item.getSoluongmua().get() != 0) {
+                    item.ThemChiTietHoaDonDoiTra(new HoaDonDoiTra().getLastId());
+
+                    if (listctsp.contains(item.getMachitietsanpham().get())) {
+                        new ChiTietDoiTra().updateHDkhiDoiTra2(mahd, item.getMachitietsanpham().get(),
+                                item.getSoluongmua().get(),
+                                item.getThanhtien().get());
+                    } else {
+                        new ChiTietHoaDon(new SimpleIntegerProperty(mahd),
+                                item.getMachitietsanpham(),
+                                item.getSoluongmua(),
+                                item.getThanhtien()).insert();
+                        int sl = (new ChiTietSanPham().getSoLuongFromMaCTSP(item.getMachitietsanpham().get()))
+                                - item.getSoluongmua().get();
+                        new ChiTietSanPham()
+                                .updateSoLuongFromMaCTSP(item.getMachitietsanpham().get(), sl);
+                    }
+                }
+            }
+            new ChiTietDoiTra().updateHDkhiDoiTra_removeSL0(mahd);
+            TrayNotification tray = new TrayNotification("Thông báo",
+                    "Thêm hoá đơn đổi trả thành công", NotificationType.SUCCESS);
+            tray.showAndDismiss(Duration.seconds(2));
+        } else {
+            System.out.println("Thêm Hóa Đơn Đổi Trả thất bại");
+        }
+
+        btnLuu.setDisable(true);
 
         new DoiTra().updateTongTienHoaDon(mahd, total2 - total1);
         btnPrint.setDisable(false);

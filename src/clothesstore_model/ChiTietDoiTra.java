@@ -123,7 +123,7 @@ public class ChiTietDoiTra {
     public boolean updateHDkhiDoiTra_removeSL0(int mahd) {
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
-        String sql = "DELETE chitiethoadon where soluongmua = 0 and mahoadon = ?;";
+        String sql = "DELETE from chitiethoadon where soluongmua = 0 and mahoadon = ?;";
         if (con != null) {
             try {
                 PreparedStatement ptm = con.prepareStatement(sql);
