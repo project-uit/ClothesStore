@@ -178,12 +178,12 @@ machitietnhapkho int (6) unsigned auto_increment  PRIMARY KEY,
 manhapkho  int(6) unsigned,
 machitietsanpham varchar(45),
 soluong int,
-
 FOREIGN KEY (machitietsanpham)
 REFERENCES chitietsanpham(machitietsanpham),
 FOREIGN KEY (manhapkho)
 REFERENCES nhapkho(manhapkho)
 );
+
 create table hoadon
 (
 mahoadon   INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -213,9 +213,9 @@ tenkhachhang nvarchar(50)
 );
 
 insert into khachhang
-values ('0909478','Hope');
+values ('0909478325','Hope');
 insert into khachhang
-values ('0905678','Hand');
+values ('0905678456','Hand');
 
 create table chitietkhachhang
 (
@@ -497,3 +497,8 @@ ctsp.tenmau,ctsp.gioitinh, ctsp.tensize,ctsp.soluong,sp.giaban
 from sanpham sp 
 join chitietsanpham ctsp on sp.masanpham = ctsp.masanpham 
 where ctsp.soluong >=0;
+
+select sum(thanhtien)           
+from chitiethoadon 
+where mahoadon = 19;
+

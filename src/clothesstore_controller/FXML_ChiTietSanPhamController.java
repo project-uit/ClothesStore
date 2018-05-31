@@ -45,6 +45,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.Duration;
 import javafx.util.StringConverter;
+import tray.animations.AnimationType;
 import tray.notification.NotificationType;
 import tray.notification.TrayNotification;
 
@@ -298,10 +299,12 @@ public class FXML_ChiTietSanPhamController implements Initializable {
 
             TrayNotification tray = new TrayNotification("Thông báo",
                     "Chi tiết sản phẩm đã tồn tại!", NotificationType.WARNING);
+            tray.setAnimationType(AnimationType.POPUP);
             tray.showAndDismiss(Duration.seconds(1.5));
         } else {
             TrayNotification tray = new TrayNotification("Thông báo",
                     "Thêm dữ liệu thất bại", NotificationType.ERROR);
+            tray.setAnimationType(AnimationType.POPUP);
             tray.showAndDismiss(Duration.seconds(1.5));
         }
     }
@@ -313,11 +316,12 @@ public class FXML_ChiTietSanPhamController implements Initializable {
             viewListTable();
             TrayNotification tray = new TrayNotification("Thông báo",
                     "Xóa dữ liệu thành công", NotificationType.SUCCESS);
+            tray.setAnimationType(AnimationType.POPUP);
             tray.showAndDismiss(Duration.seconds(1.5));
-
         } else {
             TrayNotification tray = new TrayNotification("Thông báo",
                     "Xóa dữ liệu thất bại", NotificationType.ERROR);
+            tray.setAnimationType(AnimationType.POPUP);
             tray.showAndDismiss(Duration.seconds(1.5));
         }
     }

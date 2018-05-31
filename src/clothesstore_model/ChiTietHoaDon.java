@@ -35,6 +35,10 @@ public class ChiTietHoaDon {
     public ChiTietHoaDon() {
     }
 
+    public ChiTietHoaDon(IntegerProperty mahoadon) {
+        this.mahoadon = mahoadon;
+    }
+    
     public ChiTietHoaDon(IntegerProperty mahoadon, StringProperty machitietsanpham, IntegerProperty soluongmua, IntegerProperty thanhtien) {
         this.mahoadon = mahoadon;
         this.machitietsanpham = machitietsanpham;
@@ -165,6 +169,81 @@ public class ChiTietHoaDon {
     }
     private String FormatTien(int soTien) {
         return String.format("%,8d%n", soTien).trim();
+    }
+    public Integer tongtien()
+    {
+         DBConnection db = new DBConnection();
+        Connection con = db.getConnecttion();
+        ObservableList<ObservableList> data = FXCollections.observableArrayList();
+        Integer tongtien = 0;         
+          if (con != null) {
+            try {
+                String query = "select sum(thanhtien) "              
+                + "from chitiethoadon "
+                + "where mahoadon = "+mahoadon.get();
+                Statement stmnt = con.createStatement();
+                ResultSet rs = stmnt.executeQuery(query);
+                while (rs.next()) {
+                    tongtien = rs.getInt(1);
+                }
+                stmnt.close();
+                con.close();
+            } catch (SQLException ex) {
+                System.out.println(""+ex);
+            }
+        }
+          return tongtien;      
+    }
+     public void LoadTable_data(TableView tableview) {
+
+        DBConnection db = new DBConnection();
+        Connection con = db.getConnecttion();
+        ObservableList<ObservableList> data = FXCollections.observableArrayList();
+        String query = "select cthd.machitiethoadon, cthd.mahoadon, cthd.machitietsanpham"
+                + ", cthd.soluongmua, sp.giaban, cthd.thanhtien "
+                + "from chitiethoadon cthd, chitietsanpham ctsp, sanpham sp, hoadon hd "
+                + "where cthd.machitietsanpham=ctsp.machitietsanpham and sp.masanpham = ctsp.masanpham "
+                + "and cthd.mahoadon=hd.mahoadon and hd.mahoadon = " +mahoadon.get();
+        if (con != null) {
+            try {
+                Statement stmnt = con.createStatement();
+                ResultSet rs = stmnt.executeQuery(query);
+                for (int i = 0; i < rs.getMetaData().getColumnCount(); i++) {
+                    final int j = i;
+                    TableColumn col = new TableColumn("" + i);
+                    if (j == 4 || j == 5) {
+                        col.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
+                            public ObservableValue<String> call(TableColumn.CellDataFeatures<ObservableList, String> param) {
+                                return new ReadOnlyObjectWrapper(FormatTien(Integer.valueOf(param.getValue().get(j).toString())));
+                            }
+                        });
+                    } else {
+
+                        col.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
+                            public ObservableValue<String> call(TableColumn.CellDataFeatures<ObservableList, String> param) {
+                                return new ReadOnlyObjectWrapper(param.getValue().get(j));
+                            }
+                        });
+                    }
+                    tableview.getColumns().addAll(col);
+                }
+
+                while (rs.next()) {
+                    ObservableList<String> row = FXCollections.observableArrayList();
+                    int columnCount = rs.getMetaData().getColumnCount();
+                    for (int i = 1; i <= columnCount; i++) {
+                        row.add(rs.getString(i));
+                    }
+                    data.add(row);
+                }
+                tableview.setItems(data);
+                stmnt.close();
+                con.close();
+            } catch (SQLException ex) {
+
+            }
+
+        }
     }
     public void LoadTable(TableView tableview) {
 
