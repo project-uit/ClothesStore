@@ -135,11 +135,15 @@ public class FXML_NhasanxuatController implements Initializable {
         });
         viewListTable();
         txt_fi_tennhasanxuat.setOnMousePressed(new EventHandler<MouseEvent>() {
-
             @Override
             public void handle(MouseEvent event) {
                 tree_table_vi.getSelectionModel().clearSelection();
-
+            }
+        });
+        txt_fi_tennhasanxuat.setOnKeyTyped(event -> {
+            int maxCharacters = 30;
+            if (txt_fi_tennhasanxuat.getText().length() > maxCharacters - 1) {
+                event.consume();
             }
         });
     }

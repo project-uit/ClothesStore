@@ -89,6 +89,12 @@ public class FXML_NhomHangController implements Initializable {
 
             }
         });
+        txt_fi_tennhomhang.setOnKeyTyped(event -> {
+            int maxCharacters = 30;
+            if (txt_fi_tennhomhang.getText().length() > maxCharacters - 1) {
+                event.consume();
+            }
+        });
     }
 
     public void viewListTable() {

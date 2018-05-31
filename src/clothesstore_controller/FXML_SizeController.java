@@ -57,6 +57,12 @@ public class FXML_SizeController implements Initializable {
                 }
             }
         });
+        txt_fi_tensize.setOnKeyTyped(event -> {
+            int maxCharacters = 8;
+            if (txt_fi_tensize.getText().length() > maxCharacters - 1) {
+                event.consume();
+            }
+        });
     }
 
     @FXML

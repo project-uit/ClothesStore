@@ -594,6 +594,42 @@ public class FXML_SanPhamController implements Initializable {
         OnlyNumberInTextField(txt_fi_tonkhotoida);
         OnlyNumberInTextField(txt_fi_tonkhotoithieu);
         OnlyNumberInTextField(txt_fi_thoihantonkho);
+        txt_fi_tensanpham.setOnKeyTyped(event -> {
+            int maxCharacters = 30;
+            if (txt_fi_tensanpham.getText().length() > maxCharacters - 1) {
+                event.consume();
+            }
+        });
+        txt_fi_tonkhotoida.setOnKeyTyped(event -> {
+            int maxCharacters = 10;
+            if (txt_fi_tonkhotoida.getText().length() > maxCharacters - 1) {
+                event.consume();
+            }
+        });
+        txt_fi_tonkhotoithieu.setOnKeyTyped(event -> {
+            int maxCharacters = 10;
+            if (txt_fi_tonkhotoithieu.getText().length() > maxCharacters - 1) {
+                event.consume();
+            }
+        });
+        txt_fi_thoihantonkho.setOnKeyTyped(event -> {
+            int maxCharacters = 10;
+            if (txt_fi_thoihantonkho.getText().length() > maxCharacters - 1) {
+                event.consume();
+            }
+        });
+        txt_area_ghichu.setOnKeyTyped(event -> {
+            int maxCharacters = 100;
+            if (txt_area_ghichu.getText().length() > maxCharacters - 1) {
+                event.consume();
+            }
+        });
+        txt_fi_masanpham.setOnKeyTyped(event -> {
+            int maxCharacters = 8;
+            if (txt_fi_masanpham.getText().length() > maxCharacters - 1) {
+                event.consume();
+            }
+        });
     }
 
 }

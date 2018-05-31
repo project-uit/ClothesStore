@@ -60,7 +60,7 @@ FOREIGN KEY (tennhasanxuat)
 REFERENCES nhasanxuat(tennhasanxuat),
 FOREIGN KEY (tennhomhang)
 REFERENCES nhomhang(tennhomhang),
-ghichu nvarchar(50),
+ghichu nvarchar(100),
 giaban INT,
 tonkhotoithieu int,
 tonkhotoida int,
@@ -99,7 +99,7 @@ DELIMITER ;
 create table mausac
 (
 tenmau nvarchar(30) Collate utf8_unicode_ci primary key,
-trangthai int
+trangthai int(2)
 );
 insert into mausac
 values ('Xanh dương',1);
@@ -109,8 +109,8 @@ insert into mausac
 values ('Đỏ',1);
 create table size
 (
-tensize char(5) primary key,
-trangthai int
+tensize char(8) primary key,
+trangthai int(2)
 );
 insert into size
 values ('S',1);
@@ -206,6 +206,7 @@ REFERENCES chitietsanpham(machitietsanpham),
 soluongmua int,
 thanhtien int
 );
+
 create table khachhang
 (
 sodienthoai char(15) PRIMARY KEY,
