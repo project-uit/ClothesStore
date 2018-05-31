@@ -75,19 +75,21 @@ public class FXML_TraCuuController implements Initializable {
             giaban_max = "and sp.giaban<=",
             masanpham = "and sp.masanpham=";
     private String masp;
+    private double height;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-
+        height = table_view.getPrefHeight();
         titledPane.setExpanded(false);
         //titledPane.widthProperty().addListener( ( observable, oldValue, newValue ) -> table_view.setLayoutX(newValue.doubleValue() ) );
         titledPane.expandedProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue) {
-                table_view.setLayoutY(table_view.getLayoutY() + titledPane.getHeight() - 10);
-
+                table_view.setLayoutY(table_view.getLayoutY() + titledPane.getHeight() - 30);
+                table_view.setPrefHeight(height - titledPane.getHeight()+35);
             } else {
-                table_view.setLayoutY(table_view.getLayoutY() - titledPane.getHeight() + 10);
+                table_view.setLayoutY(table_view.getLayoutY() - titledPane.getHeight() + 30);
+                table_view.setPrefHeight(height);
             }
         });
 
@@ -129,14 +131,13 @@ public class FXML_TraCuuController implements Initializable {
 
     }
 
-
     private void ContextMenu() {
         ContextMenu context = new ContextMenu();
         MenuItem itemGiaBan = new MenuItem("Sửa giá bán");
         itemGiaBan.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                TextInputDialog dialog = new TextInputDialog("0");               
+                TextInputDialog dialog = new TextInputDialog("0");
                 dialog.setTitle("Sửa giá bán");
                 dialog.setHeaderText("Mã sản phẩm " + masp);
                 dialog.setContentText("Giá bán: ");
@@ -430,9 +431,7 @@ public class FXML_TraCuuController implements Initializable {
                     }
                 });
             }
-
             table_view.getColumns().addAll(col);
-
         }
         table_view.getColumns().get(0).setText("Mã sản phẩm");
         table_view.getColumns().get(1).setText("Tên sản phẩm");
