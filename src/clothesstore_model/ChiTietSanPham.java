@@ -367,7 +367,7 @@ public class ChiTietSanPham {
         int sl = -1;
         if (con != null) {
             try {
-                String sql = "SELECT soluong FROM chitietsanpham where machitietsanpham = ?";
+                String sql = "SELECT soluong FROM chitietsanpham where machitietsanpham = ? and soluong > 0";
                 PreparedStatement ptm = con.prepareStatement(sql);
                 ptm.setString(1, machitietsanpham.get());
                 ResultSet rs = ptm.executeQuery();

@@ -13,7 +13,6 @@ import clothesstore_model.KhachHang;
 import clothesstore_model.SanPham;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
-import com.jfoenix.controls.JFXNodesList;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
@@ -21,7 +20,6 @@ import java.util.ResourceBundle;
 import java.util.prefs.Preferences;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
@@ -32,14 +30,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TableView;
 import javafx.scene.control.Tooltip;
-import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.controlsfx.control.textfield.TextFields;
@@ -87,7 +83,6 @@ public class FXML_HoaDonController implements Initializable {
                     txt_fi_machitietsanpham.setText(mactsp);
                     Integer soluongmua = Integer.parseInt(newValue.toString().split(",")[3].substring(1).trim());
                     spin_soluong.getValueFactory().setValue(soluongmua);
-
                 }
             }
         });
@@ -106,6 +101,7 @@ public class FXML_HoaDonController implements Initializable {
             txt_fi_tongtien.setText("" + FormatTien(tongtien));
             btnLapHoaDon.setText("Hủy hóa đơn");
             checkLaphoadon = false;
+            txt_fi_machitietsanpham.setEditable(false);
             updateTable_InHoaDon();
         } else if (mahoadon > 0) {
             btnThem.setDisable(false);
@@ -178,14 +174,12 @@ public class FXML_HoaDonController implements Initializable {
                 if (newValue.length() >= 10) {
                     getDonGia(newValue);
                     InitSpinner(newValue);
-
                 }
                 if (newValue.length() == 0) {
                     SpinnerValueFactory<Integer> valueFactory
                             = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 0);
                     spin_soluong.setValueFactory(valueFactory);
                     txt_fi_dongia.clear();
-
                     txt_fi_thanhtien.setText("" + 0);
                 }
             }
@@ -280,6 +274,7 @@ public class FXML_HoaDonController implements Initializable {
         btnXoa.setDisable(true);
         btnInHoaDon.setDisable(true);
         checkLaphoadon = true;
+        txt_fi_machitietsanpham.setEditable(true);
         txt_fi_tongtien.setText("0");
         txt_fi_machitietsanpham.setText("");
         tongtien = 0;
@@ -321,6 +316,7 @@ public class FXML_HoaDonController implements Initializable {
         btnXoa.setDisable(true);
         btnInHoaDon.setDisable(true);
         checkLaphoadon = true;
+        txt_fi_machitietsanpham.setEditable(true);
         txt_fi_machitietsanpham.setText("");
         txt_fi_tongtien.setText("0");
         HoaDon hoadon = new HoaDon(new SimpleIntegerProperty(mahoadon));
@@ -349,7 +345,7 @@ public class FXML_HoaDonController implements Initializable {
             tray.showAndDismiss(Duration.seconds(1.5));
         }
     }
-    
+
     private void btnthem_click() {
 
         Integer slmua = 0;
@@ -442,6 +438,7 @@ public class FXML_HoaDonController implements Initializable {
             btnThanhToan.setDisable(true);
             update_sl_ctsp(true);
             check_thanhtoan = true;
+            txt_fi_machitietsanpham.setEditable(false);
             preference.putBoolean("check_thanhtoan", check_thanhtoan);
             TrayNotification tray = new TrayNotification("Thông báo",
                     "Thanh toán thành công", NotificationType.SUCCESS);

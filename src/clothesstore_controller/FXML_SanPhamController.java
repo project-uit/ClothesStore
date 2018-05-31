@@ -579,7 +579,6 @@ public class FXML_SanPhamController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
         // TODO
         NhaSanXuat tennsx = new NhaSanXuat();
         tennsx.getNSXList(cmb_nhasanxuat);
