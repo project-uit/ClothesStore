@@ -104,6 +104,10 @@ public class FXML_QuanLyTaiKhoanController implements Initializable {
         });
     }
 
+    private String FormatTien(int soTien) {
+        return String.format("%,8d%n", soTien).trim();
+    }
+
     private void InitCmb() {
         cmbGioiTinh.getItems().addAll("Nam", "Nữ");
         cmbGioiTinh.getSelectionModel().selectFirst();
@@ -213,7 +217,13 @@ public class FXML_QuanLyTaiKhoanController implements Initializable {
         diachi.setCellValueFactory(new PropertyValueFactory("diachi"));
         cmnd.setCellValueFactory(new PropertyValueFactory("cmnd"));
         ngaysinh.setCellValueFactory(new PropertyValueFactory("ngaysinh"));
-        luong.setCellValueFactory(new PropertyValueFactory("luong"));
+
+        luong.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<NhanVien, Integer>, ObservableValue<Integer>>() {
+            @Override
+            public ObservableValue<Integer> call(TableColumn.CellDataFeatures<NhanVien, Integer> p) {
+                return new ReadOnlyObjectWrapper(FormatTien(p.getValue().getLuong()));
+            }
+        });
 
         gioitinh.setCellValueFactory(new Callback<CellDataFeatures<NhanVien, String>, ObservableValue<String>>() {
             @Override
@@ -408,7 +418,7 @@ public class FXML_QuanLyTaiKhoanController implements Initializable {
                     if (tk.ThemTaiKhoan()) {
                         InitTableView();
                         TrayNotification tray = new TrayNotification("Thông báo",
-                                "Thêm nhân viên thành công", NotificationType.ERROR);
+                                "Thêm nhân viên thành công", NotificationType.SUCCESS);
                         tray.showAndDismiss(Duration.seconds(2));
                         btnLuu.setDisable(true);
                         btnHuy.setDisable(true);
@@ -436,7 +446,7 @@ public class FXML_QuanLyTaiKhoanController implements Initializable {
                     if (tk.SuaTaiKhoan()) {
                         InitTableView();
                         TrayNotification tray = new TrayNotification("Thông báo",
-                                "Sửa thông tin thành công", NotificationType.ERROR);
+                                "Sửa thông tin thành công", NotificationType.SUCCESS);
                         tray.showAndDismiss(Duration.seconds(2));
                         btnLuu.setDisable(true);
                         btnHuy.setDisable(true);
