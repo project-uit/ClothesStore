@@ -72,6 +72,7 @@ public class FXML_DangNhapController implements Initializable {
     public static String UserID;
     public static int MaNhanVien; 
     public static String TenNhanVien;
+    public static int quyen;
 
     @FXML
     private void Login(ActionEvent event) throws IOException {
@@ -111,7 +112,7 @@ public class FXML_DangNhapController implements Initializable {
                     Logger.getLogger(FXML_DangNhapController.class.getName()).log(Level.SEVERE, null, ex);
                 }
 
-                int quyen = tk.GetQuyenFromID(user);
+                quyen = tk.GetQuyenFromID(user);
                 if (quyen == 1) {
 
                 } else if (quyen == 0) {

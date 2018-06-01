@@ -501,7 +501,7 @@ public class HoaDon {
                     + "        SELECT hd.mahoadon, sodienthoai, ngayban, tongtien, manhanvien \n"
                     + "		FROM hoadon hd\n"
                     + "		LEFT JOIN chitietkhachhang ctkh ON hd.mahoadon = ctkh.mahoadon\n"
-                    + "		where hd.mahoadon is not null\n"
+                    + "		where hd.mahoadon is not null and tongtien > 0\n"
                     + "	) _hd\n"
                     + "where nv.manhanvien = _hd.manhanvien;";
             try {

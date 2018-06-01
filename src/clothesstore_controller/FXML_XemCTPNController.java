@@ -8,7 +8,6 @@ package clothesstore_controller;
 
 import static clothesstore_controller.FXML_HoaDonMuaHangController.mapn;
 import clothesstore_model.ChiTietHoaDonMuaHang;
-import clothesstore_model.HoaDon;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.util.ResourceBundle;
