@@ -11,6 +11,7 @@ import clothesstore_model.DoiTra;
 import clothesstore_model.HoaDon;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDatePicker;
+
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
@@ -95,6 +96,8 @@ public class FXML_DoiTraController implements Initializable {
         initTableHangThayThe();
         initTextFieldSearch();
         tblChiTietHoaDon.setPlaceholder(new Label("Chọn hoá đơn để xem chi tiết"));
+       
+  
     }
 
     private Date selectedDateFrom, selectedDateTo, selectedDate;
@@ -295,7 +298,7 @@ public class FXML_DoiTraController implements Initializable {
                     ObservableList<ChiTietHoaDonDoiTra> list2 = observableArrayList();
                     list2 = new ChiTietHoaDonDoiTra().getListcthdDoiTrafromID(maDoiTra);
                     tblHangThayThe.setItems(list2);
-                    
+
                     total2 = 0;
                     for (ChiTietHoaDonDoiTra item : tblHangThayThe.getItems()) {
                         total2 += item.getGiaban().get() * item.getSoluongmua().get();

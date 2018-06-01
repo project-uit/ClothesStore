@@ -8,6 +8,7 @@ package clothesstore_view;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -30,7 +31,7 @@ public class ClothesStore extends Application {
         stage.initStyle(StageStyle.UNDECORATED);
         stage.setResizable(false);
         stage.setScene(scene);
-        
+        stage.getIcons().add(new Image("/clothesstore_view/img/logo.jpg"));
         stage.show();
         stageDangNhap = stage;
         _rootDangNhap = root;

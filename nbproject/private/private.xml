@@ -3,12 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/E:/project/ClothesStore/ClothesStore/src/clothesstore_controller/FXML_SizeController.java</file>
-            <file>file:/E:/project/ClothesStore/ClothesStore/src/clothesstore_controller/FXML_MauSacController.java</file>
-            <file>file:/E:/project/ClothesStore/ClothesStore/src/clothesstore_controller/FXML_SanPhamController.java</file>
+            <file>file:/E:/project/ClothesStore/ClothesStore/src/clothesstore_model/NhanVien.java</file>
             <file>file:/E:/project/ClothesStore/ClothesStore/src/clothesstore_controller/FXML_HoaDonController.java</file>
-            <file>file:/E:/project/ClothesStore/ClothesStore/src/clothesstore_controller/FXML_NhasanxuatController.java</file>
-            <file>file:/E:/project/ClothesStore/ClothesStore/src/clothesstore_controller/FXML_TraCuuController.java</file>
+            <file>file:/E:/project/ClothesStore/ClothesStore/src/clothesstore_controller/FXML_DangNhapController.java</file>
+            <file>file:/E:/project/ClothesStore/ClothesStore/src/clothesstore_model/SanPham.java</file>
+            <file>file:/E:/project/ClothesStore/ClothesStore/src/clothesstore_model/HoaDon.java</file>
         </group>
     </open-files>
 </project-private>

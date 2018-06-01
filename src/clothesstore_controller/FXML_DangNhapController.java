@@ -5,6 +5,7 @@
  */
 package clothesstore_controller;
 
+import static clothesstore_controller.FXML_ClothesStoreController._vbox_mini;
 import static clothesstore_controller.SidePanelContentController._vbox;
 import clothesstore_model.NhanVien;
 import clothesstore_model.TaiKhoan;
@@ -38,6 +39,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -70,7 +72,7 @@ public class FXML_DangNhapController implements Initializable {
     public static Stage stageMain;
     public static Stage stageSplash;
     public static String UserID;
-    public static int MaNhanVien; 
+    public static int MaNhanVien;
     public static String TenNhanVien;
     public static int quyen;
 
@@ -104,6 +106,8 @@ public class FXML_DangNhapController implements Initializable {
                     Scene scene = new Scene(root);
                     stageMain = new Stage();
                     stageMain.setScene(scene);
+                    stageMain.setTitle("Quản lý cửa hàng quần áo");
+                    stageMain.getIcons().add(new Image("/clothesstore_view/img/logo.jpg"));
                     stageMain.setOnCloseRequest((WindowEvent evt) -> {
                         System.exit(0);
                     });
@@ -113,13 +117,11 @@ public class FXML_DangNhapController implements Initializable {
                 }
 
                 quyen = tk.GetQuyenFromID(user);
-                if (quyen == 1) {
-
-                } else if (quyen == 0) {
+                if (quyen == 0) {
                     List<Object> listnode = new ArrayList<Object>();
                     for (Node node : _vbox.getChildren()) {
                         if (node instanceof JFXButton) {
-                            if (node.getId().equals("btnTonKho") || node.getId().equals("btnLoiNhuan")
+                            if (node.getId().equals("btnTonKho") || node.getId().equals("btnPhieuNhap")
                                     || node.getId().equals("btnBieuDo")
                                     || node.getId().equals("btnQuanLyTK")) {
                                 listnode.add(node);
@@ -128,6 +130,19 @@ public class FXML_DangNhapController implements Initializable {
                     }
                     for (Object node : listnode) {
                         _vbox.getChildren().remove(node);
+                    }
+                     List<Object> listnode1 = new ArrayList<Object>();
+                    for (Node node : FXML_ClothesStoreController._vbox_mini.getChildren()) {
+                        if (node instanceof JFXButton) {
+                            if (node.getId().equals("btnTonKho") || node.getId().equals("btnHoaDonMuaHang")
+                                    || node.getId().equals("btnBieuDo")
+                                    || node.getId().equals("btnQuanLyTK")) {
+                                listnode1.add(node);
+                            }
+                        }
+                    }
+                    for (Object node : listnode1) {
+                        FXML_ClothesStoreController._vbox_mini.getChildren().remove(node);
                     }
                 }
             } else {
@@ -169,7 +184,8 @@ public class FXML_DangNhapController implements Initializable {
             scene.setFill(Color.TRANSPARENT);
             stageSplash = new Stage();
             stageSplash.initStyle(StageStyle.TRANSPARENT);
-            stageSplash.setScene(scene);
+            
+            stageSplash.setScene(scene);            
             stageSplash.show();
 
             FadeTransition fadeIn = new FadeTransition(Duration.seconds(2.5), pane);

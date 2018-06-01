@@ -44,7 +44,7 @@
                         </ImageView>
                      </graphic>
                   </JFXButton>
-                  <JFXButton fx:id="btnNhapKho" alignment="BASELINE_LEFT" ellipsisString="" graphicTextGap="0.0" onAction="#changeTab" prefHeight="43.0" prefWidth="240.0" ripplerFill="#1451d9">
+                  <JFXButton fx:id="btnHoaDonMuaHang" alignment="BASELINE_LEFT" ellipsisString="" graphicTextGap="0.0" onAction="#changeTab" prefHeight="43.0" prefWidth="240.0" ripplerFill="#1451d9">
                      <graphic>
                         <ImageView fitHeight="30.0" fitWidth="41.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -53,7 +53,7 @@
                         </ImageView>
                      </graphic>
                   </JFXButton>
-                  <JFXButton fx:id="btnNhapKho1" alignment="BASELINE_LEFT" ellipsisString="" graphicTextGap="0.0" onAction="#changeTab" prefHeight="43.0" prefWidth="240.0" ripplerFill="#1451d9">
+                  <JFXButton fx:id="btnNhapKho" alignment="BASELINE_LEFT" ellipsisString="" graphicTextGap="0.0" onAction="#changeTab" prefHeight="43.0" prefWidth="240.0" ripplerFill="#1451d9">
                      <graphic>
                         <ImageView fitHeight="30.0" fitWidth="41.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -71,7 +71,7 @@
                         </ImageView>
                      </graphic>
                   </JFXButton>
-                  <JFXButton fx:id="btnLoiNhuan" alignment="BASELINE_LEFT" ellipsisString="" graphicTextGap="0.0" onAction="#changeTab" prefHeight="43.0" prefWidth="48.0" ripplerFill="#1451d9">
+                  <JFXButton fx:id="btnTraCuu" alignment="BASELINE_LEFT" ellipsisString="" graphicTextGap="0.0" onAction="#changeTab" prefHeight="43.0" prefWidth="48.0" ripplerFill="#1451d9">
                      <graphic>
                         <ImageView fitHeight="30.0" fitWidth="41.0" pickOnBounds="true" preserveRatio="true">
                            <image>

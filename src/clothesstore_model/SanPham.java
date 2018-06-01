@@ -413,7 +413,7 @@ public class SanPham extends RecursiveTreeObject<SanPham> {
                 ptm.setString(1, masp);
                 ResultSet rs = ptm.executeQuery();
                 while (rs.next()) {
-                    dongia = rs.getInt("giaban");
+                    dongia = rs.getInt(1);
                     break;
                 }
                 ptm.close();

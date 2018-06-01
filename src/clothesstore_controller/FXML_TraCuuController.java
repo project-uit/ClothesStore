@@ -86,7 +86,7 @@ public class FXML_TraCuuController implements Initializable {
         titledPane.expandedProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue) {
                 table_view.setLayoutY(table_view.getLayoutY() + titledPane.getHeight() - 30);
-                table_view.setPrefHeight(height - titledPane.getHeight()+35);
+                table_view.setPrefHeight(height - titledPane.getHeight() + 35);
             } else {
                 table_view.setLayoutY(table_view.getLayoutY() - titledPane.getHeight() + 30);
                 table_view.setPrefHeight(height);
@@ -127,7 +127,9 @@ public class FXML_TraCuuController implements Initializable {
             cmb_gioitinh.getSelectionModel().select(0);
         });
         initTextField();
-        ContextMenu();
+        if (FXML_DangNhapController.quyen == 1) {
+            ContextMenu();
+        }
 
     }
 
@@ -138,8 +140,8 @@ public class FXML_TraCuuController implements Initializable {
             @Override
             public void handle(ActionEvent event) {
                 TextInputDialog dialog = new TextInputDialog("0");
-                dialog.setTitle("Sửa giá bán");
-                dialog.setHeaderText("Mã sản phẩm " + masp);
+                dialog.setTitle("Sửa giá bán của " + masp);
+                dialog.setHeaderText(null);
                 dialog.setContentText("Giá bán: ");
                 Optional<String> result = dialog.showAndWait();
                 result.ifPresent(num -> {

@@ -439,6 +439,7 @@ public class FXML_HoaDonController implements Initializable {
             update_sl_ctsp(true);
             check_thanhtoan = true;
             txt_fi_machitietsanpham.setEditable(false);
+            txt_fi_machitietsanpham.clear();
             preference.putBoolean("check_thanhtoan", check_thanhtoan);
             TrayNotification tray = new TrayNotification("Thông báo",
                     "Thanh toán thành công", NotificationType.SUCCESS);
