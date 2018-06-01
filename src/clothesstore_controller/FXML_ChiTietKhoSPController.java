@@ -31,7 +31,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -145,9 +144,18 @@ public class FXML_ChiTietKhoSPController implements Initializable {
                             tongsoluong = 0;
                             boolean flag = true;
                             try {
-                                Integer.valueOf(((ChiTietKhoSanPham) t.getTableView().getItems().get(
-                                        t.getTablePosition().getRow())).getSoluong().get().trim());
-                                row.setStyle("-fx-background-color: green");
+                                if (Integer.valueOf(((ChiTietKhoSanPham) t.getTableView().getItems().get(
+                                        t.getTablePosition().getRow())).getSoluong().get().trim()) >= 0) {
+                                    row.setStyle("-fx-background-color: green");
+                                } else {
+                                    row.setStyle("-fx-background-color: red");
+                                    TrayNotification tray = new TrayNotification("Thông báo",
+                                            "Số lượng nhập không phù hợp", NotificationType.ERROR);
+                                    tray.showAndDismiss(Duration.seconds(2));
+                                    btnLuu.setDisable(true);
+                                    flag = false;
+                                }
+
                             } catch (NumberFormatException ex) {
                                 row.setStyle("-fx-background-color: red");
                                 TrayNotification tray = new TrayNotification("Thông báo",
@@ -163,8 +171,11 @@ public class FXML_ChiTietKhoSPController implements Initializable {
                                     sl = Integer.valueOf(clsoluong.getCellData(o).toString().trim());
                                 } catch (NumberFormatException ex) {
                                     sl = 0;
+                                    flag = false;
                                 } finally {
                                     tongsoluong += sl;
+                                    if (sl < 0)
+                                        flag = false;
                                 }
                             }
                             lbTongSoLuong.setText("Tổng số lượng: " + tongsoluong);

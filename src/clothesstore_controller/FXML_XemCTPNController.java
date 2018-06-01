@@ -8,9 +8,12 @@ package clothesstore_controller;
 
 import static clothesstore_controller.FXML_HoaDonMuaHangController.mapn;
 import clothesstore_model.ChiTietHoaDonMuaHang;
+import clothesstore_model.HoaDon;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -19,6 +22,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.util.Callback;
 
 /**
  * FXML Controller class
@@ -41,6 +45,9 @@ public class FXML_XemCTPNController implements Initializable {
         // TODO
         txtmaphieunhap.setText(Integer.toString(mapn));
         InitTableCTPN();
+    }
+    private String FormatTien(int soTien) {
+        return String.format("%,8d%n", soTien).trim();
     }    
     private void InitTableCTPN() {
         ObservableList<ChiTietHoaDonMuaHang> list = FXCollections.observableArrayList();
@@ -48,7 +55,12 @@ public class FXML_XemCTPNController implements Initializable {
         list = ctpn.getTableChiTietPhieuNhap(mapn);
         clMaSP.setCellValueFactory(new PropertyValueFactory("masanpham"));
         clTenSP.setCellValueFactory(new PropertyValueFactory("tensanpham"));
-        clThanhTien.setCellValueFactory(new PropertyValueFactory("thanhtien"));
+        clThanhTien.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ChiTietHoaDonMuaHang, Integer>, ObservableValue<Integer>>() {
+            @Override
+            public ObservableValue<Integer> call(TableColumn.CellDataFeatures<ChiTietHoaDonMuaHang, Integer> p) {
+                return new ReadOnlyObjectWrapper(FormatTien(p.getValue().getThanhtien()));
+            }
+        });
         clSoLuong.setCellValueFactory(new PropertyValueFactory("soluongsanphamnhap"));
         clGiaVon.setCellValueFactory(new PropertyValueFactory("giavon")); 
         tblCTPN.setPlaceholder(new Label("Chưa thêm chi tiết phiếu nhập"));

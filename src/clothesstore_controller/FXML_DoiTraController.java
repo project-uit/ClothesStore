@@ -286,7 +286,7 @@ public class FXML_DoiTraController implements Initializable {
                     ObservableList<ChiTietDoiTra> list1 = observableArrayList();
                     list1 = new ChiTietDoiTra().getListChiTietDoiTraFromID(maDoiTra);
                     tblHangDoiTra.setItems(list1);
-
+                    total1 = 0;
                     for (ChiTietDoiTra item : tblHangDoiTra.getItems()) {
                         total1 += item.getGiaban().get() * item.getSoluongmua().get();
                     }
@@ -295,7 +295,8 @@ public class FXML_DoiTraController implements Initializable {
                     ObservableList<ChiTietHoaDonDoiTra> list2 = observableArrayList();
                     list2 = new ChiTietHoaDonDoiTra().getListcthdDoiTrafromID(maDoiTra);
                     tblHangThayThe.setItems(list2);
-
+                    
+                    total2 = 0;
                     for (ChiTietHoaDonDoiTra item : tblHangThayThe.getItems()) {
                         total2 += item.getGiaban().get() * item.getSoluongmua().get();
                     }
