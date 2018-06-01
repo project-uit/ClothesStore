@@ -5,6 +5,7 @@
  */
 package clothesstore_model;
 
+import clothesstore_controller.FXML_DangNhapController;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -21,19 +22,23 @@ import javafx.collections.ObservableList;
  * @author dieunguyen
  */
 public class NhanVien {
+
     private IntegerProperty manhanvien;
-    private StringProperty tennhanvien; 
+    private StringProperty tennhanvien;
     private StringProperty diachi;
-    private IntegerProperty gioitinh; 
+    private IntegerProperty gioitinh;
     private Date ngaysinh;
     private StringProperty cmnd;
-    private IntegerProperty trangthai; 
-    private IntegerProperty luong; 
+    private IntegerProperty trangthai;
+    private IntegerProperty luong;
     private TaiKhoan taikhoan;
 
-    public NhanVien(){};
+    public NhanVien() {
+    }
+
+    ;
     
-    public NhanVien(IntegerProperty manhanvien, StringProperty tennhanvien, StringProperty diachi, IntegerProperty gioitinh, 
+    public NhanVien(IntegerProperty manhanvien, StringProperty tennhanvien, StringProperty diachi, IntegerProperty gioitinh,
             Date ngaysinh, StringProperty cmnd, IntegerProperty trangthai, IntegerProperty luong) {
         this.manhanvien = manhanvien;
         this.tennhanvien = tennhanvien;
@@ -45,19 +50,19 @@ public class NhanVien {
         this.luong = luong;
     }
 
-    public NhanVien(String tennhanvien, String diachi, int gioitinh, Date ngaysinh, String cmnd, 
-            int trangthai, int luong ) {
+    public NhanVien(String tennhanvien, String diachi, int gioitinh, Date ngaysinh, String cmnd,
+            int trangthai, int luong) {
         this.tennhanvien = new SimpleStringProperty(tennhanvien);
         this.diachi = new SimpleStringProperty(diachi);
         this.gioitinh = new SimpleIntegerProperty(gioitinh);
         this.ngaysinh = ngaysinh;
         this.cmnd = new SimpleStringProperty(cmnd);
         this.trangthai = new SimpleIntegerProperty(trangthai);
-        this.luong = new SimpleIntegerProperty(luong); 
+        this.luong = new SimpleIntegerProperty(luong);
     }
-    
-    public NhanVien(int manhanvien, String tennhanvien, String diachi, int gioitinh, Date ngaysinh, String cmnd, 
-            int trangthai, int luong ) {
+
+    public NhanVien(int manhanvien, String tennhanvien, String diachi, int gioitinh, Date ngaysinh, String cmnd,
+            int trangthai, int luong) {
         this.manhanvien = new SimpleIntegerProperty(manhanvien);
         this.tennhanvien = new SimpleStringProperty(tennhanvien);
         this.diachi = new SimpleStringProperty(diachi);
@@ -65,11 +70,11 @@ public class NhanVien {
         this.ngaysinh = ngaysinh;
         this.cmnd = new SimpleStringProperty(cmnd);
         this.trangthai = new SimpleIntegerProperty(trangthai);
-        this.luong = new SimpleIntegerProperty(luong); 
+        this.luong = new SimpleIntegerProperty(luong);
     }
-    
-    public NhanVien(int manhanvien, String tennhanvien, String diachi, int gioitinh, Date ngaysinh, String cmnd, 
-            int trangthai, int luong, TaiKhoan taikhoan ) {  
+
+    public NhanVien(int manhanvien, String tennhanvien, String diachi, int gioitinh, Date ngaysinh, String cmnd,
+            int trangthai, int luong, TaiKhoan taikhoan) {
         this.manhanvien = new SimpleIntegerProperty(manhanvien);
         this.tennhanvien = new SimpleStringProperty(tennhanvien);
         this.diachi = new SimpleStringProperty(diachi);
@@ -77,16 +82,16 @@ public class NhanVien {
         this.ngaysinh = ngaysinh;
         this.cmnd = new SimpleStringProperty(cmnd);
         this.trangthai = new SimpleIntegerProperty(trangthai);
-        this.luong = new SimpleIntegerProperty(luong); 
+        this.luong = new SimpleIntegerProperty(luong);
         this.taikhoan = taikhoan;
     }
-    
-    public boolean ThemNhanVien(){
+
+    public boolean ThemNhanVien() {
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
         String sql = "INSERT INTO nhanvien(tennhanvien, diachi, gioitinh, ngaysinh, cmnd, trangthai, luong) VALUES(?, ?, ?, ?, ?, ?, ?);";
-        if(con!=null){
-            try{
+        if (con != null) {
+            try {
                 PreparedStatement ptm = con.prepareStatement(sql);
                 ptm.setString(1, tennhanvien.getValue());
                 ptm.setString(2, diachi.getValue());
@@ -96,25 +101,24 @@ public class NhanVien {
                 ptm.setInt(6, trangthai.getValue());
                 ptm.setInt(7, luong.getValue());
                 ptm.execute();
-                
+
                 ptm.close();
-                con.close();  
-                
+                con.close();
+
                 return true;
-            }
-            catch(Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
-            } 
+            }
         }
-        return false; 
+        return false;
     }
-    
-    public boolean SuaNhanVien(){
+
+    public boolean SuaNhanVien() {
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
         String sql = "Update nhanvien set tennhanvien =?, diachi =?, gioitinh =?, ngaysinh =?, cmnd =?, trangthai =?, luong =? where manhanvien =?;";
-        if(con!=null){
-            try{
+        if (con != null) {
+            try {
                 PreparedStatement ptm = con.prepareStatement(sql);
                 ptm.setString(1, tennhanvien.getValue());
                 ptm.setString(2, diachi.getValue());
@@ -125,161 +129,176 @@ public class NhanVien {
                 ptm.setInt(7, luong.getValue());
                 ptm.setInt(8, manhanvien.getValue());
                 ptm.execute();
-                
+
                 ptm.close();
-                con.close();  
-                
+                con.close();
+
                 return true;
-            }
-            catch(Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
-            } 
+            }
         }
-        return false; 
+        return false;
     }
-    
-    public boolean XoaNhanVien(){
+
+    public boolean XoaNhanVien() {
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
         String sql = "Delete from nhanvien where manhanvien = ?;";
-        if(con!=null){
-            try{
+        if (con != null) {
+            try {
                 PreparedStatement ptm = con.prepareStatement(sql);
                 ptm.setInt(1, manhanvien.getValue());
                 ptm.execute();
-                
+
                 ptm.close();
-                con.close();  
-                
-                return true; 
+                con.close();
+
+                return true;
+            } catch (Exception e) {
             }
-            catch(Exception e){
-            } 
         }
-        return false; 
+        return false;
     }
-    
-    public ObservableList<NhanVien> getListNhanVien(){      
-        ObservableList<NhanVien> list = FXCollections.observableArrayList(); 
+
+    public ObservableList<NhanVien> getListNhanVien() {
+        ObservableList<NhanVien> list = FXCollections.observableArrayList();
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
         String sql = "SELECT * FROM nhanvien, dangnhap where nhanvien.manhanvien = dangnhap.manhanvien";
-        if(con!=null){
-            try{
+        if (con != null) {
+            try {
                 PreparedStatement ptm = con.prepareStatement(sql);
                 ResultSet rs = ptm.executeQuery();
                 while (rs.next()) {
-                    TaiKhoan taikhoan = new TaiKhoan(rs.getString("tentaikhoan")
-                            , rs.getString("matkhau")
-                            , rs.getInt("phanquyen")
-                            , rs.getInt("manhanvien"));
-                   
-                    
-                    NhanVien nhanvien = new NhanVien(rs.getInt("manhanvien")
-                            , rs.getString("tennhanvien")
-                            , rs.getString("diachi")
-                            , rs.getInt("gioitinh")
-                            , rs.getDate("ngaysinh")
-                            , rs.getString("cmnd")
-                            , rs.getInt("trangthai")
-                            , rs.getInt("luong")
-                            , taikhoan);
+                    TaiKhoan taikhoan = new TaiKhoan(rs.getString("tentaikhoan"),
+                             rs.getString("matkhau"),
+                             rs.getInt("phanquyen"),
+                             rs.getInt("manhanvien"));
+
+                    NhanVien nhanvien = new NhanVien(rs.getInt("manhanvien"),
+                             rs.getString("tennhanvien"),
+                             rs.getString("diachi"),
+                             rs.getInt("gioitinh"),
+                             rs.getDate("ngaysinh"),
+                             rs.getString("cmnd"),
+                             rs.getInt("trangthai"),
+                             rs.getInt("luong"),
+                             taikhoan);
                     list.add(nhanvien);
                 }
-            }
-            catch(Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
-            }  
+            }
         }
         return list;
     }
-    
-    public ObservableList<NhanVien> TrangThaiFilter(int status){      
-        ObservableList<NhanVien> list = FXCollections.observableArrayList(); 
+
+    public ObservableList<NhanVien> TrangThaiFilter(int status) {
+        ObservableList<NhanVien> list = FXCollections.observableArrayList();
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
-        String sql = "SELECT * FROM nhanvien, dangnhap where nhanvien.manhanvien = dangnhap.manhanvien and trangthai = "+status+"";
-        if(con!=null){
-            try{
+        String sql = "SELECT * FROM nhanvien, dangnhap where nhanvien.manhanvien = dangnhap.manhanvien and trangthai = " + status + "";
+        if (con != null) {
+            try {
                 PreparedStatement ptm = con.prepareStatement(sql);
                 ResultSet rs = ptm.executeQuery();
                 while (rs.next()) {
-                    TaiKhoan taikhoan = new TaiKhoan(rs.getString("tentaikhoan")
-                            , rs.getString("matkhau")
-                            , rs.getInt("phanquyen")
-                            , rs.getInt("manhanvien"));
-                    
-                    NhanVien nhanvien = new NhanVien(rs.getInt("manhanvien")
-                            , rs.getString("tennhanvien")
-                            , rs.getString("diachi")
-                            , rs.getInt("gioitinh")
-                            , rs.getDate("ngaysinh")
-                            , rs.getString("cmnd")
-                            , rs.getInt("trangthai")
-                            , rs.getInt("luong")
-                            , taikhoan);
+                    TaiKhoan taikhoan = new TaiKhoan(rs.getString("tentaikhoan"),
+                             rs.getString("matkhau"),
+                             rs.getInt("phanquyen"),
+                             rs.getInt("manhanvien"));
+
+                    NhanVien nhanvien = new NhanVien(rs.getInt("manhanvien"),
+                             rs.getString("tennhanvien"),
+                             rs.getString("diachi"),
+                             rs.getInt("gioitinh"),
+                             rs.getDate("ngaysinh"),
+                             rs.getString("cmnd"),
+                             rs.getInt("trangthai"),
+                             rs.getInt("luong"),
+                             taikhoan);
                     list.add(nhanvien);
                 }
-            }
-            catch(Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
-            }  
+            }
         }
         return list;
     }
-    
-    public int getLastId(){      
+
+    public int getLastId() {
         int id = 0;
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
         String sql = "SELECT manhanvien FROM nhanvien ORDER BY manhanvien DESC LIMIT 1;";
-        if(con!=null){
-            try{
+        if (con != null) {
+            try {
                 PreparedStatement ptm = con.prepareStatement(sql);
                 ResultSet rs = ptm.executeQuery();
                 while (rs.next()) {
                     id = rs.getInt("manhanvien");
                 }
-            }
-            catch(Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
-            }  
+            }
         }
         return id;
     }
-    
-    public NhanVien getNhanVienfromUser(String user){   
+
+    public static String gettennv_db() {
+        DBConnection db = new DBConnection();
+        Connection con = db.getConnecttion();
+        String sql = "SELECT tennhanvien FROM nhanvien where manhanvien = ?";
+        String name="";
+        if (con != null) {
+            try {
+                PreparedStatement ptm = con.prepareStatement(sql);
+                ptm.setInt(1, FXML_DangNhapController.MaNhanVien);
+                ResultSet rs = ptm.executeQuery();
+                while (rs.next()) {
+                   name = rs.getString("tennhanvien");
+                }
+                ptm.close();
+                con.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return name;
+    }
+
+    public NhanVien getNhanVienfromUser(String user) {
         NhanVien nv = new NhanVien();
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
         String sql = "SELECT * FROM nhanvien, dangnhap WHERE nhanvien.manhanvien = dangnhap.manhanvien and tentaikhoan = ?;";
-        if(con!=null){
-            try{
+        if (con != null) {
+            try {
                 PreparedStatement ptm = con.prepareStatement(sql);
                 ptm.setString(1, user);
                 ResultSet rs = ptm.executeQuery();
                 while (rs.next()) {
-                    nv = new NhanVien(rs.getInt("manhanvien")
-                            , rs.getString("tennhanvien")
-                            , rs.getString("diachi")
-                            , rs.getInt("gioitinh")
-                            , rs.getDate("ngaysinh")
-                            , rs.getString("cmnd")
-                            , rs.getInt("trangthai")
-                            , rs.getInt("luong"));
+                    nv = new NhanVien(rs.getInt("manhanvien"),
+                             rs.getString("tennhanvien"),
+                             rs.getString("diachi"),
+                             rs.getInt("gioitinh"),
+                             rs.getDate("ngaysinh"),
+                             rs.getString("cmnd"),
+                             rs.getInt("trangthai"),
+                             rs.getInt("luong"));
                 }
-            }
-            catch(Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
-            }  
+            }
         }
         return nv;
     }
-    
+
     public TaiKhoan getTaiKhoan() {
         return taikhoan;
     }
-     
+
     public Integer getManhanvien() {
         return manhanvien.getValue();
     }
@@ -300,7 +319,6 @@ public class NhanVien {
         return ngaysinh;
     }
 
-   
     public String getCmnd() {
         return cmnd.getValue();
     }
@@ -344,6 +362,5 @@ public class NhanVien {
     public void setLuong(IntegerProperty luong) {
         this.luong = luong;
     }
-    
-   
+
 }
