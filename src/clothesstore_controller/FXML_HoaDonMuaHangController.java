@@ -34,6 +34,8 @@ import javafx.stage.WindowEvent;
 import javafx.util.StringConverter;
 import clothesstore_model.NhaCungCap;
 import clothesstore_model.HoaDonMuaHang;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.property.ReadOnlyObjectWrapper;
@@ -74,18 +76,37 @@ public class FXML_HoaDonMuaHangController implements Initializable {
     public int getmaphieunhap;
     private int manhacungcap;
     private HoaDonMuaHang hdmuahang;
-
+    private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
+        FormatDate();
         InitTableViewPhieuNhap();
         InitCmbNCC();
         datengaynhap.setValue(LocalDate.now());
     }
+    private void FormatDate() {
+        datengaynhap.setConverter(new StringConverter<LocalDate>() {
+            @Override
+            public String toString(LocalDate localDate) {
+                if (localDate == null) {
+                    return "";
+                }
+                return dateTimeFormatter.format(localDate);
+            }
 
+            @Override
+            public LocalDate fromString(String dateString) {
+                if (dateString == null || dateString.trim().isEmpty()) {
+                    return null;
+                }
+                return LocalDate.parse(dateString, dateTimeFormatter);
+            }
+        });
+    }
     @FXML
     private void Handler_btnnhacungcap(ActionEvent event) {
         cbnhacungcap.getSelectionModel().selectedItemProperty().removeListener(listenerNCC);
@@ -328,7 +349,12 @@ public class FXML_HoaDonMuaHangController implements Initializable {
         HoaDonMuaHang pn = new HoaDonMuaHang();
         ObservableList<HoaDonMuaHang> list = pn.getListPhieuNhap();
         clmaphieunhap.setCellValueFactory(new PropertyValueFactory("mahoadonmuahang"));
-        clngaynhap.setCellValueFactory(new PropertyValueFactory("ngaynhap"));
+        clngaynhap.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<HoaDonMuaHang, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<HoaDonMuaHang, String> param) {
+                return new ReadOnlyObjectWrapper(new SimpleDateFormat("dd-MM-yyyy").format(param.getValue().getNgaynhap()));
+            }
+        });
         clnhacungcap.setCellValueFactory(new PropertyValueFactory("tencungcap"));
         cltongtien.setCellValueFactory(new PropertyValueFactory("tongtien"));
         cltongtien.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<HoaDonMuaHang, String>, ObservableValue<String>>() {
@@ -336,7 +362,6 @@ public class FXML_HoaDonMuaHangController implements Initializable {
             public ObservableValue<String> call(TableColumn.CellDataFeatures<HoaDonMuaHang, String> param) {
                 return new ReadOnlyObjectWrapper(FormatTien(param.getValue().getTongtien()));
             }
-
         });
         tableviewphieunhap.setItems(list);
         tableviewphieunhap.setPlaceholder(new Label("Không tìm thấy phiếu nhập"));

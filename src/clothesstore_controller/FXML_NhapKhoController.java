@@ -5,7 +5,6 @@
  */
 package clothesstore_controller;
 
-import clothesstore_model.ChiTietDoiTra;
 import clothesstore_model.ChiTietHoaDonMuaHang;
 import clothesstore_model.NhapKho;
 import clothesstore_model.HoaDonMuaHang;
@@ -14,6 +13,9 @@ import com.jfoenix.controls.JFXDatePicker;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -42,6 +44,7 @@ import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 import javafx.util.Callback;
 import javafx.util.Duration;
+import javafx.util.StringConverter;
 import tray.notification.NotificationType;
 import tray.notification.TrayNotification;
 
@@ -71,7 +74,7 @@ public class FXML_NhapKhoController implements Initializable {
     public static int MAPN;
     private Date selectedDate = null;
     private boolean flag = false;
-
+    private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     /**
      * Initializes the controller class.
      */
@@ -80,9 +83,30 @@ public class FXML_NhapKhoController implements Initializable {
         // TODO
         HoaDonMuaHang pn = new HoaDonMuaHang();
         ObservableList<HoaDonMuaHang> list = pn.getListPhieuNhap();
+        FormatDate();
         InitTableViewPhieuNhap(list);
         InitCMB();
         tableviewchitietphieunhap.setPlaceholder(new Label("Chọn vào phiếu nhập ở bảng trên để nhập kho"));
+    }
+
+    private void FormatDate() {
+        dtpFilter.setConverter(new StringConverter<LocalDate>() {
+            @Override
+            public String toString(LocalDate localDate) {
+                if (localDate == null) {
+                    return "";
+                }
+                return dateTimeFormatter.format(localDate);
+            }
+
+            @Override
+            public LocalDate fromString(String dateString) {
+                if (dateString == null || dateString.trim().isEmpty()) {
+                    return null;
+                }
+                return LocalDate.parse(dateString, dateTimeFormatter);
+            }
+        });
     }
 
     private String FormatTien(int soTien) {
@@ -118,7 +142,12 @@ public class FXML_NhapKhoController implements Initializable {
 
     private void InitTableViewPhieuNhap(ObservableList<HoaDonMuaHang> list) {
         clmaphieunhap.setCellValueFactory(new PropertyValueFactory("mahoadonmuahang"));
-        clngaynhap.setCellValueFactory(new PropertyValueFactory("ngaynhap"));
+        clngaynhap.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<HoaDonMuaHang, Integer>, ObservableValue<Integer>>() {
+            @Override
+            public ObservableValue<Integer> call(TableColumn.CellDataFeatures<HoaDonMuaHang, Integer> p) {
+                return new ReadOnlyObjectWrapper(new SimpleDateFormat("dd-MM-yyyy").format(p.getValue().getNgaynhap()));
+            }
+        });
         clnhacungcap.setCellValueFactory(new PropertyValueFactory("tencungcap"));
         //cltongtien.setCellValueFactory(new PropertyValueFactory("tongtien"));
         cltongtien.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<HoaDonMuaHang, Integer>, ObservableValue<Integer>>() {

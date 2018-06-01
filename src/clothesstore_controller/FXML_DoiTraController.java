@@ -17,7 +17,9 @@ import java.net.URL;
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -44,6 +46,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Callback;
+import javafx.util.StringConverter;
 import org.controlsfx.control.textfield.TextFields;
 
 /**
@@ -83,10 +86,10 @@ public class FXML_DoiTraController implements Initializable {
     @FXML
     private Label lb1, lb2, lb3;
 
-    private int total1 = 0, total2 = 0, total = 0;
+    private int total1 = 0, total2 = 0;
     public static Stage stageDoiTra_Create;
     public static int mahd;
-
+    private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
@@ -95,12 +98,67 @@ public class FXML_DoiTraController implements Initializable {
         initTableHangDoiTra();
         initTableHangThayThe();
         initTextFieldSearch();
+        FormatDate();
         tblChiTietHoaDon.setPlaceholder(new Label("Chọn hoá đơn để xem chi tiết"));
        
   
     }
 
     private Date selectedDateFrom, selectedDateTo, selectedDate;
+
+    private void FormatDate() {
+        dtpFrom.setConverter(new StringConverter<LocalDate>() {
+            @Override
+            public String toString(LocalDate localDate) {
+                if (localDate == null) {
+                    return "";
+                }
+                return dateTimeFormatter.format(localDate);
+            }
+
+            @Override
+            public LocalDate fromString(String dateString) {
+                if (dateString == null || dateString.trim().isEmpty()) {
+                    return null;
+                }
+                return LocalDate.parse(dateString, dateTimeFormatter);
+            }
+        });
+        dtpTo.setConverter(new StringConverter<LocalDate>() {
+            @Override
+            public String toString(LocalDate localDate) {
+                if (localDate == null) {
+                    return "";
+                }
+                return dateTimeFormatter.format(localDate);
+            }
+
+            @Override
+            public LocalDate fromString(String dateString) {
+                if (dateString == null || dateString.trim().isEmpty()) {
+                    return null;
+                }
+                return LocalDate.parse(dateString, dateTimeFormatter);
+            }
+        });
+        dtpNgay.setConverter(new StringConverter<LocalDate>() {
+            @Override
+            public String toString(LocalDate localDate) {
+                if (localDate == null) {
+                    return "";
+                }
+                return dateTimeFormatter.format(localDate);
+            }
+
+            @Override
+            public LocalDate fromString(String dateString) {
+                if (dateString == null || dateString.trim().isEmpty()) {
+                    return null;
+                }
+                return LocalDate.parse(dateString, dateTimeFormatter);
+            }
+        });
+    }
 
     private String FormatTien(int soTien) {
         return String.format("%,8d%n", soTien).trim();
@@ -181,9 +239,10 @@ public class FXML_DoiTraController implements Initializable {
         clNgayBan.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<HoaDon, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TableColumn.CellDataFeatures<HoaDon, String> p) {
-                return new ReadOnlyObjectWrapper(p.getValue().getNgayban());
+                return new ReadOnlyObjectWrapper(new SimpleDateFormat("dd-MM-yyyy").format(p.getValue().getNgayban()));
             }
         });
+
         clTongTien.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<HoaDon, Integer>, ObservableValue<Integer>>() {
             @Override
             public ObservableValue<Integer> call(TableColumn.CellDataFeatures<HoaDon, Integer> p) {
@@ -270,9 +329,10 @@ public class FXML_DoiTraController implements Initializable {
         _clNgayDoiTra.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<DoiTra, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TableColumn.CellDataFeatures<DoiTra, String> p) {
-                return new ReadOnlyObjectWrapper(p.getValue().getNgaytra());
+                return new ReadOnlyObjectWrapper(new SimpleDateFormat("dd-MM-yyyy").format(p.getValue().getNgaytra()));
             }
         });
+
         _clLyDo.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<DoiTra, Integer>, ObservableValue<Integer>>() {
             @Override
             public ObservableValue<Integer> call(TableColumn.CellDataFeatures<DoiTra, Integer> p) {

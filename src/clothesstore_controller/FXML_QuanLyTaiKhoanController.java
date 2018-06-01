@@ -14,7 +14,9 @@ import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.beans.property.ReadOnlyObjectWrapper;
@@ -41,6 +43,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.util.Duration;
+import javafx.util.StringConverter;
 import tray.notification.NotificationType;
 import tray.notification.TrayNotification;
 
@@ -79,7 +82,7 @@ public class FXML_QuanLyTaiKhoanController implements Initializable {
     private TableColumn tennhanvien, diachi, gioitinh, cmnd, ngaysinh, luong, trangthai, tentaikhoan, matkhau, manhanvien;
 
     public static AnchorPane _QLNVpane;
-
+    private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private NhanVien nhanvien;
     private int flag = -1; // 0->Sua, 1->Them
 
@@ -89,7 +92,7 @@ public class FXML_QuanLyTaiKhoanController implements Initializable {
         _QLNVpane = QLNVpane;
         InitTableView();
         InitCmb();
-
+        FormatDate();
         txtLuong.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue,
@@ -100,6 +103,26 @@ public class FXML_QuanLyTaiKhoanController implements Initializable {
                 if (newValue.length() >= 9) {
                     ((StringProperty) observable).setValue(oldValue); // limit input
                 }
+            }
+        });
+    }
+
+    private void FormatDate() {
+        dpNgaySinh.setConverter(new StringConverter<LocalDate>() {
+            @Override
+            public String toString(LocalDate localDate) {
+                if (localDate == null) {
+                    return "";
+                }
+                return dateTimeFormatter.format(localDate);
+            }
+
+            @Override
+            public LocalDate fromString(String dateString) {
+                if (dateString == null || dateString.trim().isEmpty()) {
+                    return null;
+                }
+                return LocalDate.parse(dateString, dateTimeFormatter);
             }
         });
     }
@@ -216,7 +239,12 @@ public class FXML_QuanLyTaiKhoanController implements Initializable {
         tennhanvien.setCellValueFactory(new PropertyValueFactory("tennhanvien"));
         diachi.setCellValueFactory(new PropertyValueFactory("diachi"));
         cmnd.setCellValueFactory(new PropertyValueFactory("cmnd"));
-        ngaysinh.setCellValueFactory(new PropertyValueFactory("ngaysinh"));
+        ngaysinh.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<NhanVien, Integer>, ObservableValue<Integer>>() {
+            @Override
+            public ObservableValue<Integer> call(TableColumn.CellDataFeatures<NhanVien, Integer> p) {
+                return new ReadOnlyObjectWrapper(new SimpleDateFormat("dd-MM-yyyy").format(p.getValue().getNgaysinh()));
+            }
+        });
 
         luong.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<NhanVien, Integer>, ObservableValue<Integer>>() {
             @Override
