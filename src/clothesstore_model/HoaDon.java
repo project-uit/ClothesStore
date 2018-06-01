@@ -274,7 +274,7 @@ public class HoaDon {
             para.put("diachi", ch.getDiachi().get());
             para.put("sodienthoai", ch.getSodienthoai().get());
             para.put("email", ch.getEmail().get());
-            para.put("tongtien", "" + tongtien.get());
+            para.put("tongtien", "" + String.format("%,8d%n", tongtien.get()).trim());
             ChiTietHoaDon cthd = new ChiTietHoaDon();
             cthd.setMahoadon(mahoadon);
             ObservableList<ObservableList> data = cthd.getListCTHD();
@@ -283,13 +283,13 @@ public class HoaDon {
                 HashMap<String, Object> paras = new HashMap<>();
                 String tensp = data.get(i).toString().split(",")[0].substring(1);
                 String soluong = data.get(i).toString().split(",")[1].substring(1);
-                String giaban = data.get(i).toString().split(",")[2].substring(1);
+                String giaban = data.get(i).toString().split(",")[2].substring(1).trim();
                 int n = data.get(i).toString().split(",")[3].length();
-                String thanhtien = data.get(i).toString().split(",")[3].substring(1, n - 1);
+                String thanhtien = data.get(i).toString().split(",")[3].substring(1, n - 1).trim();
                 paras.put("tensp", tensp);
                 paras.put("soluong", soluong);
-                paras.put("giaban", giaban);
-                paras.put("thanhtien", thanhtien);
+                paras.put("giaban",String.format("%,8d%n", Integer.valueOf(giaban)));
+                paras.put("thanhtien", String.format("%,8d%n", Integer.valueOf(thanhtien)));
                 list.add(paras);
             }
 

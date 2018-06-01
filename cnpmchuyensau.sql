@@ -60,7 +60,7 @@ FOREIGN KEY (tennhasanxuat)
 REFERENCES nhasanxuat(tennhasanxuat),
 FOREIGN KEY (tennhomhang)
 REFERENCES nhomhang(tennhomhang),
-ghichu nvarchar(50),
+ghichu nvarchar(100),
 giaban INT,
 tonkhotoithieu int,
 tonkhotoida int,
@@ -99,7 +99,7 @@ DELIMITER ;
 create table mausac
 (
 tenmau nvarchar(30) Collate utf8_unicode_ci primary key,
-trangthai int
+trangthai int(2)
 );
 insert into mausac
 values ('Xanh dương',1);
@@ -109,8 +109,8 @@ insert into mausac
 values ('Đỏ',1);
 create table size
 (
-tensize char(5) primary key,
-trangthai int
+tensize char(8) primary key,
+trangthai int(2)
 );
 insert into size
 values ('S',1);
@@ -178,12 +178,12 @@ machitietnhapkho int (6) unsigned auto_increment  PRIMARY KEY,
 manhapkho  int(6) unsigned,
 machitietsanpham varchar(45),
 soluong int,
-
 FOREIGN KEY (machitietsanpham)
 REFERENCES chitietsanpham(machitietsanpham),
 FOREIGN KEY (manhapkho)
 REFERENCES nhapkho(manhapkho)
 );
+
 create table hoadon
 (
 mahoadon   INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -206,6 +206,7 @@ REFERENCES chitietsanpham(machitietsanpham),
 soluongmua int,
 thanhtien int
 );
+
 create table khachhang
 (
 sodienthoai char(15) PRIMARY KEY,
@@ -213,9 +214,9 @@ tenkhachhang nvarchar(50)
 );
 
 insert into khachhang
-values ('0909478','Hope');
+values ('0909478325','Hope');
 insert into khachhang
-values ('0905678','Hand');
+values ('0905678456','Hand');
 
 create table chitietkhachhang
 (
@@ -497,3 +498,8 @@ ctsp.tenmau,ctsp.gioitinh, ctsp.tensize,ctsp.soluong,sp.giaban
 from sanpham sp 
 join chitietsanpham ctsp on sp.masanpham = ctsp.masanpham 
 where ctsp.soluong >=0;
+
+select sum(thanhtien)           
+from chitiethoadon 
+where mahoadon = 19;
+

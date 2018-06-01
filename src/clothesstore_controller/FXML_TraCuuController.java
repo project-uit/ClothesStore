@@ -75,19 +75,21 @@ public class FXML_TraCuuController implements Initializable {
             giaban_max = "and sp.giaban<=",
             masanpham = "and sp.masanpham=";
     private String masp;
+    private double height;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-
+        height = table_view.getPrefHeight();
         titledPane.setExpanded(false);
         //titledPane.widthProperty().addListener( ( observable, oldValue, newValue ) -> table_view.setLayoutX(newValue.doubleValue() ) );
         titledPane.expandedProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue) {
-                table_view.setLayoutY(table_view.getLayoutY() + titledPane.getHeight() - 10);
-
+                table_view.setLayoutY(table_view.getLayoutY() + titledPane.getHeight() - 30);
+                table_view.setPrefHeight(height - titledPane.getHeight()+35);
             } else {
-                table_view.setLayoutY(table_view.getLayoutY() - titledPane.getHeight() + 10);
+                table_view.setLayoutY(table_view.getLayoutY() - titledPane.getHeight() + 30);
+                table_view.setPrefHeight(height);
             }
         });
 
@@ -126,23 +128,8 @@ public class FXML_TraCuuController implements Initializable {
         });
         initTextField();
         ContextMenu();
-//        Pagination pagination = new Pagination
-//        ((tracuu.filterList_sanpham(query.trim()).size() / rowsPerPage + 1), 0);
-//        pagination.setPageFactory(this::createPage);
 
     }
-//    private final static int dataSize = 10_023;
-//    private final static int rowsPerPage = 1000;
-//
-//    private Node createPage(int pageIndex) {
-//
-//        TraCuu tracuu = new TraCuu();
-//
-//        int fromIndex = pageIndex * rowsPerPage;
-//        int toIndex = Math.min(fromIndex + rowsPerPage, tracuu.filterList_sanpham(query.trim()).size());
-//        table_view.setItems(FXCollections.observableArrayList(tracuu.filterList_sanpham(query.trim()).subList(fromIndex, toIndex)));
-//        return new BorderPane(table_view);
-//    }
 
     private void ContextMenu() {
         ContextMenu context = new ContextMenu();
@@ -164,9 +151,7 @@ public class FXML_TraCuuController implements Initializable {
                             viewListTable();
                         }
                     } catch (NumberFormatException ex) {
-
                     }
-
                 });
             }
         });
@@ -446,9 +431,7 @@ public class FXML_TraCuuController implements Initializable {
                     }
                 });
             }
-
             table_view.getColumns().addAll(col);
-
         }
         table_view.getColumns().get(0).setText("Mã sản phẩm");
         table_view.getColumns().get(1).setText("Tên sản phẩm");

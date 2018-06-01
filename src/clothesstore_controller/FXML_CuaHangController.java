@@ -16,6 +16,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.util.Duration;
+import tray.animations.AnimationType;
+import tray.notification.NotificationType;
+import tray.notification.TrayNotification;
 
 /**
  * FXML Controller class
@@ -54,13 +58,15 @@ public class FXML_CuaHangController implements Initializable {
                 new SimpleStringProperty(txt_fi_sodienthoai.getText()),
                 new SimpleStringProperty(txt_fi_email.getText()));
         if (ch.update()) {
-            ShowMessage
-                    .showMessageBox(Alert.AlertType.INFORMATION, "Thông báo", null, "Lưu thành công")
-                    .showAndWait();
+            TrayNotification tray = new TrayNotification("Thông báo",
+                    "Lưu thành công", NotificationType.SUCCESS);
+            tray.setAnimationType(AnimationType.POPUP);
+            tray.showAndDismiss(Duration.seconds(1.5));
         } else {
-            ShowMessage
-                    .showMessageBox(Alert.AlertType.ERROR, "Thông báo", null, "Lưu thất bại")
-                    .showAndWait();
+            TrayNotification tray = new TrayNotification("Thông báo",
+                    "Lưu thất bại", NotificationType.ERROR);
+            tray.setAnimationType(AnimationType.POPUP);
+            tray.showAndDismiss(Duration.seconds(1.5));
         }
     }
 

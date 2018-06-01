@@ -43,7 +43,11 @@ import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import javafx.util.Duration;
 import javafx.util.StringConverter;
+import tray.animations.AnimationType;
+import tray.notification.NotificationType;
+import tray.notification.TrayNotification;
 
 /**
  * FXML Controller class
@@ -92,17 +96,17 @@ public class FXML_ChiTietSanPhamController implements Initializable {
 
                 if (table_view.getSelectionModel().getSelectedItem() != null) {
                     btnXoa.setDisable(false);
-                    
+
                     String mactsp = newValue.toString().split(",")[0].substring(1).trim();
                     txt_fi_machitietsanpham.setText(mactsp);
                     StringProperty temp
                             = new SimpleStringProperty(newValue.toString().split(",")[1].substring(1).trim());
                     Size size = new Size(temp);
                     cmb_size.getSelectionModel().select(size);
-                    
-                    temp = new SimpleStringProperty(newValue.toString().split(",")[2].substring(1).trim());               
+
+                    temp = new SimpleStringProperty(newValue.toString().split(",")[2].substring(1).trim());
                     cmb_mausac.getSelectionModel().select(temp.get());
-                   // temp = new SimpleStringProperty(newValue.toString().split(",")[3].split("]")[0]); 
+                    // temp = new SimpleStringProperty(newValue.toString().split(",")[3].split("]")[0]); 
                     String gioitinh = newValue.toString().split(",")[3].split("]")[0].trim();
                     cmb_gioitinh.getSelectionModel().select(gioitinh);
                 }
@@ -276,9 +280,9 @@ public class FXML_ChiTietSanPhamController implements Initializable {
         }
         if (chitietsanpham.insert() == 1) {
             viewListTable();
-            ShowMessage
-                    .showMessageBox(Alert.AlertType.INFORMATION, "Thông báo", null, "Thêm dữ liệu thành công")
-                    .showAndWait();
+            TrayNotification tray = new TrayNotification("Thông báo",
+                    "Thêm dữ liệu thành công", NotificationType.SUCCESS);
+            tray.showAndDismiss(Duration.seconds(1.5));
         } else if (chitietsanpham.insert() == 2) {
             btnHuy.setVisible(false);
             btnDongy.setVisible(false);
@@ -292,13 +296,16 @@ public class FXML_ChiTietSanPhamController implements Initializable {
                     break;
                 }
             }
-            ShowMessage
-                    .showMessageBox(Alert.AlertType.WARNING, "Thông báo", null, "Chi tiết sản phẩm đã tồn tại!")
-                    .showAndWait();
+
+            TrayNotification tray = new TrayNotification("Thông báo",
+                    "Chi tiết sản phẩm đã tồn tại!", NotificationType.WARNING);
+            tray.setAnimationType(AnimationType.POPUP);
+            tray.showAndDismiss(Duration.seconds(1.5));
         } else {
-            ShowMessage
-                    .showMessageBox(Alert.AlertType.INFORMATION, "Thông báo", null, "Thêm dữ liệu thất bại")
-                    .showAndWait();
+            TrayNotification tray = new TrayNotification("Thông báo",
+                    "Thêm dữ liệu thất bại", NotificationType.ERROR);
+            tray.setAnimationType(AnimationType.POPUP);
+            tray.showAndDismiss(Duration.seconds(1.5));
         }
     }
 
@@ -307,14 +314,15 @@ public class FXML_ChiTietSanPhamController implements Initializable {
         ChiTietSanPham ctsp = new ChiTietSanPham(mactsp);
         if (ctsp.delete()) {
             viewListTable();
-            ShowMessage
-                    .showMessageBox(Alert.AlertType.INFORMATION, "Thông báo", null, "Xóa dữ liệu thành công")
-                    .showAndWait();
-
+            TrayNotification tray = new TrayNotification("Thông báo",
+                    "Xóa dữ liệu thành công", NotificationType.SUCCESS);
+            tray.setAnimationType(AnimationType.POPUP);
+            tray.showAndDismiss(Duration.seconds(1.5));
         } else {
-            ShowMessage
-                    .showMessageBox(Alert.AlertType.ERROR, "Thông báo", null, "Xóa dữ liệu thất bại")
-                    .showAndWait();
+            TrayNotification tray = new TrayNotification("Thông báo",
+                    "Xóa dữ liệu thất bại", NotificationType.ERROR);
+            tray.setAnimationType(AnimationType.POPUP);
+            tray.showAndDismiss(Duration.seconds(1.5));
         }
     }
 

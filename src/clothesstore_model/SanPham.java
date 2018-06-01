@@ -408,7 +408,7 @@ public class SanPham extends RecursiveTreeObject<SanPham> {
         String masp = mactsp.substring(0, 8);
         if (con != null) {
             try {
-                String sql = "SELECT giaban FROM sanpham where masanpham = ?";
+                String sql = "SELECT giaban FROM sanpham where masanpham = ? and giaban > 0";
                 PreparedStatement ptm = con.prepareStatement(sql);
                 ptm.setString(1, masp);
                 ResultSet rs = ptm.executeQuery();

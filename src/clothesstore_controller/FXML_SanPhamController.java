@@ -58,6 +58,7 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javax.management.Notification;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import tray.animations.AnimationType;
 import tray.notification.NotificationType;
 
 import tray.notification.TrayNotification;
@@ -375,7 +376,8 @@ public class FXML_SanPhamController implements Initializable {
                 || txt_fi_tonkhotoida.getText().isEmpty() || txt_fi_thoihantonkho.getText().isEmpty()) {
             TrayNotification tray = new TrayNotification("Thông báo",
                     "Bạn phải điền đẩy đủ thông tin bắt buộc", NotificationType.WARNING);
-            tray.showAndDismiss(Duration.seconds(2));
+            tray.setAnimationType(AnimationType.POPUP);
+            tray.showAndDismiss(Duration.seconds(1.5));
             return;
         }
         IntegerProperty tonkhotoithieu = new SimpleIntegerProperty(Integer.valueOf(txt_fi_tonkhotoithieu.getText()));
@@ -384,7 +386,8 @@ public class FXML_SanPhamController implements Initializable {
 
             TrayNotification tray = new TrayNotification("Thông báo",
                     "Tồn kho tối thiểu phải nhỏ hơn tồn kho tối đa", NotificationType.WARNING);
-            tray.showAndDismiss(Duration.seconds(2));
+            tray.setAnimationType(AnimationType.POPUP);
+            tray.showAndDismiss(Duration.seconds(1.5));
             return;
         }
         sanpham.setTonkhotoithieu(tonkhotoithieu);
@@ -397,12 +400,13 @@ public class FXML_SanPhamController implements Initializable {
 
             TrayNotification tray = new TrayNotification("Thông báo",
                     "Thêm dữ liệu thành công", NotificationType.SUCCESS);
-            tray.showAndWait();
-
+            tray.setAnimationType(AnimationType.POPUP);
+            tray.showAndDismiss(Duration.seconds(1.5));
         } else {
             TrayNotification tray = new TrayNotification("Thông báo",
                     "Thêm dữ liệu thất bại", NotificationType.ERROR);
-            tray.showAndWait();
+            tray.setAnimationType(AnimationType.POPUP);
+            tray.showAndDismiss(Duration.seconds(1.5));
         }
     }
 
@@ -414,17 +418,20 @@ public class FXML_SanPhamController implements Initializable {
 
             TrayNotification tray = new TrayNotification("Thông báo",
                     "Xóa dữ liệu thành công", NotificationType.SUCCESS);
-            tray.showAndWait();
+            tray.setAnimationType(AnimationType.POPUP);
+            tray.showAndDismiss(Duration.seconds(1.5));
 
         } else if (sanpham.delete() == 2) {
 
             TrayNotification tray = new TrayNotification("Thông báo",
                     "Sản phẩm đã nhập vào kho.\n Bạn không thể xóa!", NotificationType.WARNING);
-            tray.showAndWait();
+            tray.setAnimationType(AnimationType.POPUP);
+            tray.showAndDismiss(Duration.seconds(1.5));
         } else {
             TrayNotification tray = new TrayNotification("Thông báo",
                     "Xóa dữ liệu thất bại", NotificationType.ERROR);
-            tray.showAndWait();
+            tray.setAnimationType(AnimationType.POPUP);
+            tray.showAndDismiss(Duration.seconds(1.5));
         }
     }
 
@@ -443,12 +450,13 @@ public class FXML_SanPhamController implements Initializable {
             viewListTable();
             TrayNotification tray = new TrayNotification("Thông báo",
                     "Cập nhật dữ liệu thành công", NotificationType.SUCCESS);
-            tray.showAndWait();
-
+            tray.setAnimationType(AnimationType.POPUP);
+            tray.showAndDismiss(Duration.seconds(1.5));
         } else {
             TrayNotification tray = new TrayNotification("Thông báo",
                     "Cập nhật dữ liệu thất bại", NotificationType.ERROR);
-            tray.showAndWait();
+            tray.setAnimationType(AnimationType.POPUP);
+            tray.showAndDismiss(Duration.seconds(1.5));
         }
     }
 
@@ -571,7 +579,6 @@ public class FXML_SanPhamController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
         // TODO
         NhaSanXuat tennsx = new NhaSanXuat();
         tennsx.getNSXList(cmb_nhasanxuat);
@@ -587,6 +594,42 @@ public class FXML_SanPhamController implements Initializable {
         OnlyNumberInTextField(txt_fi_tonkhotoida);
         OnlyNumberInTextField(txt_fi_tonkhotoithieu);
         OnlyNumberInTextField(txt_fi_thoihantonkho);
+        txt_fi_tensanpham.setOnKeyTyped(event -> {
+            int maxCharacters = 30;
+            if (txt_fi_tensanpham.getText().length() > maxCharacters - 1) {
+                event.consume();
+            }
+        });
+        txt_fi_tonkhotoida.setOnKeyTyped(event -> {
+            int maxCharacters = 10;
+            if (txt_fi_tonkhotoida.getText().length() > maxCharacters - 1) {
+                event.consume();
+            }
+        });
+        txt_fi_tonkhotoithieu.setOnKeyTyped(event -> {
+            int maxCharacters = 10;
+            if (txt_fi_tonkhotoithieu.getText().length() > maxCharacters - 1) {
+                event.consume();
+            }
+        });
+        txt_fi_thoihantonkho.setOnKeyTyped(event -> {
+            int maxCharacters = 10;
+            if (txt_fi_thoihantonkho.getText().length() > maxCharacters - 1) {
+                event.consume();
+            }
+        });
+        txt_area_ghichu.setOnKeyTyped(event -> {
+            int maxCharacters = 100;
+            if (txt_area_ghichu.getText().length() > maxCharacters - 1) {
+                event.consume();
+            }
+        });
+        txt_fi_masanpham.setOnKeyTyped(event -> {
+            int maxCharacters = 8;
+            if (txt_fi_masanpham.getText().length() > maxCharacters - 1) {
+                event.consume();
+            }
+        });
     }
 
 }
