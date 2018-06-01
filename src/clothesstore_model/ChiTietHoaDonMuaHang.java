@@ -103,8 +103,8 @@ public class ChiTietHoaDonMuaHang {
         return tensanpham.getValue();
     }
 
-    public IntegerProperty getGiaban() {
-        return giaban;
+    public int getGiaban() {
+        return giaban.get();
     }
 
     public void setGiaban(IntegerProperty giaban) {
@@ -193,7 +193,7 @@ public class ChiTietHoaDonMuaHang {
 
                 ptm.setString(1, masanpham.getValue());
                 ptm.setInt(2, mahoadonmuahang.getValue());
-                ptm.setInt(3, Integer.valueOf(soluongsanphamnhap.getValue()));
+                ptm.setInt(3, soluongsanphamnhap.getValue());
                 ptm.setInt(4, giavon.getValue());
                 ptm.setInt(5, thanhtien.getValue());
                 ptm.setInt(6, machitiethoadonmuahang.getValue());

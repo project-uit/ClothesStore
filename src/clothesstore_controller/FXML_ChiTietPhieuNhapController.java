@@ -27,14 +27,12 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Alert;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Callback;
 import javafx.util.Duration;
-import org.controlsfx.control.Notifications;
 import tray.notification.NotificationType;
 import tray.notification.TrayNotification;
 
@@ -144,7 +142,7 @@ public class FXML_ChiTietPhieuNhapController implements Initializable {
         clGiaBan.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ChiTietHoaDonMuaHang, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TableColumn.CellDataFeatures<ChiTietHoaDonMuaHang, String> p) {
-                return new ReadOnlyObjectWrapper(FormatTien(Integer.valueOf(p.getValue().getGiaban().get())));
+                return new ReadOnlyObjectWrapper(FormatTien(p.getValue().getGiaban()));
             }
         });
         clGiaBan.setCellFactory(new Callback<TableColumn<ChiTietHoaDonMuaHang, String>, TableCell<ChiTietHoaDonMuaHang, String>>() {
@@ -241,6 +239,7 @@ public class FXML_ChiTietPhieuNhapController implements Initializable {
                                 ((ChiTietHoaDonMuaHang) t.getTableView().getItems().get(
                                         t.getTablePosition().getRow())).setGiaban(
                                         new SimpleIntegerProperty(Integer.valueOf(t.getNewValue().trim())));
+                                tblCTPN.refresh();
                             } catch (NumberFormatException ex) {
                                 String msp = ((ChiTietHoaDonMuaHang) t.getTableView().getItems().get(
                                         t.getTablePosition().getRow())).getMasanpham();
@@ -276,7 +275,7 @@ public class FXML_ChiTietPhieuNhapController implements Initializable {
                 break;
             }
             try {
-                int gb = o.getGiaban().get();
+                int gb = o.getGiaban();
                 if (gb <= 0) {
                     flag = false;
                     tblCTPN.getSelectionModel().select(o);
@@ -301,7 +300,7 @@ public class FXML_ChiTietPhieuNhapController implements Initializable {
                 int sl = tblCTPN.getItems().get(i).getSoluongsanphamnhap();
                 int gv = tblCTPN.getItems().get(i).getGiavon();
                 int tt = tblCTPN.getItems().get(i).getThanhtien();
-                int gb = tblCTPN.getItems().get(i).getGiaban().get();
+                int gb = tblCTPN.getItems().get(i).getGiaban();
                 ChiTietHoaDonMuaHang ctpn = new ChiTietHoaDonMuaHang(msp, mapn, sl, gv, tt);
                 if (ctpn.ThemChiTietPhieuNhap()) {
                     ctpn.CapNhatGiaBanSanPham(msp, gb);

@@ -61,7 +61,12 @@ public class FXML_XemCTPNController implements Initializable {
             }
         });
         clSoLuong.setCellValueFactory(new PropertyValueFactory("soluongsanphamnhap"));
-        clGiaVon.setCellValueFactory(new PropertyValueFactory("giavon")); 
+        clGiaVon.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ChiTietHoaDonMuaHang, Integer>, ObservableValue<Integer>>() {
+            @Override
+            public ObservableValue<Integer> call(TableColumn.CellDataFeatures<ChiTietHoaDonMuaHang, Integer> p) {
+                return new ReadOnlyObjectWrapper(FormatTien(p.getValue().getGiavon()));
+            }
+        });
         tblCTPN.setPlaceholder(new Label("Chưa thêm chi tiết phiếu nhập"));
         tblCTPN.setItems(list);
     }

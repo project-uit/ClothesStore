@@ -5,6 +5,7 @@
  */
 package clothesstore_controller;
 
+import clothesstore_model.ChiTietDoiTra;
 import clothesstore_model.ChiTietHoaDonMuaHang;
 import clothesstore_model.NhapKho;
 import clothesstore_model.HoaDonMuaHang;
@@ -151,8 +152,18 @@ public class FXML_NhapKhoController implements Initializable {
         clsanpham.setCellValueFactory(new PropertyValueFactory("masanpham"));
         cltensanpham.setCellValueFactory(new PropertyValueFactory("tensanpham"));
         clsoluong.setCellValueFactory(new PropertyValueFactory("soluongsanphamnhap"));
-        clgiavon.setCellValueFactory(new PropertyValueFactory("giavon"));
-        clthanhtien.setCellValueFactory(new PropertyValueFactory("thanhtien"));
+        clgiavon.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ChiTietHoaDonMuaHang, Integer>, ObservableValue<Integer>>() {
+            @Override
+            public ObservableValue<Integer> call(TableColumn.CellDataFeatures<ChiTietHoaDonMuaHang, Integer> p) {
+                return new ReadOnlyObjectWrapper(FormatTien(p.getValue().getGiavon()));
+            }
+        });
+        clthanhtien.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ChiTietHoaDonMuaHang, Integer>, ObservableValue<Integer>>() {
+            @Override
+            public ObservableValue<Integer> call(TableColumn.CellDataFeatures<ChiTietHoaDonMuaHang, Integer> p) {
+                return new ReadOnlyObjectWrapper(FormatTien(p.getValue().getThanhtien()));
+            }
+        });
         tableviewchitietphieunhap.setItems(list);
         tableviewchitietphieunhap.setRowFactory(tv -> {
             TableRow<ChiTietHoaDonMuaHang> row = new TableRow<>();
