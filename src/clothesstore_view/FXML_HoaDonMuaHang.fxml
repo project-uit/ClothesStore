@@ -37,12 +37,7 @@
             <JFXComboBox fx:id="cbnhacungcap" layoutX="517.0" layoutY="36.0" prefHeight="25.0" prefWidth="112.0" />
          </children>
       </AnchorPane>
-      <Label layoutX="18.0" layoutY="14.0" opacity="0.4" prefHeight="55.0" prefWidth="313.0" text="Hóa đơn mua hàng" textFill="#0e4ce8">
-         <font>
-            <Font name="System Bold" size="33.0" />
-         </font>
-      </Label>
-      <TableView fx:id="tableviewphieunhap" layoutX="18.0" layoutY="90.0" onContextMenuRequested="#checkAdded" prefHeight="359.0" prefWidth="810.0" style="-fx-border-radius: 5; -fx-border-width: 1; -fx-border-color: #4681f5;" AnchorPane.leftAnchor="18.0" AnchorPane.rightAnchor="17.0" AnchorPane.topAnchor="90.0">
+      <TableView fx:id="tableviewphieunhap" layoutX="18.0" layoutY="56.0" onContextMenuRequested="#checkAdded" prefHeight="393.0" prefWidth="810.0" style="-fx-border-radius: 5; -fx-border-width: 1; -fx-border-color: #4681f5;" AnchorPane.leftAnchor="18.0" AnchorPane.rightAnchor="17.0" AnchorPane.topAnchor="56.0">
          <columns>
             <TableColumn fx:id="clmaphieunhap" prefWidth="163.0" text="Mã hóa đơn mua hàng" />
             <TableColumn fx:id="clnhacungcap" prefWidth="255.0" text="Nhà Cung Cấp" />
@@ -60,5 +55,10 @@
             </ContextMenu>
          </contextMenu>
       </TableView>
+      <Label layoutX="29.0" layoutY="25.0" text="Hóa đơn mua hàng" textFill="#021bf5" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="15.0">
+         <font>
+            <Font size="28.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

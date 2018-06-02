@@ -23,13 +23,13 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <Label layoutX="14.0" layoutY="9.0" text="Chi Tiết Phiếu Nhập" textFill="#1fc1da" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0">
+      <Label layoutX="14.0" layoutY="9.0" text="Chi Tiết Phiếu Nhập" textFill="#021bf5" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="15.0">
          <font>
-            <Font size="29.0" />
+            <Font size="28.0" />
          </font>
       </Label>
       <JFXTextField fx:id="txtmaphieunhap" alignment="TOP_CENTER" disable="true" layoutX="676.0" layoutY="24.0" prefHeight="27.0" prefWidth="151.0" AnchorPane.rightAnchor="20.0" />
-      <Label layoutX="563.0" layoutY="27.0" prefHeight="21.0" prefWidth="113.0" text="Phiếu nhập mã:" textFill="#1bb2d0" AnchorPane.rightAnchor="170.0" AnchorPane.topAnchor="27.0">
+      <Label layoutX="563.0" layoutY="27.0" prefHeight="21.0" prefWidth="113.0" text="Phiếu nhập mã:" textFill="#021bf5" AnchorPane.rightAnchor="170.0" AnchorPane.topAnchor="27.0">
          <font>
             <Font size="15.0" />
          </font>

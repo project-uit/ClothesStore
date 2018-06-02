@@ -35,13 +35,15 @@ public class SidePanelContentController implements Initializable {
     @FXML
     private VBox vbox;
     public static VBox _vbox;
-
     @FXML
     private Label lbUser;
     @FXML
     private Label datetime;
     @FXML
     private Label date1;
+    @FXML
+    private JFXButton btnTongQuan, btnHoaDon, btnReturn, btnHangHoa, btnPhieuNhap, btnNhapKho,
+            btnBieuDo, btnQuanLyTK, btnTraCuu, btnTonKho;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -51,6 +53,20 @@ public class SidePanelContentController implements Initializable {
         date1.setText(time.tanggal());
         _vbox = vbox;
         lbUser.setText("Xin chào " + UserID);
+        btnTongQuan.setStyle("-fx-background-color: #f44242;");
+    }
+
+    private void resetColor() {
+        btnTongQuan.setStyle(null);
+        btnHoaDon.setStyle(null);
+        btnReturn.setStyle(null);
+        btnHangHoa.setStyle(null);
+        btnPhieuNhap.setStyle(null);
+        btnNhapKho.setStyle(null);
+        btnBieuDo.setStyle(null);
+        btnQuanLyTK.setStyle(null);
+        btnTraCuu.setStyle(null);
+        btnTonKho.setStyle(null);
     }
 
     private void bindToTime() {
@@ -62,7 +78,6 @@ public class SidePanelContentController implements Initializable {
                         Calendar time = Calendar.getInstance();
                         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
                         datetime.setText(simpleDateFormat.format(time.getTime()));
-
                     }
                 }
                 ),
@@ -75,7 +90,6 @@ public class SidePanelContentController implements Initializable {
     @FXML
     private void changeTab(ActionEvent event) throws IOException {
         JFXButton btn = (JFXButton) event.getSource();
-        System.out.println(btn.getText());
         FXML_ClothesStoreController.rootP.getChildren().removeAll();
         switch (btn.getId()) {
             case "btnTongQuan":
@@ -85,6 +99,8 @@ public class SidePanelContentController implements Initializable {
                 rootP.setRightAnchor(tongquan, 0.0);
                 rootP.setTopAnchor(tongquan, 0.0);
                 rootP.setBottomAnchor(tongquan, 0.0);
+                resetColor();
+                btnTongQuan.setStyle("-fx-background-color: #f44242;");
                 break;
             case "btnHoaDon":
                 AnchorPane donhang = FXMLLoader.load(getClass().getResource("/clothesstore_view/FXML_HoaDon.fxml"));
@@ -93,6 +109,8 @@ public class SidePanelContentController implements Initializable {
                 rootP.setRightAnchor(donhang, 0.0);
                 rootP.setTopAnchor(donhang, 0.0);
                 rootP.setBottomAnchor(donhang, 0.0);
+                resetColor();
+                btnHoaDon.setStyle("-fx-background-color: #f44242;");
                 break;
             case "btnReturn":
                 AnchorPane DoiTra = FXMLLoader.load(getClass().getResource("/clothesstore_view/FXML_DoiTra.fxml"));
@@ -101,6 +119,8 @@ public class SidePanelContentController implements Initializable {
                 rootP.setRightAnchor(DoiTra, 0.0);
                 rootP.setTopAnchor(DoiTra, 0.0);
                 rootP.setBottomAnchor(DoiTra, 0.0);
+                resetColor();
+                btnReturn.setStyle("-fx-background-color: #f44242;");
                 break;
             case "btnHangHoa":
                 AnchorPane hanghoa = FXMLLoader.load(getClass().getResource("/clothesstore_view/FXML_SanPham.fxml"));
@@ -109,6 +129,8 @@ public class SidePanelContentController implements Initializable {
                 rootP.setRightAnchor(hanghoa, 0.0);
                 rootP.setTopAnchor(hanghoa, 0.0);
                 rootP.setBottomAnchor(hanghoa, 0.0);
+                resetColor();
+                btnHangHoa.setStyle("-fx-background-color: #f44242;");
                 break;
             case "btnPhieuNhap":
                 AnchorPane phieunhap = FXMLLoader.load(getClass().getResource("/clothesstore_view/FXML_HoaDonMuaHang.fxml"));
@@ -117,6 +139,8 @@ public class SidePanelContentController implements Initializable {
                 rootP.setRightAnchor(phieunhap, 0.0);
                 rootP.setTopAnchor(phieunhap, 0.0);
                 rootP.setBottomAnchor(phieunhap, 0.0);
+                resetColor();
+                btnPhieuNhap.setStyle("-fx-background-color: #f44242;");
                 break;
             case "btnNhapKho":
                 AnchorPane nhapkho = FXMLLoader.load(getClass().getResource("/clothesstore_view/FXML_NhapKho.fxml"));
@@ -125,6 +149,8 @@ public class SidePanelContentController implements Initializable {
                 rootP.setRightAnchor(nhapkho, 0.0);
                 rootP.setTopAnchor(nhapkho, 0.0);
                 rootP.setBottomAnchor(nhapkho, 0.0);
+                resetColor();
+                btnNhapKho.setStyle("-fx-background-color: #f44242;");
                 break;
             case "btnBieuDo":
                 AnchorPane thongke = FXMLLoader.load(getClass().getResource("/clothesstore_view/FXML_ThongKe.fxml"));
@@ -133,6 +159,8 @@ public class SidePanelContentController implements Initializable {
                 rootP.setRightAnchor(thongke, 0.0);
                 rootP.setTopAnchor(thongke, 0.0);
                 rootP.setBottomAnchor(thongke, 0.0);
+                resetColor();
+                btnBieuDo.setStyle("-fx-background-color: #f44242;");
                 break;
             case "btnQuanLyTK":
                 AnchorPane QLTK = FXMLLoader.load(getClass().getResource("/clothesstore_view/FXML_QuanLyTaiKhoan.fxml"));
@@ -142,7 +170,8 @@ public class SidePanelContentController implements Initializable {
                 rootP.setRightAnchor(QLTK, 0.0);
                 rootP.setTopAnchor(QLTK, 0.0);
                 rootP.setBottomAnchor(QLTK, 0.0);
-
+                resetColor();
+                btnQuanLyTK.setStyle("-fx-background-color: #f44242;");
                 //rootP.widthProperty().addListener( ( observable, oldValue, newValue ) -> FXML_QuanLyTaiKhoanController._QLNVpane.setPrefWidth( newValue.doubleValue() ) );
                 //rootP.heightProperty().addListener( ( observable, oldValue, newValue ) -> FXML_QuanLyTaiKhoanController._QLNVpane.setPrefHeight( newValue.doubleValue() ) );
                 break;
@@ -166,13 +195,15 @@ public class SidePanelContentController implements Initializable {
                     stageDangNhap.show();
                 }
                 break;
-            case "btnLoiNhuan":
+            case "btnTraCuu":
                 AnchorPane tracuu = FXMLLoader.load(getClass().getResource("/clothesstore_view/FXML_TraCuu.fxml"));
                 FXML_ClothesStoreController.rootP.getChildren().setAll(tracuu);
                 rootP.setLeftAnchor(tracuu, 0.0);
                 rootP.setRightAnchor(tracuu, 0.0);
                 rootP.setTopAnchor(tracuu, 0.0);
                 rootP.setBottomAnchor(tracuu, 0.0);
+                resetColor();
+                btnTraCuu.setStyle("-fx-background-color: #f44242;");
                 break;
             case "btnTonKho":
                 AnchorPane tonkho = FXMLLoader.load(getClass().getResource("/clothesstore_view/FXML_TonKho.fxml"));
@@ -181,6 +212,8 @@ public class SidePanelContentController implements Initializable {
                 rootP.setRightAnchor(tonkho, 0.0);
                 rootP.setTopAnchor(tonkho, 0.0);
                 rootP.setBottomAnchor(tonkho, 0.0);
+                resetColor();
+                btnTonKho.setStyle("-fx-background-color: #f44242;");
                 break;
         }
     }

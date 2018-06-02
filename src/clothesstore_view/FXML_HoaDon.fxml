@@ -10,7 +10,7 @@
 
 <AnchorPane id="AnchorPane" prefHeight="720.0" prefWidth="845.0" style="-fx-background-color: #deeeef;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clothesstore_controller.FXML_HoaDonController">
    <children>
-      <AnchorPane layoutX="14.0" layoutY="401.0" prefHeight="164.0" prefWidth="469.0" style="-fx-border-radius: 5; -fx-border-width: 1; -fx-border-color: #4681f5;" AnchorPane.bottomAnchor="135.0" AnchorPane.leftAnchor="14.0">
+      <AnchorPane layoutX="14.0" layoutY="484.0" prefHeight="164.0" prefWidth="469.0" style="-fx-border-radius: 5; -fx-border-width: 1; -fx-border-color: #4681f5;" AnchorPane.bottomAnchor="72.0" AnchorPane.leftAnchor="14.0">
          <children>
             <Label layoutX="14.0" layoutY="14.0" text="Mã chi tiết sản phẩm">
                <font>
@@ -48,8 +48,8 @@
             </JFXButton>
          </children>
       </AnchorPane>
-      <TableView fx:id="table_view" layoutX="10.0" layoutY="46.0" prefHeight="305.0" prefWidth="826.0" AnchorPane.bottomAnchor="349.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="9.0" AnchorPane.topAnchor="46.0" />
-      <AnchorPane layoutX="14.0" layoutY="379.0" prefHeight="30.0" prefWidth="496.0" AnchorPane.bottomAnchor="311.0" AnchorPane.leftAnchor="14.0">
+      <TableView fx:id="table_view" layoutX="10.0" layoutY="62.0" prefHeight="313.0" prefWidth="825.0" AnchorPane.bottomAnchor="345.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="62.0" />
+      <AnchorPane layoutX="14.0" layoutY="415.0" prefHeight="30.0" prefWidth="496.0" AnchorPane.bottomAnchor="275.0" AnchorPane.leftAnchor="14.0">
          <children>
             <JFXButton fx:id="btnThanhToan" disable="true" layoutX="235.0" onAction="#Click_Event" prefHeight="25.0" prefWidth="98.0" style="-fx-background-color: #4681f5;" text="Thanh toán" textFill="WHITE">
                <font>
@@ -69,22 +69,17 @@
             </JFXButton>
          </children>
       </AnchorPane>
-      <Label layoutX="22.0" layoutY="6.0" opacity="0.4" prefHeight="25.0" prefWidth="137.0" text="Hóa đơn" textFill="#021bf5">
-         <font>
-            <Font name="System Bold" size="28.0" />
-         </font>
-      </Label>
-      <JFXButton fx:id="btnInHoaDon" disable="true" layoutX="496.0" layoutY="379.0" onAction="#Click_Event" prefHeight="30.0" prefWidth="98.0" style="-fx-background-color: #4681f5;" text="In hóa đơn" textFill="WHITE" AnchorPane.bottomAnchor="311.0" AnchorPane.leftAnchor="496.0">
+      <JFXButton fx:id="btnInHoaDon" disable="true" layoutX="496.0" layoutY="415.0" onAction="#Click_Event" prefHeight="30.0" prefWidth="98.0" style="-fx-background-color: #4681f5;" text="In hóa đơn" textFill="WHITE" AnchorPane.bottomAnchor="275.0" AnchorPane.leftAnchor="496.0">
          <font>
             <Font size="14.0" />
          </font>
       </JFXButton>
-      <JFXButton fx:id="btncaidat" layoutX="770.0" layoutY="14.0" onAction="#btncaidat_click" prefHeight="30.0" prefWidth="66.0" style="-fx-background-color: #4681f5;" text="Cài đặt" textFill="WHITE" AnchorPane.rightAnchor="9.0" AnchorPane.topAnchor="14.0">
+      <JFXButton fx:id="btncaidat" layoutX="770.0" layoutY="14.0" onAction="#btncaidat_click" prefHeight="30.0" prefWidth="80.0" style="-fx-background-color: #4681f5;" text="Cài đặt" textFill="WHITE" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
          <font>
             <Font size="14.0" />
          </font>
       </JFXButton>
-      <AnchorPane layoutX="496.0" layoutY="421.0" prefHeight="164.0" prefWidth="342.0" style="-fx-border-radius: 5; -fx-border-width: 1; -fx-border-color: #4681f5;" AnchorPane.bottomAnchor="135.0" AnchorPane.leftAnchor="496.0">
+      <AnchorPane layoutX="496.0" layoutY="484.0" prefHeight="164.0" prefWidth="342.0" style="-fx-border-radius: 5; -fx-border-width: 1; -fx-border-color: #4681f5;" AnchorPane.bottomAnchor="72.0" AnchorPane.leftAnchor="496.0">
          <children>
             <Label layoutX="22.0" layoutY="27.0" text="Số điện thoại">
                <font>
@@ -100,5 +95,10 @@
             <JFXTextField fx:id="txt_fi_tenkhachhang" layoutX="121.0" layoutY="83.0" prefHeight="25.0" prefWidth="188.0" />
          </children>
       </AnchorPane>
+      <Label layoutX="206.0" layoutY="17.0" text="Hóa đơn" textFill="#021bf5" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="15.0">
+         <font>
+            <Font size="28.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

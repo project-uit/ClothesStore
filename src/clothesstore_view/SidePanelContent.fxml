@@ -18,7 +18,7 @@
       </AnchorPane>
       <VBox fx:id="vbox" layoutY="167.0" prefHeight="553.0" prefWidth="235.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="167.0">
          <children>
-            <JFXButton fx:id="btnTongQuan" alignment="BASELINE_LEFT" graphicTextGap="60.0" onAction="#changeTab" prefHeight="36.0" prefWidth="235.0" ripplerFill="#1451d9" text="Tổng quan">
+            <JFXButton fx:id="btnTongQuan" alignment="BASELINE_LEFT" graphicTextGap="60.0" onAction="#changeTab" prefHeight="43.0" prefWidth="235.0" ripplerFill="#1451d9" text="Tổng quan">
                <graphic>
                   <ImageView fitHeight="30.0" fitWidth="41.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -81,11 +81,11 @@
                   </ImageView>
                </graphic>
             </JFXButton>
-            <JFXButton fx:id="btnLoiNhuan" alignment="BASELINE_LEFT" graphicTextGap="60.0" onAction="#changeTab" prefHeight="43.0" prefWidth="235.0" ripplerFill="#1451d9" text="Tra cứu">
+            <JFXButton fx:id="btnTraCuu" alignment="BASELINE_LEFT" graphicTextGap="60.0" onAction="#changeTab" prefHeight="43.0" prefWidth="235.0" ripplerFill="#1451d9" text="Tra cứu">
                <graphic>
                   <ImageView fitHeight="30.0" fitWidth="41.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@img/loinhuan.png" />
+                        <Image url="@img/search.png" />
                      </image>
                   </ImageView>
                </graphic>
@@ -128,7 +128,7 @@
             </JFXButton>
          </children>
       </VBox>
-      <AnchorPane prefHeight="167.0" prefWidth="235.0" style="-fx-background-color: #fff;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <AnchorPane prefHeight="166.0" prefWidth="235.0" style="-fx-background-color: #fff;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <effect>
             <DropShadow />
          </effect>
@@ -143,11 +143,11 @@
                   <Font size="23.0" />
                </font>
             </Label>
-            <Label fx:id="datetime" layoutX="82.0" layoutY="116.0" text="time">
+            <Label fx:id="datetime" layoutX="82.0" layoutY="111.0" text="time">
                <font>
                   <Font size="17.0" />
                </font></Label>
-            <Label fx:id="date1" layoutX="65.0" layoutY="90.0" text="date">
+            <Label fx:id="date1" layoutX="65.0" layoutY="87.0" text="date">
                <font>
                   <Font size="17.0" />
                </font></Label>

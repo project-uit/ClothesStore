@@ -16,7 +16,7 @@
             <Font name="System Bold" size="28.0" />
          </font>
       </Label>
-      <JFXTreeTableView fx:id="tree_table_vi" layoutX="7.0" layoutY="387.0" prefHeight="313.0" prefWidth="838.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="7.0" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="387.0" />
+      <JFXTreeTableView fx:id="tree_table_vi" layoutX="7.0" layoutY="387.0" prefHeight="313.0" prefWidth="838.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="387.0" />
       <AnchorPane layoutX="304.0" layoutY="315.0" onMouseClicked="#OnMouseClick_clearSelectTable" prefHeight="64.0" prefWidth="204.0" style="-fx-border-radius: 5; -fx-border-width: 1;">
          <children>
             <JFXButton fx:id="btnHuy" layoutX="110.0" layoutY="15.0" onAction="#Dongy_huy_clickvent" prefHeight="30.0" prefWidth="80.0" style="-fx-background-color: #4681f5;" text="Hủy" textFill="WHITE" />
