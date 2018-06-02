@@ -18,7 +18,7 @@
       </Label>
       <TableView fx:id="tableviewphieunhap" layoutX="18.0" layoutY="107.0" prefHeight="238.0" prefWidth="586.0" style="-fx-border-radius: 5; -fx-border-width: 1; -fx-border-color: #4681f5; -fx-selection-bar: #426caf;" AnchorPane.leftAnchor="18.0" AnchorPane.rightAnchor="17.0" AnchorPane.topAnchor="107.0">
          <columns>
-            <TableColumn fx:id="clmaphieunhap" prefWidth="163.0" text="Mã Phiếu Nhập" />
+            <TableColumn fx:id="clmaphieunhap" prefWidth="163.0" text="Mã hoá đơn mua hàng" />
             <TableColumn fx:id="clnhacungcap" prefWidth="255.0" text="Nhà Cung Cấp" />
             <TableColumn fx:id="clngaynhap" prefWidth="214.0" text="Ngày Nhập" />
             <TableColumn fx:id="cltongtien" prefWidth="176.0" text="Tổng tiền" />
