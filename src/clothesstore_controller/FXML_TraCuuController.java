@@ -16,6 +16,7 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.beans.property.ReadOnlyObjectWrapper;
@@ -36,6 +37,10 @@ import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.TitledPane;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.util.StringConverter;
 import org.controlsfx.control.textfield.TextFields;
 
@@ -74,7 +79,7 @@ public class FXML_TraCuuController implements Initializable {
             giaban_min = "and sp.giaban>=",
             giaban_max = "and sp.giaban<=",
             masanpham = "and sp.masanpham=";
-    private String masp;
+    public  static String masp;
     private double height;
 
     @Override
@@ -106,6 +111,7 @@ public class FXML_TraCuuController implements Initializable {
                 }
             }
         });
+ 
         table_view.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         btn_search.setOnAction(e -> {
             btn_search_click();
