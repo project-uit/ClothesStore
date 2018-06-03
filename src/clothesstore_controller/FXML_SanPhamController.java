@@ -56,7 +56,6 @@ import javafx.util.Callback;
 import javafx.util.Duration;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-import javax.management.Notification;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import tray.animations.AnimationType;
 import tray.notification.NotificationType;
@@ -222,7 +221,6 @@ public class FXML_SanPhamController implements Initializable {
             } catch (IOException ex) {
                 Logger.getLogger(FXML_SanPhamController.class.getName()).log(Level.SEVERE, null, ex);
             }
-
         }
     }
 
@@ -628,6 +626,34 @@ public class FXML_SanPhamController implements Initializable {
             int maxCharacters = 8;
             if (txt_fi_masanpham.getText().length() > maxCharacters - 1) {
                 event.consume();
+            }
+        });
+        txt_fi_masanpham.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue,
+                    String newValue) {
+                if (newValue.length() >= 6) {
+                    btnSua.setDisable(false);
+                    btnXoa.setDisable(false);
+                } else {
+                    btnSua.setDisable(true);
+                    btnXoa.setDisable(true);
+                }
+            }
+        });
+        KeyCombination Alt_C = new KeyCodeCombination(KeyCode.C, KeyCodeCombination.ALT_DOWN);
+        txt_fi_masanpham.setOnKeyPressed(e -> {
+            if ((Alt_C.match(e) && !FXML_TraCuuController.masp.isEmpty())) {
+                SanPham sp = new SanPham(new SimpleStringProperty(FXML_TraCuuController.masp));
+                sp = sp.getSP();
+                txt_fi_masanpham.setText("" + sp.getMasanpham().get());
+                txt_fi_tensanpham.setText("" + sp.getTensanpham().get());
+                txt_area_ghichu.setText("" + sp.getGhichu().get());
+                cmb_nhasanxuat.getSelectionModel().select(sp.getTennhasanxuat().get());
+                cmb_nhomhang.getSelectionModel().select(sp.getTennhomhang().get());
+                txt_fi_tonkhotoithieu.setText("" + sp.getTonkhotoithieu().get());
+                txt_fi_tonkhotoida.setText("" + sp.getTonkhotoida().get());
+                txt_fi_thoihantonkho.setText("" + sp.getThoihan_thang().get());
             }
         });
     }

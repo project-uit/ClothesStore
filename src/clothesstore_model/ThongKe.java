@@ -231,14 +231,18 @@ public class ThongKe {
                 HoaDon hd = new HoaDon();
                 List<Integer> doanhthu12months = hd.getDoanhThu12months(nam);
                 int i = 1;
+                int tong=0;
                 for (Integer temp : doanhthu12months) {
                     pdfTable.addCell("" + i);
                     String tien = String.format("%,8d%n", temp).trim();
+                    tong+=temp;
                     pdfTable.addCell(tien);
                     i++;
                 }
 
                 document.add(pdfTable);
+                paragraph = new Paragraph("Tổng doanh thu: "+String.format("%,8d%n", tong).trim(), new Font(unicode_font, 18, Font.BOLD));
+                document.add(paragraph);
                 document.close();
                 file.close();
 
@@ -367,7 +371,6 @@ public class ThongKe {
                     tongsl = rs.getInt(1);
                 }
             } catch (SQLException ex) {
-
             }
         }
         return tongsl;
