@@ -103,38 +103,12 @@ public class FXML_ThongKeController implements Initializable {
         for (int i = 0; i < 12; i++) {
             data.getData().add(new XYChart.Data<>("Tháng " + (i + 1), (Number) dt.get(i)));
         }
-//        data.getData().add(new XYChart.Data<>("Tháng 1", (Number) dt.get(0)));
-//        data.getData().add(new XYChart.Data<>("Tháng 2", (Number) dt.get(1)));
-//        data.getData().add(new XYChart.Data<>("Tháng 3", (Number) dt.get(2)));
-//        data.getData().add(new XYChart.Data<>("Tháng 4", (Number) dt.get(3)));
-//        data.getData().add(new XYChart.Data<>("Tháng 5", (Number) dt.get(4)));
-//        data.getData().add(new XYChart.Data<>("Tháng 6", (Number) dt.get(5)));
-//        data.getData().add(new XYChart.Data<>("Tháng 7", (Number) dt.get(6)));
-//        data.getData().add(new XYChart.Data<>("Tháng 8", (Number) dt.get(7)));
-//        data.getData().add(new XYChart.Data<>("Tháng 9", (Number) dt.get(8)));
-//        data.getData().add(new XYChart.Data<>("Tháng 10", (Number) dt.get(9)));
-//        data.getData().add(new XYChart.Data<>("Tháng 11", (Number) dt.get(10)));
-//        data.getData().add(new XYChart.Data<>("Tháng 12", (Number) dt.get(11)));
+
         chartDoanhThu.getData().setAll(data);
     }
 
     @FXML
     private void Handler_btnPrint() {
-//        Printer printer = Printer.getDefaultPrinter();
-//        PageLayout pageLayout = printer.createPageLayout(Paper.NA_LETTER, PageOrientation.PORTRAIT, Printer.MarginType.DEFAULT);
-//        double scaleX = pageLayout.getPrintableWidth() / chartDoanhThu.getBoundsInParent().getWidth();
-//        double scaleY = pageLayout.getPrintableHeight() / chartDoanhThu.getBoundsInParent().getHeight();
-//        Scale scale = new Scale(scaleX, scaleY);
-//        chartDoanhThu.getTransforms().add(scale);
-//
-//        PrinterJob job = PrinterJob.createPrinterJob();
-//        if (job != null) {
-//            boolean success = job.printPage(chartDoanhThu);
-//            if (success) {
-//                job.endJob();
-//                chartDoanhThu.getTransforms().remove(scale);
-//            }
-//        }
         Object nam = cmbYear.getSelectionModel().getSelectedItem();
         ThongKe.pdf_thongke_doanhthu(chartDoanhThu, "Thống kê doanh thu trong năm " + nam, Integer.valueOf(nam + ""));
     }
