@@ -1,0 +1,51 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Jun 3, 2018, 2:04:58 PM
+    Author     : dieunguyen
+*/
+
+.buttonSetting{
+        -fx-background-color:#39b5ff;
+        -fx-background-radius: 5,5,4;
+        -fx-background-insets: 0 0 -1 0,0,1;
+        -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.4) , 5, 0.0 , 0 , 1 );
+        -fx-text-alignment: center;
+        
+        -fx-background-image: url('../clothesstore_view/img/setting.png');
+        -fx-background-size: 30px;
+        -fx-background-repeat: no-repeat;
+        -fx-background-position: center; 
+    
+        -fx-background-radius: 30;
+        
+        
+        -fx-background-insets: 0px;
+        -fx-padding: 0px;
+}
+.buttonSetting:hover{
+        -fx-background-color:	#F0F8FF;
+        -fx-background-radius: 5,5,4;
+        -fx-background-insets: 0 0 -1 0,0,1;
+        -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.4) , 5, 0.0 , 0 , 1 );
+        -fx-text-alignment: center;
+
+        -fx-background-size: 30px;
+        -fx-background-repeat: no-repeat;
+        -fx-background-position: center; 
+    
+        -fx-background-radius: 30;
+        -fx-scale-y: 1.2;
+        -fx-scale-x: 1.2;
+        
+        -fx-background-insets: 0px;
+        -fx-padding: 0px;
+}
+
+.buttonSetting:pressed{
+        -fx-scale-y: 1;
+        -fx-scale-x: 1;
+}

@@ -5,7 +5,6 @@
  */
 package clothesstore_controller;
 
-import static clothesstore_controller.FXML_ClothesStoreController._vbox_mini;
 import static clothesstore_controller.SidePanelContentController._vbox;
 import clothesstore_model.NhanVien;
 import clothesstore_model.TaiKhoan;
@@ -39,12 +38,16 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 import javafx.util.Duration;
+import tray.notification.NotificationType;
+import tray.notification.TrayNotification;
 
 /**
  * FXML Controller class
@@ -60,16 +63,14 @@ public class FXML_DangNhapController implements Initializable {
     JFXCheckBox checkbox_remember;
     @FXML
     private JFXTextField txtUser;
-
     @FXML
     private JFXPasswordField txtPass;
-
     @FXML
     private Label lbError;
 
     private Preferences preference;
 
-    public static Stage stageMain;
+    public static Stage stageMain, stageCaiDat;
     public static Stage stageSplash;
     public static String UserID;
     public static int MaNhanVien;
@@ -131,7 +132,7 @@ public class FXML_DangNhapController implements Initializable {
                     for (Object node : listnode) {
                         _vbox.getChildren().remove(node);
                     }
-                     List<Object> listnode1 = new ArrayList<Object>();
+                    List<Object> listnode1 = new ArrayList<Object>();
                     for (Node node : FXML_ClothesStoreController._vbox_mini.getChildren()) {
                         if (node instanceof JFXButton) {
                             if (node.getId().equals("btnTonKho") || node.getId().equals("btnHoaDonMuaHang")
@@ -177,6 +178,39 @@ public class FXML_DangNhapController implements Initializable {
 
     }
 
+    @FXML
+    private void Handler_btnCaiDat() {
+        TextInputDialog dialog = new TextInputDialog("");
+        dialog.setTitle(null);
+        dialog.setHeaderText("Yêu cầu mật khẩu truy cập");
+        dialog.setContentText("Mật khẩu: ");
+
+        Optional<String> result = dialog.showAndWait();
+
+        result.ifPresent(name -> {
+            if ("password".equals(name)) {
+                Parent root;
+                try {
+                    root = FXMLLoader.load(getClass().getResource("/clothesstore_view/FXML_ConnectDB.fxml"));
+                    Scene scene = new Scene(root);
+                    stageCaiDat = new Stage();
+                    stageCaiDat.initModality(Modality.APPLICATION_MODAL);
+                    stageCaiDat.setResizable(false);
+                    stageCaiDat.setScene(scene);
+                    stageCaiDat.show();
+                } catch (IOException ex) {
+                    Logger.getLogger(FXML_DangNhapController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } else {
+                TrayNotification tray = new TrayNotification("Thông báo",
+                        "Mật khẩu không chính xác", NotificationType.ERROR);
+                tray.showAndDismiss(Duration.seconds(2));
+            }
+
+        });
+
+    }
+
     private void loadSplashScreen() {
         try {
             Parent pane = FXMLLoader.load(getClass().getResource("/clothesstore_view/SplashFXML.fxml"));
@@ -184,8 +218,8 @@ public class FXML_DangNhapController implements Initializable {
             scene.setFill(Color.TRANSPARENT);
             stageSplash = new Stage();
             stageSplash.initStyle(StageStyle.TRANSPARENT);
-            
-            stageSplash.setScene(scene);            
+
+            stageSplash.setScene(scene);
             stageSplash.show();
 
             FadeTransition fadeIn = new FadeTransition(Duration.seconds(2.5), pane);
@@ -244,7 +278,6 @@ public class FXML_DangNhapController implements Initializable {
             }
             System.exit(0);
         }
-
     }
 
     @Override

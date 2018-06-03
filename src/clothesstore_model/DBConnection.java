@@ -5,9 +5,17 @@
  */
 package clothesstore_model;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import javafx.util.Duration;
+import tray.notification.NotificationType;
+import tray.notification.TrayNotification;
 
 /**
  *
@@ -15,23 +23,45 @@ import java.sql.SQLException;
  */
 public class DBConnection {
 
+    private String DBName, User, Password, Port;
+
     public DBConnection() {
     }
-    
-    public Connection getConnecttion()
-    {       
-        try{
-            String url="jdbc:mysql://localhost:3306/clothesshop";
-            String user = "root";
-            String password= "9800162hung";
+
+    public Connection getConnecttion() {
+        try {
+            FileReader reader = new FileReader("DBConnection.txt");
+            BufferedReader bufferedReader = new BufferedReader(reader);
+            List<String> rs = new ArrayList();
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                rs.add(line);
+            }
+            reader.close();
+
+            DBName = rs.get(0);
+            User = rs.get(1);
+            Password = rs.get(2);
+            Port = rs.get(3);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            String url = "jdbc:mysql://localhost:" + Port + "/" + DBName;
+            String user = User;
+            String password = Password;
             Class.forName("com.mysql.jdbc.Driver");
-            Connection con = DriverManager.getConnection(url,user,password);          
+            Connection con = DriverManager.getConnection(url, user, password);
             return con;
-        }catch(ClassNotFoundException  e)
-        {
+        } catch (ClassNotFoundException e) {
             System.out.println("Loading driver is failed");
         } catch (SQLException ex) {
-           System.out.println("Error "+ex.getMessage());
+            TrayNotification tray = new TrayNotification("Thông báo",
+                    "Kết nối thất bại", NotificationType.ERROR);
+            tray.showAndDismiss(Duration.seconds(2));
+            System.out.println("Error " + ex.getMessage());
         }
         return null;
     }

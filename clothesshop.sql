@@ -502,4 +502,3 @@ where ctsp.soluong >=0;
 select sum(thanhtien)           
 from chitiethoadon 
 where mahoadon = 19;
-
