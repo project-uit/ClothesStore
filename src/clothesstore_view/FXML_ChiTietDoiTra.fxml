@@ -35,12 +35,12 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <Label layoutX="19.0" layoutY="27.0" text="Hàng đổi trả">
+      <Label layoutX="19.0" layoutY="31.0" text="Hàng đổi trả">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-      <Label layoutX="19.0" layoutY="289.0" text="Hàng thay thế">
+      <Label layoutX="19.0" layoutY="292.0" text="Hàng thay thế">
          <font>
             <Font size="20.0" />
          </font>
@@ -66,13 +66,13 @@
          </font>
       </Label>
       <Line endX="250.0" layoutX="307.0" layoutY="629.0" startX="-100.0" />
-      <JFXButton fx:id="btnBack" layoutX="26.0" layoutY="663.0" onAction="#Handler_btnBack" prefHeight="37.0" prefWidth="82.0" ripplerFill="BLACK" style="-fx-background-color: #4681f5;" text="Quay về" textFill="WHITE" wrapText="true" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0">
+      <JFXButton fx:id="btnBack" layoutX="26.0" layoutY="663.0" onAction="#Handler_btnBack" prefHeight="37.0" prefWidth="92.0" ripplerFill="BLACK" style="-fx-background-color: #4681f5;" text="Quay về" textFill="WHITE" wrapText="true" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0">
          <font>
             <Font size="16.0" />
          </font>
       </JFXButton>
-      <TextField fx:id="txtSearch" layoutX="152.0" layoutY="292.0" prefHeight="25.0" prefWidth="163.0" promptText="Nhập mã chi tiết sản phẩm" />
-      <JFXButton fx:id="btnAdd" layoutX="328.0" layoutY="290.0" onAction="#Handler_btnAdd" prefHeight="27.0" prefWidth="33.0" ripplerFill="BLACK" style="-fx-background-color: #4681f5;" text="+" textFill="WHITE" wrapText="true">
+      <TextField fx:id="txtSearch" layoutX="163.0" layoutY="291.0" prefHeight="25.0" prefWidth="163.0" promptText="Nhập mã chi tiết sản phẩm" />
+      <JFXButton fx:id="btnAdd" layoutX="336.0" layoutY="291.0" onAction="#Handler_btnAdd" prefHeight="27.0" prefWidth="33.0" ripplerFill="BLACK" style="-fx-background-color: #4681f5;" text="+" textFill="WHITE" wrapText="true">
          <font>
             <Font size="13.0" />
          </font>

@@ -11,14 +11,14 @@
 
 <AnchorPane fx:id="QLPNpane" prefHeight="700.0" prefWidth="845.0" style="-fx-background-color: #deeeef;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clothesstore_controller.FXML_NhapKhoController">
    <children>
-      <Label layoutX="18.0" layoutY="14.0" prefHeight="55.0" prefWidth="184.0" text="Nhập Kho" textFill="#0e4ce8">
+      <Label layoutX="14.0" layoutY="14.0" prefHeight="10.0" prefWidth="141.0" text="Nhập Kho" textFill="#0e4ce8" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="15.0">
          <font>
-            <Font size="33.0" />
+            <Font size="28.0" />
          </font>
       </Label>
       <TableView fx:id="tableviewphieunhap" layoutX="18.0" layoutY="107.0" prefHeight="238.0" prefWidth="586.0" style="-fx-border-radius: 5; -fx-border-width: 1; -fx-border-color: #4681f5; -fx-selection-bar: #426caf;" AnchorPane.leftAnchor="18.0" AnchorPane.rightAnchor="17.0" AnchorPane.topAnchor="107.0">
          <columns>
-            <TableColumn fx:id="clmaphieunhap" prefWidth="163.0" text="Mã Phiếu Nhập" />
+            <TableColumn fx:id="clmaphieunhap" prefWidth="163.0" text="Mã hoá đơn mua hàng" />
             <TableColumn fx:id="clnhacungcap" prefWidth="255.0" text="Nhà Cung Cấp" />
             <TableColumn fx:id="clngaynhap" prefWidth="214.0" text="Ngày Nhập" />
             <TableColumn fx:id="cltongtien" prefWidth="176.0" text="Tổng tiền" />
@@ -43,7 +43,7 @@
          </columnResizePolicy>
       </TableView>
       <JFXCheckBox fx:id="checkboxFilter" layoutX="600.0" layoutY="60.0" text="Chỉ hiển thị phiếu chưa nhập kho" AnchorPane.rightAnchor="17.0" AnchorPane.topAnchor="60.0" />
-      <JFXDatePicker fx:id="dtpFilter" editable="false" layoutX="18.0" layoutY="65.0" onHidden="#currentdatepickeronhidden" prefHeight="26.0" prefWidth="132.0" promptText="Lọc theo ngày" />
-      <Hyperlink fx:id="linkBoChon" layoutX="150.0" layoutY="65.0" onAction="#Handler_linkBoChon" text="Bỏ chọn" />
+      <JFXDatePicker fx:id="dtpFilter" editable="false" layoutX="18.0" layoutY="58.0" onHidden="#currentdatepickeronhidden" prefHeight="26.0" prefWidth="132.0" promptText="Lọc theo ngày" AnchorPane.leftAnchor="18.0" AnchorPane.topAnchor="58.0" />
+      <Hyperlink fx:id="linkBoChon" layoutX="153.0" layoutY="60.0" onAction="#Handler_linkBoChon" text="Bỏ chọn" AnchorPane.leftAnchor="153.0" AnchorPane.topAnchor="60.0" />
    </children>
 </AnchorPane>
