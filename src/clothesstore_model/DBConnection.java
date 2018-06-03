@@ -29,6 +29,7 @@ public class DBConnection {
     }
 
     public Connection getConnecttion() {
+        
         try {
             FileReader reader = new FileReader("DBConnection.txt");
             BufferedReader bufferedReader = new BufferedReader(reader);
@@ -39,11 +40,12 @@ public class DBConnection {
             }
             reader.close();
 
-            DBName = rs.get(0);
-            User = rs.get(1);
-            Password = rs.get(2);
-            Port = rs.get(3);
-
+            DBName = new EncodeDecode().decodeString(rs.get(0));
+            User = new EncodeDecode().decodeString(rs.get(1));
+            Password = new EncodeDecode().decodeString(rs.get(2));
+            Port = new EncodeDecode().decodeString(rs.get(3));
+            
+            System.out.println(new EncodeDecode().decodeString("Y2xvdGhlc3Nob3A="));
         } catch (IOException e) {
             e.printStackTrace();
         }

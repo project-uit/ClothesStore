@@ -7,8 +7,8 @@ package clothesstore_controller;
 
 import static clothesstore_controller.FXML_DangNhapController.stageCaiDat;
 import clothesstore_model.DBConnection;
+import clothesstore_model.EncodeDecode;
 import clothesstore_model.ScriptRunner;
-import clothesstore_model.TaiKhoan;
 import com.jfoenix.controls.JFXButton;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -80,13 +80,13 @@ public class FXML_ConnectDBController implements Initializable {
                 OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream, "UTF-8");
                 BufferedWriter bufferedWriter = new BufferedWriter(outputStreamWriter);
 
-                bufferedWriter.write(DBName);
+                bufferedWriter.write(new EncodeDecode().encodeString(DBName));
                 bufferedWriter.newLine();
-                bufferedWriter.write(User);
+                bufferedWriter.write(new EncodeDecode().encodeString(User));
                 bufferedWriter.newLine();
-                bufferedWriter.write(Password);
+                bufferedWriter.write(new EncodeDecode().encodeString(Password));
                 bufferedWriter.newLine();
-                bufferedWriter.write(Port);
+                bufferedWriter.write(new EncodeDecode().encodeString(Port));
 
                 bufferedWriter.close();
                 runScriptSQL();
@@ -123,7 +123,7 @@ public class FXML_ConnectDBController implements Initializable {
         txtPassword.setText("");
         txtPort.setText("3306");
     }
-
+     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
