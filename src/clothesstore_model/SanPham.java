@@ -447,8 +447,7 @@ public class SanPham extends RecursiveTreeObject<SanPham> {
         }
         return arr_tensp;
     }
-
-    public List<String> getlist_masp() {
+     public List<String> getlist_masp() {
 
         DBConnection db = new DBConnection();
         Connection con = db.getConnecttion();
@@ -492,36 +491,5 @@ public class SanPham extends RecursiveTreeObject<SanPham> {
             }
         }
         return false;
-    }
-
-    public SanPham getSP() {
-
-        DBConnection db = new DBConnection();
-        Connection con = db.getConnecttion();
-        
-        SanPham sp = null;
-        if (con != null) {
-            try {
-                Statement stmnt = con.createStatement();
-                ResultSet rs = stmnt.executeQuery("Select * from sanpham where masanpham = '" + masanpham.get() + "'");
-                while (rs.next()) {
-                    StringProperty masp = new SimpleStringProperty(rs.getString("masanpham"));
-                    StringProperty tensp = new SimpleStringProperty(rs.getString("tensanpham"));
-                    StringProperty nhasanxuat = new SimpleStringProperty(rs.getString("tennhasanxuat"));
-                    StringProperty nhomhang = new SimpleStringProperty(rs.getString("tennhomhang"));
-                    StringProperty gchu = new SimpleStringProperty(rs.getString("ghichu"));
-                    IntegerProperty tonkho_toida = new SimpleIntegerProperty(rs.getInt("tonkhotoida"));
-                    IntegerProperty tonkho_toithieu = new SimpleIntegerProperty(rs.getInt("tonkhotoithieu"));
-                    SanPham cus = new SanPham(masp, tensp, nhasanxuat, nhomhang, gchu, tonkho_toithieu, tonkho_toida);
-                    IntegerProperty _thoihan = new SimpleIntegerProperty(rs.getInt("thoihan_thang"));
-                    cus.setThoihan_thang(_thoihan);                   
-                    sp =cus;
-
-                }
-
-            } catch (SQLException ex) {
-            }
-        }
-        return sp;
     }
 }
