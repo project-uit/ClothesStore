@@ -44,8 +44,6 @@ public class DBConnection {
             User = new EncodeDecode().decodeString(rs.get(1));
             Password = new EncodeDecode().decodeString(rs.get(2));
             Port = new EncodeDecode().decodeString(rs.get(3));
-            
-            System.out.println(new EncodeDecode().decodeString("Y2xvdGhlc3Nob3A="));
         } catch (IOException e) {
             e.printStackTrace();
         }
