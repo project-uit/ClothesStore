@@ -172,10 +172,10 @@ public class FXML_ConnectDBController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
         if (System.getProperty("os.name").startsWith("Windows")) {
-            String path = "";
+            String path = "C:/Program Files/MySQL/MySQL Server 5.7/bin";
             lbPath.setText(path);
         } else if (System.getProperty("os.name").startsWith("Mac")) {
-            String path = "/Applications/MySQLWorkbench.app/Contents/MacOS/";
+            String path = "/Applications/MySQLWorkbench.app/Contents/MacOS";
             lbPath.setText(path);
         }
     }

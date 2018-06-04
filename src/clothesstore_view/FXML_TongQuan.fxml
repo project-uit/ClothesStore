@@ -51,9 +51,9 @@
                   </TitledPane>
                   <AnchorPane layoutX="90.0" layoutY="240.0" prefHeight="358.0" prefWidth="575.0" style="-fx-background-color: #dff0d8;" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                      <children>
-                        <VBox layoutX="82.0" layoutY="190.0" prefHeight="168.0" prefWidth="308.0" style="-fx-border-color: #e8b110;" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="82.0">
+                        <VBox layoutX="150.0" layoutY="190.0" prefHeight="168.0" prefWidth="504.0" style="-fx-border-color: #e8b110;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="150.0">
                            <children>
-                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="56.0" prefWidth="308.0" style="-fx-background-color: #e8b110;" text=" Thông tin kho">
+                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="56.0" prefWidth="502.0" style="-fx-background-color: #e8b110;" text=" Thông tin kho">
                                  <font>
                                     <Font size="23.0" />
                                  </font>
@@ -93,20 +93,6 @@
                                  </font>
                               </Label>
                               <Label fx:id="lbsohanghoa" alignment="CENTER" prefHeight="4.0" prefWidth="504.0" text="Số hàng hóa:" wrapText="true">
-                                 <font>
-                                    <Font size="20.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </VBox>
-                        <VBox layoutX="285.0" layoutY="190.0" prefHeight="168.0" prefWidth="308.0" style="-fx-border-color: #9abc32;" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="82.0">
-                           <children>
-                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="56.0" prefWidth="306.0" style="-fx-background-color: #9abc32;" text=" Thông tin hàng hóa">
-                                 <font>
-                                    <Font size="23.0" />
-                                 </font>
-                              </Label>
-                              <Label fx:id="lbhanghoa" alignment="CENTER" prefHeight="4.0" prefWidth="504.0" text="Hàng hóa/Chủng loại : chưa rõ" wrapText="true">
                                  <font>
                                     <Font size="20.0" />
                                  </font>

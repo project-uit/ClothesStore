@@ -98,7 +98,7 @@ public class DBConnection {
             String savePath = selectedDirectory + "/" + time + "_clothesshop.sql";
 
             String executeCmd = "";
-            executeCmd = PathMysqldump + "mysqldump -u" + dbUser + " -p" + dbPass + " " + dbName + " -r " + savePath;
+            executeCmd = PathMysqldump + "/mysqldump -u" + dbUser + " -p" + dbPass + " " + dbName + " -r " + savePath;
 
             /*NOTE: Executing the command here*/
             Process runtimeProcess = Runtime.getRuntime().exec(executeCmd);
@@ -122,7 +122,12 @@ public class DBConnection {
         this.Create();
         ProcessBuilder builder = new ProcessBuilder();
         try {
-            builder = new ProcessBuilder("sh", "-c", PathMysql +"mysql -uroot -ptandieu -h localhost clothesshop < " + selectedFile.getAbsolutePath());
+            if (System.getProperty("os.name").startsWith("Windows")) {
+                String quotedPath = "\"" + PathMysql + "/mysql"+ "\""; 
+                builder = new ProcessBuilder("cmd.exe", "/c", quotedPath + " -uroot -ptandieu -h localhost clothesshop < " + selectedFile.getAbsolutePath());
+            } else if (System.getProperty("os.name").startsWith("Mac")) {
+                builder = new ProcessBuilder("sh", "-c", PathMysql + "/mysql -uroot -ptandieu -h localhost clothesshop < " + selectedFile.getAbsolutePath());
+            }
 
             builder.redirectErrorStream(true);
             Process pr = builder.start();
