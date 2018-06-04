@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="310.0" prefWidth="325.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clothesstore_controller.FXML_ConnectDBController">
+<AnchorPane id="AnchorPane" prefHeight="361.0" prefWidth="315.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clothesstore_controller.FXML_ConnectDBController">
    <children>
       <TextField fx:id="txtDBName" editable="false" layoutX="103.0" layoutY="68.0" text="clothesshop" />
       <TextField fx:id="txtUser" layoutX="103.0" layoutY="117.0" />
@@ -18,11 +18,13 @@
       <Label layoutX="36.0" layoutY="122.0" text="User" />
       <Label layoutX="37.0" layoutY="176.0" text="Password" />
       <Label layoutX="37.0" layoutY="227.0" text="Port" />
-      <Hyperlink fx:id="lbDefault" layoutX="32.0" layoutY="266.0" onAction="#Handler_lbDefault" text="Default" />
+      <Hyperlink fx:id="lbDefault" layoutX="128.0" layoutY="266.0" onAction="#Handler_lbDefault" text="Default" />
       <Label layoutX="76.0" layoutY="22.0" text="SETUP DATABASE" textFill="#270d6f">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
+      <JFXButton fx:id="btnBackup" buttonType="RAISED" layoutX="68.0" layoutY="304.0" onAction="#Handler_btnBackup" ripplerFill="#f8f8f8" style="-fx-background-color: #3747bf;" text="Backup" textFill="WHITE" />
+      <JFXButton fx:id="btnRestore" buttonType="RAISED" layoutX="173.0" layoutY="304.0" onAction="#Handler_btnRestore" ripplerFill="#f8f8f8" style="-fx-background-color: #3747bf;" text="Restore" textFill="WHITE" />
    </children>
 </AnchorPane>

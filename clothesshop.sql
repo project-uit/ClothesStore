@@ -1,6 +1,4 @@
-drop database if exists clothesshop;
-create database ClothesShop;
-use ClothesShop;
+use clothesshop;
 
 create table cuahang
 (

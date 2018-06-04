@@ -9,9 +9,11 @@ import static clothesstore_controller.FXML_DangNhapController.stageCaiDat;
 import clothesstore_model.DBConnection;
 import clothesstore_model.EncodeDecode;
 import clothesstore_model.ScriptRunner;
+import static clothesstore_view.ClothesStore.stageDangNhap;
 import com.jfoenix.controls.JFXButton;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
@@ -32,6 +34,9 @@ import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 import javafx.util.Duration;
 import tray.notification.NotificationType;
 import tray.notification.TrayNotification;
@@ -89,12 +94,39 @@ public class FXML_ConnectDBController implements Initializable {
                 bufferedWriter.write(new EncodeDecode().encodeString(Port));
 
                 bufferedWriter.close();
+
+                new DBConnection().Create();
                 runScriptSQL();
 
                 stageCaiDat.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    @FXML
+    private void Handler_btnBackup() {
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        File selectedDirectory = directoryChooser.showDialog(stageDangNhap);
+
+        if (selectedDirectory != null) {
+            DBConnection db = new DBConnection();
+            if (db.getConnecttion() != null) {
+                db.Backup(selectedDirectory);
+            }
+        }
+    }
+
+    @FXML
+    private void Handler_btnRestore() {
+        FileChooser fileChooser = new FileChooser();
+        File selectedFile = fileChooser.showOpenDialog(null);
+
+        if (selectedFile != null) {
+            new DBConnection().Restore(selectedFile);
+        } else {
+            System.out.println("File selection cancelled.");
         }
     }
 
@@ -123,7 +155,7 @@ public class FXML_ConnectDBController implements Initializable {
         txtPassword.setText("");
         txtPort.setText("3306");
     }
-     
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
