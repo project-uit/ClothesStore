@@ -33,6 +33,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Hyperlink;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
@@ -57,7 +58,9 @@ public class FXML_ConnectDBController implements Initializable {
     private JFXButton btnConnect;
 
     @FXML
-    private Hyperlink lbDefault;
+    private Hyperlink lbDefault, lbSetPath;
+    @FXML
+    private Label lbPath;
 
     private String DBName, User, Password, Port;
 
@@ -112,7 +115,7 @@ public class FXML_ConnectDBController implements Initializable {
         if (selectedDirectory != null) {
             DBConnection db = new DBConnection();
             if (db.getConnecttion() != null) {
-                db.Backup(selectedDirectory);
+                db.Backup(selectedDirectory, lbPath.getText());
             }
         }
     }
@@ -123,7 +126,27 @@ public class FXML_ConnectDBController implements Initializable {
         File selectedFile = fileChooser.showOpenDialog(null);
 
         if (selectedFile != null) {
-            new DBConnection().Restore(selectedFile);
+            new DBConnection().Restore(selectedFile, lbPath.getText());
+        } else {
+            System.out.println("File selection cancelled.");
+        }
+    }
+
+    @FXML
+    void Handler_lbDefault(ActionEvent event) {
+        txtDBName.setText("clothesshop");
+        txtUser.setText("root");
+        txtPassword.setText("");
+        txtPort.setText("3306");
+    }
+
+    @FXML
+    void Handler_lbSetPath(ActionEvent event) {
+        FileChooser fileChooser = new FileChooser();
+        File selectedFile = fileChooser.showOpenDialog(null);
+
+        if (selectedFile != null) {
+            lbPath.setText(selectedFile.getAbsolutePath());
         } else {
             System.out.println("File selection cancelled.");
         }
@@ -147,17 +170,16 @@ public class FXML_ConnectDBController implements Initializable {
         }
     }
 
-    @FXML
-    void Handler_lbDefault(ActionEvent event) {
-        txtDBName.setText("clothesshop");
-        txtUser.setText("root");
-        txtPassword.setText("");
-        txtPort.setText("3306");
-    }
-
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
+        if (System.getProperty("os.name").startsWith("Windows")) {
+            String path = "";
+            lbPath.setText(path);
+        } else if (System.getProperty("os.name").startsWith("Mac")) {
+            String path = "/Applications/MySQLWorkbench.app/Contents/MacOS/";
+            lbPath.setText(path);
+        }
     }
 
 }

@@ -9,10 +9,14 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -82,22 +86,20 @@ public class DBConnection {
         }
     }
 
-    public void Backup(File selectedDirectory) {
+    public void Backup(File selectedDirectory, String PathMysqldump) {
         try {
             String dbName = DBName;
             String dbUser = User;
             String dbPass = Password;
 
-            String savePath = selectedDirectory + "/backup_clothesshop.sql";
-            System.out.println(System.getProperty("os.name"));
+            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            String time = dateTimeFormatter.format(LocalDate.now()).replace("/", "-");
+
+            String savePath = selectedDirectory + "/" + time + "_clothesshop.sql";
+
             String executeCmd = "";
-            if (System.getProperty("os.name").startsWith("Windows")) {
-                executeCmd = "mysqldump -u" + dbUser + " -p" + dbPass + " " + dbName + " -r " + savePath;
-            } else if (System.getProperty("os.name").startsWith("Mac")) {
-                executeCmd = "/Applications/MySQLWorkbench.app/Contents/MacOS/mysqldump -u" + dbUser + " -p" + dbPass + " " + dbName + " -r " + savePath;
-            }
-            /*NOTE: Used to create a cmd command*/
-            System.out.println(executeCmd);
+            executeCmd = PathMysqldump + "mysqldump -u" + dbUser + " -p" + dbPass + " " + dbName + " -r " + savePath;
+
             /*NOTE: Executing the command here*/
             Process runtimeProcess = Runtime.getRuntime().exec(executeCmd);
             int processComplete = runtimeProcess.waitFor();
@@ -116,7 +118,34 @@ public class DBConnection {
         }
     }
 
-    public void Restore(File selectedFile) {
+    public void Restore(File selectedFile, String PathMysql) {
+        this.Create();
+        ProcessBuilder builder = new ProcessBuilder();
+        try {
+            builder = new ProcessBuilder("sh", "-c", PathMysql +"mysql -uroot -ptandieu -h localhost clothesshop < " + selectedFile.getAbsolutePath());
+
+            builder.redirectErrorStream(true);
+            Process pr = builder.start();
+
+            // Get mysql process's standard output/error.
+            InputStream is = pr.getInputStream();
+
+            // Now read from it and write it to standard output.
+            BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+            String line = reader.readLine();
+            while (line != null) {
+                System.out.println(line);
+                line = reader.readLine();
+            }
+            TrayNotification tray = new TrayNotification("Thông báo",
+                    "Restore dữ liệu thành công", NotificationType.SUCCESS);
+            tray.showAndDismiss(Duration.seconds(2));
+        } catch (IOException ex) {
+            Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void Restore111111(File selectedFile) {
         try {
             this.Create();
             /*NOTE: Creating Database Constraints*/
@@ -124,27 +153,21 @@ public class DBConnection {
             String dbUser = User;
             String dbPass = Password;
 
-            try {
-                Connection Conn = DriverManager.getConnection("jdbc:mysql://localhost/?user=" + dbUser + "&password=" + dbPass + "");
-                Statement smt = Conn.createStatement();
-                smt.executeUpdate("drop database if exists clothesshop");
-                smt.executeUpdate("create database " + dbName + "");
-
-            } catch (SQLException ex) {
-                Logger.getLogger(DBConnection.class
-                        .getName()).log(Level.SEVERE, null, ex);
-            }
-
             String savePath = selectedFile.getAbsolutePath();
 
             /*NOTE: Used to create a cmd command*/
-            String executeCmd = "/Applications/MySQLWorkbench.app/Contents/MacOS/mysql -u" + dbUser + " -p" + dbPass + " -h localhost " + dbName + " < " + savePath;
+            String executeCmd = "";
+            if (System.getProperty("os.name").startsWith("Windows")) {
+                executeCmd = "mysql -u" + dbUser + " -p" + dbPass + " -h localhost " + dbName + " < " + savePath;
+            } else if (System.getProperty("os.name").startsWith("Mac")) {
+                executeCmd = "/Applications/MySQLWorkbench.app/Contents/MacOS/mysql -u" + dbUser + " -p" + dbPass + " -h localhost " + dbName + " < " + savePath;
+            }
+
             System.out.println(executeCmd);
 
             /*NOTE: Executing the command here*/
             Process runtimeProcess = Runtime.getRuntime().exec(executeCmd);
             int processComplete = runtimeProcess.waitFor();
-
             /*NOTE: processComplete=0 if correctly executed, will contain other values if not*/
             if (processComplete == 0) {
                 TrayNotification tray = new TrayNotification("Thông báo",
@@ -152,7 +175,6 @@ public class DBConnection {
                 tray.showAndDismiss(Duration.seconds(2));
             } else {
                 System.out.println("Restore Failure");
-
             }
 
         } catch (IOException | InterruptedException ex) {
@@ -160,5 +182,4 @@ public class DBConnection {
                     .getName()).log(Level.SEVERE, null, ex);
         }
     }
-
 }

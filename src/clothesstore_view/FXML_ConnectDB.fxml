@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="361.0" prefWidth="315.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clothesstore_controller.FXML_ConnectDBController">
+<AnchorPane id="AnchorPane" prefHeight="443.0" prefWidth="315.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clothesstore_controller.FXML_ConnectDBController">
    <children>
       <TextField fx:id="txtDBName" editable="false" layoutX="103.0" layoutY="68.0" text="clothesshop" />
       <TextField fx:id="txtUser" layoutX="103.0" layoutY="117.0" />
@@ -26,5 +26,7 @@
       </Label>
       <JFXButton fx:id="btnBackup" buttonType="RAISED" layoutX="68.0" layoutY="304.0" onAction="#Handler_btnBackup" ripplerFill="#f8f8f8" style="-fx-background-color: #3747bf;" text="Backup" textFill="WHITE" />
       <JFXButton fx:id="btnRestore" buttonType="RAISED" layoutX="173.0" layoutY="304.0" onAction="#Handler_btnRestore" ripplerFill="#f8f8f8" style="-fx-background-color: #3747bf;" text="Restore" textFill="WHITE" />
+      <Hyperlink fx:id="lbSetPath" alignment="CENTER" layoutX="100.0" layoutY="364.0" onAction="#Handler_lbSetPath" text="Set Path MYSQL" AnchorPane.bottomAnchor="54.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0" />
+      <Label fx:id="lbPath" alignment="CENTER" layoutX="12.0" layoutY="389.0" prefHeight="43.0" prefWidth="292.0" text="path" wrapText="true" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" />
    </children>
 </AnchorPane>
