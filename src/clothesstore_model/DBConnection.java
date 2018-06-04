@@ -89,11 +89,11 @@ public class DBConnection {
             String dbPass = Password;
 
             String savePath = selectedDirectory + "/backup_clothesshop.sql";
-
+            System.out.println(System.getProperty("os.name"));
             String executeCmd = "";
             if (System.getProperty("os.name").startsWith("Windows")) {
                 executeCmd = "mysqldump -u" + dbUser + " -p" + dbPass + " " + dbName + " -r " + savePath;
-            } else if (System.getProperty("os.name").startsWith("Macos")) {
+            } else if (System.getProperty("os.name").startsWith("Mac")) {
                 executeCmd = "/Applications/MySQLWorkbench.app/Contents/MacOS/mysqldump -u" + dbUser + " -p" + dbPass + " " + dbName + " -r " + savePath;
             }
             /*NOTE: Used to create a cmd command*/
