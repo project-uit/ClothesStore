@@ -142,13 +142,11 @@ public class FXML_ConnectDBController implements Initializable {
 
     @FXML
     void Handler_lbSetPath(ActionEvent event) {
-        FileChooser fileChooser = new FileChooser();
-        File selectedFile = fileChooser.showOpenDialog(null);
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        File selectedDirectory = directoryChooser.showDialog(stageDangNhap);
 
-        if (selectedFile != null) {
-            lbPath.setText(selectedFile.getAbsolutePath());
-        } else {
-            System.out.println("File selection cancelled.");
+        if (selectedDirectory != null) {         
+            lbPath.setText(selectedDirectory.getAbsolutePath());
         }
     }
 
