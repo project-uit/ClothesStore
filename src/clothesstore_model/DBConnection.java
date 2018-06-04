@@ -5,6 +5,7 @@
  */
 package clothesstore_model;
 
+import clothesstore_controller.ShowMessage;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -21,7 +22,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.scene.control.Alert;
 import javafx.util.Duration;
+import org.controlsfx.control.Notifications;
 import tray.notification.NotificationType;
 import tray.notification.TrayNotification;
 
@@ -119,11 +122,11 @@ public class DBConnection {
     }
 
     public void Restore(File selectedFile, String PathMysql) {
-        this.Create();
+        //this.Create();
         ProcessBuilder builder = new ProcessBuilder();
         try {
             if (System.getProperty("os.name").startsWith("Windows")) {
-                String quotedPath = "\"" + PathMysql + "/mysql"+ "\""; 
+                String quotedPath = "\"" + PathMysql + "/mysql" + "\"";
                 builder = new ProcessBuilder("cmd.exe", "/c", quotedPath + " -uroot -ptandieu -h localhost clothesshop < " + selectedFile.getAbsolutePath());
             } else if (System.getProperty("os.name").startsWith("Mac")) {
                 builder = new ProcessBuilder("sh", "-c", PathMysql + "/mysql -uroot -ptandieu -h localhost clothesshop < " + selectedFile.getAbsolutePath());
@@ -137,14 +140,17 @@ public class DBConnection {
 
             // Now read from it and write it to standard output.
             BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+            String log = "";
             String line = reader.readLine();
             while (line != null) {
                 System.out.println(line);
+                log += line +"\n";
                 line = reader.readLine();
             }
-            TrayNotification tray = new TrayNotification("Thông báo",
-                    "Restore dữ liệu thành công", NotificationType.SUCCESS);
-            tray.showAndDismiss(Duration.seconds(2));
+            Notifications.create()
+              .title("Log")
+              .text(log)
+              .showInformation();
         } catch (IOException ex) {
             Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
         }
