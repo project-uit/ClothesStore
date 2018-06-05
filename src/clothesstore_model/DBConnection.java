@@ -127,9 +127,9 @@ public class DBConnection {
         try {
             if (System.getProperty("os.name").startsWith("Windows")) {
                 String quotedPath = "\"" + PathMysql + "/mysql" + "\"";
-                builder = new ProcessBuilder("cmd.exe", "/c", quotedPath + " -uroot -ptandieu -h localhost clothesshop < " + selectedFile.getAbsolutePath());
+                builder = new ProcessBuilder("cmd.exe", "/c", quotedPath + " -u"+User+" -p"+Password+" -h localhost "+DBName+" < " + selectedFile.getAbsolutePath());
             } else if (System.getProperty("os.name").startsWith("Mac")) {
-                builder = new ProcessBuilder("sh", "-c", PathMysql + "/mysql -uroot -ptandieu -h localhost clothesshop < " + selectedFile.getAbsolutePath());
+                builder = new ProcessBuilder("sh", "-c", PathMysql + "/mysql -u"+User+" -p"+Password+" -h localhost "+DBName+" < " + selectedFile.getAbsolutePath());
             }
 
             builder.redirectErrorStream(true);
