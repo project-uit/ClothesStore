@@ -5,7 +5,6 @@
  */
 package clothesstore_model;
 
-import clothesstore_controller.ShowMessage;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -22,7 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.scene.control.Alert;
 import javafx.util.Duration;
 import org.controlsfx.control.Notifications;
 import tray.notification.NotificationType;

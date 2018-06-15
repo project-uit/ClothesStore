@@ -8,9 +8,7 @@ diachi nvarchar(100),
 sodienthoai nvarchar(15),
 email nvarchar(50)
 );
-insert into cuahang
-values(1,'Zalora store','35 đường Hưng pro, phường 4 quận 4,
- TpHCM','090123456789','Zalorastore@gmail.com');
+
 create table nhacungcap
 (
 manhacungcap INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -32,9 +30,6 @@ cmnd varchar(13),
 trangthai int,
 luong int 
 );
-
-insert into nhanvien(tennhanvien,diachi,gioitinh,ngaysinh,cmnd,trangthai,luong)
-values('ccc', 'le hong phong',1,'1995-01-19','123456',1,50000);
 
 create table nhomhang
 (
@@ -99,23 +94,13 @@ create table mausac
 tenmau nvarchar(30) Collate utf8_unicode_ci primary key,
 trangthai int(2)
 );
-insert into mausac
-values ('Xanh dương',1);
-insert into mausac
-values ('Xanh lá',1);
-insert into mausac
-values ('Đỏ',1);
+
 create table size
 (
 tensize char(8) primary key,
 trangthai int(2)
 );
-insert into size
-values ('S',1);
-insert into size
-values ('L',1);
-insert into size
-values ('M',1);
+
 create table chitietsanpham
 (
 machitietsanpham varchar(45)  PRIMARY KEY,
@@ -211,10 +196,6 @@ sodienthoai char(15) PRIMARY KEY,
 tenkhachhang nvarchar(50)
 );
 
-insert into khachhang
-values ('0909478325','Hope');
-insert into khachhang
-values ('0905678456','Hand');
 
 create table chitietkhachhang
 (
@@ -235,9 +216,6 @@ manhanvien INT(6) UNSIGNED,
 FOREIGN KEY (manhanvien)
 REFERENCES nhanvien(manhanvien)
 );
-
-insert into dangnhap(tentaikhoan, matkhau,phanquyen,manhanvien)
-values ('admin','123',1,1);
 
 create table doitra
 (
@@ -479,24 +457,11 @@ where masanpham=masp;
 END; $$
 DELIMITER ;
 
-call update_ngayhethan_sp(3,'SPY27INH');
--- 'SPG7DW6U', 'SPFZA92'
+insert into nhanvien(tennhanvien,diachi,gioitinh,ngaysinh,cmnd,trangthai,luong)
+values('admin', '15 Le Hong Phong Q.10 TpHCM',1,'1995-01-19','1234567891',1,1);
 
-select ctpn.masanpham, ngaynhap, giavon, ctpn.mahoadonmuahang
-from chitiethoadonmuahang ctpn,hoadonmuahang pn 
-where ctpn.mahoadonmuahang = pn.mahoadonmuahang  and ctpn.mahoadonmuahang =  
-(SELECT ctpn1.mahoadonmuahang 
-FROM chitiethoadonmuahang ctpn1,hoadonmuahang pn1 
-WHERE  ctpn1.mahoadonmuahang = pn1.mahoadonmuahang  and ctpn1.masanpham = ctpn.masanpham            
-ORDER BY ctpn1.mahoadonmuahang DESC
-LIMIT 1);
+insert into dangnhap(tentaikhoan, matkhau,phanquyen,manhanvien)
+values ('admin','123',1,1);
 
-select  sp.masanpham,sp.tensanpham,sp.tennhomhang,sp.tennhasanxuat,
-ctsp.tenmau,ctsp.gioitinh, ctsp.tensize,ctsp.soluong,sp.giaban 
-from sanpham sp 
-join chitietsanpham ctsp on sp.masanpham = ctsp.masanpham 
-where ctsp.soluong >=0;
-
-select sum(thanhtien)           
-from chitiethoadon 
-where mahoadon = 19;
+insert into cuahang
+values(1,'Zalora store','35 Mac Dinh Chi Q.1 TpHCM','090123456789','Zalorastore@gmail.com');

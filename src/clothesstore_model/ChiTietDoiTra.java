@@ -229,8 +229,8 @@ public class ChiTietDoiTra {
                     ChiTietDoiTra ctdt = new ChiTietDoiTra(
                             new SimpleStringProperty(rs.getString("machitietsanpham")),
                             new SimpleStringProperty(rs.getString("tensanpham")),
-                            new SimpleIntegerProperty(rs.getInt("giaban")),
-                            new SimpleIntegerProperty(rs.getInt("soluong"))
+                            new SimpleIntegerProperty(rs.getInt("soluong")),
+                            new SimpleIntegerProperty(rs.getInt("giaban"))
                     );
                     list.add(ctdt);
                 }

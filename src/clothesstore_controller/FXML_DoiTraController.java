@@ -100,8 +100,6 @@ public class FXML_DoiTraController implements Initializable {
         initTextFieldSearch();
         FormatDate();
         tblChiTietHoaDon.setPlaceholder(new Label("Chọn hoá đơn để xem chi tiết"));
-       
-  
     }
 
     private Date selectedDateFrom, selectedDateTo, selectedDate;
